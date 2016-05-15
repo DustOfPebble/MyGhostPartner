@@ -20,10 +20,9 @@ public class QuadTree {
         this.size = size;
     }
 
-
     ArrayList<WayPoint> searchWayPoints(float x, float y, float size) {
     return new ArrayList(); // return NULL list by default
-    }
+
 
     void storeWayPoint(WayPoint wayPoint) {}
 
