@@ -23,10 +23,11 @@ public class GPS extends Service implements LocationListener {
     // The minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000; // 1 seconde
 
+    private CallbackGPS notify;
     // Declaring a Location Manager
     protected LocationManager sourcesGPS;
 
-    public GPS(Context context) {
+    public GPS(Context context, CallbackGPS listener) {
         sourcesGPS = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
         // Use this object as handler on location update
@@ -34,12 +35,18 @@ public class GPS extends Service implements LocationListener {
                 LocationManager.GPS_PROVIDER,
                 MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,
                 this);
+        this.notify = listener;
     }
 
     @Override
-    public void onLocationChanged(Location UpdatedPosition) {
-        if (UpdatedPosition == null) return;
-        Log.d("[Debug]", "(" + UpdatedPosition.getLongitude() + "°N," + UpdatedPosition.getLatitude() + "°E)");
+    public void onLocationChanged(Location update) {
+        if (update == null) return;
+        Log.d("[Debug]", "(" + update.getLongitude() + "°N," + update.getLatitude() + "°E)");
+        this.notify.updatedPosition(
+                update.getLongitude(),
+                update.getLatitude(),
+                update.getAltitude()
+        );
     }
 
     @Override

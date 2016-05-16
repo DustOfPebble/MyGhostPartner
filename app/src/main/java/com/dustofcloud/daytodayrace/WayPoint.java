@@ -36,5 +36,12 @@ public class WayPoint implements Serializable {
         this.hour= calendar.get(Calendar.HOUR);
         this.minute = calendar.get(Calendar.MINUTE);
         this.second = calendar.get(Calendar.SECOND);
+
+        // Converting Longitude & Latitude to 2D cartesian distance from an origin
+        this.x = dX(this.longitude);
+        this.y = dY(this.latitude);
     }
+
+    public float getX() {return this.x;}
+    public float getY() {return this.y;}
 }
