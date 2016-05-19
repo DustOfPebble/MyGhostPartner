@@ -42,11 +42,7 @@ public class GPS extends Service implements LocationListener {
     public void onLocationChanged(Location update) {
         if (update == null) return;
         Log.d("[Debug]", "(" + update.getLongitude() + "°N," + update.getLatitude() + "°E)");
-        this.notify.updatedPosition(
-                update.getLongitude(),
-                update.getLatitude(),
-                update.getAltitude()
-        );
+        this.notify.updatedPosition(update);
     }
 
     @Override

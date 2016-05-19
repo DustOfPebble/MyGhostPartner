@@ -1,47 +1,25 @@
 package com.dustofcloud.daytodayrace;
 
+import android.graphics.PointF;
+import android.location.Location;
+
 import java.io.Serializable;
-import java.util.Calendar;
 
 /**
  * Created by Xavier JAFFREZIC on 13/05/2016.
  */
-public class WayPoint implements Serializable {
-
-    // Collected  datas from GPS sensor
-    private double longitude;
-    private double latitude;
-    private float elevation;
-
-    // Time stamp
-    private int hour;
-    private int minute;
-    private int second;
-
-    // Calculated datas for extraction/filtering
-    private float yaw;
-    private float pitch;
-    private float velocity;
-
-    private float x;
-    private float y;
-
-    public WayPoint(double longitude, double latitude, float elevation) {
-        this.longitude = longitude;
-        this.latitude = latitude;
-        this.elevation = elevation;
-
-        // Timestamping received datas
-        Calendar calendar = Calendar.getInstance();
-        this.hour= calendar.get(Calendar.HOUR);
-        this.minute = calendar.get(Calendar.MINUTE);
-        this.second = calendar.get(Calendar.SECOND);
+public class WayPoint extends Location implements Serializable {
+    PointF Cartesian;
+    public WayPoint(Location updatedPosition) {
+        super(updatedPosition);
 
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
-        this.x = dX(this.longitude);
-        this.y = dY(this.latitude);
+        Cartesian = new PointF(
+                DataManager.dX(this.getLongitude()),
+                DataManager.dY(this.getLatitude())
+            );
     }
 
-    public float getX() {return this.x;}
-    public float getY() {return this.y;}
+    public float getX() {return Cartesian.x;}
+    public float getY() {return Cartesian.y;}
 }
