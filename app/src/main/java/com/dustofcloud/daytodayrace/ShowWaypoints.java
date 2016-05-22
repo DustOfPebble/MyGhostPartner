@@ -1,23 +1,48 @@
 package com.dustofcloud.daytodayrace;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
 public class ShowWaypoints extends ImageView implements CallbackUpdateView {
 
-    private float ScaleFactor = 0.0f;
+    private float MetersToPixels = 0.1f; //(10 cm / pixels ) ==> 100 pixels = 10 metres
+    private DataManager BackendService = null;
+    private ArrayList<WayPoint> WaypointsInView=null;
+    private ArrayList<WayPoint> WaypointsInUse=null;
+    private PointF OffsetMeters =null;
+    private Paint Painter;
 
     public ShowWaypoints(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
+        BackendService = (DataManager) DataManager.getBackend();
+        BackendService.setUpdateViewCallback(this);
+        Painter = new Paint();
+        Painter.setStrokeWidth(5f);
     }
 
-    public void setScaleFactor(float ScaleFactor) {
-        this.ScaleFactor = ScaleFactor;
-        postInvalidate();
+    @Override
+    public void updateInView(ArrayList<WayPoint> ExtractedWayPoints) {
+        this.WaypointsInView = ExtractedWayPoints;
+        invalidate();
+    }
+
+    @Override
+    public void updateInUse(ArrayList<WayPoint> ExtractedWayPoints) {
+        this.WaypointsInUse = ExtractedWayPoints;
+        invalidate();
+    }
+
+    @Override
+    public void updateOffset(PointF OffsetMeters) {
+        this.OffsetMeters = OffsetMeters;
     }
 
     @Override
@@ -28,9 +53,29 @@ public class ShowWaypoints extends ImageView implements CallbackUpdateView {
         this.setMeasuredDimension(Width, Height);
     }
 
+    private float PixelsFromMeters(float Meters, float Offset) {
+        return (Meters * MetersToPixels) + Offset;
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
 
+        // Drawing all points from Storage
+        for (WayPoint Marker :WaypointsInView ) {
+            Painter.setColor(Color.MAGENTA);
+            canvas.drawPoint(
+                    PixelsFromMeters(Marker.getX() - OffsetMeters.x, canvas.getWidth() /2f),
+                    PixelsFromMeters(Marker.getY() - OffsetMeters.y, canvas.getHeight() /2f),
+                    Painter);
+        }
+
+        Painter.setColor(Color.RED);
+        canvas.drawPoint(
+                PixelsFromMeters(OffsetMeters.x , canvas.getWidth() /2f),
+                PixelsFromMeters(OffsetMeters.y, canvas.getHeight() /2f),
+                Painter);
+
         super.onDraw(canvas);
     }
+
 }

@@ -1,13 +1,12 @@
 package com.dustofcloud.daytodayrace;
 
+import android.graphics.PointF;
 import android.location.Location;
 
-import java.util.AbstractList;
+import java.util.ArrayList;
 
-/**
- * Created by Xavier JAFFREZIC on 16/05/2016.
- */
 public interface CallbackUpdateView {
-    void updateInView(AbstractList<WayPoint> WayPointsInView);
-    void updateInUse(AbstractList<WayPoint> WayPointsInUse);
+    void updateInView(ArrayList<WayPoint> WayPointsInView);
+    void updateInUse(ArrayList<WayPoint> WayPointsInUse);
+    void updateOffset(PointF Offset);
 }

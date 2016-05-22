@@ -24,6 +24,10 @@ public class DataManager extends Application implements CallbackGPS{
     static Context BackendContext = null;
     static CallbackUpdateView NotifyClients = null;
 
+    public void setUpdateViewCallback (CallbackUpdateView UpdateViewClient){
+        NotifyClients = UpdateViewClient;
+    }
+
     @Override
     public void onCreate()
     {

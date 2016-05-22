@@ -9,8 +9,11 @@ import android.widget.ImageView;
 
 public class ViewWaypoints extends FrameLayout {
 
+
     public ViewWaypoints(Context context) {
         super(context);
+
+
      }
 
 
