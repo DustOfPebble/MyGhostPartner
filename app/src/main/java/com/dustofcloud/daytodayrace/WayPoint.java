@@ -2,7 +2,6 @@ package com.dustofcloud.daytodayrace;
 
 import android.graphics.PointF;
 import android.location.Location;
-
 import java.io.Serializable;
 
 /**

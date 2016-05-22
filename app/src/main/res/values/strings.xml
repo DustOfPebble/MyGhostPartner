@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DayToDayRace</string>
+    <string name="title_activity_dock_views">DockViews</string>
 </resources>

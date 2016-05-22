@@ -10,22 +10,30 @@ import java.util.ArrayList;
  * Created by Xavier JAFFREZIC on 15/05/2016.
  */
 public class QuadTree extends RectF {
-    private float halfSize;
     private boolean isStorage=false;
-
+    private RectF SubZone = null;
     private ArrayList<WayPoint> WayPoints = null;
     private QuadTree TopLeft = null;
     private QuadTree TopRight = null;
     private QuadTree BottomLeft = null;
     private QuadTree BottomRight = null;
 
-    private final int minSize = 100; // Minimun size is 100 meters square..
+    private final int minWidth = 100; //  100 meters width..
+    private final int minHeight = 100; // 100 meters height..
 
-    public QuadTree(RectF area) {
-        super(area);
-        if (this.width() > minSize) isStorage=true;
-        if (this.width() <= minSize) WayPoints = new ArrayList<>();
-        this.halfSize = this.width() /2 ;
+    public QuadTree(RectF Zone) {
+        super(Zone);
+
+        if ((Zone.width() < minWidth) || (Zone.height() < minHeight)) {
+            SubZone= new RectF(
+                    Zone.centerX() - Zone.width() /2,
+                    Zone.centerY() - Zone.height() / 2,
+                    Zone.centerX() + Zone.width() / 2,
+                    Zone.centerY() + Zone.height() / 2) ;
+        } else {
+            isStorage = true;
+            WayPoints = new ArrayList<>();
+        }
     }
 
     public ArrayList<WayPoint> searchWayPoints(RectF SearchArea) {
@@ -48,10 +56,10 @@ public class QuadTree extends RectF {
 
     public void storeWayPoint(WayPoint wayPoint) {
         // Should we store this new point ?
-        if (wayPoint.getX() < this.centerX() - halfSize) return;
-        if (wayPoint.getX() > this.centerX() + halfSize) return;
-        if (wayPoint.getY() < this.centerY() - halfSize) return;
-        if (wayPoint.getY() > this.centerY() + halfSize) return;
+        if (wayPoint.getX() < this.centerX() - SubZone.width() ) return;
+        if (wayPoint.getX() > this.centerX() + SubZone.width() ) return;
+        if (wayPoint.getY() < this.centerY() - SubZone.height() ) return;
+        if (wayPoint.getY() > this.centerY() + SubZone.height() ) return;
 
         if (isStorage) {
             WayPoints.add(wayPoint);
@@ -61,10 +69,10 @@ public class QuadTree extends RectF {
         if ((wayPoint.getX()< this.centerX()) && (wayPoint.getY()< this.centerY())) {
             if (TopLeft == null) {
                 TopLeft = new QuadTree(
-                        new RectF(this.centerX() - halfSize,
-                                this.centerY() - halfSize,
-                                this.centerX(),
-                                this.centerY()
+                        new RectF(  this.centerX() - SubZone.width(),
+                                    this.centerY() - SubZone.height(),
+                                    this.centerX(),
+                                    this.centerY()
                             )
                         );
             }
@@ -74,12 +82,11 @@ public class QuadTree extends RectF {
         if ((wayPoint.getX()> this.centerX()) && (wayPoint.getY()< this.centerY())) {
             if (TopRight == null) {
                 TopRight = new QuadTree(
-                        new RectF(this.centerX() ,
-                                this.centerY() - halfSize,
-                                this.centerX() + halfSize,
-                                this.centerY()
-                        )
-                );
+                        new RectF(  this.centerX(),
+                                    this.centerY() - SubZone.height(),
+                                    this.centerX() + SubZone.width(),
+                                    this.centerY() )
+                            );
             }
             TopRight.storeWayPoint(wayPoint);
         }
@@ -87,12 +94,11 @@ public class QuadTree extends RectF {
         if ((wayPoint.getX()< this.centerX()) && (wayPoint.getY() > this.centerY())) {
             if (BottomLeft == null) {
                 BottomLeft = new QuadTree(
-                        new RectF(this.centerX() - halfSize,
-                                this.centerY() ,
-                                this.centerX(),
-                                this.centerY() + halfSize
-                        )
-                );
+                        new RectF(  this.centerX() - SubZone.width(),
+                                    this.centerY(),
+                                    this.centerX(),
+                                    this.centerY() + SubZone.height() )
+                            );
             }
             BottomLeft.storeWayPoint(wayPoint);
         }
@@ -100,17 +106,14 @@ public class QuadTree extends RectF {
         if ((wayPoint.getX()> this.centerX()) && (wayPoint.getY() > this.centerY())) {
             if (BottomRight == null) {
                 BottomRight = new QuadTree(
-                        new RectF(this.centerX() ,
-                                this.centerY() ,
-                                this.centerX() + halfSize,
-                                this.centerY() + halfSize
-                        )
-                );
+                        new RectF(  this.centerX(),
+                                    this.centerY(),
+                                    this.centerX() + SubZone.width(),
+                                    this.centerY() + SubZone.height() )
+                            );
             }
             BottomRight.storeWayPoint(wayPoint);
         }
     }
-
-
 
 }

@@ -1,5 +1,6 @@
 package com.dustofcloud.daytodayrace;
 
+import android.app.IntentService;
 import android.content.Context;
 import android.app.Service;
 import android.content.Intent;
@@ -15,7 +16,7 @@ import android.util.Log;
 /**
  * Created by Xavier JAFFREZIC on 15/05/2016.
  */
-public class GPS extends Service implements LocationListener {
+public class GPS extends IntentService implements LocationListener {
 
     // The minimum distance to change Updates in meters
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // 10 meters
@@ -27,14 +28,19 @@ public class GPS extends Service implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager sourcesGPS;
 
-    public GPS(Context context, CallbackGPS listener) {
-        sourcesGPS = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
+    @Override
+    protected void onHandleIntent(Intent intent) {
         // Use this object as handler on location update
         sourcesGPS.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,
                 this);
+    }
+
+    public GPS(Context context, CallbackGPS listener) {
+        super("GPS-Provider");
+        sourcesGPS = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         this.notify = listener;
     }
 
@@ -56,11 +62,5 @@ public class GPS extends Service implements LocationListener {
 
     @Override
     public void onProviderEnabled(String provider) {
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 }
