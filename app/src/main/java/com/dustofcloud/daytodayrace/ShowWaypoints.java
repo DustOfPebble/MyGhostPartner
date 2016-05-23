@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class ShowWaypoints extends ImageView implements CallbackEventsDataManager {
+public class ShowWaypoints extends ImageView implements EventsDataManager {
 
     private float MetersToPixels = 0.1f; //(10 cm / pixels ) ==> 100 pixels = 10 metres
     private DataManager BackendService = null;

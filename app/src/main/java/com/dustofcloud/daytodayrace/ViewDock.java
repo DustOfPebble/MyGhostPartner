@@ -5,7 +5,7 @@ import android.app.Application;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
-public class DockViews extends Activity {
+public class ViewDock extends Activity {
     Application backendServices = null;
 
     @Override

@@ -1,9 +1,9 @@
 package com.dustofcloud.daytodayrace;
 
 public class FileReader {
-    CallbackEventsFileReader Notify = null;
+    EventsFileReader Notify = null;
 
-    public FileReader(int DaysBackLimit, CallbackEventsFileReader LoaderClient ) {
+    public FileReader(int DaysBackLimit, EventsFileReader LoaderClient ) {
         Notify = LoaderClient;
 
     }

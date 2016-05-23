@@ -19,7 +19,7 @@ public class GPS extends IntentService implements LocationListener {
     // The minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000; // 1 seconde
 
-    private CallbackEventsGPS notify;
+    private EventsGPS NotifyClient;
     // Declaring a Location Manager
     protected LocationManager sourcesGPS;
 
@@ -32,17 +32,17 @@ public class GPS extends IntentService implements LocationListener {
                 this);
     }
 
-    public GPS(Context context, CallbackEventsGPS listener) {
+    public GPS(Context context, EventsGPS Client) {
         super("GPS-Provider");
         sourcesGPS = (LocationManager) context.getSystemService(LOCATION_SERVICE);
-        this.notify = listener;
+        this.NotifyClient = Client;
     }
 
     @Override
     public void onLocationChanged(Location update) {
         if (update == null) return;
         Log.d("[Debug]", "(" + update.getLongitude() + "°N," + update.getLatitude() + "°E)");
-        this.notify.updatedPosition(update);
+        this.NotifyClient.updatedPosition(update);
     }
 
     @Override

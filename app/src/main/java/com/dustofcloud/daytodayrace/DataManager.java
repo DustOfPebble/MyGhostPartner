@@ -7,7 +7,7 @@ import android.graphics.RectF;
 import android.location.Location;
 
 
-public class DataManager extends Application implements CallbackEventsGPS {
+public class DataManager extends Application implements EventsGPS {
     static RectF StorageArea = new RectF(4800f,4800f,-4800f,-4800f); // StorageArea is a rectangle of 9,6 km in both direction (Power of 2 x 100)
     static final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     static float earthRadiusCorrected = earthRadius; // Value at Equator to Zero at Pole
@@ -21,9 +21,9 @@ public class DataManager extends Application implements CallbackEventsGPS {
 
     // Specific to manage Callback to clients
     static Context BackendContext = null;
-    static CallbackEventsDataManager NotifyClients = null;
+    static EventsDataManager NotifyClients = null;
 
-    public void setUpdateViewCallback (CallbackEventsDataManager UpdateViewClient){
+    public void setUpdateViewCallback (EventsDataManager UpdateViewClient){
         NotifyClients = UpdateViewClient;
     }
 
@@ -57,21 +57,21 @@ public class DataManager extends Application implements CallbackEventsGPS {
     }
 
     @Override
-    public void updatedPosition(Location updatedPosition) {
-        if (updatedPosition == null) return;
+    public void updatedPosition(Location update) {
+        if (update == null) return;
         if ( !originSet ) {
-            originLatitude = updatedPosition.getLatitude();
-            originLongitude = updatedPosition.getLongitude();
+            originLatitude = update.getLatitude();
+            originLongitude = update.getLongitude();
             earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
 
             WayPoints = new QuadTree(StorageArea); // Create QuadTree storage area for all waypoints
         }
 
-        WayPoint  Update = new WayPoint(updatedPosition);
+        WayPoint  updateWaypoint = new WayPoint(update);
 
-        WayPoints.storeWayPoint(Update);
-        DataStorage.WriteWaypoint(Update);
+        WayPoints.storeWayPoint(updateWaypoint);
+        DataStorage.WriteWaypoint(updateWaypoint);
 
-        NotifyClients.updateOffset(Update.getCartesian());
+        NotifyClients.updateOffset(updateWaypoint.getCartesian());
     }
 }

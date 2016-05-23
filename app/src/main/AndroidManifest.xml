@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DockViews"
+            android:name=".ViewDock"
             android:label="@string/title_activity_dock_views" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
