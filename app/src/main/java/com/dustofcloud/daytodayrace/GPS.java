@@ -13,9 +13,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-/**
- * Created by Xavier JAFFREZIC on 15/05/2016.
- */
 public class GPS extends IntentService implements LocationListener {
 
     // The minimum distance to change Updates in meters
@@ -27,7 +24,6 @@ public class GPS extends IntentService implements LocationListener {
     private CallbackGPS notify;
     // Declaring a Location Manager
     protected LocationManager sourcesGPS;
-
 
     @Override
     protected void onHandleIntent(Intent intent) {

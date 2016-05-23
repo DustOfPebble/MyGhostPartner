@@ -6,9 +6,7 @@ import android.content.Intent;
 import android.graphics.RectF;
 import android.location.Location;
 
-/**
- * Created by Xavier JAFFREZIC on 16/05/2016.
- */
+
 public class DataManager extends Application implements CallbackGPS{
     QuadTree WayPoints = null;
     static RectF StorageArea = new RectF(4800f,4800f,-4800f,-4800f); // StorageArea is a rectangle of 9,6 km in both direction (Power of 2 x 100)
