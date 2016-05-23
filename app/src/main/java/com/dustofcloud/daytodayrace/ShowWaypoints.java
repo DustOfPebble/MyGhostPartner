@@ -5,7 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.SizeF;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 public class ShowWaypoints extends ImageView implements EventsDataManager {
 
     private float MetersToPixels = 0.1f; //(10 cm / pixels ) ==> 100 pixels = 10 metres
+    private PointF SizeInUse = new PointF(10f,10f); // In Use area is 10 meters square
     private DataManager BackendService = null;
     private ArrayList<WayPoint> WaypointsInView=null;
     private ArrayList<WayPoint> WaypointsInUse=null;
@@ -29,20 +32,32 @@ public class ShowWaypoints extends ImageView implements EventsDataManager {
     }
 
     @Override
-    public void updateInView(ArrayList<WayPoint> ExtractedWayPoints) {
-        this.WaypointsInView = ExtractedWayPoints;
-        invalidate();
-    }
-
-    @Override
-    public void updateInUse(ArrayList<WayPoint> ExtractedWayPoints) {
-        this.WaypointsInUse = ExtractedWayPoints;
-        invalidate();
-    }
-
-    @Override
     public void updateOffset(PointF OffsetMeters) {
+        if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         this.OffsetMeters = OffsetMeters;
+        PointF Size = new PointF(
+                    this.getWidth() / MetersToPixels,
+                    this.getHeight() /MetersToPixels
+                );
+
+        WaypointsInView = BackendService.getInView(
+                new RectF(
+                        this.OffsetMeters.x - Size.x/2,
+                        this.OffsetMeters.y - Size.y/2,
+                        this.OffsetMeters.x + Size.x/2,
+                        this.OffsetMeters.y + Size.y/2
+                        )
+        );
+
+        WaypointsInUse = BackendService.getInUse(
+                new RectF(
+                        this.OffsetMeters.x - SizeInUse.x / 2,
+                        this.OffsetMeters.y - SizeInUse.y / 2,
+                        this.OffsetMeters.x + SizeInUse.x / 2,
+                        this.OffsetMeters.y + SizeInUse.y / 2
+                )
+        );
+                invalidate();
     }
 
     @Override
@@ -61,10 +76,21 @@ public class ShowWaypoints extends ImageView implements EventsDataManager {
     protected void onDraw(Canvas canvas) {
 
         PointF Cartesian = null;
+
         // Drawing all points from Storage
+        Painter.setColor(Color.MAGENTA);
         for (WayPoint Marker :WaypointsInView ) {
             Cartesian = Marker.getCartesian();
-            Painter.setColor(Color.MAGENTA);
+            canvas.drawPoint(
+                    PixelsFromMeters(Cartesian.x - OffsetMeters.x, canvas.getWidth() /2f),
+                    PixelsFromMeters(Cartesian.y - OffsetMeters.y, canvas.getHeight() /2f),
+                    Painter);
+        }
+
+        // Drawing all points from Storage
+        Painter.setColor(Color.GREEN);
+        for (WayPoint Marker :WaypointsInUse ) {
+            Cartesian = Marker.getCartesian();
             canvas.drawPoint(
                     PixelsFromMeters(Cartesian.x - OffsetMeters.x, canvas.getWidth() /2f),
                     PixelsFromMeters(Cartesian.y - OffsetMeters.y, canvas.getHeight() /2f),

@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.RectF;
 import android.location.Location;
 
+import java.util.ArrayList;
+
 
 public class DataManager extends Application implements EventsGPS {
     static RectF StorageArea = new RectF(4800f,4800f,-4800f,-4800f); // StorageArea is a rectangle of 9,6 km in both direction (Power of 2 x 100)
@@ -16,15 +18,18 @@ public class DataManager extends Application implements EventsGPS {
     boolean originSet=false;
 
     QuadTree WayPoints = null;
-    FileWriter DataStorage = null;
-    GPS positionEmitter;
+    FileWriter FileStorage = null;
+    GPS positionEmitter=null;
+    FileWriter WriteToFile=null;
+    FileReader ReadFromFile=null;
+    FileManager FilesHandler=null;
 
     // Specific to manage Callback to clients
     static Context BackendContext = null;
-    static EventsDataManager NotifyClients = null;
+    static EventsDataManager NotifyClient = null;
 
     public void setUpdateViewCallback (EventsDataManager UpdateViewClient){
-        NotifyClients = UpdateViewClient;
+        NotifyClient = UpdateViewClient;
     }
 
     @Override
@@ -56,6 +61,14 @@ public class DataManager extends Application implements EventsGPS {
         return BackendContext;
     }
 
+    public ArrayList<WayPoint> getInView(RectF ViewArea){
+        return WayPoints.searchWayPoints(ViewArea);
+    }
+
+    public ArrayList<WayPoint> getInUse(RectF UseArea){
+        return WayPoints.searchWayPoints(UseArea);
+    }
+
     @Override
     public void updatedPosition(Location update) {
         if (update == null) return;
@@ -70,8 +83,8 @@ public class DataManager extends Application implements EventsGPS {
         WayPoint  updateWaypoint = new WayPoint(update);
 
         WayPoints.storeWayPoint(updateWaypoint);
-        DataStorage.WriteWaypoint(updateWaypoint);
+        FileStorage.WriteWaypoint(updateWaypoint);
 
-        NotifyClients.updateOffset(updateWaypoint.getCartesian());
+        NotifyClient.updateOffset(updateWaypoint.getCartesian());
     }
 }

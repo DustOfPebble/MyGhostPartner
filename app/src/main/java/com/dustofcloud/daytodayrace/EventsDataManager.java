@@ -6,7 +6,5 @@ import android.location.Location;
 import java.util.ArrayList;
 
 public interface EventsDataManager {
-    void updateInView(ArrayList<WayPoint> WayPointsInView);
-    void updateInUse(ArrayList<WayPoint> WayPointsInUse);
     void updateOffset(PointF Offset);
 }

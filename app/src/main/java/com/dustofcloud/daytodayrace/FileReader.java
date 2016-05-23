@@ -4,12 +4,12 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
 public class FileReader implements Runnable {
-    EventsFileReader Notify = null;
+    EventsFileReader NotifyClient = null;
+    FileManager FilesHandler= null;
 
-    public FileReader(int DaysBackLimit, EventsFileReader LoaderClient ) {
-        Notify = LoaderClient;
-        FileInputStream fis = context.openFileInput(REGION_FILENAME);
-        ObjectInputStream is = new ObjectInputStream(fis);
+    public FileReader(FileManager FilesHandler, EventsFileReader Suscriber ) {
+        this.NotifyClient = Suscriber;
+        this.FilesHandler =  FilesHandler;
     }
 
     @Override
@@ -17,11 +17,16 @@ public class FileReader implements Runnable {
         // Moves the current Thread into the background
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
+        String Filename = FilesHandler.getTodayFile();
+        FileInputStream fis = context.openFileInput(Filename);
+        ObjectInputStream is = new ObjectInputStream(fis);
+
+
         Object readObject = is.readObject();
         is.close();
 
         if (readObject != null && readObject instanceof WayPoint) {
-            Notify.WaypointLoaded((WayPoint) readObject);
+            NotifyClient.WaypointLoaded((WayPoint) readObject);
 
         }
     }
