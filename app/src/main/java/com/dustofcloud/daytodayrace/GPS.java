@@ -2,14 +2,12 @@ package com.dustofcloud.daytodayrace;
 
 import android.app.IntentService;
 import android.content.Context;
-import android.app.Service;
 import android.content.Intent;
 
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -21,7 +19,7 @@ public class GPS extends IntentService implements LocationListener {
     // The minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000; // 1 seconde
 
-    private CallbackGPS notify;
+    private CallbackEventsGPS notify;
     // Declaring a Location Manager
     protected LocationManager sourcesGPS;
 
@@ -34,7 +32,7 @@ public class GPS extends IntentService implements LocationListener {
                 this);
     }
 
-    public GPS(Context context, CallbackGPS listener) {
+    public GPS(Context context, CallbackEventsGPS listener) {
         super("GPS-Provider");
         sourcesGPS = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         this.notify = listener;

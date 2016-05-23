@@ -2,6 +2,6 @@ package com.dustofcloud.daytodayrace;
 
 import android.location.Location;
 
-public interface CallbackGPS {
+public interface CallbackEventsGPS {
     void updatedPosition(Location updatedPosition);
 }

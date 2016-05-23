@@ -7,8 +7,7 @@ import android.graphics.RectF;
 import android.location.Location;
 
 
-public class DataManager extends Application implements CallbackGPS{
-    QuadTree WayPoints = null;
+public class DataManager extends Application implements CallbackEventsGPS {
     static RectF StorageArea = new RectF(4800f,4800f,-4800f,-4800f); // StorageArea is a rectangle of 9,6 km in both direction (Power of 2 x 100)
     static final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     static float earthRadiusCorrected = earthRadius; // Value at Equator to Zero at Pole
@@ -16,13 +15,15 @@ public class DataManager extends Application implements CallbackGPS{
     static double originLatitude = 0f;
     boolean originSet=false;
 
+    QuadTree WayPoints = null;
+    FileWriter DataStorage = null;
     GPS positionEmitter;
 
     // Specific to manage Callback to clients
     static Context BackendContext = null;
-    static CallbackUpdateView NotifyClients = null;
+    static CallbackEventsDataManager NotifyClients = null;
 
-    public void setUpdateViewCallback (CallbackUpdateView UpdateViewClient){
+    public void setUpdateViewCallback (CallbackEventsDataManager UpdateViewClient){
         NotifyClients = UpdateViewClient;
     }
 
@@ -65,6 +66,12 @@ public class DataManager extends Application implements CallbackGPS{
 
             WayPoints = new QuadTree(StorageArea); // Create QuadTree storage area for all waypoints
         }
-        WayPoints.storeWayPoint(new WayPoint(updatedPosition));
+
+        WayPoint  Update = new WayPoint(updatedPosition);
+
+        WayPoints.storeWayPoint(Update);
+        DataStorage.WriteWaypoint(Update);
+
+        NotifyClients.updateOffset(Update.getCartesian());
     }
 }

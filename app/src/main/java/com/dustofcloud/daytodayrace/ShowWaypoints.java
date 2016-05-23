@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class ShowWaypoints extends ImageView implements CallbackUpdateView {
+public class ShowWaypoints extends ImageView implements CallbackEventsDataManager {
 
     private float MetersToPixels = 0.1f; //(10 cm / pixels ) ==> 100 pixels = 10 metres
     private DataManager BackendService = null;
@@ -60,12 +60,14 @@ public class ShowWaypoints extends ImageView implements CallbackUpdateView {
     @Override
     protected void onDraw(Canvas canvas) {
 
+        PointF Cartesian = null;
         // Drawing all points from Storage
         for (WayPoint Marker :WaypointsInView ) {
+            Cartesian = Marker.getCartesian();
             Painter.setColor(Color.MAGENTA);
             canvas.drawPoint(
-                    PixelsFromMeters(Marker.getX() - OffsetMeters.x, canvas.getWidth() /2f),
-                    PixelsFromMeters(Marker.getY() - OffsetMeters.y, canvas.getHeight() /2f),
+                    PixelsFromMeters(Cartesian.x - OffsetMeters.x, canvas.getWidth() /2f),
+                    PixelsFromMeters(Cartesian.y - OffsetMeters.y, canvas.getHeight() /2f),
                     Painter);
         }
 
