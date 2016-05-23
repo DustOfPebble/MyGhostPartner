@@ -8,7 +8,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 public class GPS extends IntentService implements LocationListener {
