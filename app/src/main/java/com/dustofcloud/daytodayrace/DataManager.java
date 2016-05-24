@@ -91,10 +91,11 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             WayPoints = new QuadTree(StorageArea); // Create QuadTree storage area for all waypoints
         }
 
-        WayPoint  updateWaypoint = new WayPoint(update);
+        WayPoint updateWaypoint = new WayPoint(update);
         WayPoints.storeWayPoint(updateWaypoint);
         WriteToFile.writeWaypoint(updateWaypoint);
 
+        if (NotifyClient == null ) return;
         NotifyClient.updateOffset(updateWaypoint.getCartesian());
     }
 
