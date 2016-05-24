@@ -35,17 +35,18 @@ public class FileManager {
         File Files[] =  Directory.listFiles();
         Collection = new ArrayList<>();
         for (File Item : Files ) {
+            Log.d("FileManage", "DailyDB file => " + Item.getPath() );
             if (!Item.getPath().endsWith(Signature)) continue;
             if (!Item.canRead()) continue;
-            Collection.add(Item);
             if (Item.getPath().endsWith(TodayFilename)) TodayDB = Item;
+            Collection.add(Item);
         }
 
         // Create Daily database if not exist
         if (TodayDB == null) {
-            TodayDB = new File(Directory.getPath()+TodayFilename);
+            TodayDB = new File(Directory.getPath(),TodayFilename);
             try { TodayDB.createNewFile();}
-            catch (Exception FileErrors) { Log.d("FileManager","Can't create "+TodayDB.getPath()); }
+            catch (Exception FileErrors) { Log.d("FileManager","Can't create " + TodayDB.getPath()); }
         }
     }
 

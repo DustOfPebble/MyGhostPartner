@@ -12,13 +12,13 @@ public class FileWriter {
         FileOutputStream Stream = FilesHandler.getWriteStream();
 
         try { StreamObjects = new ObjectOutputStream(Stream); }
-        catch ( Exception StreamErrors ) { Log.d("FileReader","Can't create Object stream fro writing ..."); }
+        catch ( Exception StreamErrors ) { Log.d("FileReader","Can't create Object stream for writing ..."); }
     }
 
     public void writeWaypoint(WayPoint WaypointToWrite) {
         if (StreamObjects == null) return;
         try { StreamObjects.writeObject(WaypointToWrite); }
-        catch ( Exception WriteErrors ) { Log.d("FileReader","Can't write Object  ..."); }
+        catch ( Exception WriteErrors ) { Log.d("FileWriter","Can't write Object  ..."); }
     }
 }
 

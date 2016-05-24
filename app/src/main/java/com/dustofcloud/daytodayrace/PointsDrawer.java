@@ -7,12 +7,13 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SizeF;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class ShowWaypoints extends ImageView implements EventsDataManager {
+public class PointsDrawer extends ImageView implements EventsDataManager {
 
     private float MetersToPixels = 0.1f; //(10 cm / pixels ) ==> 100 pixels = 10 metres
     private PointF SizeInUse = new PointF(10f,10f); // In Use area is 10 meters square
@@ -22,13 +23,18 @@ public class ShowWaypoints extends ImageView implements EventsDataManager {
     private PointF OffsetMeters =null;
     private Paint Painter;
 
-    public ShowWaypoints(Context context, AttributeSet attrs) {
+    public PointsDrawer(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
+        Log.d("ShowWayPoints", "Constructor called");
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setUpdateViewCallback(this);
         Painter = new Paint();
         Painter.setStrokeWidth(5f);
+
+        WaypointsInView = new ArrayList<>();
+        WaypointsInUse = new ArrayList<>();
+
     }
 
     @Override
@@ -97,12 +103,13 @@ public class ShowWaypoints extends ImageView implements EventsDataManager {
                     Painter);
         }
 
-        Painter.setColor(Color.RED);
-        canvas.drawPoint(
-                PixelsFromMeters(OffsetMeters.x , canvas.getWidth() /2f),
-                PixelsFromMeters(OffsetMeters.y, canvas.getHeight() /2f),
-                Painter);
-
+        if (OffsetMeters !=null) {
+            Painter.setColor(Color.RED);
+            canvas.drawPoint(
+                    PixelsFromMeters(OffsetMeters.x, canvas.getWidth() / 2f),
+                    PixelsFromMeters(OffsetMeters.y, canvas.getHeight() / 2f),
+                    Painter);
+        }
         super.onDraw(canvas);
     }
 

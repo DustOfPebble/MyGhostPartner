@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
-public class ViewDock extends Activity {
+public class Docking extends Activity {
+
+    private PointsDrawer PointsViewer = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dock_views);
+        PointsViewer = (PointsDrawer) findViewById(R.id.show_waypoints);
     }
 
 }
