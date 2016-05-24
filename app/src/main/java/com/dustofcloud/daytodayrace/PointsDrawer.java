@@ -7,8 +7,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.util.SizeF;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -26,7 +24,6 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
     public PointsDrawer(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
-        Log.d("ShowWayPoints", "Constructor called");
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setUpdateViewCallback(this);
         Painter = new Paint();
@@ -34,7 +31,6 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
 
         WaypointsInView = new ArrayList<>();
         WaypointsInUse = new ArrayList<>();
-
     }
 
     @Override

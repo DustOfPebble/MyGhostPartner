@@ -95,7 +95,6 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         WayPoints.storeWayPoint(updateWaypoint);
         WriteToFile.writeWaypoint(updateWaypoint);
 
-        if (NotifyClient == null ) return;
         NotifyClient.updateOffset(updateWaypoint.getCartesian());
     }
 
@@ -106,15 +105,11 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
+    public void onStatusChanged(String provider, int status, Bundle extras) { }
 
     @Override
-    public void onProviderDisabled(String provider) {
-    }
+    public void onProviderDisabled(String provider) { }
 
     @Override
-    public void onProviderEnabled(String provider) {
-    }
+    public void onProviderEnabled(String provider) { }
 }

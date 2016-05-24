@@ -17,8 +17,7 @@ public class FileManager {
 
     public FileManager(Context context) {
         // Check access to Directory storage
-        File Directory = context.getDir("Databases", Context.MODE_PRIVATE);
-        if (!Directory.exists()) Directory.mkdir();
+        File Directory = context.getFilesDir();
 
         // Calculate today database file
         Calendar Today = Calendar.getInstance();
