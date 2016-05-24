@@ -33,20 +33,11 @@ public class FileReader implements Runnable {
                 boolean ContinueLoopObjects = true;
                 while(ContinueLoopObjects) {
                     Object StoredItem = null;
-                    try {
-                        StoredItem = StreamObjects.readObject();
-                    } catch (Exception ObjectRead) {
-                        Log.d("FileReader", "Can't read Object ...");
-                    }
+                    try { StoredItem = StreamObjects.readObject();}
+                    catch (Exception ObjectRead) {Log.d("FileReader", "Can't read Object ...");}
 
-                    if (StoredItem == null) {
-                        ContinueLoopObjects = false;
-                        break;
-                    } // Go to Next Stream
-                    if (!(StoredItem instanceof WayPoint)) {
-                        ContinueLoopObjects = false;
-                        break;
-                    } // Go to Next Stream
+                    if (StoredItem == null) { ContinueLoopObjects = false; break; } // Go to Next Stream
+                    if (!(StoredItem instanceof WayPoint)) {ContinueLoopObjects = false; break; } // Go to Next Stream
 
                     NotifyClient.WaypointLoaded((WayPoint) StoredItem);
                 }
@@ -54,9 +45,8 @@ public class FileReader implements Runnable {
                 try {
                     StreamObjects.close();
                     Stream.close();
-                } catch (Exception CloseStream) {
-                   Log.d("FileReader", "Failed on Stream close ...");
                 }
+                catch (Exception CloseStream) {Log.d("FileReader", "Failed on Stream close ...");}
 
         }
     }

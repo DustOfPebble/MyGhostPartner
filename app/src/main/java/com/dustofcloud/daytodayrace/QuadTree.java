@@ -56,17 +56,18 @@ public class QuadTree extends RectF {
 
     public void storeWayPoint(WayPoint wayPoint) {
         // Should we store this new point ?
-        if (wayPoint.getX() < this.centerX() - SubZone.width() ) return;
-        if (wayPoint.getX() > this.centerX() + SubZone.width() ) return;
-        if (wayPoint.getY() < this.centerY() - SubZone.height() ) return;
-        if (wayPoint.getY() > this.centerY() + SubZone.height() ) return;
+        PointF Cartesian = wayPoint.getCartesian();
+        if (Cartesian.x < this.centerX() - SubZone.width() ) return;
+        if (Cartesian.x > this.centerX() + SubZone.width() ) return;
+        if (Cartesian.y < this.centerY() - SubZone.height() ) return;
+        if (Cartesian.y > this.centerY() + SubZone.height() ) return;
 
         if (isStorage) {
             WayPoints.add(wayPoint);
             return;
         }
 
-        if ((wayPoint.getX()< this.centerX()) && (wayPoint.getY()< this.centerY())) {
+        if ((Cartesian.x< this.centerX()) && (Cartesian.y< this.centerY())) {
             if (TopLeft == null) {
                 TopLeft = new QuadTree(
                         new RectF(  this.centerX() - SubZone.width(),
@@ -79,7 +80,7 @@ public class QuadTree extends RectF {
             TopLeft.storeWayPoint(wayPoint);
         }
 
-        if ((wayPoint.getX()> this.centerX()) && (wayPoint.getY()< this.centerY())) {
+        if ((Cartesian.x> this.centerX()) && (Cartesian.y< this.centerY())) {
             if (TopRight == null) {
                 TopRight = new QuadTree(
                         new RectF(  this.centerX(),
@@ -91,7 +92,7 @@ public class QuadTree extends RectF {
             TopRight.storeWayPoint(wayPoint);
         }
 
-        if ((wayPoint.getX()< this.centerX()) && (wayPoint.getY() > this.centerY())) {
+        if ((Cartesian.x< this.centerX()) && (Cartesian.y > this.centerY())) {
             if (BottomLeft == null) {
                 BottomLeft = new QuadTree(
                         new RectF(  this.centerX() - SubZone.width(),
@@ -103,7 +104,7 @@ public class QuadTree extends RectF {
             BottomLeft.storeWayPoint(wayPoint);
         }
 
-        if ((wayPoint.getX()> this.centerX()) && (wayPoint.getY() > this.centerY())) {
+        if ((Cartesian.x> this.centerX()) && (Cartesian.y > this.centerY())) {
             if (BottomRight == null) {
                 BottomRight = new QuadTree(
                         new RectF(  this.centerX(),
