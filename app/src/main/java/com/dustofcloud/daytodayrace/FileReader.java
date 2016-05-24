@@ -39,7 +39,7 @@ public class FileReader implements Runnable {
                     if (StoredItem == null) { ContinueLoopObjects = false; break; } // Go to Next Stream
                     if (!(StoredItem instanceof WayPoint)) {ContinueLoopObjects = false; break; } // Go to Next Stream
 
-                    NotifyClient.WaypointLoaded((WayPoint) StoredItem);
+                    NotifyClient.onLoadedPoint((WayPoint) StoredItem);
                 }
 
                 try {

@@ -100,7 +100,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     }
 
     @Override
-    public void WaypointLoaded(WayPoint Loaded) {
+    public void onLoadedPoint(WayPoint Loaded) {
         if (Loaded == null) return;
         WayPoints.storeWayPoint(Loaded);
     }
