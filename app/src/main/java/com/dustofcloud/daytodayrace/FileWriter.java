@@ -18,7 +18,10 @@ public class FileWriter {
     public void writeWaypoint(WayPoint WaypointToWrite) {
         if (StreamObjects == null) return;
         try { StreamObjects.writeObject(WaypointToWrite); }
-        catch ( Exception WriteErrors ) { Log.d("FileWriter","Can't write Object  ..."); }
+        catch ( Exception WriteErrors ) {
+            WriteErrors.printStackTrace();
+            Log.d("FileWriter","Can't write Object  ...");
+        }
     }
 }
 
