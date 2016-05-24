@@ -1,5 +1,7 @@
 package com.dustofcloud.daytodayrace;
 
+import android.util.Log;
+
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 
@@ -17,16 +19,44 @@ public class FileReader implements Runnable {
         // Moves the current Thread into the background
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-        String Filename = FilesHandler.getTodayFile();
-        FileInputStream fis = context.openFileInput(Filename);
-        ObjectInputStream is = new ObjectInputStream(fis);
+        boolean ContinueLoopStream = true;
+        while (ContinueLoopStream) {
+                FileInputStream Stream = FilesHandler.getNextStream();
+                if (Stream == null) { ContinueLoopStream = false; break;} // All streams have been processed
 
+                ObjectInputStream StreamObjects = null;
+                try { StreamObjects = new ObjectInputStream(Stream); }
+                catch ( Exception ObjectInput ) { Log.d("FileReader","Can't create Object stream ..."); }
 
-        Object readObject = is.readObject();
-        is.close();
+                if (StreamObjects == null) break; // Go to next stream
 
-        if (readObject != null && readObject instanceof WayPoint) {
-            NotifyClient.WaypointLoaded((WayPoint) readObject);
+                boolean ContinueLoopObjects = true;
+                while(ContinueLoopObjects) {
+                    Object StoredItem = null;
+                    try {
+                        StoredItem = StreamObjects.readObject();
+                    } catch (Exception ObjectRead) {
+                        Log.d("FileReader", "Can't read Object ...");
+                    }
+
+                    if (StoredItem == null) {
+                        ContinueLoopObjects = false;
+                        break;
+                    } // Go to Next Stream
+                    if (!(StoredItem instanceof WayPoint)) {
+                        ContinueLoopObjects = false;
+                        break;
+                    } // Go to Next Stream
+
+                    NotifyClient.WaypointLoaded((WayPoint) StoredItem);
+                }
+
+                try {
+                    StreamObjects.close();
+                    Stream.close();
+                } catch (Exception CloseStream) {
+                   Log.d("FileReader", "Failed on Stream close ...");
+                }
 
         }
     }

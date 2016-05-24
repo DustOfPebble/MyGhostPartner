@@ -83,7 +83,7 @@ public class DataManager extends Application implements EventsGPS {
         WayPoint  updateWaypoint = new WayPoint(update);
 
         WayPoints.storeWayPoint(updateWaypoint);
-        FileStorage.WriteWaypoint(updateWaypoint);
+        FileStorage.writeWaypoint(updateWaypoint);
 
         NotifyClient.updateOffset(updateWaypoint.getCartesian());
     }
