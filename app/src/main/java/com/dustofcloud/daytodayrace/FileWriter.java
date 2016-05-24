@@ -11,8 +11,8 @@ public class FileWriter {
     public FileWriter(FileManager FilesHandler) {
         FileOutputStream Stream = FilesHandler.getWriteStream();
 
-        try { StreamObjects = new ObjectOutputStream(Stream); } catch ( Exception StreamErrors ) { Log.d("FileReader","Can't create Object stream fro writing ..."); }
-
+        try { StreamObjects = new ObjectOutputStream(Stream); }
+        catch ( Exception StreamErrors ) { Log.d("FileReader","Can't create Object stream fro writing ..."); }
     }
 
     public void writeWaypoint(WayPoint WaypointToWrite) {

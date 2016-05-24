@@ -16,7 +16,7 @@ public class ShowWaypoints extends ImageView implements EventsDataManager {
 
     private float MetersToPixels = 0.1f; //(10 cm / pixels ) ==> 100 pixels = 10 metres
     private PointF SizeInUse = new PointF(10f,10f); // In Use area is 10 meters square
-    private DataManager BackendService = null;
+    private DataManager BackendService;
     private ArrayList<WayPoint> WaypointsInView=null;
     private ArrayList<WayPoint> WaypointsInUse=null;
     private PointF OffsetMeters =null;
