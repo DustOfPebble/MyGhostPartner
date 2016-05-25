@@ -93,7 +93,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         GeoData geoInfo = new GeoData();
         geoInfo.setGPS(update);
         WayPoints.storeWayPoint(geoInfo);
-        WriteToFile.writeWaypoint(geoInfo);
+        WriteToFile.writeGeoData(geoInfo);
 
         NotifyClient.updateOffset(geoInfo.getCartesian());
     }

@@ -1,27 +1,24 @@
 package com.dustofcloud.daytodayrace;
 
-import android.util.Log;
+import android.util.JsonWriter;
 
 import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class FileWriter {
-    ObjectOutputStream StreamObjects = null;
+    FileOutputStream Stream = null;
 
     public FileWriter(FileManager FilesHandler) {
-        FileOutputStream Stream = FilesHandler.getWriteStream();
-
-        try { StreamObjects = new ObjectOutputStream(Stream); }
-        catch ( Exception StreamErrors ) { Log.d("FileReader","Can't create Object stream for writing ..."); }
+        Stream = FilesHandler.getWriteStream();
     }
 
-    public void writeWaypoint(GeoData WaypointToWrite) {
-        if (StreamObjects == null) return;
-        try { StreamObjects.writeObject(WaypointToWrite); }
-        catch ( Exception WriteErrors ) {
-            WriteErrors.printStackTrace();
-            Log.d("FileWriter","Can't write Object  ...");
-        }
+    public void writeGeoData(GeoData geoInfo) throws IOException {
+        if (Stream == null) return;
+        JsonWriter Writer = new JsonWriter(new OutputStreamWriter(Stream, "UTF-8"));
+        Writer.setIndent("    ");
+        geoInfo.toJSON(Writer);
+        Writer.close();
     }
 }
 

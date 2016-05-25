@@ -1,8 +1,11 @@
 package com.dustofcloud.daytodayrace;
 
+import android.util.JsonReader;
 import android.util.Log;
 
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 
 public class FileReader implements Runnable {
@@ -12,6 +15,17 @@ public class FileReader implements Runnable {
     public FileReader(FileManager FilesHandler, EventsFileReader Suscriber ) {
         this.NotifyClient = Suscriber;
         this.FilesHandler =  FilesHandler;
+    }
+
+    private void ProcessStream(FileInputStream Stream) throws IOException {
+        JsonReader Reader = new JsonReader(new InputStreamReader(Stream, "UTF-8"));
+        GeoData geoInfo = new GeoData();
+        geoInfo.fromJSON(Reader);
+        while(geoInfo.isLoaded) {
+            NotifyClient.onLoadedPoint(geoInfo);
+            geoInfo = new GeoData();
+            geoInfo.fromJSON(Reader);
+        }
     }
 
     @Override
@@ -24,29 +38,8 @@ public class FileReader implements Runnable {
                 FileInputStream Stream = FilesHandler.getNextStream();
                 if (Stream == null) { ContinueLoopStream = false; break;} // All streams have been processed
 
-                ObjectInputStream StreamObjects = null;
-                try { StreamObjects = new ObjectInputStream(Stream); }
-                catch ( Exception ObjectInput ) { Log.d("FileReader","Can't create Object stream ..."); }
-
-                if (StreamObjects == null) break; // Go to next stream
-
-                boolean ContinueLoopObjects = true;
-                while(ContinueLoopObjects) {
-                    Object StoredItem = null;
-                    try { StoredItem = StreamObjects.readObject();}
-                    catch (Exception ObjectRead) {Log.d("FileReader", "Can't read Object ...");}
-
-                    if (StoredItem == null) { ContinueLoopObjects = false; break; } // Go to Next Stream
-                    if (!(StoredItem instanceof GeoData)) {ContinueLoopObjects = false; break; } // Go to Next Stream
-
-                    NotifyClient.onLoadedPoint((GeoData) StoredItem);
-                }
-
-                try {
-                    StreamObjects.close();
-                    Stream.close();
-                }
-                catch (Exception CloseStream) {Log.d("FileReader", "Failed on Stream close ...");}
+                try { ProcessStream(Stream); }
+                catch ( Exception ObjectInput ) { Log.d("FileReader","Failed to process input stream ..."); }
 
         }
     }
