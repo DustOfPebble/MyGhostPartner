@@ -2,7 +2,6 @@ package com.dustofcloud.daytodayrace;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.RectF;
 import android.location.Location;
 import android.location.LocationListener;
@@ -72,11 +71,11 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         return  earthRadius * (float) Math.toRadians(latitude-originLatitude);
     }
 
-    public ArrayList<WayPoint> getInView(RectF ViewArea){
+    public ArrayList<GeoData> getInView(RectF ViewArea){
         return WayPoints.searchWayPoints(ViewArea);
     }
 
-    public ArrayList<WayPoint> getInUse(RectF UseArea){
+    public ArrayList<GeoData> getInUse(RectF UseArea){
         return WayPoints.searchWayPoints(UseArea);
     }
 
@@ -91,15 +90,16 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             WayPoints = new QuadTree(StorageArea); // Create QuadTree storage area for all waypoints
         }
 
-        WayPoint updateWaypoint = new WayPoint(update);
-        WayPoints.storeWayPoint(updateWaypoint);
-        WriteToFile.writeWaypoint(updateWaypoint);
+        GeoData geoInfo = new GeoData();
+        geoInfo.setGPS(update);
+        WayPoints.storeWayPoint(geoInfo);
+        WriteToFile.writeWaypoint(geoInfo);
 
-        NotifyClient.updateOffset(updateWaypoint.getCartesian());
+        NotifyClient.updateOffset(geoInfo.getCartesian());
     }
 
     @Override
-    public void onLoadedPoint(WayPoint Loaded) {
+    public void onLoadedPoint(GeoData Loaded) {
         if (Loaded == null) return;
         WayPoints.storeWayPoint(Loaded);
     }

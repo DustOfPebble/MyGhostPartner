@@ -37,9 +37,9 @@ public class FileReader implements Runnable {
                     catch (Exception ObjectRead) {Log.d("FileReader", "Can't read Object ...");}
 
                     if (StoredItem == null) { ContinueLoopObjects = false; break; } // Go to Next Stream
-                    if (!(StoredItem instanceof WayPoint)) {ContinueLoopObjects = false; break; } // Go to Next Stream
+                    if (!(StoredItem instanceof GeoData)) {ContinueLoopObjects = false; break; } // Go to Next Stream
 
-                    NotifyClient.onLoadedPoint((WayPoint) StoredItem);
+                    NotifyClient.onLoadedPoint((GeoData) StoredItem);
                 }
 
                 try {

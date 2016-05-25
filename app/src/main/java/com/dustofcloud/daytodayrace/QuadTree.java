@@ -2,8 +2,6 @@ package com.dustofcloud.daytodayrace;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
-import com.dustofcloud.daytodayrace.WayPoint;
-
 import java.util.ArrayList;
 
 /**
@@ -12,7 +10,7 @@ import java.util.ArrayList;
 public class QuadTree extends RectF {
     private boolean isStorage=false;
     private RectF SubZone = null;
-    private ArrayList<WayPoint> WayPoints = null;
+    private ArrayList<GeoData> WayPoints = null;
     private QuadTree TopLeft = null;
     private QuadTree TopRight = null;
     private QuadTree BottomLeft = null;
@@ -36,10 +34,10 @@ public class QuadTree extends RectF {
         }
     }
 
-    public ArrayList<WayPoint> searchWayPoints(RectF SearchArea) {
+    public ArrayList<GeoData> searchWayPoints(RectF SearchArea) {
         if (isStorage) { return WayPoints; }
 
-        ArrayList<WayPoint> Collected = new ArrayList();
+        ArrayList<GeoData> Collected = new ArrayList();
 
         if (SearchArea.bottom < this.top ) return Collected;
         if (SearchArea.top > this.bottom ) return Collected;
@@ -54,16 +52,16 @@ public class QuadTree extends RectF {
         return Collected;
     }
 
-    public void storeWayPoint(WayPoint wayPoint) {
+    public void storeWayPoint(GeoData geoData) {
         // Should we store this new point ?
-        PointF Cartesian = wayPoint.getCartesian();
+        PointF Cartesian = geoData.getCartesian();
         if (Cartesian.x < this.centerX() - SubZone.width() ) return;
         if (Cartesian.x > this.centerX() + SubZone.width() ) return;
         if (Cartesian.y < this.centerY() - SubZone.height() ) return;
         if (Cartesian.y > this.centerY() + SubZone.height() ) return;
 
         if (isStorage) {
-            WayPoints.add(wayPoint);
+            WayPoints.add(geoData);
             return;
         }
 
@@ -77,7 +75,7 @@ public class QuadTree extends RectF {
                             )
                         );
             }
-            TopLeft.storeWayPoint(wayPoint);
+            TopLeft.storeWayPoint(geoData);
         }
 
         if ((Cartesian.x> this.centerX()) && (Cartesian.y< this.centerY())) {
@@ -89,7 +87,7 @@ public class QuadTree extends RectF {
                                     this.centerY() )
                             );
             }
-            TopRight.storeWayPoint(wayPoint);
+            TopRight.storeWayPoint(geoData);
         }
 
         if ((Cartesian.x< this.centerX()) && (Cartesian.y > this.centerY())) {
@@ -101,7 +99,7 @@ public class QuadTree extends RectF {
                                     this.centerY() + SubZone.height() )
                             );
             }
-            BottomLeft.storeWayPoint(wayPoint);
+            BottomLeft.storeWayPoint(geoData);
         }
 
         if ((Cartesian.x> this.centerX()) && (Cartesian.y > this.centerY())) {
@@ -113,7 +111,7 @@ public class QuadTree extends RectF {
                                     this.centerY() + SubZone.height() )
                             );
             }
-            BottomRight.storeWayPoint(wayPoint);
+            BottomRight.storeWayPoint(geoData);
         }
     }
 

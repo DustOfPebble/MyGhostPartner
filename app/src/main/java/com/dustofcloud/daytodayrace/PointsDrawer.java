@@ -16,8 +16,8 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
     private float MetersToPixels = 0.1f; //(10 cm / pixels ) ==> 100 pixels = 10 metres
     private PointF SizeInUse = new PointF(10f,10f); // In Use area is 10 meters square
     private DataManager BackendService;
-    private ArrayList<WayPoint> WaypointsInView=null;
-    private ArrayList<WayPoint> WaypointsInUse=null;
+    private ArrayList<GeoData> WaypointsInView=null;
+    private ArrayList<GeoData> WaypointsInUse=null;
     private PointF OffsetMeters =null;
     private Paint Painter;
 
@@ -81,7 +81,7 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
 
         // Drawing all points from Storage
         Painter.setColor(Color.MAGENTA);
-        for (WayPoint Marker :WaypointsInView ) {
+        for (GeoData Marker :WaypointsInView ) {
             Cartesian = Marker.getCartesian();
             canvas.drawPoint(
                     PixelsFromMeters(Cartesian.x - OffsetMeters.x, canvas.getWidth() /2f),
@@ -91,7 +91,7 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
 
         // Drawing all points from Storage
         Painter.setColor(Color.GREEN);
-        for (WayPoint Marker :WaypointsInUse ) {
+        for (GeoData Marker :WaypointsInUse ) {
             Cartesian = Marker.getCartesian();
             canvas.drawPoint(
                     PixelsFromMeters(Cartesian.x - OffsetMeters.x, canvas.getWidth() /2f),
