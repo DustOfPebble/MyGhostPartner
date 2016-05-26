@@ -61,10 +61,10 @@ public class GeoData {
     }
 
     public double getLongitude() {return Longitude;}
-    public double getLatitude() {return Longitude;}
-    public double getAltitude() {return Longitude;}
-    public double getSpeed() {return Longitude;}
-    public double getBearing() {return Longitude;}
+    public double getLatitude() {return Latitude;}
+    public double getAltitude() {return Altitude;}
+    public double getSpeed() {return Speed;}
+    public double getBearing() {return Bearing;}
 
     public void toJSON(JsonWriter Writer) throws IOException {
             Writer.beginObject();
@@ -89,7 +89,7 @@ public class GeoData {
             else Reader.skipValue();
             isLoaded = true;
             }
-        if (Ids > 2) isLoaded = true; // At least 2 fields have been setup
+        if (Ids >= 5) isLoaded = true; // At least 2 fields have been setup
         Reader.endObject();
     }
 
