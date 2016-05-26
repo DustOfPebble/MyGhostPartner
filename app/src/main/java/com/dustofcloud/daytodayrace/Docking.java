@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
 
+import com.dustfcloud.daytodayrace.R;
+
 public class Docking extends Activity {
 
     private PointsDrawer PointsViewer = null;
