@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Random;
 
 
 public class GeoData {
@@ -23,15 +24,15 @@ public class GeoData {
     private final String AltitudeID = "A";
     private final String BearingID = "B";
 
-    private double Longitude = 0;
-    private double Latitude = 0;
-    private double Altitude = 0;
-    private double Speed = 0;
+    Random Generator = new Random();
+    // Preload Data with fake values ...
+    private double Longitude = 2.0;
+    private double Latitude = 48.0;
+    private double Altitude = 100.;
+    private double Speed = 20.0;
     private double Bearing = 0;
 
-    public GeoData() {
-        isLoaded = false;
-    }
+    public GeoData() {isLoaded = false; }
 
     public void setGPS(Location GPS) {
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
@@ -46,6 +47,24 @@ public class GeoData {
         Altitude = GPS.getAltitude();
         isLoaded = true;
     }
+
+    private double getNoise(double Range) {
+        return ((double) (Generator.nextInt(1000) - 500)) / 1000.0 * Range;
+    }
+
+    public void fakeGPS() {
+        Longitude += getNoise(1.0);
+        Latitude += getNoise(1.0);
+        Altitude += getNoise(15.0);
+        Speed += getNoise(19.0);
+        Bearing += getNoise(179.0);
+    }
+
+    public double getLongitude() {return Longitude;}
+    public double getLatitude() {return Longitude;}
+    public double getAltitude() {return Longitude;}
+    public double getSpeed() {return Longitude;}
+    public double getBearing() {return Longitude;}
 
     public void toJSON(JsonWriter Writer) throws IOException {
             Writer.beginObject();
@@ -75,6 +94,5 @@ public class GeoData {
     }
 
     public PointF getCartesian() {return Cartesian;}
-
 
 }

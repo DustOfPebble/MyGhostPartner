@@ -24,6 +24,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     private static final long MIN_TIME_BW_UPDATES = 1000; // 1 seconde
 
 
+    EventsGPS TrigEvents= null;
     QuadTree WayPoints = null;
     FileWriter WriteToFile=null;
     FileReader ReadFromFile=null;
@@ -61,6 +62,9 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         FilesHandler = new FileManager(this);
         ReadFromFile = new FileReader(FilesHandler, this);
         WriteToFile = new FileWriter(FilesHandler);
+
+        TrigEvents = new EventsGPS(this);
+        TrigEvents.start();
      }
 
     static public float dX(double longitude) {
@@ -82,6 +86,12 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     @Override
     public void onLocationChanged(Location update) {
         if (update == null) return;
+        GeoData geoInfo = new GeoData();
+        geoInfo.setGPS(update);
+        processLocationChanged(geoInfo);
+    }
+    public void processLocationChanged(GeoData update) {
+        if (update == null) return;
         Log.d("[Debug]", "(" + update.getLongitude() + "°N," + update.getLatitude() + "°E)");
         if ( !originSet ) {
             originLatitude = update.getLatitude();
@@ -90,14 +100,12 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             WayPoints = new QuadTree(StorageArea); // Create QuadTree storage area for all waypoints
         }
 
-        GeoData geoInfo = new GeoData();
-        geoInfo.setGPS(update);
-        WayPoints.storeWayPoint(geoInfo);
+        WayPoints.storeWayPoint(update);
 
-        try { WriteToFile.writeGeoData(geoInfo); }
+        try { WriteToFile.writeGeoData(update); }
         catch ( Exception ObjectInput ) { Log.d("DataManager","Failed to write new GeoData ..."); }
 
-        NotifyClient.updateOffset(geoInfo.getCartesian());
+        NotifyClient.updateOffset(update.getCartesian());
     }
 
     @Override
