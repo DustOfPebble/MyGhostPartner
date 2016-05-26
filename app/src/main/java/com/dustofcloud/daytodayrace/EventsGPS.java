@@ -1,8 +1,5 @@
 package com.dustofcloud.daytodayrace;
 
-
-import android.location.LocationListener;
-
 import android.os.Handler;
 
 public class EventsGPS {

@@ -58,6 +58,10 @@ public class GeoData {
         Altitude += getNoise(15.0);
         Speed += getNoise(19.0);
         Bearing += getNoise(179.0);
+        Cartesian = new PointF(
+                DataManager.dX(Longitude),
+                DataManager.dY(Latitude)
+        );
     }
 
     public double getLongitude() {return Longitude;}
