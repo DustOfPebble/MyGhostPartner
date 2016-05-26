@@ -29,8 +29,8 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
         Painter = new Paint();
         Painter.setStrokeWidth(5f);
 
-        WaypointsInView = new ArrayList<>();
-        WaypointsInUse = new ArrayList<>();
+        WaypointsInView = new ArrayList();
+        WaypointsInUse = new ArrayList();
     }
 
     @Override

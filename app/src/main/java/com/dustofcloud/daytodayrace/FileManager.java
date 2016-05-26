@@ -32,7 +32,7 @@ public class FileManager {
 
         // Collect all database from storage directory
         File Files[] =  Directory.listFiles();
-        Collection = new ArrayList<>();
+        Collection = new ArrayList();
         for (File Item : Files ) {
             Log.d("FileManage", "DailyDB file => " + Item.getPath() );
             if (!Item.getPath().endsWith(Signature)) continue;

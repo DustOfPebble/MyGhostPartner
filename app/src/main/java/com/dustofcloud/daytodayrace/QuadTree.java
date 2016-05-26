@@ -31,7 +31,7 @@ public class QuadTree extends RectF {
                     Zone.centerY() + Zone.height() / 2) ;
         } else {
             isStorage = true;
-            WayPoints = new ArrayList<>();
+            WayPoints = new ArrayList();
         }
     }
 
