@@ -1,6 +1,7 @@
 package com.dustofcloud.daytodayrace;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -44,10 +45,10 @@ public class QuadTree extends RectF {
         if (SearchArea.left > this.right ) return Collected;
         if (SearchArea.right < this.left ) return Collected;
 
-        Collected.addAll(TopLeft.searchWayPoints(SearchArea));
-        Collected.addAll(TopRight.searchWayPoints(SearchArea));
-        Collected.addAll(BottomLeft.searchWayPoints(SearchArea));
-        Collected.addAll(BottomRight.searchWayPoints(SearchArea));
+        if (TopLeft != null) Collected.addAll(TopLeft.searchWayPoints(SearchArea));
+        if (TopRight != null) Collected.addAll(TopRight.searchWayPoints(SearchArea));
+        if (BottomLeft != null) Collected.addAll(BottomLeft.searchWayPoints(SearchArea));
+        if (BottomRight != null) Collected.addAll(BottomRight.searchWayPoints(SearchArea));
 
         return Collected;
     }
@@ -62,6 +63,7 @@ public class QuadTree extends RectF {
 
         if (isStorage) {
             WayPoints.add(geoData);
+            Log.d("QuadTree","Stored cartesian["+ Cartesian.x+","+Cartesian.y+"]");
             return;
         }
 
