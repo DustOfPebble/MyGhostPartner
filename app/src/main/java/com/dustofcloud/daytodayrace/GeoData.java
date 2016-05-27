@@ -53,8 +53,8 @@ public class GeoData {
     }
 
     public void fakeGPS() {
-        Longitude += getNoise(0.01);
-        Latitude += getNoise(0.01);
+        Longitude += getNoise(0.03);
+        Latitude += getNoise(0.03);
         Altitude += getNoise(15.0);
         Speed += getNoise(19.0);
         Bearing += getNoise(179.0);
@@ -66,9 +66,6 @@ public class GeoData {
 
     public double getLongitude() {return Longitude;}
     public double getLatitude() {return Latitude;}
-    public double getAltitude() {return Altitude;}
-    public double getSpeed() {return Speed;}
-    public double getBearing() {return Bearing;}
 
     public void toJSON(JsonWriter Writer) throws IOException {
             Writer.beginObject();
@@ -91,10 +88,13 @@ public class GeoData {
             else if (name.equals(SpeedID)) { Speed = Reader.nextDouble(); Ids++;}
             else if (name.equals(BearingID)) { Bearing = Reader.nextDouble(); Ids++;}
             else Reader.skipValue();
-            isLoaded = true;
-            }
-        if (Ids >= 5) isLoaded = true; // At least 2 fields have been setup
+        }
         Reader.endObject();
+        if (Ids >= 5) isLoaded = true; // At least 2 fields have been setup
+        Cartesian = new PointF(
+                DataManager.dX(Longitude),
+                DataManager.dY(Latitude)
+        );
     }
 
     public PointF getCartesian() {return Cartesian;}

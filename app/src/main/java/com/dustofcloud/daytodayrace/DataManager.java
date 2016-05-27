@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 
 public class DataManager extends Application implements  EventsFileReader, LocationListener {
-    static RectF StorageArea = new RectF(4800f,4800f,-4800f,-4800f); // StorageArea is a rectangle of 9,6 km in both direction (Power of 2 x 100)
+    static RectF GeoArea = new RectF(4800f,4800f,-4800f,-4800f); // Rectangle of 9,6 km in both direction (Power of 2 x 100)
     static final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     static float earthRadiusCorrected = earthRadius; // Value at Equator to Zero at Pole
     static double originLongitude = 0f;
@@ -25,7 +25,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
 
 
     EventsGPS TrigEvents= null;
-    QuadTree WayPoints = null;
+    QuadTree GeoStorage = null;
     FileWriter WriteToFile=null;
     FileReader ReadFromFile=null;
     FileManager FilesHandler=null;
@@ -65,7 +65,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         WriteToFile = new FileWriter(FilesHandler);
 
         TrigEvents = new EventsGPS(this);
-        TrigEvents.start();
+ //       TrigEvents.start();
      }
 
     @Override
@@ -90,11 +90,11 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     }
 
     public ArrayList<GeoData> getInView(RectF ViewArea){
-        return WayPoints.searchWayPoints(ViewArea);
+        return GeoStorage.searchWayPoints(ViewArea);
     }
 
     public ArrayList<GeoData> getInUse(RectF UseArea){
-        return WayPoints.searchWayPoints(UseArea);
+        return GeoStorage.searchWayPoints(UseArea);
     }
 
     @Override
@@ -108,16 +108,17 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         if (update == null) return;
         Log.d("DataManager", "GPS notification ==> [" + update.getLongitude() + "°N," + update.getLatitude() + "°E]");
         if ( !originSet ) {
+            originSet = true;
             originLatitude = update.getLatitude();
             originLongitude = update.getLongitude();
             earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
-            WayPoints = new QuadTree(StorageArea); // Create QuadTree storage area for all waypoints
+            GeoStorage = new QuadTree(GeoArea); // Create QuadTree storage area
 
             //if (!ReadFromFile.isAlive()) ReadFromFile.startReading();
             ReadFromFile.run();
         }
 
-        WayPoints.storeWayPoint(update);
+        GeoStorage.storeWayPoint(update);
 
         try { WriteToFile.writeGeoData(update); }
         catch ( Exception writerError ) {
@@ -131,7 +132,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     @Override
     public void onLoadedPoint(GeoData Loaded) {
         if (Loaded == null) return;
-        WayPoints.storeWayPoint(Loaded);
+        GeoStorage.storeWayPoint(Loaded);
     }
 
     @Override

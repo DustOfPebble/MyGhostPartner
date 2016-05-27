@@ -17,7 +17,7 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
     private float MetersToPixels = 0.1f; //(10 cm / pixels ) ==> 100 pixels = 10 metres
     private PointF SizeInUse = new PointF(10f,10f); // In Use area is 10 meters square
     private DataManager BackendService;
-    private ArrayList<GeoData> WaypointsInView=null;
+    private ArrayList<GeoData> GeoInView =null;
     private ArrayList<GeoData> WaypointsInUse=null;
     private PointF OffsetMeters =null;
     private Paint Painter;
@@ -28,9 +28,9 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setUpdateViewCallback(this);
         Painter = new Paint();
-        Painter.setStrokeWidth(5f);
+        Painter.setStrokeWidth(30f);
 
-        WaypointsInView = new ArrayList();
+        GeoInView = new ArrayList();
         WaypointsInUse = new ArrayList();
     }
 
@@ -40,10 +40,10 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
         this.OffsetMeters = OffsetMeters;
         PointF Size = new PointF(
                     this.getWidth() / MetersToPixels,
-                    this.getHeight() /MetersToPixels
+                    this.getHeight() / MetersToPixels
                 );
 
-        WaypointsInView = BackendService.getInView(
+        GeoInView = BackendService.getInView(
                 new RectF(
                         this.OffsetMeters.x - Size.x/2,
                         this.OffsetMeters.y - Size.y/2,
@@ -80,10 +80,10 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
 
         PointF Cartesian = null;
 
-        Log.d("PointsDrawer", "Drawing "+WaypointsInView.size()+ " points in view");
+        Log.d("PointsDrawer", "Drawing "+ GeoInView.size()+ " points in view");
         // Drawing all points from Storage
         Painter.setColor(Color.MAGENTA);
-        for (GeoData Marker :WaypointsInView ) {
+        for (GeoData Marker : GeoInView) {
             Cartesian = Marker.getCartesian();
             canvas.drawPoint(
                     PixelsFromMeters(Cartesian.x - OffsetMeters.x, canvas.getWidth() /2f),

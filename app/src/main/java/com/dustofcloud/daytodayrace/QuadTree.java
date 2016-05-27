@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class QuadTree extends RectF {
     private boolean isStorage=false;
     private RectF SubZone = null;
-    private ArrayList<GeoData> WayPoints = null;
+    private ArrayList<GeoData> Storage = null;
     private QuadTree TopLeft = null;
     private QuadTree TopRight = null;
     private QuadTree BottomLeft = null;
@@ -23,20 +23,21 @@ public class QuadTree extends RectF {
     public QuadTree(RectF Zone) {
         super(Zone);
 
-        if ((Zone.width() < minWidth) || (Zone.height() < minHeight)) {
+        if ((Zone.width() > minWidth) && (Zone.height() > minHeight)) {
             SubZone= new RectF(
-                    Zone.centerX() - Zone.width() /2,
-                    Zone.centerY() - Zone.height() / 2,
-                    Zone.centerX() + Zone.width() / 2,
-                    Zone.centerY() + Zone.height() / 2) ;
+                    Zone.centerX() - (Zone.width() /2),
+                    Zone.centerY() - (Zone.height() / 2),
+                    Zone.centerX() + (Zone.width() / 2),
+                    Zone.centerY() + (Zone.height() / 2)
+            );
         } else {
             isStorage = true;
-            WayPoints = new ArrayList();
+            Storage = new ArrayList<GeoData>();
         }
     }
 
     public ArrayList<GeoData> searchWayPoints(RectF SearchArea) {
-        if (isStorage) { return WayPoints; }
+        if (isStorage) { return Storage; }
 
         ArrayList<GeoData> Collected = new ArrayList();
 
@@ -56,16 +57,22 @@ public class QuadTree extends RectF {
     public void storeWayPoint(GeoData geoData) {
         // Should we store this new point ?
         PointF Cartesian = geoData.getCartesian();
-        if (Cartesian.x < this.centerX() - SubZone.width() ) return;
-        if (Cartesian.x > this.centerX() + SubZone.width() ) return;
-        if (Cartesian.y < this.centerY() - SubZone.height() ) return;
-        if (Cartesian.y > this.centerY() + SubZone.height() ) return;
-
         if (isStorage) {
-            WayPoints.add(geoData);
+            Storage.add(geoData);
             Log.d("QuadTree","Stored cartesian["+ Cartesian.x+","+Cartesian.y+"]");
             return;
         }
+
+        Log.d("QuadTree","Center is ["+ this.centerX()+","+this.centerY()+"]");
+
+        Log.d("QuadTree","Trying to catch["+ Cartesian.x+","+Cartesian.y+"] " +
+                "in [("+(this.centerX() - SubZone.width())+","+(this.centerY() - SubZone.height())+")-"+
+                "("+(this.centerX() + SubZone.width())+","+(this.centerY() + SubZone.height())+")]");
+
+        if (Cartesian.x < (this.centerX() - SubZone.width()) ) return;
+        if (Cartesian.x > (this.centerX() + SubZone.width()) ) return;
+        if (Cartesian.y < (this.centerY() - SubZone.height()) ) return;
+        if (Cartesian.y > (this.centerY() + SubZone.height()) ) return;
 
         if ((Cartesian.x< this.centerX()) && (Cartesian.y< this.centerY())) {
             if (TopLeft == null) {
@@ -77,6 +84,7 @@ public class QuadTree extends RectF {
                             )
                         );
             }
+            Log.d("QuadTree","TopLeft QuadTree["+ this.centerX()+","+this.centerY()+"] has catched the point");
             TopLeft.storeWayPoint(geoData);
         }
 
@@ -89,6 +97,7 @@ public class QuadTree extends RectF {
                                     this.centerY() )
                             );
             }
+            Log.d("QuadTree","TopRight QuadTree["+ this.centerX()+","+this.centerY()+"] has catched the point");
             TopRight.storeWayPoint(geoData);
         }
 
@@ -101,6 +110,7 @@ public class QuadTree extends RectF {
                                     this.centerY() + SubZone.height() )
                             );
             }
+            Log.d("QuadTree","BottomLeft QuadTree["+ this.centerX()+","+this.centerY()+"] has catched the point");
             BottomLeft.storeWayPoint(geoData);
         }
 
@@ -113,6 +123,7 @@ public class QuadTree extends RectF {
                                     this.centerY() + SubZone.height() )
                             );
             }
+            Log.d("QuadTree","BottomRight QuadTree["+ this.centerX()+","+this.centerY()+"] has catched the point");
             BottomRight.storeWayPoint(geoData);
         }
     }
