@@ -53,8 +53,8 @@ public class GeoData {
     }
 
     public void fakeGPS() {
-        Longitude += getNoise(1.0);
-        Latitude += getNoise(1.0);
+        Longitude += getNoise(0.01);
+        Latitude += getNoise(0.01);
         Altitude += getNoise(15.0);
         Speed += getNoise(19.0);
         Bearing += getNoise(179.0);

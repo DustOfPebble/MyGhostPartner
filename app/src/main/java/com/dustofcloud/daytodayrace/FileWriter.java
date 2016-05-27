@@ -29,8 +29,9 @@ public class FileWriter {
         FileOutputStream Stream = FilesHandler.getWriteStream();
         if (Stream == null) return;
         JsonWriter Writer = new JsonWriter(new OutputStreamWriter(Stream, "UTF-8"));
-        Writer.setIndent("    ");
+        Writer.beginArray();
         for (GeoData geoInfo : geoDataBuffer) geoInfo.toJSON(Writer);
+        Writer.endArray();
         Writer.close();
         geoDataBuffer.clear();
     }

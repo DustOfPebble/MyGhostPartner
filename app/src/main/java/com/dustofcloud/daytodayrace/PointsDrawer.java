@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -79,6 +80,7 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
 
         PointF Cartesian = null;
 
+        Log.d("PointsDrawer", "Drawing "+WaypointsInView.size()+ " points in view");
         // Drawing all points from Storage
         Painter.setColor(Color.MAGENTA);
         for (GeoData Marker :WaypointsInView ) {
@@ -89,6 +91,7 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
                     Painter);
         }
 
+        Log.d("PointsDrawer", "Drawing "+WaypointsInUse.size()+ " points in use");
         // Drawing all points from Storage
         Painter.setColor(Color.GREEN);
         for (GeoData Marker :WaypointsInUse ) {
@@ -99,9 +102,10 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
                     Painter);
         }
 
-        if (OffsetMeters !=null) {
-            Painter.setColor(Color.RED);
-            canvas.drawPoint(
+         if (OffsetMeters !=null) {
+             Log.d("PointsDrawer", "Offset is ["+OffsetMeters.x+","+OffsetMeters.y+"]");
+             Painter.setColor(Color.RED);
+             canvas.drawPoint(
                     PixelsFromMeters(OffsetMeters.x, canvas.getWidth() / 2f),
                     PixelsFromMeters(OffsetMeters.y, canvas.getHeight() / 2f),
                     Painter);
