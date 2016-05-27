@@ -92,7 +92,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     }
     public void processLocationChanged(GeoData update) {
         if (update == null) return;
-        Log.d("[Debug]", "(" + update.getLongitude() + "°N," + update.getLatitude() + "°E)");
+        Log.d("DataManager", "GPS notification ==> [" + update.getLongitude() + "°N," + update.getLatitude() + "°E]");
         if ( !originSet ) {
             originLatitude = update.getLatitude();
             originLongitude = update.getLongitude();
