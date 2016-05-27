@@ -34,7 +34,7 @@ public class FileManager {
         File Files[] =  Directory.listFiles();
         Collection = new ArrayList();
         for (File Item : Files ) {
-            Log.d("FileManage", "DailyDB file => " + Item.getPath() );
+            Log.d("FileManager", "DailyDB file => " + Item.getPath() );
             if (!Item.getPath().endsWith(Signature)) continue;
             if (!Item.canRead()) continue;
             if (Item.getPath().endsWith(TodayFilename)) TodayDB = Item;

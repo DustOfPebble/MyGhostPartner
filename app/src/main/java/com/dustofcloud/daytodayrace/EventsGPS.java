@@ -16,6 +16,8 @@ public class EventsGPS {
         trigger.postDelayed(task, 1000);
     }
 
+    public void clear() { trigger.removeCallbacks(task); }
+
     public void sendGPS() {
         GeoData GPS = new GeoData();
         GPS.fakeGPS();

@@ -50,6 +50,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     public void onCreate()
     {
         super.onCreate();
+        Log.d("DataManager", "DataManager has been created...");
         BackendContext = this;
 
         SourceGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -66,6 +67,19 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         TrigEvents = new EventsGPS(this);
         TrigEvents.start();
      }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        Log.d("DataManager", "DataManager is terminating...");
+        TrigEvents.clear();
+        try { WriteToFile.flushBuffer(); }
+        catch ( Exception writerError ) {
+            Log.d("DataManager","Failed to flush stored GeoData ...");
+            writerError.printStackTrace();
+        }
+
+    }
 
     static public float dX(double longitude) {
         return earthRadiusCorrected * (float) Math.toRadians(longitude-originLongitude);
@@ -98,6 +112,9 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             originLongitude = update.getLongitude();
             earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
             WayPoints = new QuadTree(StorageArea); // Create QuadTree storage area for all waypoints
+
+            //if (!ReadFromFile.isAlive()) ReadFromFile.startReading();
+            ReadFromFile.run();
         }
 
         WayPoints.storeWayPoint(update);

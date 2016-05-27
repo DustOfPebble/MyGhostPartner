@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class FileWriter {
     FileManager FilesHandler = null;
-    private ArrayList geoDataBuffer = null;
+    private ArrayList<GeoData> geoDataBuffer = null;
     private int geoDataCount = 60; // Number of stored data between storage (every minute)
 
     public FileWriter(FileManager FilesHandler) {
@@ -21,14 +21,22 @@ public class FileWriter {
     public void writeGeoData(GeoData geoInfo) throws IOException {
         geoDataBuffer.add(geoInfo);
         if (geoDataBuffer.size() < geoDataCount) return;
+        flushBuffer();
+    }
+
+    public void flushBuffer() throws IOException {
         Log.d("FileWriter","Writing "+geoDataBuffer.size()+" GeoData elements of buffer." );
         FileOutputStream Stream = FilesHandler.getWriteStream();
         if (Stream == null) return;
         JsonWriter Writer = new JsonWriter(new OutputStreamWriter(Stream, "UTF-8"));
         Writer.setIndent("    ");
-        geoInfo.toJSON(Writer);
+        for (GeoData geoInfo : geoDataBuffer) geoInfo.toJSON(Writer);
         Writer.close();
         geoDataBuffer.clear();
     }
+
+
+
+
 }
 

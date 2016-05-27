@@ -8,13 +8,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 
-public class FileReader implements Runnable {
+public class FileReader extends Thread implements Runnable {
     EventsFileReader NotifyClient = null;
     FileManager FilesHandler= null;
 
     public FileReader(FileManager FilesHandler, EventsFileReader Suscriber ) {
         this.NotifyClient = Suscriber;
         this.FilesHandler =  FilesHandler;
+    }
+
+    public void startReading() {
+        this.start();
     }
 
     private void ProcessStream(FileInputStream Stream) throws IOException {
