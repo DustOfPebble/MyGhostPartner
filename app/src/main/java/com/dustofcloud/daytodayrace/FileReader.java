@@ -23,12 +23,12 @@ public class FileReader extends Thread implements Runnable {
 
     private void ProcessStream(FileInputStream Stream) throws IOException {
         JsonReader Reader = new JsonReader(new InputStreamReader(Stream, "UTF-8"));
-        GeoData geoInfo = new GeoData();
-        geoInfo.fromJSON(Reader);
-        while(geoInfo.isLoaded) {
-            NotifyClient.onLoadedPoint(geoInfo);
-            geoInfo = new GeoData();
+        Reader.beginArray();
+        while (Reader.hasNext())
+        {
+            GeoData geoInfo = new GeoData();
             geoInfo.fromJSON(Reader);
+            NotifyClient.onLoadedPoint(geoInfo);
         }
     }
 

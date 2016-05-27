@@ -13,7 +13,7 @@ public class FileManager {
     private final String Signature = ".DailyDB";
     ArrayList<File> Collection = null;
     private File TodayDB= null;
-    int LastFile = -1;
+    int LastFile = 0;
 
     public FileManager(Context context) {
         // Check access to Directory storage
@@ -34,10 +34,10 @@ public class FileManager {
         File Files[] =  Directory.listFiles();
         Collection = new ArrayList();
         for (File Item : Files ) {
-            Log.d("FileManager", "DailyDB file => " + Item.getPath() );
             if (!Item.getPath().endsWith(Signature)) continue;
             if (!Item.canRead()) continue;
             if (Item.getPath().endsWith(TodayFilename)) TodayDB = Item;
+            Log.d("FileManager", "Found DailyDB file => " + Item.getPath() );
             Collection.add(Item);
         }
 
@@ -59,9 +59,10 @@ public class FileManager {
     public FileInputStream getNextStream() {
         FileInputStream ReadStream = null;
         if (LastFile == Collection.size()) return ReadStream;
-        LastFile++;
+        Log.d("FileManager","Loading datas from " + Collection.get(LastFile).getPath());
         try { ReadStream = new FileInputStream(Collection.get(LastFile)); }
         catch (Exception StreamError) { Log.d("FileManager","Can't open stream "+TodayDB.getPath()+" for reading..."); }
+        LastFile++;
         return ReadStream;
     }
 

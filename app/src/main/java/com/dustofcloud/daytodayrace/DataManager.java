@@ -65,7 +65,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         WriteToFile = new FileWriter(FilesHandler);
 
         TrigEvents = new EventsGPS(this);
- //       TrigEvents.start();
+        TrigEvents.start();
      }
 
     @Override
