@@ -14,7 +14,8 @@ import java.util.ArrayList;
 
 public class PointsDrawer extends ImageView implements EventsDataManager {
 
-    private float MetersToPixels = 0.1f; //(10 cm / pixels ) ==> 100 pixels = 10 metres
+    private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
+    private PointF SizeInView = new PointF(1000f,1000f); // In Use area is 100 meters square
     private PointF SizeInUse = new PointF(10f,10f); // In Use area is 10 meters square
     private DataManager BackendService;
     private ArrayList<GeoData> GeoInView =null;
@@ -37,13 +38,11 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
     @Override
     public void updateOffset(PointF OffsetMeters) {
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
-        Log.d("PointsDrawer","Drawing area ["+this.getWidth()/MetersToPixels+
-                " m x "+this.getHeight()/MetersToPixels+" m]");
+        Log.d("PointsDrawer","Geographic Area ["+this.getWidth()/MetersToPixels.x+
+                " m x "+this.getHeight()/MetersToPixels.y+" m]");
+        Log.d("PointsDrawer","Image size ["+this.getWidth()+" px x "+this.getHeight()+" px]");
         this.OffsetMeters = OffsetMeters;
-        PointF Size = new PointF(
-                    this.getWidth() / MetersToPixels,
-                    this.getHeight() / MetersToPixels
-                );
+        PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
 
         GeoInView = BackendService.getInView(
                 new RectF(
@@ -71,26 +70,33 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
         int Width = MeasureSpec.getSize(widthMeasureSpec);
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
+        if ((Height == 0) || (Width == 0)) return;
+        int MinSize = Math.min(Height,Width);
+        MetersToPixels = new PointF((float)MinSize / SizeInView.x,(float)MinSize / SizeInView.y);
     }
 
-    private float PixelsFromMeters(float Meters, float Offset) {
-        return (Meters * MetersToPixels) + Offset;
+    private PointF PixelsFromMeters(PointF Meters, PointF Offset) {
+        return new PointF((Meters.x * MetersToPixels.x) + Offset.x,
+                (Meters.y * MetersToPixels.y) + Offset.y);
+    }
+
+    private PointF MetersFromOrigin(PointF Meters, PointF Origin) {
+        return new PointF(Meters.x - Origin.x, Meters.y - Origin.y);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-
         PointF Cartesian = null;
+        PointF Center = new PointF(canvas.getWidth() /2f, canvas.getHeight() /2f);
+        PointF GraphicPoint = null;
 
         Log.d("PointsDrawer", "Drawing "+ GeoInView.size()+ " points in view");
         // Drawing all points from Storage
         Painter.setColor(Color.MAGENTA);
         for (GeoData Marker : GeoInView) {
             Cartesian = Marker.getCartesian();
-            canvas.drawPoint(
-                    PixelsFromMeters(Cartesian.x - OffsetMeters.x, canvas.getWidth() /2f),
-                    PixelsFromMeters(Cartesian.y - OffsetMeters.y, canvas.getHeight() /2f),
-                    Painter);
+            GraphicPoint = PixelsFromMeters(MetersFromOrigin(Cartesian,OffsetMeters),Center);
+            canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
         }
 
         Log.d("PointsDrawer", "Drawing "+ GeoInUse.size()+ " points in use");
@@ -98,19 +104,15 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
         Painter.setColor(Color.GREEN);
         for (GeoData Marker : GeoInUse) {
             Cartesian = Marker.getCartesian();
-            canvas.drawPoint(
-                    PixelsFromMeters(Cartesian.x - OffsetMeters.x, canvas.getWidth() /2f),
-                    PixelsFromMeters(Cartesian.y - OffsetMeters.y, canvas.getHeight() /2f),
-                    Painter);
+            GraphicPoint = PixelsFromMeters(MetersFromOrigin(Cartesian,OffsetMeters),Center);
+            canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
         }
 
          if (OffsetMeters !=null) {
              Log.d("PointsDrawer", "Offset is ["+OffsetMeters.x+","+OffsetMeters.y+"]");
              Painter.setColor(Color.RED);
-             canvas.drawPoint(
-                    PixelsFromMeters(OffsetMeters.x, canvas.getWidth() / 2f),
-                    PixelsFromMeters(OffsetMeters.y, canvas.getHeight() / 2f),
-                    Painter);
+             GraphicPoint = PixelsFromMeters(new PointF(0f,0f),Center);
+             canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
         }
         super.onDraw(canvas);
     }
