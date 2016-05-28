@@ -13,7 +13,7 @@ public class EventsGPS {
     }
 
     public void start() {
-        trigger.postDelayed(task, 1000);
+        trigger.postDelayed(task, 200);
     }
 
     public void clear() { trigger.removeCallbacks(task); }

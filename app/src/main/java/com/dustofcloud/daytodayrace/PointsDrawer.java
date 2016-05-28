@@ -1,6 +1,7 @@
 package com.dustofcloud.daytodayrace;
 
 import android.content.Context;
+import android.database.MergeCursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -15,13 +16,14 @@ import java.util.ArrayList;
 public class PointsDrawer extends ImageView implements EventsDataManager {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
-    private PointF SizeInView = new PointF(1000f,1000f); // In Use area is 100 meters square
-    private PointF SizeInUse = new PointF(10f,10f); // In Use area is 10 meters square
+    private PointF SizeInView = new PointF(500f,500f); // In View area is 200 meters square
+    private PointF SizeInUse = new PointF(100f,100f); // In Use area is 10 meters square
     private DataManager BackendService;
     private ArrayList<GeoData> GeoInView =null;
     private ArrayList<GeoData> GeoInUse =null;
     private PointF OffsetMeters =null;
     private Paint Painter;
+    private PointF Center= new PointF(0f,0f);
 
     public PointsDrawer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -29,7 +31,7 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setUpdateViewCallback(this);
         Painter = new Paint();
-        Painter.setStrokeWidth(30f);
+        Painter.setStrokeWidth(10f);
 
         GeoInView = new ArrayList();
         GeoInUse = new ArrayList();
@@ -38,9 +40,9 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
     @Override
     public void updateOffset(PointF OffsetMeters) {
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
-        Log.d("PointsDrawer","Geographic Area ["+this.getWidth()/MetersToPixels.x+
-                " m x "+this.getHeight()/MetersToPixels.y+" m]");
+        Log.d("PointsDrawer","Geographic Area ["+this.getWidth()/MetersToPixels.x+" m x "+this.getHeight()/MetersToPixels.y+" m]");
         Log.d("PointsDrawer","Image size ["+this.getWidth()+" px x "+this.getHeight()+" px]");
+
         this.OffsetMeters = OffsetMeters;
         PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
 
@@ -72,12 +74,12 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
         this.setMeasuredDimension(Width, Height);
         if ((Height == 0) || (Width == 0)) return;
         int MinSize = Math.min(Height,Width);
-        MetersToPixels = new PointF((float)MinSize / SizeInView.x,(float)MinSize / SizeInView.y);
+        MetersToPixels.set((float)MinSize / SizeInView.x,(float)MinSize / SizeInView.y);
     }
 
     private PointF PixelsFromMeters(PointF Meters, PointF Offset) {
         return new PointF((Meters.x * MetersToPixels.x) + Offset.x,
-                (Meters.y * MetersToPixels.y) + Offset.y);
+                          (Meters.y * MetersToPixels.y) + Offset.y);
     }
 
     private PointF MetersFromOrigin(PointF Meters, PointF Origin) {
@@ -87,8 +89,9 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
     @Override
     protected void onDraw(Canvas canvas) {
         PointF Cartesian = null;
-        PointF Center = new PointF(canvas.getWidth() /2f, canvas.getHeight() /2f);
         PointF GraphicPoint = null;
+
+        Center.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
         Log.d("PointsDrawer", "Drawing "+ GeoInView.size()+ " points in view");
         // Drawing all points from Storage

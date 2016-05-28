@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Random;
 
-
 public class GeoData {
     private PointF Cartesian;
 
@@ -59,15 +58,12 @@ public class GeoData {
     }
 
     public void fakeGPS() {
-        Longitude += getNoise(0.03);
-        Latitude += getNoise(0.03);
+        Longitude += getNoise(0.005); // ~ 250 m (considering Latitude value)
+        Latitude += getNoise(0.005); // ~ 500 m
         Altitude += getNoise(15.0);
         Speed += getNoise(19.0);
         Bearing += getNoise(179.0);
-        Cartesian = new PointF(
-                DataManager.dX(Longitude),
-                DataManager.dY(Latitude)
-        );
+        Cartesian = new PointF(DataManager.dX(Longitude),DataManager.dY(Latitude));
     }
 
     public double getLongitude() {return Longitude;}
@@ -95,12 +91,8 @@ public class GeoData {
             else Reader.skipValue();
         }
         Reader.endObject();
-        Cartesian = new PointF(
-                DataManager.dX(Longitude),
-                DataManager.dY(Latitude)
-        );
+        Cartesian = new PointF(DataManager.dX(Longitude),DataManager.dY(Latitude));
     }
 
     public PointF getCartesian() {return Cartesian;}
-
 }

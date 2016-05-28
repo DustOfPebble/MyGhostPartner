@@ -17,14 +17,12 @@ public class QuadTree {
     private QuadTree TopRight = null;
     private QuadTree BottomLeft = null;
     private QuadTree BottomRight = null;
-
-    private final float minWidth = 100f; //  100 meters width..
-    private final float minHeight = 100f; // 100 meters height..
+    private PointF SizeCell = new PointF(2f,2f); // (2m x 2m) minimum size
 
     public QuadTree(RectF zone) {
         Zone = zone;
         Log.d("QuadTree","New Quadtree ["+Zone.width()+" x "+Zone.height()+"]");
-        if ((Zone.width() > minWidth) && (Zone.height() > minHeight)) {
+        if ((Zone.width() > SizeCell.x) && (Zone.height() > SizeCell.y)) {
             SubZone= new PointF(Zone.width() /2, Zone.height() / 2);
             isStorage = false;
         } else {
