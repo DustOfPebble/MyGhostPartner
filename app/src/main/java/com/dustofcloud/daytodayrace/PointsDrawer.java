@@ -18,7 +18,7 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
     private PointF SizeInUse = new PointF(10f,10f); // In Use area is 10 meters square
     private DataManager BackendService;
     private ArrayList<GeoData> GeoInView =null;
-    private ArrayList<GeoData> WaypointsInUse=null;
+    private ArrayList<GeoData> GeoInUse =null;
     private PointF OffsetMeters =null;
     private Paint Painter;
 
@@ -31,12 +31,14 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
         Painter.setStrokeWidth(30f);
 
         GeoInView = new ArrayList();
-        WaypointsInUse = new ArrayList();
+        GeoInUse = new ArrayList();
     }
 
     @Override
     public void updateOffset(PointF OffsetMeters) {
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
+        Log.d("PointsDrawer","Drawing area ["+this.getWidth()/MetersToPixels+
+                " m x "+this.getHeight()/MetersToPixels+" m]");
         this.OffsetMeters = OffsetMeters;
         PointF Size = new PointF(
                     this.getWidth() / MetersToPixels,
@@ -52,7 +54,7 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
                         )
         );
 
-        WaypointsInUse = BackendService.getInUse(
+        GeoInUse = BackendService.getInUse(
                 new RectF(
                         this.OffsetMeters.x - SizeInUse.x / 2,
                         this.OffsetMeters.y - SizeInUse.y / 2,
@@ -91,10 +93,10 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
                     Painter);
         }
 
-        Log.d("PointsDrawer", "Drawing "+WaypointsInUse.size()+ " points in use");
+        Log.d("PointsDrawer", "Drawing "+ GeoInUse.size()+ " points in use");
         // Drawing all points from Storage
         Painter.setColor(Color.GREEN);
-        for (GeoData Marker :WaypointsInUse ) {
+        for (GeoData Marker : GeoInUse) {
             Cartesian = Marker.getCartesian();
             canvas.drawPoint(
                     PixelsFromMeters(Cartesian.x - OffsetMeters.x, canvas.getWidth() /2f),

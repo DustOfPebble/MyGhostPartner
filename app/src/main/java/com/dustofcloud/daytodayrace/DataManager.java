@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 
 public class DataManager extends Application implements  EventsFileReader, LocationListener {
-    static RectF GeoArea = new RectF(4800f,4800f,-4800f,-4800f); // Rectangle of 9,6 km in both direction (Power of 2 x 100)
+    static RectF GeoArea = new RectF(-4800f,-4800f,4800f,4800f); // Rectangle of 9,6 km in both direction (Power of 2 x 100)
     static final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     static float earthRadiusCorrected = earthRadius; // Value at Equator to Zero at Pole
     static double originLongitude = 0f;
@@ -90,11 +90,11 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     }
 
     public ArrayList<GeoData> getInView(RectF ViewArea){
-        return GeoStorage.searchWayPoints(ViewArea);
+        return GeoStorage.search(ViewArea);
     }
 
     public ArrayList<GeoData> getInUse(RectF UseArea){
-        return GeoStorage.searchWayPoints(UseArea);
+        return GeoStorage.search(UseArea);
     }
 
     @Override
@@ -118,7 +118,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             ReadFromFile.run();
         }
 
-        GeoStorage.storeWayPoint(update);
+        GeoStorage.store(update);
 
         try { WriteToFile.writeGeoData(update); }
         catch ( Exception writerError ) {
@@ -132,7 +132,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     @Override
     public void onLoadedPoint(GeoData Loaded) {
         if (Loaded == null) return;
-        GeoStorage.storeWayPoint(Loaded);
+        GeoStorage.store(Loaded);
     }
 
     @Override

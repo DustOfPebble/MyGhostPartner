@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class FileWriter {
     FileManager FilesHandler = null;
     private ArrayList<GeoData> geoDataBuffer = null;
-    private int geoDataCount = 60; // Number of stored data between storage (every minute)
+    private int geoDataCount = 10; // Number of stored data between storage (every minute)
 
     public FileWriter(FileManager FilesHandler) {
         this.FilesHandler = FilesHandler;

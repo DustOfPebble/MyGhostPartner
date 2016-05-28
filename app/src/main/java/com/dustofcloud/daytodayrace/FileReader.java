@@ -29,7 +29,9 @@ public class FileReader extends Thread implements Runnable {
             GeoData geoInfo = new GeoData();
             geoInfo.fromJSON(Reader);
             NotifyClient.onLoadedPoint(geoInfo);
+            Log.d("FileReader","Loaded GeoData -> [Long:"+geoInfo.getLongitude()+"°E,Lat:"+geoInfo.getLatitude()+"°N]");
         }
+        Reader.endArray();
     }
 
     @Override

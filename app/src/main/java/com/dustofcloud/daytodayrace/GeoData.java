@@ -15,24 +15,31 @@ import java.util.Random;
 
 
 public class GeoData {
-    public boolean isLoaded;
     private PointF Cartesian;
 
-    private final String LongitudeID = "Lo";
-    private final String LatitudeID = "La";
-    private final String SpeedID = "S";
-    private final String AltitudeID = "A";
-    private final String BearingID = "B";
+    private final String LongitudeID = "Long";
+    private final String LatitudeID = "Lat";
+    private final String SpeedID = "Spd";
+    private final String AltitudeID = "Alt";
+    private final String BearingID = "Bear";
 
     Random Generator = new Random();
     // Preload Data with fake values ...
-    private double Longitude = 2.0;
-    private double Latitude = 48.0;
-    private double Altitude = 100.;
-    private double Speed = 20.0;
-    private double Bearing = 0;
+    private double Longitude = 0.0;
+    private double Latitude = 0.0;
+    private double Altitude = 0.0;
+    private double Speed = 0.0;
+    private double Bearing = 0.0;
 
-    public GeoData() {isLoaded = false; }
+    public GeoData() {
+        Random Generator = new Random();
+        // Preload Data with fake values ...
+        Longitude = 2.0;
+        Latitude = 48.0;
+        Altitude = 100.;
+        Speed = 20.0;
+        Bearing = 0;
+    }
 
     public void setGPS(Location GPS) {
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
@@ -45,7 +52,6 @@ public class GeoData {
         Bearing = GPS.getBearing();
         Speed = GPS.getSpeed();
         Altitude = GPS.getAltitude();
-        isLoaded = true;
     }
 
     private double getNoise(double Range) {
@@ -79,18 +85,16 @@ public class GeoData {
 
     public void fromJSON(JsonReader Reader) throws IOException{
         Reader.beginObject();
-        int Ids = 0;
         while (Reader.hasNext()) {
             String name = Reader.nextName();
-                 if (name.equals(LongitudeID)) { Longitude = Reader.nextDouble(); Ids++; }
-            else if (name.equals(LatitudeID)) { Latitude = Reader.nextDouble(); Ids++;}
-            else if (name.equals(AltitudeID)) { Latitude = Reader.nextDouble(); Ids++;}
-            else if (name.equals(SpeedID)) { Speed = Reader.nextDouble(); Ids++;}
-            else if (name.equals(BearingID)) { Bearing = Reader.nextDouble(); Ids++;}
+                 if (name.equals(LongitudeID)) { Longitude = Reader.nextDouble(); }
+            else if (name.equals(LatitudeID)) { Latitude = Reader.nextDouble(); }
+            else if (name.equals(AltitudeID)) { Latitude = Reader.nextDouble(); }
+            else if (name.equals(SpeedID)) { Speed = Reader.nextDouble(); }
+            else if (name.equals(BearingID)) { Bearing = Reader.nextDouble(); }
             else Reader.skipValue();
         }
         Reader.endObject();
-        if (Ids >= 5) isLoaded = true; // At least 2 fields have been setup
         Cartesian = new PointF(
                 DataManager.dX(Longitude),
                 DataManager.dY(Latitude)
