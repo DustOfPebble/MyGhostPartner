@@ -12,9 +12,14 @@ public class FileWriter {
     FileManager FilesHandler = null;
     private ArrayList<GeoData> geoDataBuffer = null;
     private int geoDataCount = 10; // Number of stored data between storage (every minute)
+    static private JsonWriter Writer = null;
+    static FileOutputStream Stream = null;
 
-    public FileWriter(FileManager FilesHandler) {
+    public FileWriter(FileManager FilesHandler) throws IOException{
         this.FilesHandler = FilesHandler;
+        Stream = FilesHandler.getWriteStream();
+        Writer = new JsonWriter(new OutputStreamWriter(Stream, "UTF-8"));
+        Writer.beginArray();
         geoDataBuffer = new ArrayList();
     }
 
@@ -25,15 +30,14 @@ public class FileWriter {
     }
 
     public void flushBuffer() throws IOException {
-        Log.d("FileWriter","Writing "+geoDataBuffer.size()+" GeoData elements of buffer." );
-        FileOutputStream Stream = FilesHandler.getWriteStream();
         if (Stream == null) return;
-        JsonWriter Writer = new JsonWriter(new OutputStreamWriter(Stream, "UTF-8"));
-        Writer.beginArray();
+        Log.d("FileWriter","Writing "+geoDataBuffer.size()+" GeoData elements of buffer." );
         for (GeoData geoInfo : geoDataBuffer) geoInfo.toJSON(Writer);
+        geoDataBuffer.clear();
+    }
+    public void finish() throws IOException {
         Writer.endArray();
         Writer.close();
-        geoDataBuffer.clear();
     }
 
 

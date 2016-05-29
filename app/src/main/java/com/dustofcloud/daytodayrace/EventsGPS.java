@@ -4,16 +4,17 @@ import android.os.Handler;
 
 public class EventsGPS {
 
-    DataManager Notify;
-    Handler trigger = new Handler();
-    Runnable task = new Runnable() { public void run() { sendGPS();} };
+    private DataManager Notify;
+    private Handler trigger = new Handler();
+    private Runnable task = new Runnable() { public void run() { sendGPS();} };
+    private int EventsDelay = 500;
 
     public EventsGPS(DataManager Parent) {
         Notify = Parent;
     }
 
     public void start() {
-        trigger.postDelayed(task, 200);
+        trigger.postDelayed(task, 100);
     }
 
     public void clear() { trigger.removeCallbacks(task); }
@@ -22,7 +23,7 @@ public class EventsGPS {
         GeoData GPS = new GeoData();
         GPS.fakeGPS();
         Notify.processLocationChanged(GPS);
-        trigger.postDelayed(task, 1000);
+        trigger.postDelayed(task, EventsDelay);
     }
 
 }

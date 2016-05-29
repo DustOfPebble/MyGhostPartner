@@ -32,9 +32,9 @@ public class GeoData {
 
     public GeoData() {
         Random Generator = new Random();
-        // Preload Data with fake values ...
-        Longitude = 2.0;
-        Latitude = 48.0;
+        // Preload Data with home values  [48.781687, 2.046504] ...
+        Longitude = 2.0465;
+        Latitude = 48.7816;
         Altitude = 100.;
         Speed = 20.0;
         Bearing = 0;
@@ -74,8 +74,8 @@ public class GeoData {
             Writer.name(LongitudeID).value(Longitude);
             Writer.name(LatitudeID).value(Latitude);
             Writer.name(AltitudeID).value(Altitude);
-            Writer.name(SpeedID).value(Speed);
-            Writer.name(BearingID).value(Bearing);
+            Writer.name(SpeedID).value(Speed); // Cut at 1 digit to save space
+            Writer.name(BearingID).value(Bearing); // Cut at 1 digit to save space
             Writer.endObject();
         }
 

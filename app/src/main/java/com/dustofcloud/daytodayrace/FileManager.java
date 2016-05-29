@@ -12,7 +12,7 @@ import java.util.Calendar;
 public class FileManager {
     private final String Signature = ".DailyDB";
     ArrayList<File> Collection = null;
-    private File TodayDB= null;
+    private File InUseDB = null;
     int LastFile = 0;
 
     public FileManager(Context context) {
@@ -24,11 +24,16 @@ public class FileManager {
         int Day = Today.get(Calendar.DAY_OF_MONTH);
         int Month = Today.get(Calendar.MONTH);
         int Year = Today.get(Calendar.YEAR);
+        int Hour = Today.get(Calendar.HOUR_OF_DAY);
+        int Minute = Today.get(Calendar.MINUTE);
 
-        String TodayFilename = String.valueOf(Year) + "-" +
-                               String.valueOf(Month) + "-" +
-                               String.valueOf(Day) +
-                               Signature;
+        String NowFilename = String.valueOf(Year) +
+                                String.format("%2s", String.valueOf(Month)).replace(' ', '0') +
+                                String.format("%2s", String.valueOf(Day)).replace(' ', '0') +
+                                "-"+
+                                String.format("%2s", String.valueOf(Hour)).replace(' ', '0') +
+                                String.format("%2s", String.valueOf(Minute)).replace(' ', '0') +
+                                Signature;
 
         // Collect all database from storage directory
         File Files[] =  Directory.listFiles();
@@ -36,23 +41,22 @@ public class FileManager {
         for (File Item : Files ) {
             if (!Item.getPath().endsWith(Signature)) continue;
             if (!Item.canRead()) continue;
-            if (Item.getPath().endsWith(TodayFilename)) TodayDB = Item;
             Log.d("FileManager", "Found DailyDB file => " + Item.getPath() );
             Collection.add(Item);
         }
 
-        // Create Daily database if not exist
-        if (TodayDB == null) {
-            TodayDB = new File(Directory.getPath(),TodayFilename);
-            try { TodayDB.createNewFile();}
-            catch (Exception FileErrors) { Log.d("FileManager","Can't create " + TodayDB.getPath()); }
+        // Create InUse database
+        if (InUseDB == null) {
+            InUseDB = new File(Directory.getPath(),NowFilename);
+            try { InUseDB.createNewFile();}
+            catch (Exception FileErrors) { Log.d("FileManager","Can't create " + InUseDB.getPath()); }
         }
     }
 
     public FileOutputStream getWriteStream() {
         FileOutputStream WriteStream = null;
-        try { WriteStream = new FileOutputStream(TodayDB, true); }
-        catch (Exception StreamError) { Log.d("FileManager","Can't open stream "+TodayDB.getPath()+" for writing..."); }
+        try { WriteStream = new FileOutputStream(InUseDB, true); }
+        catch (Exception StreamError) { Log.d("FileManager","Can't open stream "+ InUseDB.getPath()+" for writing..."); }
         return WriteStream;
     }
 
@@ -61,7 +65,7 @@ public class FileManager {
         if (LastFile == Collection.size()) return ReadStream;
         Log.d("FileManager","Loading datas from " + Collection.get(LastFile).getPath());
         try { ReadStream = new FileInputStream(Collection.get(LastFile)); }
-        catch (Exception StreamError) { Log.d("FileManager","Can't open stream "+TodayDB.getPath()+" for reading..."); }
+        catch (Exception StreamError) { Log.d("FileManager","Can't open stream "+ InUseDB.getPath()+" for reading..."); }
         LastFile++;
         return ReadStream;
     }

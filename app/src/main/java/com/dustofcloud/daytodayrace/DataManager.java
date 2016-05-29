@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 
 public class DataManager extends Application implements  EventsFileReader, LocationListener {
-    static RectF GeoArea = new RectF(-4800f,-4800f,4800f,4800f); // Rectangle of 9,6 km in both direction (Power of 2 x 100)
+    static RectF GeoArea = new RectF(-20000f,-20000f,20000f,20000f); // Rectangle of 9,6 km in both direction (Power of 2 x 100)
     static final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     static float earthRadiusCorrected = earthRadius; // Value at Equator to Zero at Pole
     static double originLongitude = 0f;
@@ -62,18 +62,25 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         // Starting File Management
         FilesHandler = new FileManager(this);
         ReadFromFile = new FileReader(FilesHandler, this);
-        WriteToFile = new FileWriter(FilesHandler);
+
+        try{ WriteToFile = new FileWriter(FilesHandler);}
+        catch (Exception ErrorDB) {}
+        if (WriteToFile == null) Log.d("DataManager", "Couldn't create a new DB...");
 
         TrigEvents = new EventsGPS(this);
         TrigEvents.start();
      }
+
 
     @Override
     public void onTerminate() {
         super.onTerminate();
         Log.d("DataManager", "DataManager is terminating...");
         TrigEvents.clear();
-        try { WriteToFile.flushBuffer(); }
+        try {
+                WriteToFile.flushBuffer();
+                WriteToFile.finish();
+        }
         catch ( Exception writerError ) {
             Log.d("DataManager","Failed to flush stored GeoData ...");
             writerError.printStackTrace();
@@ -114,8 +121,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
             GeoStorage = new QuadTree(GeoArea); // Create QuadTree storage area
 
-            //if (!ReadFromFile.isAlive()) ReadFromFile.startReading();
-            ReadFromFile.run();
+            if (!ReadFromFile.isAlive()) ReadFromFile.startReading();
+            //ReadFromFile.run();
         }
 
         GeoStorage.store(update);

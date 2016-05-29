@@ -5,9 +5,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-/**
- * Created by Xavier JAFFREZIC on 15/05/2016.
- */
 public class QuadTree {
     private boolean isStorage=false;
     private PointF SubZone = null;
@@ -21,7 +18,7 @@ public class QuadTree {
 
     public QuadTree(RectF zone) {
         Zone = zone;
-        Log.d("QuadTree","New Quadtree ["+Zone.width()+" x "+Zone.height()+"]");
+//        Log.d("QuadTree","New Quadtree ["+Zone.width()+" x "+Zone.height()+"]");
         if ((Zone.width() > SizeCell.x) && (Zone.height() > SizeCell.y)) {
             SubZone= new PointF(Zone.width() /2, Zone.height() / 2);
             isStorage = false;
@@ -58,12 +55,10 @@ public class QuadTree {
             return;
         }
 
-        Log.d("QuadTree","Center is ["+ Zone.centerX()+","+Zone.centerY()+"]");
-
-        Log.d("QuadTree","Trying to catch["+ Cartesian.x+","+Cartesian.y+"] " +
+/*       Log.d("QuadTree","Trying to catch["+ Cartesian.x+","+Cartesian.y+"] " +
                 "in [("+(Zone.centerX() - SubZone.x)+","+(Zone.centerY() - SubZone.y)+")-"+
                 "("+(Zone.centerX() + SubZone.x)+","+(Zone.centerY() + SubZone.y)+")]");
-
+*/
         if (Cartesian.x < (Zone.centerX() - SubZone.x) ) return;
         if (Cartesian.x > (Zone.centerX() + SubZone.x) ) return;
         if (Cartesian.y < (Zone.centerY() - SubZone.y) ) return;
@@ -79,7 +74,7 @@ public class QuadTree {
                             )
                         );
             }
-            Log.d("QuadTree","TopLeft ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
+//            Log.d("QuadTree","TopLeft ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
             TopLeft.store(geoData);
         }
 
@@ -92,7 +87,7 @@ public class QuadTree {
                                 Zone.centerY() )
                             );
             }
-            Log.d("QuadTree","TopRight ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
+//            Log.d("QuadTree","TopRight ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
             TopRight.store(geoData);
         }
 
@@ -105,7 +100,7 @@ public class QuadTree {
                                 Zone.centerY() + SubZone.y )
                             );
             }
-            Log.d("QuadTree","BottomLeft ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
+//            Log.d("QuadTree","BottomLeft ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
             BottomLeft.store(geoData);
         }
 
@@ -118,7 +113,7 @@ public class QuadTree {
                                 Zone.centerY() + SubZone.y )
                             );
             }
-            Log.d("QuadTree","BottomRight ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
+//            Log.d("QuadTree","BottomRight ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
             BottomRight.store(geoData);
         }
     }

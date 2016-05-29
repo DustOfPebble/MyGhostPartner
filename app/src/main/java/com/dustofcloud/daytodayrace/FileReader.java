@@ -23,15 +23,18 @@ public class FileReader extends Thread implements Runnable {
 
     private void ProcessStream(FileInputStream Stream) throws IOException {
         JsonReader Reader = new JsonReader(new InputStreamReader(Stream, "UTF-8"));
+        int NbGeoData = 0;
         Reader.beginArray();
-        while (Reader.hasNext())
-        {
-            GeoData geoInfo = new GeoData();
+        GeoData geoInfo;
+        while (Reader.hasNext()) {
+            geoInfo = new GeoData();
             geoInfo.fromJSON(Reader);
             NotifyClient.onLoadedPoint(geoInfo);
-            Log.d("FileReader","Loaded GeoData -> [Long:"+geoInfo.getLongitude()+"°E,Lat:"+geoInfo.getLatitude()+"°N]");
+            NbGeoData++;
+            //Log.d("FileReader", "Loaded GeoData -> [Long:" + geoInfo.getLongitude() + "°E,Lat:" + geoInfo.getLatitude() + "°N]");
         }
         Reader.endArray();
+        Log.d("FileReader", NbGeoData +" Blocks Loaded ...");
     }
 
     @Override
@@ -45,7 +48,10 @@ public class FileReader extends Thread implements Runnable {
                 if (Stream == null) { ContinueLoopStream = false; break;} // All streams have been processed
 
                 try { ProcessStream(Stream); }
-                catch ( Exception ObjectInput ) { Log.d("FileReader","Failed to process input stream ..."); }
+                catch ( Exception ObjectInput ) {
+                    Log.d("FileReader","Failed to process input stream ...");
+                    ObjectInput.printStackTrace();
+                }
 
         }
     }
