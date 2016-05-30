@@ -25,8 +25,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     static private double originLatitude = 0f;
     private boolean originSet=false;
 
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // 10 meters
-    private static final long MIN_TIME_BW_UPDATES = 1000; // 1 seconde
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // Value in meters
+    private static final long MIN_TIME_BW_UPDATES = 1000; // value in ms
 
 
     SimulateGPS TrigEvents= null;
