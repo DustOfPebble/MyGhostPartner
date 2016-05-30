@@ -15,8 +15,6 @@ import java.util.ArrayList;
 public class PointsDrawer extends ImageView implements EventsGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
-    private PointF SizeInView = new PointF(500f,500f); // In View area is 200 meters square
-    private PointF SizeInUse = new PointF(100f,100f); // In Use area is 10 meters square
     private DataManager BackendService;
     private ArrayList<GeoData> GeoInView =null;
     private ArrayList<GeoData> GeoInUse =null;
@@ -43,21 +41,27 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         Log.d("PointsDrawer","Image size ["+this.getWidth()+" px x "+this.getHeight()+" px]");
 
         this.OffsetMeters = geoInfo.getCartesian();
-        PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
+        PointF SizeView = BackendService.getViewArea(); // Read From backend because it's subject to change
+        if ((getMeasuredHeight() != 0) && (getMeasuredWidth() != 0)) {
+        int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
+        MetersToPixels.set((float)MinSize / SizeView.x,(float)MinSize / SizeView.y);
+        }
 
+        PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
         GeoInView = new ArrayList<GeoData>(BackendService.getInView(
                 new RectF(this.OffsetMeters.x - Size.x/2,this.OffsetMeters.y - Size.y/2,
                           this.OffsetMeters.x + Size.x/2, this.OffsetMeters.y + Size.y/2
                         ))
                 );
 
-        GeoInUse = BackendService.getInUse(
-                new RectF(this.OffsetMeters.x - SizeInUse.x / 2, this.OffsetMeters.y - SizeInUse.y / 2,
-                          this.OffsetMeters.x + SizeInUse.x / 2, this.OffsetMeters.y + SizeInUse.y / 2
+        PointF SizeSelection = BackendService.getSelectionArea(); // Read From backend because it's subject to change
+        ArrayList<GeoData> CollectedSelection = BackendService.getInUse(
+                new RectF(this.OffsetMeters.x - SizeSelection.x / 2, this.OffsetMeters.y - SizeSelection.y / 2,
+                          this.OffsetMeters.x + SizeSelection.x / 2, this.OffsetMeters.y + SizeSelection.y / 2
                         )
                 );
         // Filtering InUse
-
+        GeoInUse = new ArrayList<GeoData>(CollectedSelection);
 
 
         invalidate();
@@ -69,9 +73,6 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         int Width = MeasureSpec.getSize(widthMeasureSpec);
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
-        if ((Height == 0) || (Width == 0)) return;
-        int MinSize = Math.min(Height,Width);
-        MetersToPixels.set((float)MinSize / SizeInView.x,(float)MinSize / SizeInView.y);
     }
 
     private PointF PixelsFromMeters(PointF Meters, PointF Offset) {
