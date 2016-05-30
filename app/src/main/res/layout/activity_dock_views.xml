@@ -15,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-    <com.dustcloud.hotspotcreative.ButtonState
-        android:id="@+id/ButtonWiFiStatus"
+    <com.dustcloud.daytodayrace.ControlSwitch
+        android:id="@+id/SwitchSleepLocker"
         style="@style/ButtonCustom"
         app:picture="@drawable/icon_wifi_status"
         app:label="@string/text_wifi_status"
