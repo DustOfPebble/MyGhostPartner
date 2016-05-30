@@ -3,6 +3,7 @@ package com.dustofcloud.daytodayrace;
 import android.util.JsonReader;
 import android.util.Log;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -22,18 +23,20 @@ public class FileReader extends Thread implements Runnable {
     }
 
     private void ProcessStream(FileInputStream Stream) throws IOException {
-        JsonReader Reader = new JsonReader(new InputStreamReader(Stream, "UTF-8"));
+        BufferedReader Storage = new BufferedReader(new InputStreamReader(Stream, "UTF-8"));
         int NbGeoData = 0;
-        Reader.beginArray();
+        String GeoString = Storage.readLine();
         GeoData geoInfo;
-        while (Reader.hasNext()) {
+
+          while (GeoString != null) {
             geoInfo = new GeoData();
-            geoInfo.fromJSON(Reader);
-            NotifyClient.onLoadedPoint(geoInfo);
-            NbGeoData++;
+            if (geoInfo.fromJSON(GeoString)) {
+                NotifyClient.onLoadedPoint(geoInfo);
+                NbGeoData++;
+                GeoString = Storage.readLine();
+            }
             //Log.d("FileReader", "Loaded GeoData -> [Long:" + geoInfo.getLongitude() + "°E,Lat:" + geoInfo.getLatitude() + "°N]");
         }
-        Reader.endArray();
         Log.d("FileReader", NbGeoData +" Blocks Loaded ...");
     }
 
@@ -42,17 +45,15 @@ public class FileReader extends Thread implements Runnable {
         // Moves the current Thread into the background
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-        boolean ContinueLoopStream = true;
-        while (ContinueLoopStream) {
+        while (true) {
                 FileInputStream Stream = FilesHandler.getNextStream();
-                if (Stream == null) { ContinueLoopStream = false; break;} // All streams have been processed
+                if (Stream == null)  break; // All streams have been processed
 
                 try { ProcessStream(Stream); }
                 catch ( Exception ObjectInput ) {
                     Log.d("FileReader","Failed to process input stream ...");
                     ObjectInput.printStackTrace();
                 }
-
         }
     }
 }

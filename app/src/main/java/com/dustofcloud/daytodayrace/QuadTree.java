@@ -15,6 +15,8 @@ public class QuadTree {
     private QuadTree BottomLeft = null;
     private QuadTree BottomRight = null;
     private PointF SizeCell = new PointF(2f,2f); // (2m x 2m) minimum size
+    private  ArrayList<GeoData> Collected = new ArrayList<GeoData>();
+
 
     public QuadTree(RectF zone) {
         Zone = zone;
@@ -31,7 +33,7 @@ public class QuadTree {
     public ArrayList<GeoData> search(RectF SearchArea) {
         if (isStorage) { return Storage; }
 
-        ArrayList<GeoData> Collected = new ArrayList();
+        Collected.clear();
 
         if (SearchArea.bottom < Zone.top ) return Collected;
         if (SearchArea.top > Zone.bottom ) return Collected;
@@ -51,7 +53,7 @@ public class QuadTree {
         PointF Cartesian = geoData.getCartesian();
         if (isStorage) {
             Storage.add(geoData);
-            Log.d("QuadTree","Stored cartesian["+ Cartesian.x+","+Cartesian.y+"]");
+//            Log.d("QuadTree","Stored cartesian["+ Cartesian.x+","+Cartesian.y+"]");
             return;
         }
 

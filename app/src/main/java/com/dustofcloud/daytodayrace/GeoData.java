@@ -31,7 +31,7 @@ public class GeoData {
     private double Bearing = 0.0;
 
     public GeoData() {
-        Random Generator = new Random();
+        Generator = new Random();
         // Preload Data with home values  [48.781687, 2.046504] ...
         Longitude = 2.0465;
         Latitude = 48.7816;
@@ -69,29 +69,37 @@ public class GeoData {
     public double getLongitude() {return Longitude;}
     public double getLatitude() {return Latitude;}
 
-    public void toJSON(JsonWriter Writer) throws IOException {
-            Writer.beginObject();
-            Writer.name(LongitudeID).value(Longitude);
-            Writer.name(LatitudeID).value(Latitude);
-            Writer.name(AltitudeID).value(Altitude);
-            Writer.name(SpeedID).value(Speed); // Cut at 1 digit to save space
-            Writer.name(BearingID).value(Bearing); // Cut at 1 digit to save space
-            Writer.endObject();
-        }
+     public String toJSON() {
+        JSONObject GeoJSON = new JSONObject();
+        try {
+            GeoJSON.put(LongitudeID, Math.floor(Longitude * 1e7) / 1e7);// Cut at 7 digit to save space
+            GeoJSON.put(LatitudeID, Math.floor(Latitude * 1e7) / 1e7);// Cut at 7 digit to save space
+            GeoJSON.put(AltitudeID, Math.floor(Altitude * 10) / 10); // Cut at 1 digit to save space
+            GeoJSON.put(SpeedID, Math.floor(Speed * 10) / 10); // Cut at 1 digit to save space
+            GeoJSON.put(BearingID, Math.floor(Bearing * 10) / 10); // Cut at 1 digit to save space
+        } catch (Exception JSONBuilder) {}
+//        Log.d("GeoData", "JSon from GeoData =" + GeoJSON.toString());
+        return GeoJSON.toString();
+    }
 
-    public void fromJSON(JsonReader Reader) throws IOException{
-        Reader.beginObject();
-        while (Reader.hasNext()) {
-            String name = Reader.nextName();
-                 if (name.equals(LongitudeID)) { Longitude = Reader.nextDouble(); }
-            else if (name.equals(LatitudeID)) { Latitude = Reader.nextDouble(); }
-            else if (name.equals(AltitudeID)) { Latitude = Reader.nextDouble(); }
-            else if (name.equals(SpeedID)) { Speed = Reader.nextDouble(); }
-            else if (name.equals(BearingID)) { Bearing = Reader.nextDouble(); }
-            else Reader.skipValue();
+     public boolean fromJSON(String GeoString) {
+        if (GeoString == null) return false;
+        JSONObject GeoJSON = null;
+        try {
+            GeoJSON = new JSONObject(GeoString);
+            Longitude = GeoJSON.getDouble(LongitudeID);
+            Latitude = GeoJSON.getDouble(LatitudeID);
+            Altitude = GeoJSON.getDouble(AltitudeID) ;
+            Speed = GeoJSON.getDouble(SpeedID);
+            Bearing = GeoJSON.getDouble(BearingID);
         }
-        Reader.endObject();
+        catch (Exception JSONBuilder) {
+//            Log.d("GeoData", "GeoData from JSon => Failed to parse");
+            JSONBuilder.printStackTrace();
+            return false;
+        }
         Cartesian = new PointF(DataManager.dX(Longitude),DataManager.dY(Latitude));
+        return true;
     }
 
     public PointF getCartesian() {return Cartesian;}

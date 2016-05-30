@@ -24,7 +24,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     private static final long MIN_TIME_BW_UPDATES = 1000; // 1 seconde
 
 
-    EventsGPS TrigEvents= null;
+    SimulateGPS TrigEvents= null;
     QuadTree GeoStorage = null;
     FileWriter WriteToFile=null;
     FileReader ReadFromFile=null;
@@ -32,12 +32,13 @@ public class DataManager extends Application implements  EventsFileReader, Locat
 
     // Specific to manage Callback to clients
     static Context BackendContext = null;
-    static EventsDataManager NotifyClient = null;
+    static ArrayList<EventsGPS> Clients = new ArrayList<EventsGPS>();
     public static LocationManager SourceGPS;
 
+
     // Storing callbacks instance from client View
-    public void setUpdateViewCallback (EventsDataManager UpdateViewClient){
-        NotifyClient = UpdateViewClient;
+    public void setUpdateCallback(EventsGPS updateClient){
+        Clients.add(updateClient);
     }
 
     // Return Application in order to setup callback from client
@@ -67,26 +68,10 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         catch (Exception ErrorDB) {}
         if (WriteToFile == null) Log.d("DataManager", "Couldn't create a new DB...");
 
-        TrigEvents = new EventsGPS(this);
+        TrigEvents = new SimulateGPS(this);
         TrigEvents.start();
-     }
-
-
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        Log.d("DataManager", "DataManager is terminating...");
-        TrigEvents.clear();
-        try {
-                WriteToFile.flushBuffer();
-                WriteToFile.finish();
-        }
-        catch ( Exception writerError ) {
-            Log.d("DataManager","Failed to flush stored GeoData ...");
-            writerError.printStackTrace();
-        }
-
     }
+
 
     static public float dX(double longitude) {
         return earthRadiusCorrected * (float) Math.toRadians(longitude-originLongitude);
@@ -133,7 +118,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             writerError.printStackTrace();
         }
 
-        NotifyClient.updateOffset(update.getCartesian());
+        // Loop over registered clients callback ...
+        if (Clients.size() !=0) for (EventsGPS Client :Clients) { Client.processLocationChanged(update);}
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.dustofcloud.daytodayrace;
 
 import android.content.Context;
-import android.database.MergeCursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,7 +12,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class PointsDrawer extends ImageView implements EventsDataManager {
+public class PointsDrawer extends ImageView implements EventsGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
     private PointF SizeInView = new PointF(500f,500f); // In View area is 200 meters square
@@ -29,41 +28,39 @@ public class PointsDrawer extends ImageView implements EventsDataManager {
         super(context, attrs);
         this.setAdjustViewBounds(true);
         BackendService = (DataManager) DataManager.getBackend();
-        BackendService.setUpdateViewCallback(this);
+        BackendService.setUpdateCallback(this);
         Painter = new Paint();
         Painter.setStrokeWidth(10f);
 
-        GeoInView = new ArrayList();
-        GeoInUse = new ArrayList();
+        GeoInView = new ArrayList<GeoData>();
+        GeoInUse = new ArrayList<GeoData>();
     }
 
     @Override
-    public void updateOffset(PointF OffsetMeters) {
+    public void processLocationChanged(GeoData geoInfo) {
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         Log.d("PointsDrawer","Geographic Area ["+this.getWidth()/MetersToPixels.x+" m x "+this.getHeight()/MetersToPixels.y+" m]");
         Log.d("PointsDrawer","Image size ["+this.getWidth()+" px x "+this.getHeight()+" px]");
 
-        this.OffsetMeters = OffsetMeters;
+        this.OffsetMeters = geoInfo.getCartesian();
         PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
 
-        GeoInView = BackendService.getInView(
-                new RectF(
-                        this.OffsetMeters.x - Size.x/2,
-                        this.OffsetMeters.y - Size.y/2,
-                        this.OffsetMeters.x + Size.x/2,
-                        this.OffsetMeters.y + Size.y/2
-                        )
-        );
+        GeoInView = new ArrayList<GeoData>(BackendService.getInView(
+                new RectF(this.OffsetMeters.x - Size.x/2,this.OffsetMeters.y - Size.y/2,
+                          this.OffsetMeters.x + Size.x/2, this.OffsetMeters.y + Size.y/2
+                        ))
+                );
 
         GeoInUse = BackendService.getInUse(
-                new RectF(
-                        this.OffsetMeters.x - SizeInUse.x / 2,
-                        this.OffsetMeters.y - SizeInUse.y / 2,
-                        this.OffsetMeters.x + SizeInUse.x / 2,
-                        this.OffsetMeters.y + SizeInUse.y / 2
-                )
-        );
-                invalidate();
+                new RectF(this.OffsetMeters.x - SizeInUse.x / 2, this.OffsetMeters.y - SizeInUse.y / 2,
+                          this.OffsetMeters.x + SizeInUse.x / 2, this.OffsetMeters.y + SizeInUse.y / 2
+                        )
+                );
+        // Filtering InUse
+
+
+
+        invalidate();
     }
 
     @Override
