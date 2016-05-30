@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 
 public class PointsDrawer extends ImageView implements EventsGPS {
 
@@ -21,6 +22,8 @@ public class PointsDrawer extends ImageView implements EventsGPS {
     private PointF OffsetMeters =null;
     private Paint Painter;
     private PointF Center= new PointF(0f,0f);
+    private PointF ZeroXY = new PointF(0f,0f);
+    private GeoData InUseGeo = null;
 
     public PointsDrawer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -28,7 +31,7 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setUpdateCallback(this);
         Painter = new Paint();
-        Painter.setStrokeWidth(10f);
+        Painter.setStrokeWidth(2f);
 
         GeoInView = new ArrayList<GeoData>();
         GeoInUse = new ArrayList<GeoData>();
@@ -40,6 +43,7 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         Log.d("PointsDrawer","Geographic Area ["+this.getWidth()/MetersToPixels.x+" m x "+this.getHeight()/MetersToPixels.y+" m]");
         Log.d("PointsDrawer","Image size ["+this.getWidth()+" px x "+this.getHeight()+" px]");
 
+        InUseGeo = geoInfo;
         this.OffsetMeters = geoInfo.getCartesian();
         PointF SizeView = BackendService.getViewArea(); // Read From backend because it's subject to change
         if ((getMeasuredHeight() != 0) && (getMeasuredWidth() != 0)) {
@@ -63,7 +67,6 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         // Filtering InUse
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
 
-
         invalidate();
     }
 
@@ -84,11 +87,13 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         return new PointF(Meters.x - Origin.x, Meters.y - Origin.y);
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         PointF Cartesian = null;
         PointF GraphicPoint = null;
 
+        float scaleRadius = Math.max(MetersToPixels.x, MetersToPixels.y);
         Center.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
         Log.d("PointsDrawer", "Drawing "+ GeoInView.size()+ " points in view");
@@ -97,7 +102,7 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         for (GeoData Marker : GeoInView) {
             Cartesian = Marker.getCartesian();
             GraphicPoint = PixelsFromMeters(MetersFromOrigin(Cartesian,OffsetMeters),Center);
-            canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
+            canvas.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * Marker.getAccuracy(),Painter);
         }
 
         Log.d("PointsDrawer", "Drawing "+ GeoInUse.size()+ " points in use");
@@ -107,14 +112,16 @@ public class PointsDrawer extends ImageView implements EventsGPS {
             Cartesian = Marker.getCartesian();
             GraphicPoint = PixelsFromMeters(MetersFromOrigin(Cartesian,OffsetMeters),Center);
             canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
+            canvas.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * Marker.getAccuracy(),Painter);
         }
 
          if (OffsetMeters !=null) {
              Log.d("PointsDrawer", "Offset is ["+OffsetMeters.x+","+OffsetMeters.y+"]");
              Painter.setColor(Color.RED);
-             GraphicPoint = PixelsFromMeters(new PointF(0f,0f),Center);
+             GraphicPoint = PixelsFromMeters(ZeroXY,Center);
              canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
-        }
+             canvas.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * InUseGeo.getAccuracy(),Painter);
+         }
         super.onDraw(canvas);
     }
 
