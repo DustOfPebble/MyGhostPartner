@@ -1,4 +1,7 @@
 <resources>
     <style name="AppTheme" parent="android:Theme.Black">
     </style>
+    <style name="ButtonCustom" parent="@android:style/Widget.Button">
+        <item name="android:background">@drawable/button_rounded_border</item>
+    </style>
 </resources>

@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="ButtonState">
+        <attr name="label" format="string" />
+        <attr name="picture" format="integer" />
+        <attr name="active" format="integer" />
+        <attr name="inactive" format="integer" />
+    </declare-styleable>
+ </resources>
