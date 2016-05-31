@@ -11,20 +11,18 @@
     >
 
     <com.dustofcloud.daytodayrace.PointsDrawer
-        android:id="@+id/show_waypoints"
+        android:id="@+id/PointsDrawer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
-    <com.dustcloud.daytodayrace.ControlSwitch
+
+    <com.dustofcloud.daytodayrace.ControlSwitch
         android:id="@+id/SwitchSleepLocker"
-        style="@style/ButtonCustom"
-        app:picture="@drawable/icon_wifi_status"
-        app:label="@string/text_wifi_status"
-        app:inactive="@drawable/gradient_none"
-        app:active="@drawable/gradient_blue"
         android:layout_width="180dp"
-        android:layout_height="140dp"
-        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_height="180dp"
+        android:layout_gravity="top|left"
+        app:HighMode="@drawable/sleep_locked"
+        app:LowMode="@drawable/sleep_unlocked"
         />
 
 </FrameLayout>

@@ -11,9 +11,9 @@ public class Docking extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dock_views);
-        PointsViewer = (PointsDrawer) findViewById(R.id.show_waypoints);
-        SleepLocker = (ControlSwitch) findViewById(R.id.SwitchSleepLocker);
+        setContentView(R.layout.activity_docking);
+        PointsViewer = (PointsDrawer) findViewById(R.id.PointsDrawer);
+     //   SleepLocker = (ControlSwitch) findViewById(R.id.SwitchSleepLocker);
 
     }
 

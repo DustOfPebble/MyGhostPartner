@@ -1,8 +1,6 @@
 <resources>
-    <declare-styleable name="ButtonState">
-        <attr name="label" format="string" />
-        <attr name="picture" format="integer" />
-        <attr name="active" format="integer" />
-        <attr name="inactive" format="integer" />
+    <declare-styleable name="ControlSwitch">
+        <attr name="HighMode" format="integer" />
+        <attr name="LowMode" format="integer" />
     </declare-styleable>
  </resources>

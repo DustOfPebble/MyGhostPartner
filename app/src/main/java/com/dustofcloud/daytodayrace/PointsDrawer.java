@@ -87,7 +87,6 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         return new PointF(Meters.x - Origin.x, Meters.y - Origin.y);
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         PointF Cartesian = null;
