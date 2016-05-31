@@ -46,11 +46,7 @@ public class FileManager {
         }
 
         // Create InUse database
-        if (InUseDB == null) {
-            InUseDB = new File(Directory.getPath(),NowFilename);
-            try { InUseDB.createNewFile();}
-            catch (Exception FileErrors) { Log.d("FileManager","Can't create " + InUseDB.getPath()); }
-        }
+        InUseDB = new File(Directory.getPath(),NowFilename);
     }
 
     public FileOutputStream getWriteStream() {

@@ -18,8 +18,9 @@
 
     <com.dustofcloud.daytodayrace.ControlSwitch
         android:id="@+id/SwitchSleepLocker"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:clickable="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="top|left"
         app:HighMode="@drawable/sleep_locked"
         app:LowMode="@drawable/sleep_unlocked"

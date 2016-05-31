@@ -102,22 +102,18 @@ public class GeoData {
      public boolean fromJSON(String GeoString) {
         if (GeoString == null) return false;
         JSONObject GeoJSON = null;
+        try { GeoJSON = new JSONObject(GeoString); } catch (Exception JSONBuilder) { Log.d("GeoData", "GeoData from JSon => Failed to parse"); return false;}
         try {
-            GeoJSON = new JSONObject(GeoString);
-            Longitude = GeoJSON.getDouble(LongitudeID);
-            Latitude = GeoJSON.getDouble(LatitudeID);
-            Accuracy = (float)GeoJSON.getDouble(AccuracyID) ;
-            Altitude = (float)GeoJSON.getDouble(AltitudeID) ;
-            Speed = (float)GeoJSON.getDouble(SpeedID);
-            Bearing = (float)GeoJSON.getDouble(BearingID);
-            Heartbeat = GeoJSON.getInt(HeartbeatID);
-        }
-        catch (Exception JSONBuilder) {
-//            Log.d("GeoData", "GeoData from JSon => Failed to parse");
-            JSONBuilder.printStackTrace();
-            return false;
-        }
-        Cartesian = new PointF(DataManager.dX(Longitude),DataManager.dY(Latitude));
+               Longitude = GeoJSON.getDouble(LongitudeID);
+               Latitude = GeoJSON.getDouble(LatitudeID);
+               Cartesian = new PointF(DataManager.dX(Longitude),DataManager.dY(Latitude));
+               Altitude = (float)GeoJSON.getDouble(AltitudeID);
+               Speed = (float)GeoJSON.getDouble(SpeedID);
+               Bearing = (float)GeoJSON.getDouble(BearingID);
+            } catch (Exception Missing) { Log.d("GeoData", "GeoData from JSon => Missing Lat./long."); return false;}
+
+         try { Accuracy = (float)GeoJSON.getDouble(AccuracyID);} catch (Exception Missing) { Accuracy = 10.0f;}
+         try { Heartbeat = GeoJSON.getInt(HeartbeatID);} catch (Exception Missing) { Heartbeat = 0;}
         return true;
     }
 

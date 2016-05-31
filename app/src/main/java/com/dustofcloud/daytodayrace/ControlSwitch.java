@@ -5,24 +5,19 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.widget.FrameLayout;
+import android.view.View;
 import android.widget.ImageView;
 
-public class ControlSwitch extends FrameLayout {
+public class ControlSwitch extends ImageView implements View.OnClickListener {
 
-    private ImageView statePicture=null;
     private Drawable highState =null;
     private Drawable lowState =null;
+    private boolean isLocked = false;
 
     public ControlSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.setAdjustViewBounds(true);
         Log.d("ControlSwitch", "Calling constructor...");
-        // Inflate the Layout from XML definition
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.button_control_switch, this, true);
-
-        statePicture = new ImageView(context);
 
         // Loading Attributes from XML definitions ...
         if (attrs == null) return;
@@ -34,26 +29,26 @@ public class ControlSwitch extends FrameLayout {
         }
         finally { attributes.recycle();}
 
-        setHighMode();
+        setMode();
     }
 
-     public void setHighMode()
+     public void setMode()
     {
-        statePicture.setBackground(highState);
+        if (isLocked) this.setBackground(highState);
+        else this.setBackground(lowState);
         invalidate();
-        requestLayout();
     }
 
-    public void setLowMode()
-    {
-        statePicture.setBackground(lowState);
-        invalidate();
-        requestLayout();
-    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
     {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
+    public void onClick(View v) {
+        isLocked = !isLocked;
+        setMode();
     }
 }
