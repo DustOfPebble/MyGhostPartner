@@ -18,7 +18,6 @@ public class ControlSwitch extends ImageView implements View.OnTouchListener {
     public ControlSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
-        Log.d("ControlSwitch", "Calling constructor...");
 
         // Loading Attributes from XML definitions ...
         if (attrs == null) return;

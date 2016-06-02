@@ -15,10 +15,12 @@ public class FileWriter {
     private int geoDataCount = 60; // Number of stored data between storage (every minute)
     static FileOutputStream Stream = null;
     static BufferedWriter Storage =null;
+    private boolean isTimeWritten;
 
     public FileWriter(FileManager FilesHandler) throws IOException{
         this.FilesHandler = FilesHandler;
         geoDataBuffer = new ArrayList();
+        isTimeWritten = false;
     }
 
     public void writeGeoData(GeoData geoInfo) throws IOException {
@@ -31,6 +33,14 @@ public class FileWriter {
         Stream = FilesHandler.getWriteStream();
         Log.d("FileWriter","Writing "+geoDataBuffer.size()+" GeoData elements of buffer." );
         Storage = new  BufferedWriter(new OutputStreamWriter(Stream, "UTF-8"));
+
+        if (!isTimeWritten) {
+            TimeStamps Now = new TimeStamps();
+            Storage.write(Now.getNowToJSON());
+            Storage.newLine();
+            isTimeWritten=true;
+        }
+
         for (GeoData geoInfo : geoDataBuffer) {
             Storage.write(geoInfo.toJSON());
             Storage.newLine();

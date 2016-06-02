@@ -33,6 +33,8 @@ public class GeoData {
     private float Bearing = 0.0f;
     private int Heartbeat = 0;
 
+    private int ElapsedDays = 0;
+
     public GeoData() {
         Generator = new Random();
         // Preload Data with home values  [48.781687, 2.046504] ...
@@ -46,6 +48,8 @@ public class GeoData {
     }
 
     public void setHeartbeat(int value) { Heartbeat = value;} // Provisionning function
+
+    public void setElapsedDays(int value) { ElapsedDays = value;} // Provisionning function
 
     public void setGPS(Location GPS) {
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
@@ -82,6 +86,7 @@ public class GeoData {
     public float getSpeed() {return Speed;}
     public float getBearing() {return Bearing;}
     public int getHeartbeat() {return Heartbeat;}
+    public int getElapsedDays() {return ElapsedDays;}
 
 
      public String toJSON() {
@@ -102,7 +107,8 @@ public class GeoData {
      public boolean fromJSON(String GeoString) {
         if (GeoString == null) return false;
         JSONObject GeoJSON = null;
-        try { GeoJSON = new JSONObject(GeoString); } catch (Exception JSONBuilder) { Log.d("GeoData", "GeoData from JSon => Failed to parse"); return false;}
+        try { GeoJSON = new JSONObject(GeoString); } catch (Exception JSONBuilder)
+        { Log.d("GeoData", "GeoData from JSon => Failed to parse ["+GeoString+"]"); return false;}
         try {
                Longitude = GeoJSON.getDouble(LongitudeID);
                Latitude = GeoJSON.getDouble(LatitudeID);
