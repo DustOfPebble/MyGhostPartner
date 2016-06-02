@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-public class ControlSwitch extends ImageView implements View.OnTouchListener {
+public class ControlSwitch extends ImageView implements View.OnClickListener {
 
     private Drawable highState =null;
     private Drawable lowState =null;
@@ -28,13 +28,16 @@ public class ControlSwitch extends ImageView implements View.OnTouchListener {
             lowState = attributes.getDrawable(R.styleable.ControlSwitch_LowMode);
         }
         finally { attributes.recycle();}
-        this.setOnTouchListener(this);
+        this.setOnClickListener(this);
         setMode();
     }
 
      public void setMode()
     {
-        if (isLocked) this.setBackground(highState);
+        if (isLocked)
+        {
+            this.setBackground(highState);
+        }
         else this.setBackground(lowState);
         invalidate();
     }
@@ -45,8 +48,10 @@ public class ControlSwitch extends ImageView implements View.OnTouchListener {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public boolean onTouch(View V, MotionEvent event) {
+
+    public void onClick(View V) {
         Log.d("ControlSwitch", "Touch detected");
-        return super.onTouchEvent(event);
+        isLocked=!isLocked;
+        this.setMode();
     }
 }
