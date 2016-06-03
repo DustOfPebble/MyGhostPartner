@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -50,7 +48,6 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
 
 
     public void onClick(View V) {
-        Log.d("ControlSwitch", "Touch detected");
         isLocked=!isLocked;
         this.setMode();
     }

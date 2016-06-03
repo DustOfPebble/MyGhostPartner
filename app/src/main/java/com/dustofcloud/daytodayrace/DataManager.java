@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class DataManager extends Application implements  EventsFileReader, LocationListener {
     private  RectF GeoArea = new RectF(-20000f,-20000f,20000f,20000f); // Rectangle of 9,6 km in both direction (Power of 2 x 100)
     private PointF InUseArea = new PointF(10f,10f); // In Use area : values in meters
-    private PointF InViewArea = new PointF(100f,100f); // In View area : values in meters (subject to change vs  speed)
+    private PointF InViewArea = new PointF(200f,200f); // In View area : values in meters (subject to change vs  speed)
 
     static private final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     static private float earthRadiusCorrected = earthRadius; // Value at Equator to Zero at Pole
