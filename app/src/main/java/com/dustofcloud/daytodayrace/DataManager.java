@@ -134,7 +134,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     }
 
     @Override
-    public void onLoadedPoint(GeoData Loaded) {
+    public void onLoaded(GeoData Loaded) {
         if (Loaded == null) return;
         GeoStorage.store(Loaded);
     }

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-public class Docking extends Activity {
+public class Docking extends Activity implements EventsControlSwitch {
 
     private MapManager PointsViewer = null;
     private ControlSwitch SleepLocker = null;
@@ -18,11 +18,13 @@ public class Docking extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docking);
         PointsViewer = (MapManager) findViewById(R.id.map_manager);
+
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
+        SleepLocker.setMode(SharedConstants.ScreenLightLocked, SharedConstants.ScreenLightUnLocked);
+        SleepLocker.registerControlSwitch(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         BackendService = (DataManager) DataManager.getBackend();
-
     }
 
     @Override
@@ -33,9 +35,18 @@ public class Docking extends Activity {
     }
 
     @Override
+    public void onStatusChanged(short Status) {
+        if (Status == SharedConstants.ScreenLightLocked)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (Status == SharedConstants.ScreenLightUnLocked)
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
+
+    @Override
     public void onBackPressed() {
         BackPressedCount++;
         if (BackPressedCount > 1) { super.onBackPressed(); }
         else { Toast.makeText(Docking.this, "Press back again to exit !", Toast.LENGTH_SHORT).show(); }
     }
+
 }

@@ -9,13 +9,14 @@ import android.widget.ImageView;
 
 public class ControlSwitch extends ImageView implements View.OnClickListener {
 
-    private Drawable highState = null;
-    private Drawable lowState = null;
+    private Drawable highIcon = null;
+    private Drawable lowIcon = null;
+    private EventsControlSwitch Controler = null;
 
-    private int highEventState = -1;
-    private int lowEventState = -1;
+    private short highStatus = -1;
+    private short lowStatus = -1;
 
-    private int state =-1;
+    private short Status =-1;
 
      public ControlSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -26,17 +27,26 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
         TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ControlSwitch, 0, 0);
         try
         {
-            highState = attributes.getDrawable(R.styleable.ControlSwitch_HighMode);
-            lowState = attributes.getDrawable(R.styleable.ControlSwitch_LowMode);
+            highIcon = attributes.getDrawable(R.styleable.ControlSwitch_HighMode);
+            lowIcon = attributes.getDrawable(R.styleable.ControlSwitch_LowMode);
         }
         finally { attributes.recycle();}
         this.setOnClickListener(this);
+
+         Status = highStatus;
+         this.setBackground(highIcon);
+         invalidate();
     }
 
-     public void setMode(int highEvent, int lowEvent)
+     public void setMode(short highEvent, short lowEvent)
     {
-        highEventState = highEvent;
-        lowEventState = lowEvent;
+        highStatus = highEvent;
+        lowStatus = lowEvent;
+    }
+
+    public  void registerControlSwitch(EventsControlSwitch Actuator) {
+        this.Controler = Actuator;
+        Controler.onStatusChanged(Status);
     }
 
     @Override
@@ -46,8 +56,10 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
     }
 
     public void onClick(View V) {
-//        this.setBackground(highState);
-//        else this.setBackground(lowState);
+        Status = (Status == highStatus) ? lowStatus : highStatus;
+        if (Status == highStatus)  this.setBackground(highIcon);
+        if (Status == lowStatus)  this.setBackground(lowIcon);
+        Controler.onStatusChanged(Status);
         invalidate();
     }
 }

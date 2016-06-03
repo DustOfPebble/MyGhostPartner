@@ -44,7 +44,7 @@ public class FileReader implements Runnable {
             geoInfo = new GeoData();
             if (geoInfo.fromJSON(GeoString)) {
                 geoInfo.setElapsedDays(NbDays);
-                NotifyClient.onLoadedPoint(geoInfo);
+                NotifyClient.onLoaded(geoInfo);
                 NbGeoData++;
             }
             //Log.d("FileReader", "Loaded GeoData -> [Long:" + geoInfo.getLongitude() + "°E,Lat:" + geoInfo.getLatitude() + "°N]");
