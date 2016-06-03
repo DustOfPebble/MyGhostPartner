@@ -10,7 +10,7 @@ public class Docking extends Activity implements EventsControlSwitch {
     private MapManager PointsViewer = null;
     private ControlSwitch SleepLocker = null;
     private int BackPressedCount = 0;
-    private DataManager BackendService;
+//    private DataManager BackendService;
 
 
     @Override
@@ -24,14 +24,14 @@ public class Docking extends Activity implements EventsControlSwitch {
         SleepLocker.registerControlSwitch(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        BackendService = (DataManager) DataManager.getBackend();
+//        BackendService = (DataManager) DataManager.getBackend();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         BackPressedCount = 0;
-        BackendService = (DataManager) DataManager.getBackend();
+//        BackendService = (DataManager) DataManager.getBackend();
     }
 
     @Override
@@ -48,5 +48,4 @@ public class Docking extends Activity implements EventsControlSwitch {
         if (BackPressedCount > 1) { super.onBackPressed(); }
         else { Toast.makeText(Docking.this, "Press back again to exit !", Toast.LENGTH_SHORT).show(); }
     }
-
 }
