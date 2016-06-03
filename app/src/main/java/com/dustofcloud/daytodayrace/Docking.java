@@ -17,8 +17,8 @@ public class Docking extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docking);
-        PointsViewer = (MapManager) findViewById(R.id.PointsDrawer);
-        SleepLocker = (ControlSwitch) findViewById(R.id.SwitchSleepLocker);
+        PointsViewer = (MapManager) findViewById(R.id.map_manager);
+        SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         BackendService = (DataManager) DataManager.getBackend();
