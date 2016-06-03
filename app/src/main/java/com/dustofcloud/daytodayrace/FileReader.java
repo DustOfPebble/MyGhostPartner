@@ -16,10 +16,6 @@ public class FileReader implements Runnable {
         this.FilesHandler =  FilesHandler;
     }
 
-    public void startReading() {
-        this.run();
-    } // Call run() method to start the asynchronous thread
-
     @Override
     public void run() {
         // Moves the current Thread into the background
@@ -30,10 +26,7 @@ public class FileReader implements Runnable {
             if (Stream == null)  break; // All streams have been processed
 
             try { ProcessStream(Stream); }
-            catch ( Exception ObjectInput ) {
-                Log.d("FileReader","Failed to process input stream ...");
-            //    ObjectInput.printStackTrace();
-            }
+            catch ( Exception ObjectInput ) { Log.d("FileReader","Failed to process input stream ..."); }
         }
     }
 
@@ -54,8 +47,8 @@ public class FileReader implements Runnable {
                 NotifyClient.onLoadedPoint(geoInfo);
                 NbGeoData++;
             }
-            GeoString = Storage.readLine();
             //Log.d("FileReader", "Loaded GeoData -> [Long:" + geoInfo.getLongitude() + "°E,Lat:" + geoInfo.getLatitude() + "°N]");
+            GeoString = Storage.readLine();
         }
         Log.d("FileReader", NbGeoData +" Blocks Loaded ...");
     }

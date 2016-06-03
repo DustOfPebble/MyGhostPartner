@@ -31,6 +31,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     QuadTree GeoStorage = null;
     FileWriter WriteToFile=null;
     FileReader ReadFromFile=null;
+    Thread LoadingFiles=null;
     FileManager FilesHandler=null;
 
     // Specific to manage Callback to clients
@@ -116,7 +117,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             originLongitude = update.getLongitude();
             earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
             GeoStorage = new QuadTree(GeoArea); // Create QuadTree storage area
-            ReadFromFile.startReading();
+            LoadingFiles = new Thread(ReadFromFile);
+            LoadingFiles.start();
         }
 
         GeoStorage.store(update);

@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 public class Docking extends Activity {
 
-    private PointsDrawer PointsViewer = null;
+    private MapManager PointsViewer = null;
     private ControlSwitch SleepLocker = null;
     private int BackPressedCount = 0;
     private DataManager BackendService;
@@ -17,7 +17,7 @@ public class Docking extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docking);
-        PointsViewer = (PointsDrawer) findViewById(R.id.PointsDrawer);
+        PointsViewer = (MapManager) findViewById(R.id.PointsDrawer);
         SleepLocker = (ControlSwitch) findViewById(R.id.SwitchSleepLocker);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

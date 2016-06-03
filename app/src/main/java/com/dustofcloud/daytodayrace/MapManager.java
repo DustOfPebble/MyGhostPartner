@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
@@ -13,7 +14,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.EnumMap;
 
-public class PointsDrawer extends ImageView implements EventsGPS {
+public class MapManager extends ImageView implements EventsGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
     private DataManager BackendService;
@@ -24,9 +25,11 @@ public class PointsDrawer extends ImageView implements EventsGPS {
     private PointF Center= new PointF(0f,0f);
     private PointF ZeroXY = new PointF(0f,0f);
     private GeoData InUseGeo = null;
-    private MapBuilder MapImage =null;
+    private MapBuilder MapImage = null;
+    private Thread MapBuilding = null;
+    private Drawable MapInUse = null;
 
-    public PointsDrawer(Context context, AttributeSet attrs) {
+    public MapManager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
         BackendService = (DataManager) DataManager.getBackend();
@@ -68,8 +71,18 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         // Filtering InUse
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
 
+        if (MapImage.getStatus() == MapBuilder.isFinished) {
+//            MapInUse = MapImage.getMap();
+        }
+
+
+        if (!MapBuilding.isAlive()){
+            MapImage.setFilteredPoints(GeoInView);
+            MapImage.setComputedPoints(GeoInUse);
+            MapBuilding.start();
+        }
+
         invalidate();
-        MapImage.run();
     }
 
     @Override
@@ -79,6 +92,7 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
         MapImage = new MapBuilder(Width, Height);
+        MapBuilding = new Thread(MapImage);
     }
 
     private PointF PixelsFromMeters(PointF Meters, PointF Offset) {
@@ -124,6 +138,7 @@ public class PointsDrawer extends ImageView implements EventsGPS {
              canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
              canvas.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * InUseGeo.getAccuracy(),Painter);
          }
+
         super.onDraw(canvas);
     }
 
