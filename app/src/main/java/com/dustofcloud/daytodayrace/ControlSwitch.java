@@ -9,11 +9,15 @@ import android.widget.ImageView;
 
 public class ControlSwitch extends ImageView implements View.OnClickListener {
 
-    private Drawable highState =null;
-    private Drawable lowState =null;
-    private boolean isLocked = false;
+    private Drawable highState = null;
+    private Drawable lowState = null;
 
-    public ControlSwitch(Context context, AttributeSet attrs) {
+    private int highEventState = -1;
+    private int lowEventState = -1;
+
+    private int state =-1;
+
+     public ControlSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
 
@@ -27,17 +31,12 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
         }
         finally { attributes.recycle();}
         this.setOnClickListener(this);
-        setMode();
     }
 
-     public void setMode()
+     public void setMode(int highEvent, int lowEvent)
     {
-        if (isLocked)
-        {
-            this.setBackground(highState);
-        }
-        else this.setBackground(lowState);
-        invalidate();
+        highEventState = highEvent;
+        lowEventState = lowEvent;
     }
 
     @Override
@@ -46,9 +45,9 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-
     public void onClick(View V) {
-        isLocked=!isLocked;
-        this.setMode();
+//        this.setBackground(highState);
+//        else this.setBackground(lowState);
+        invalidate();
     }
 }

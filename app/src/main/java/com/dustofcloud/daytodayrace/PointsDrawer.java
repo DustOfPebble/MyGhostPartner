@@ -24,6 +24,7 @@ public class PointsDrawer extends ImageView implements EventsGPS {
     private PointF Center= new PointF(0f,0f);
     private PointF ZeroXY = new PointF(0f,0f);
     private GeoData InUseGeo = null;
+    private MapBuilder MapImage =null;
 
     public PointsDrawer(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -68,6 +69,7 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
 
         invalidate();
+        MapImage.run();
     }
 
     @Override
@@ -76,6 +78,7 @@ public class PointsDrawer extends ImageView implements EventsGPS {
         int Width = MeasureSpec.getSize(widthMeasureSpec);
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
+        MapImage = new MapBuilder(Width, Height);
     }
 
     private PointF PixelsFromMeters(PointF Meters, PointF Offset) {

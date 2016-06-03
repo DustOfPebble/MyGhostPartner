@@ -116,7 +116,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             originLongitude = update.getLongitude();
             earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
             GeoStorage = new QuadTree(GeoArea); // Create QuadTree storage area
-            if (!ReadFromFile.isAlive()) ReadFromFile.startReading();
+            ReadFromFile.startReading();
         }
 
         GeoStorage.store(update);

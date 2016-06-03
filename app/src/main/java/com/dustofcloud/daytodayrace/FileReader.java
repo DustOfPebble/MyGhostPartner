@@ -7,7 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class FileReader extends Thread implements Runnable {
+public class FileReader implements Runnable {
     EventsFileReader NotifyClient = null;
     FileManager FilesHandler= null;
 
@@ -17,7 +17,7 @@ public class FileReader extends Thread implements Runnable {
     }
 
     public void startReading() {
-        this.start();
+        this.run();
     } // Call run() method to start the asynchronous thread
 
     @Override
