@@ -32,7 +32,7 @@ public class FileReader extends Thread implements Runnable {
             try { ProcessStream(Stream); }
             catch ( Exception ObjectInput ) {
                 Log.d("FileReader","Failed to process input stream ...");
-                ObjectInput.printStackTrace();
+            //    ObjectInput.printStackTrace();
             }
         }
     }

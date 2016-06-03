@@ -31,7 +31,7 @@ public class TimeStamps {
             TimeJSON.put(MonthID, Now.get(Calendar.MONTH));
             TimeJSON.put(DayID, Now.get(Calendar.DAY_OF_MONTH));
         } catch (Exception JSONBuilder) {}
-//        Log.d("TimeStamps", " Now JSon from TimeStamps =" + TimeJSON.toString());
+        Log.d("TimeStamps", " Now JSon from TimeStamps =" + TimeJSON.toString());
         return TimeJSON.toString();
     }
 

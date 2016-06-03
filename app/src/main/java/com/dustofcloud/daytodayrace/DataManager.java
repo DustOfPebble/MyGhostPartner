@@ -12,7 +12,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-
 public class DataManager extends Application implements  EventsFileReader, LocationListener {
     private  RectF GeoArea = new RectF(-20000f,-20000f,20000f,20000f); // Rectangle of 9,6 km in both direction (Power of 2 x 100)
     private PointF InUseArea = new PointF(10f,10f); // In Use area : values in meters
@@ -28,7 +27,6 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // Value in meters
     private static final long MIN_TIME_BW_UPDATES = 1000; // value in ms
 
-
     SimulateGPS TrigEvents= null;
     QuadTree GeoStorage = null;
     FileWriter WriteToFile=null;
@@ -39,7 +37,6 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     static Context BackendContext = null;
     static ArrayList<EventsGPS> Clients = new ArrayList<EventsGPS>();
     public static LocationManager SourceGPS;
-
 
     // Storing callbacks instance from client View
     public void setUpdateCallback(EventsGPS updateClient){
@@ -60,7 +57,6 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     public PointF getViewArea(){
         return InViewArea;
     }
-
 
     @Override
     public void onCreate()
@@ -120,9 +116,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             originLongitude = update.getLongitude();
             earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
             GeoStorage = new QuadTree(GeoArea); // Create QuadTree storage area
-
             if (!ReadFromFile.isAlive()) ReadFromFile.startReading();
-            //ReadFromFile.run();
         }
 
         GeoStorage.store(update);

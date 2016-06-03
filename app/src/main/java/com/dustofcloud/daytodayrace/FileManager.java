@@ -59,7 +59,7 @@ public class FileManager {
     public FileInputStream getNextStream() {
         FileInputStream ReadStream = null;
         if (LastFile == Collection.size()) return ReadStream;
-        Log.d("FileManager","Loading datas from " + Collection.get(LastFile).getPath());
+        Log.d("FileManager","Loading data from " + Collection.get(LastFile).getPath());
         try { ReadStream = new FileInputStream(Collection.get(LastFile)); }
         catch (Exception StreamError) { Log.d("FileManager","Can't open stream "+ InUseDB.getPath()+" for reading..."); }
         LastFile++;
