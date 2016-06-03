@@ -1,6 +1,7 @@
 package com.dustofcloud.daytodayrace;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -27,7 +28,7 @@ public class MapManager extends ImageView implements EventsGPS {
     private GeoData InUseGeo = null;
     private MapBuilder MapImage = null;
     private Thread MapBuilding = null;
-    private Drawable MapInUse = null;
+    private Bitmap MapInUse = null;
 
     public MapManager(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -72,9 +73,8 @@ public class MapManager extends ImageView implements EventsGPS {
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
 
         if (MapImage.getStatus() == MapBuilder.isFinished) {
-//            MapInUse = MapImage.getMap();
+            MapInUse = Bitmap.createBitmap(MapImage.getMap());
         }
-
 
         if (!MapBuilding.isAlive()){
             MapImage.setFilteredPoints(GeoInView);

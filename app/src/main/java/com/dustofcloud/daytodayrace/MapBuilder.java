@@ -9,20 +9,24 @@ import android.graphics.drawable.Drawable;
 import java.util.ArrayList;
 
 public class MapBuilder extends Drawable implements Runnable {
+    public static final int isAborted = 1;
+    public static final int isFinished = 2;
+
     private Canvas OffScreenBuffer;
     private ArrayList<GeoData> FilteredPoints = null;
     private ArrayList<GeoData> ComputedPoints = null;
-    public static final int isAborted = 1;
-    public static final int isFinished = 2;
-    private int Status = 0;
+    private int Status = isAborted;
+
+    private Bitmap Map;
 
     public MapBuilder(int width, int height) {
-        OffScreenBuffer = new Canvas(Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888));
+        Map = Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888);
+        OffScreenBuffer = new Canvas(Map);
     }
 
-    /*public Drawable getMap() {
-        return new .;
-    }*/
+    public Bitmap getMap() {
+        return Map ;
+    }
 
     public void setFilteredPoints(ArrayList<GeoData> Collection) {
         FilteredPoints = new ArrayList<GeoData>(Collection);
