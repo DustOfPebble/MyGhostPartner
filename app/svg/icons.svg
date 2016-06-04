@@ -48,16 +48,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.9195959"
-     inkscape:cx="285.32437"
-     inkscape:cy="950.26686"
+     inkscape:cx="92.637484"
+     inkscape:cy="893.11679"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1031"
-     inkscape:window-x="0"
-     inkscape:window-y="25"
-     inkscape:window-maximized="1" />
+     inkscape:window-width="1717"
+     inkscape:window-height="923"
+     inkscape:window-x="38"
+     inkscape:window-y="72"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -74,55 +74,6 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <rect
-       style="fill:#000000;fill-opacity:1;stroke:none"
-       id="rect2985"
-       width="118.18785"
-       height="126.26907"
-       x="469.72092"
-       y="65.443146" />
-    <path
-       sodipodi:type="arc"
-       style="fill:none;stroke:#ffdfaa;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="path3755"
-       sodipodi:cx="164.65486"
-       sodipodi:cy="219.49141"
-       sodipodi:rx="27.274118"
-       sodipodi:ry="27.779196"
-       d="m 191.92898,219.49141 a 27.274118,27.779196 0 1 1 -54.54824,0 27.274118,27.779196 0 1 1 54.54824,0 z"
-       transform="matrix(1.0431002,0,0,1.0241347,-17.740072,-114.60957)"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/SleepLocked.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <rect
-       style="fill:#915c13;fill-opacity:1;stroke:#ffdfaa;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3757"
-       width="25.090019"
-       height="20.418064"
-       x="141.50325"
-       y="109.34042"
-       ry="2.4199185"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/SleepLocked.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       style="fill:none;stroke:#ffdfaa;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 146.09332,107.49074 c 0.0601,-3.16205 -1.24795,-15.44649 8.33376,-15.53109 9.58171,-0.0846 7.82869,15.90991 7.82869,15.90991"
-       id="path3759"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="czc"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/SleepLocked.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       sodipodi:nodetypes="czc"
-       inkscape:connector-curvature="0"
-       id="path3761"
-       d="m 70.461282,110.27088 c -1.43251,-2.82216 -8.51562,-13.09504 0.16505,-17.14013 8.68067,-4.04508 11.90843,3.87391 11.90843,3.87391"
-       style="fill:none;stroke:#ffdfaa;stroke-width:5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/SleepUnlocked.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
     <path
        transform="matrix(1.0431002,0,0,1.0241347,-94.511665,-114.35703)"
        d="m 191.92898,219.49141 a 27.274118,27.779196 0 1 1 -54.54824,0 27.274118,27.779196 0 1 1 54.54824,0 z"
@@ -131,22 +82,18 @@
        sodipodi:cy="219.49141"
        sodipodi:cx="164.65486"
        id="path3769"
-       style="fill:none;stroke:#ffdfaa;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       style="fill:#00bebe;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;fill-opacity:1"
        sodipodi:type="arc"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/SleepUnlocked.png"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/sleep_unlocked.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <rect
-       ry="2.4199185"
-       y="109.59296"
-       x="64.731651"
-       height="20.418064"
-       width="25.090019"
-       id="rect3771"
-       style="fill:#915c13;fill-opacity:1;stroke:#ffdfaa;stroke-width:4;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/SleepUnlocked.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       id="rect2985"
+       width="118.18785"
+       height="126.26907"
+       x="469.72092"
+       y="65.443146" />
     <rect
        style="fill:url(#linearGradient3802);fill-opacity:1;stroke:none"
        id="rect3794"
@@ -435,5 +382,180 @@
        inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:5.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 67.517136,110.03643 0,-20.07679 19.445436,-0.25253 0,8.08122"
+       id="path3991"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/sleep_unlocked.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       ry="1.6190078"
+       y="107.59296"
+       x="62.611404"
+       height="23.448523"
+       width="29.256899"
+       id="rect3771"
+       style="fill:#84e9f4;fill-opacity:1;stroke:none"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/sleep_unlocked.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/sleep_unlocked.png"
+       sodipodi:type="arc"
+       style="fill:#00bebe;fill-opacity:1;stroke:none"
+       id="path3993"
+       sodipodi:cx="164.65486"
+       sodipodi:cy="219.49141"
+       sodipodi:rx="27.274118"
+       sodipodi:ry="27.779196"
+       d="m 191.92898,219.49141 a 27.274118,27.779196 0 1 1 -54.54824,0 27.274118,27.779196 0 1 1 54.54824,0 z"
+       transform="matrix(1.0431002,0,0,1.0241347,-28.511665,-114.35703)" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/sleep_unlocked.png"
+       sodipodi:nodetypes="cccc"
+       inkscape:connector-curvature="0"
+       id="path3995"
+       d="m 133.51714,116.03643 0,-20.07679 19.44543,-0.25253 0,8.08122"
+       style="fill:none;stroke:#ffffff;stroke-width:5.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/sleep_unlocked.png"
+       style="fill:#84e9f4;fill-opacity:1;stroke:none"
+       id="rect3997"
+       width="29.256899"
+       height="23.448523"
+       x="128.61139"
+       y="103.59296"
+       ry="1.6190078" />
+    <path
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/light_full.png"
+       sodipodi:type="arc"
+       style="fill:#00bebe;fill-opacity:1;stroke:none"
+       id="path3999"
+       sodipodi:cx="164.65486"
+       sodipodi:cy="219.49141"
+       sodipodi:rx="27.274118"
+       sodipodi:ry="27.779196"
+       d="m 191.92898,219.49141 a 27.274118,27.779196 0 1 1 -54.54824,0 27.274118,27.779196 0 1 1 54.54824,0 z"
+       transform="matrix(1.0431002,0,0,1.0241347,-95.648087,-48.104492)" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#ffffff;stroke-width:2.55558729;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path4011"
+       sodipodi:cx="57.136753"
+       sodipodi:cy="169.23631"
+       sodipodi:rx="13.826463"
+       sodipodi:ry="12.879445"
+       d="m 70.963216,169.23631 a 13.826463,12.879445 0 1 1 -27.652926,0 13.826463,12.879445 0 1 1 27.652926,0 z"
+       transform="matrix(0.72021091,0,0,0.77316758,34.952919,43.589406)"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/light_full.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/light_full.png"
+       style="fill:#84e9f4;fill-opacity:1;stroke:none"
+       id="rect4003"
+       width="12.336843"
+       height="15.367302"
+       x="69.619339"
+       y="182.17924"
+       ry="1.0610384" />
+    <g
+       id="g15901"
+       transform="translate(9.0967102e-7,2)"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/light_full.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <path
+         inkscape:transform-center-y="-16.414979"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 76.103432,153.57896 0,3.91434"
+         id="use15637"
+         inkscape:connector-curvature="0"
+         inkscape:tile-x0="74.967008"
+         inkscape:tile-y0="151.05357" />
+      <path
+         inkscape:transform-center-x="16.414979"
+         inkscape:tile-y0="151.05357"
+         inkscape:tile-x0="74.967008"
+         inkscape:connector-curvature="0"
+         id="path15885"
+         d="m 57.731283,171.95111 3.91434,0"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:transform-center-y="-8.207485"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 60.192684,162.76504 3.389918,1.95717"
+         id="path15887"
+         inkscape:connector-curvature="0"
+         inkscape:tile-x0="74.967008"
+         inkscape:tile-y0="151.05357"
+         inkscape:transform-center-x="14.215789" />
+      <path
+         inkscape:transform-center-x="8.207492"
+         inkscape:tile-y0="151.05357"
+         inkscape:tile-x0="74.967008"
+         inkscape:connector-curvature="0"
+         id="path15889"
+         d="m 66.917355,156.04037 1.95717,3.38991"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         inkscape:transform-center-y="-14.215785" />
+      <path
+         inkscape:transform-center-y="-14.21579"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 85.289499,156.04036 -1.957164,3.38992"
+         id="path15891"
+         inkscape:connector-curvature="0"
+         inkscape:tile-x0="74.967008"
+         inkscape:tile-y0="151.05357"
+         inkscape:transform-center-x="-8.207485" />
+      <path
+         inkscape:transform-center-x="-14.215785"
+         inkscape:tile-y0="151.05357"
+         inkscape:tile-x0="74.967008"
+         inkscape:connector-curvature="0"
+         id="path15893"
+         d="m 92.014174,162.76503 -3.389913,1.95717"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         inkscape:transform-center-y="-8.207495" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 94.475579,171.9511 -3.914336,0"
+         id="path15895"
+         inkscape:connector-curvature="0"
+         inkscape:tile-x0="74.967008"
+         inkscape:tile-y0="151.05357"
+         inkscape:transform-center-x="-16.414978" />
+      <path
+         inkscape:transform-center-y="8.207485"
+         inkscape:transform-center-x="-14.215788"
+         inkscape:tile-y0="151.05357"
+         inkscape:tile-x0="74.967008"
+         inkscape:connector-curvature="0"
+         id="path15897"
+         d="M 92.014178,181.13717 88.624264,179.18"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:transform-center-y="8.207485"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 60.192684,181.13718 3.389918,-1.95717"
+         id="path15899"
+         inkscape:connector-curvature="0"
+         inkscape:tile-x0="74.967008"
+         inkscape:tile-y0="151.05357"
+         inkscape:transform-center-x="14.215789" />
+    </g>
   </g>
 </svg>
