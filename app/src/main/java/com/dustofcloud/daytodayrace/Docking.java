@@ -9,6 +9,9 @@ public class Docking extends Activity implements EventsControlSwitch {
 
     private MapManager PointsViewer = null;
     private ControlSwitch SleepLocker = null;
+    private ControlSwitch BatterySaver = null;
+    private ControlSwitch LightEnhancer = null;
+
     private int BackPressedCount = 0;
 //    private DataManager BackendService;
 
@@ -20,8 +23,17 @@ public class Docking extends Activity implements EventsControlSwitch {
         PointsViewer = (MapManager) findViewById(R.id.map_manager);
 
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
-        SleepLocker.setMode(SharedConstants.ScreenLightLocked, SharedConstants.ScreenLightUnLocked);
+        SleepLocker.setMode(SharedConstants.ScreenLocked, SharedConstants.ScreenUnLocked);
         SleepLocker.registerControlSwitch(this);
+
+        LightEnhancer = (ControlSwitch) findViewById(R.id.switch_light_enhancer);
+        LightEnhancer.setMode(SharedConstants.LightEnhanced, SharedConstants.LightNormal);
+        LightEnhancer.registerControlSwitch(this);
+
+        BatterySaver = (ControlSwitch) findViewById(R.id.switch_battery_saver);
+        BatterySaver.setMode(SharedConstants.BatteryDrainMode, SharedConstants.BatterySaveMode);
+        BatterySaver.registerControlSwitch(this);
+
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //        BackendService = (DataManager) DataManager.getBackend();
@@ -36,9 +48,9 @@ public class Docking extends Activity implements EventsControlSwitch {
 
     @Override
     public void onStatusChanged(short Status) {
-        if (Status == SharedConstants.ScreenLightLocked)
+        if (Status == SharedConstants.ScreenLocked)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        if (Status == SharedConstants.ScreenLightUnLocked)
+        if (Status == SharedConstants.ScreenUnLocked)
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 

@@ -76,7 +76,7 @@ public class MapManager extends ImageView implements EventsGPS {
             MapInUse = Bitmap.createBitmap(MapImage.getMap());
         }
 
-        if (!MapBuilding.isAlive()){
+        if (MapImage.getStatus() == MapBuilder.isFinished){
             MapImage.setFilteredPoints(GeoInView);
             MapImage.setComputedPoints(GeoInUse);
             MapBuilding.start();
