@@ -21,22 +21,27 @@ public class MapManager extends ImageView implements EventsGPS {
     private DataManager BackendService;
     private ArrayList<GeoData> GeoInView =null;
     private ArrayList<GeoData> GeoInUse =null;
-    private PointF OffsetMeters =null;
-    private Paint Painter;
-    private PointF Center= new PointF(0f,0f);
-    private PointF ZeroXY = new PointF(0f,0f);
+    private PointF WorldOrigin ;
+    private PointF GraphicCenter = new PointF(0f,0f) ;
+    private Paint LineMode;
+    private Paint FillMode;
     private GeoData InUseGeo = null;
     private MapBuilder MapImage = null;
     private Thread MapBuilding = null;
     private Bitmap MapInUse = null;
+
+    private static final int ColorMarker = 0xffa02c2c;
+    private static final int Transparency = 60;
 
     public MapManager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setUpdateCallback(this);
-        Painter = new Paint();
-        Painter.setStrokeWidth(2f);
+        LineMode = new Paint();
+        LineMode.setStrokeWidth(5f);
+        LineMode.setStyle(Paint.Style.STROKE);
+        FillMode = new Paint();
 
         GeoInView = new ArrayList<GeoData>();
         GeoInUse = new ArrayList<GeoData>();
@@ -49,7 +54,7 @@ public class MapManager extends ImageView implements EventsGPS {
         Log.d("PointsDrawer","Image size ["+this.getWidth()+" px x "+this.getHeight()+" px]");
 
         InUseGeo = geoInfo;
-        this.OffsetMeters = geoInfo.getCartesian();
+        this.WorldOrigin = geoInfo.getCartesian();
         PointF SizeView = BackendService.getViewArea(); // Read From backend because it's subject to change
         if ((getMeasuredHeight() != 0) && (getMeasuredWidth() != 0)) {
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
@@ -58,27 +63,29 @@ public class MapManager extends ImageView implements EventsGPS {
 
         PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
         GeoInView = new ArrayList<GeoData>(BackendService.getInView(
-                new RectF(this.OffsetMeters.x - Size.x/2,this.OffsetMeters.y - Size.y/2,
-                          this.OffsetMeters.x + Size.x/2, this.OffsetMeters.y + Size.y/2
+                new RectF(this.WorldOrigin.x - Size.x/2,this.WorldOrigin.y - Size.y/2,
+                          this.WorldOrigin.x + Size.x/2, this.WorldOrigin.y + Size.y/2
                         ))
                 );
 
         PointF SizeSelection = BackendService.getSelectionArea(); // Read From backend because it's subject to change
         ArrayList<GeoData> CollectedSelection = BackendService.getInUse(
-                new RectF(this.OffsetMeters.x - SizeSelection.x / 2, this.OffsetMeters.y - SizeSelection.y / 2,
-                          this.OffsetMeters.x + SizeSelection.x / 2, this.OffsetMeters.y + SizeSelection.y / 2
+                new RectF(this.WorldOrigin.x - SizeSelection.x / 2, this.WorldOrigin.y - SizeSelection.y / 2,
+                          this.WorldOrigin.x + SizeSelection.x / 2, this.WorldOrigin.y + SizeSelection.y / 2
                         )
                 );
         // Filtering InUse
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
 
-        if (MapImage.getStatus() == MapBuilder.isFinished) {
+        if (MapBuilding.getState() == Thread.State.TERMINATED) {
             MapInUse = Bitmap.createBitmap(MapImage.getMap());
+            MapBuilding = new Thread(MapImage);
         }
-
-        if (MapImage.getStatus() == MapBuilder.isFinished){
+        if (MapBuilding.getState() == Thread.State.NEW){
             MapImage.setFilteredPoints(GeoInView);
             MapImage.setComputedPoints(GeoInUse);
+            MapImage.setMeterToPixelFactor(Math.max(MetersToPixels.x, MetersToPixels.y));
+            MapImage.setWorldOrigin(WorldOrigin);
             MapBuilding.start();
         }
 
@@ -107,11 +114,13 @@ public class MapManager extends ImageView implements EventsGPS {
     @Override
     protected void onDraw(Canvas canvas) {
         PointF Cartesian = null;
-        PointF GraphicPoint = null;
+        PointF Pixel = new PointF(0f,0f); // Allocate because it is updated on the fly
+        Float Radius ;
+
 
         float scaleRadius = Math.max(MetersToPixels.x, MetersToPixels.y);
-        Center.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
-
+        GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
+/*
         Log.d("PointsDrawer", "Drawing "+ GeoInView.size()+ " points in view");
         // Drawing all points from Storage
         Painter.setColor(Color.MAGENTA);
@@ -130,13 +139,21 @@ public class MapManager extends ImageView implements EventsGPS {
             canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
             canvas.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * Marker.getAccuracy(),Painter);
         }
+*/
 
-         if (OffsetMeters !=null) {
-             Log.d("PointsDrawer", "Offset is ["+OffsetMeters.x+","+OffsetMeters.y+"]");
-             Painter.setColor(Color.RED);
-             GraphicPoint = PixelsFromMeters(ZeroXY,Center);
-             canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
-             canvas.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * InUseGeo.getAccuracy(),Painter);
+         if (MapInUse !=null) canvas.drawBitmap(MapInUse,0f,0f,null);
+
+         if (WorldOrigin !=null) {
+             Log.d("PointsDrawer", "Offset is ["+WorldOrigin.x+","+WorldOrigin.y+"]");
+             LineMode.setColor(ColorMarker);
+             FillMode.setColor(ColorMarker);
+             Radius = Math.max(MetersToPixels.x, MetersToPixels.y)*InUseGeo.getAccuracy();
+             Float MinRadius = (Radius/10 < 10)? 10:Radius/10;
+             Pixel.set(GraphicCenter.x,GraphicCenter.y);
+             canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
+             canvas.drawCircle(Pixel.x, Pixel.y,MinRadius ,FillMode);
+             FillMode.setAlpha(Transparency);
+             canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
          }
 
         super.onDraw(canvas);
