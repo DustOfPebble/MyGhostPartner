@@ -2,20 +2,27 @@ package com.dustofcloud.daytodayrace;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.ColorFilter;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PointF;
+import android.os.SystemClock;
+import android.util.Log;
 
 import java.util.ArrayList;
 
-public class MapBuilder extends Drawable implements Runnable {
+public class MapBuilder implements Runnable {
     public static final int isAborted = 1;
     public static final int isFinished = 2;
 
     private Canvas OffScreenBuffer;
+    private Paint Painter;
+
+
     private ArrayList<GeoData> FilteredPoints = null;
     private ArrayList<GeoData> ComputedPoints = null;
     private int Status = isAborted;
+
+
 
     private Bitmap Map;
 
@@ -23,6 +30,7 @@ public class MapBuilder extends Drawable implements Runnable {
         Map = Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888);
         OffScreenBuffer = new Canvas(Map);
     }
+    public int getStatus() {return Status;}
 
     public Bitmap getMap() {
         return Map ;
@@ -36,7 +44,8 @@ public class MapBuilder extends Drawable implements Runnable {
         ComputedPoints = new ArrayList<GeoData>(Collection);
     }
 
-    public int getStatus() {return Status;}
+
+
 
     @Override
     public void run() {
@@ -48,24 +57,33 @@ public class MapBuilder extends Drawable implements Runnable {
         if (ComputedPoints == null) return;
         if (FilteredPoints == null) return;
 
+        PointF Pixel = new PointF(0f,0f);
+
+
+        long StartRender = SystemClock.elapsedRealtime();
         // Do the drawing
-        this.draw(OffScreenBuffer);
+        Log.d("PointsDrawer", "Drawing "+ FilteredPoints.size()+ " points in view");
+        // Drawing all points from Storage
+        Painter.setColor(Color.MAGENTA);
+        for (GeoData Marker : FilteredPoints) {
+            Cartesian = Marker.getCartesian();
+            Pixel = PixelsFromMeters(MetersFromOrigin(Cartesian,OffsetMeters),Center);
+            OffScreenBuffer.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * Marker.getAccuracy(),Painter);
+        }
+
+        Log.d("PointsDrawer", "Drawing "+ ComputedPoints.size()+ " points in use");
+        // Drawing all points from Storage
+        Painter.setColor(Color.GREEN);
+        for (GeoData Marker : ComputedPoints) {
+            Cartesian = Marker.getCartesian();
+            Pixel = PixelsFromMeters(MetersFromOrigin(Cartesian,OffsetMeters),Center);
+            OffScreenBuffer.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
+            OffScreenBuffer.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * Marker.getAccuracy(),Painter);
+        }
+        long EndRender = SystemClock.elapsedRealtime();
+        Log.d("MapBuilder", "Rendering was "+ (EndRender - StartRender)+ " ms.");
+
         Status = isFinished;
     }
-
-    @Override
-    public void draw(Canvas canvas) {
-
-
-    }
-
-    @Override
-    public void setAlpha(int alpha) { }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {  }
-
-    @Override
-    public int getOpacity() { return 0; }
 
 }
