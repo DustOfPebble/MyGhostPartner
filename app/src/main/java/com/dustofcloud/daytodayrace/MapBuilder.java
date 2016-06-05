@@ -7,10 +7,11 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.View;
 
 import java.util.ArrayList;
 
-public class MapBuilder implements Runnable {
+public class MapBuilder extends Canvas implements Runnable {
 
     private static final int ColorFiltered = 0xff84e9f4;
     private static final int ColorComputed = 0xff00d4aa;

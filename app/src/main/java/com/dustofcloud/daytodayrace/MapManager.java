@@ -88,7 +88,6 @@ public class MapManager extends ImageView implements EventsGPS {
             MapImage.setWorldOrigin(WorldOrigin);
             MapBuilding.start();
         }
-
         invalidate();
     }
 
@@ -102,44 +101,12 @@ public class MapManager extends ImageView implements EventsGPS {
         MapBuilding = new Thread(MapImage);
     }
 
-    private PointF PixelsFromMeters(PointF Meters, PointF Offset) {
-        return new PointF((Meters.x * MetersToPixels.x) + Offset.x,
-                          (Meters.y * MetersToPixels.y) + Offset.y);
-    }
-
-    private PointF MetersFromOrigin(PointF Meters, PointF Origin) {
-        return new PointF(Meters.x - Origin.x, Meters.y - Origin.y);
-    }
-
     @Override
     protected void onDraw(Canvas canvas) {
-        PointF Cartesian = null;
         PointF Pixel = new PointF(0f,0f); // Allocate because it is updated on the fly
         Float Radius ;
 
-
-        float scaleRadius = Math.max(MetersToPixels.x, MetersToPixels.y);
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
-/*
-        Log.d("PointsDrawer", "Drawing "+ GeoInView.size()+ " points in view");
-        // Drawing all points from Storage
-        Painter.setColor(Color.MAGENTA);
-        for (GeoData Marker : GeoInView) {
-            Cartesian = Marker.getCartesian();
-            GraphicPoint = PixelsFromMeters(MetersFromOrigin(Cartesian,OffsetMeters),Center);
-            canvas.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * Marker.getAccuracy(),Painter);
-        }
-
-        Log.d("PointsDrawer", "Drawing "+ GeoInUse.size()+ " points in use");
-        // Drawing all points from Storage
-        Painter.setColor(Color.GREEN);
-        for (GeoData Marker : GeoInUse) {
-            Cartesian = Marker.getCartesian();
-            GraphicPoint = PixelsFromMeters(MetersFromOrigin(Cartesian,OffsetMeters),Center);
-            canvas.drawPoint(GraphicPoint.x, GraphicPoint.y,Painter);
-            canvas.drawCircle(GraphicPoint.x, GraphicPoint.y, scaleRadius * Marker.getAccuracy(),Painter);
-        }
-*/
 
          if (MapInUse !=null) canvas.drawBitmap(MapInUse,0f,0f,null);
 
@@ -158,5 +125,4 @@ public class MapManager extends ImageView implements EventsGPS {
 
         super.onDraw(canvas);
     }
-
 }
