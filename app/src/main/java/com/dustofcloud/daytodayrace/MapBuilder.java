@@ -11,8 +11,6 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class MapBuilder implements Runnable {
-    public static final int isRunning = 1;
-    public static final int isFinished = 2;
 
     private static final int ColorFiltered = 0xff84e9f4;
     private static final int ColorComputed = 0xff00d4aa;
@@ -24,7 +22,6 @@ public class MapBuilder implements Runnable {
 
     private ArrayList<GeoData> FilteredPoints = null;
     private ArrayList<GeoData> ComputedPoints = null;
-    private int Status = isFinished;
 
     private PointF GraphicCenter = new PointF(0f,0f);
     private PointF WorldOrigin = null;
@@ -42,8 +39,6 @@ public class MapBuilder implements Runnable {
 
         GraphicCenter.set(OffScreenBuffer.getWidth() /2, OffScreenBuffer.getHeight()/2);
     }
-
-    public int getStatus() {return Status;}
 
     public Bitmap getMap() {
         return Map ;
@@ -63,14 +58,12 @@ public class MapBuilder implements Runnable {
 
     @Override
     public void run() {
-        Status = isRunning;
         // Moves the current Thread into the background
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
         // Do all safety check
         if ((ComputedPoints == null) || (FilteredPoints == null)) {
-            Status = isFinished;
-            return;
+             return;
         }
 
         PointF Cartesian = null; // Do not allocate ==> We get a copy each time
@@ -115,8 +108,6 @@ public class MapBuilder implements Runnable {
         }
         long EndRender = SystemClock.elapsedRealtime();
         Log.d("MapBuilder", "Rendering was "+ (EndRender - StartRender)+ " ms.");
-
-        Status = isFinished;
     }
 
 }
