@@ -3,17 +3,14 @@ package com.dustofcloud.daytodayrace;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.EnumMap;
 
 public class MapManager extends ImageView implements EventsGPS {
 
@@ -50,16 +47,14 @@ public class MapManager extends ImageView implements EventsGPS {
     @Override
     public void processLocationChanged(GeoData geoInfo) {
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
-        Log.d("PointsDrawer","Geographic Area ["+this.getWidth()/MetersToPixels.x+" m x "+this.getHeight()/MetersToPixels.y+" m]");
-        Log.d("PointsDrawer","Image size ["+this.getWidth()+" px x "+this.getHeight()+" px]");
+        if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
 
         InUseGeo = geoInfo;
         this.WorldOrigin = geoInfo.getCartesian();
         PointF SizeView = BackendService.getViewArea(); // Read From backend because it's subject to change
-        if ((getMeasuredHeight() != 0) && (getMeasuredWidth() != 0)) {
+
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
         MetersToPixels.set((float)MinSize / SizeView.x,(float)MinSize / SizeView.y);
-        }
 
         PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
         GeoInView = new ArrayList<GeoData>(BackendService.getInView(
@@ -99,6 +94,7 @@ public class MapManager extends ImageView implements EventsGPS {
         this.setMeasuredDimension(Width, Height);
         MapImage = new MapBuilder(Width, Height);
         MapBuilding = new Thread(MapImage);
+        Log.d("MapManager","Image size ["+this.getWidth()+" px x "+this.getHeight()+" px]");
     }
 
     @Override

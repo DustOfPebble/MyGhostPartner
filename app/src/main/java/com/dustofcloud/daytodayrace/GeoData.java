@@ -47,6 +47,15 @@ public class GeoData {
         Heartbeat = 60;
     }
 
+    public double getLongitude() {return Longitude;}
+    public double getLatitude() {return Latitude;}
+    public float getAltitude() {return Altitude;}
+    public float getAccuracy() {return Accuracy;}
+    public float getSpeed() {return Speed;}
+    public float getBearing() {return Bearing;}
+    public int getHeartbeat() {return Heartbeat;}
+    public int getElapsedDays() {return ElapsedDays;}
+
     public void setHeartbeat(int value) { Heartbeat = value;} // Provisionning function
 
     public void setElapsedDays(int value) { ElapsedDays = value;} // Provisionning function
@@ -64,30 +73,6 @@ public class GeoData {
         Speed = GPS.getSpeed();
         Accuracy = GPS.getAccuracy();
     }
-
-    private float getNoise(float Range) {
-        return ((float) (Generator.nextInt(1000) - 500)) / 1000.0f * Range;
-    }
-
-    public void fakeGPS() {
-        Longitude += (double)getNoise(0.005f); // ~ 250 m (considering Latitude value)
-        Latitude += (double)getNoise(0.005f); // ~ 500 m
-        Cartesian = new PointF(DataManager.dX(Longitude),DataManager.dY(Latitude));
-        Altitude += getNoise(15.0f);
-        Speed += getNoise(19.0f);
-        Bearing += getNoise(179.0f);
-        Accuracy += getNoise(15.0f);
-    }
-
-    public double getLongitude() {return Longitude;}
-    public double getLatitude() {return Latitude;}
-    public float getAltitude() {return Altitude;}
-    public float getAccuracy() {return Accuracy;}
-    public float getSpeed() {return Speed;}
-    public float getBearing() {return Bearing;}
-    public int getHeartbeat() {return Heartbeat;}
-    public int getElapsedDays() {return ElapsedDays;}
-
 
      public String toJSON() {
         JSONObject GeoJSON = new JSONObject();

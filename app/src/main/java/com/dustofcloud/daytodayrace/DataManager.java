@@ -81,9 +81,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         if (WriteToFile == null) Log.d("DataManager", "Couldn't create a new DB...");
 
         TrigEvents = new SimulateGPS(this);
-        TrigEvents.start();
+//        if (TrigEvents.load("RetourTCRCar.DailyDB", 1000))  TrigEvents.sendGPS();
     }
-
 
     static public float dX(double longitude) {
         return earthRadiusCorrected * (float) Math.toRadians(longitude-originLongitude);

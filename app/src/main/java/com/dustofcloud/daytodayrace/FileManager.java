@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 public class FileManager {
     private final String Signature = ".DailyDB";
@@ -59,11 +60,27 @@ public class FileManager {
     public FileInputStream getNextStream() {
         FileInputStream ReadStream = null;
         if (LastFile == Collection.size()) return ReadStream;
-        Log.d("FileManager","Loading data from " + Collection.get(LastFile).getPath());
+        Log.d("FileManager","Selecting data from " + Collection.get(LastFile).getPath());
         try { ReadStream = new FileInputStream(Collection.get(LastFile)); }
-        catch (Exception StreamError) { Log.d("FileManager","Can't open stream "+ InUseDB.getPath()+" for reading..."); }
+        catch (Exception StreamError) {
+            Log.d("FileManager","Can't open stream "+ InUseDB.getPath()+" for reading...");
+            ReadStream = null;
+        }
         LastFile++;
         return ReadStream;
     }
 
+    public FileInputStream getStream(String MatchSearch) {
+        FileInputStream ReadStream = null;
+        for (File FileDB: Collection ) {
+            if (FileDB.getPath().indexOf(MatchSearch) == 0) continue;
+            try { ReadStream = new FileInputStream(FileDB); }
+            catch (Exception StreamError) {
+                Log.d("FileManager","Can't open stream "+ FileDB.getPath()+" for reading...");
+                ReadStream = null;
+            }
+        }
+        if (ReadStream == null) Log.d("FileManager","Couldn't find matching file with" + MatchSearch);
+        return ReadStream;
+    }
 }
