@@ -10,7 +10,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class MapBuilder extends Canvas implements Runnable {
+public class MapBuilder implements Runnable {
 
     private static final int ColorFiltered = 0xff2ad4ff;
     private static final int ColorComputed = 0xff55ff99;
