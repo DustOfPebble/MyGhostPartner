@@ -105,7 +105,13 @@ public class MapManager extends ImageView implements EventsGPS {
 
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
-         if (MapInUse !=null) canvas.drawBitmap(MapInUse,0f,0f,null);
+         if (MapInUse !=null)
+         {
+             canvas.rotate(InUseGeo.getBearing(),GraphicCenter.x,GraphicCenter.y);
+             canvas.drawBitmap(MapInUse,0f,0f,null);
+             canvas.restore();
+             Log.d("MapManager","Rotating Map of "+InUseGeo.getBearing()+"°");
+         }
 
          if (WorldOrigin !=null) {
              Log.d("MapManager", "Offset is ["+WorldOrigin.x+","+WorldOrigin.y+"]");

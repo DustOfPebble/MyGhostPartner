@@ -72,14 +72,17 @@ public class SimulateGPS {
     }
 
     public void sendGPS() {
+        Log.d("SimulateGPS", "Simulating new GPS position ...");
         if (Index == Collection.size()) Index=0;
         Notify.processLocationChanged(Collection.get(Index));
         trigger.postDelayed(task, EventsDelay);
         Index++;
     }
 
-    public void stop() {
-        trigger.removeCallbacksAndMessages(task);
+    public void stop()
+    {
+        Log.d("SimulateGPS", "Stopping GPS simulation ...");
+        trigger.removeCallbacks(task);
     }
 
 }

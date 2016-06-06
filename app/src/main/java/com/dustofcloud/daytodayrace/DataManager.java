@@ -81,7 +81,6 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         if (WriteToFile == null) Log.d("DataManager", "Couldn't create a new DB...");
 
         TrigEvents = new SimulateGPS(this);
-
     }
 
     public float dX(double longitude) {
@@ -147,14 +146,9 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             }
         }
         if (ModeID == SharedConstants.LiveGPS)  {
-
             TrigEvents.stop();
-
-            SourceGPS.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,
-                    this
-            );
+            SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this );
         }
     }
 
