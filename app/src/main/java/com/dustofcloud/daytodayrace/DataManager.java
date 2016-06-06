@@ -81,7 +81,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         if (WriteToFile == null) Log.d("DataManager", "Couldn't create a new DB...");
 
         TrigEvents = new SimulateGPS(this);
-        if (TrigEvents.load("RetourTCRCar.DailyDB", 1000))  TrigEvents.sendGPS();
+
     }
 
     public float dX(double longitude) {
@@ -136,6 +136,26 @@ public class DataManager extends Application implements  EventsFileReader, Locat
 
         // Loop over registered clients callback ...
         if (Clients.size() !=0) for (EventsGPS Client :Clients) { Client.processLocationChanged(update);}
+    }
+
+    public void setMode(int ModeID)
+    {
+        if (ModeID == SharedConstants.ReplayedGPS)  {
+            if (TrigEvents.load("RetourTCRCar.DailyDB", 1000))   {
+                SourceGPS.removeUpdates(this);
+                TrigEvents.sendGPS();
+            }
+        }
+        if (ModeID == SharedConstants.LiveGPS)  {
+
+            TrigEvents.stop();
+
+            SourceGPS.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,
+                    this
+            );
+        }
     }
 
     @Override

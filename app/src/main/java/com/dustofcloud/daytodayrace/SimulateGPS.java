@@ -17,14 +17,16 @@ public class SimulateGPS {
     private Runnable task = new Runnable() { public void run() { sendGPS();} };
     private int EventsDelay = 1000;
 
-    public SimulateGPS(DataManager Parent) {
+    public SimulateGPS(DataManager Parent)
+    {
         Notify = Parent;
+        FileHandler= new FileManager(Notify);
+        Collection = new ArrayList<GeoData>();
     }
 
     public Boolean load(String ReplayedFile, int Delay)  {
-        FileHandler= new FileManager(Notify);
         EventsDelay = Delay;
-        Collection = new ArrayList<GeoData>();
+        Collection.clear();
 
         FileInputStream Stream = FileHandler.getStream(ReplayedFile);
         if (Stream == null)
@@ -65,6 +67,7 @@ public class SimulateGPS {
         }
         catch(Exception FileError) {}
         Log.d("SimulateGPS", NbGeoData +" Records loaded ...");
+        Index = 0;
         return true;
     }
 
@@ -73,6 +76,10 @@ public class SimulateGPS {
         Notify.processLocationChanged(Collection.get(Index));
         trigger.postDelayed(task, EventsDelay);
         Index++;
+    }
+
+    public void stop() {
+        trigger.removeCallbacksAndMessages(task);
     }
 
 }
