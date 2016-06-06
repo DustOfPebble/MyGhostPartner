@@ -31,8 +31,8 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
             lowIcon = attributes.getDrawable(R.styleable.ControlSwitch_LowMode);
         }
         finally { attributes.recycle();}
-        this.setOnClickListener(this);
 
+         this.setOnClickListener(this);
          Status = highStatus;
          this.setBackground(highIcon);
          invalidate();
