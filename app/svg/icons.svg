@@ -7,17 +7,94 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="210mm"
    height="297mm"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="icons.svg">
   <defs
      id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Send"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Send"
+       style="overflow:visible;">
+      <path
+         id="path4067"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.2) rotate(180) translate(6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Sstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Sstart"
+       style="overflow:visible">
+      <path
+         id="path4064"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.2) translate(6,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Mend"
+       style="overflow:visible;">
+      <path
+         id="path4079"
+         style="fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(0.6) rotate(180) translate(0,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Lstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lstart"
+       style="overflow:visible">
+      <path
+         id="path4052"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.8) translate(12.5,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow2Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow2Lend"
+       style="overflow:visible;">
+      <path
+         id="path4073"
+         style="fill-rule:evenodd;stroke-width:0.62500000;stroke-linejoin:round;"
+         d="M 8.7185878,4.0337352 L -2.2072895,0.016013256 L 8.7185884,-4.0017078 C 6.9730900,-1.6296469 6.9831476,1.6157441 8.7185878,4.0337352 z "
+         transform="scale(1.1) rotate(180) translate(1,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotS"
+       style="overflow:visible">
+      <path
+         id="path4119"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.2) translate(7.4, 1)" />
+    </marker>
     <linearGradient
        id="linearGradient3796">
       <stop
@@ -29,16 +106,6 @@
          offset="1"
          id="stop3800" />
     </linearGradient>
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3796"
-       id="linearGradient3802"
-       x1="236.90108"
-       y1="78.701401"
-       x2="312.62192"
-       y2="148.907"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.97053869,0,0,1.0347904,6.9118579,-5.1673531)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -47,16 +114,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="115.622"
-     inkscape:cy="742.71311"
+     inkscape:zoom="5.6"
+     inkscape:cx="211.60289"
+     inkscape:cy="923.1846"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="657"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1920"
+     inkscape:window-height="1036"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -66,7 +133,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -95,291 +162,117 @@
        x="469.72092"
        y="65.443146" />
     <rect
-       style="fill:url(#linearGradient3802);fill-opacity:1;stroke:none"
+       style="fill:#00bebe;fill-opacity:1;stroke:none"
        id="rect3794"
        width="75"
        height="75"
-       x="234.60793"
-       y="73.528198"
+       x="224.42935"
+       y="72.278198"
        ry="2.5041084"
        inkscape:transform-center-x="4.4117653"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
-       inkscape:export-xdpi="153.60004"
-       inkscape:export-ydpi="153.60004" />
-    <g
-       id="g3810"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
-       inkscape:export-xdpi="153.60004"
-       inkscape:export-ydpi="153.60004">
-      <path
-         transform="matrix(0.95073369,0,0,0.9507337,14.046715,4.8538663)"
-         d="m 297.48993,92.212189 c 0,3.347351 -2.71356,6.060915 -6.06091,6.060915 -3.34736,0 -6.06092,-2.713564 -6.06092,-6.060915 0,-3.347351 2.71356,-6.060916 6.06092,-6.060916 3.34735,0 6.06091,2.713565 6.06091,6.060916 z"
-         sodipodi:ry="6.0609155"
-         sodipodi:rx="6.0609155"
-         sodipodi:cy="92.212189"
-         sodipodi:cx="291.42902"
-         id="path3804"
-         style="fill:#01c5ad;fill-opacity:0.24481328;stroke:#8af9f7;stroke-width:0.50000000000000000;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         sodipodi:type="arc" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3806"
-         d="m 291.1181,90.495411 0,4.055382"
-         style="fill:none;stroke:#8af9f7;stroke-width:0.97191411px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3808"
-         d="m 289.07458,92.479587 4.08703,0.08703"
-         style="fill:none;stroke:#8af9f7;stroke-width:0.91296762px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <path
-       transform="matrix(0.95073369,0,0,0.9507337,6.046715,18.853866)"
-       d="m 297.48993,92.212189 a 6.0609155,6.0609155 0 1 1 -12.12183,0 6.0609155,6.0609155 0 1 1 12.12183,0 z"
-       sodipodi:ry="6.0609155"
-       sodipodi:rx="6.0609155"
-       sodipodi:cy="92.212189"
-       sodipodi:cx="291.42902"
-       id="path3817"
-       style="fill:#e12023;fill-opacity:0.24481326;stroke:#e55843;stroke-width:0.50000000000000000;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       sodipodi:type="arc"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <path
-       inkscape:connector-curvature="0"
-       id="path3819"
-       d="m 283.1181,104.49541 0,4.05538"
-       style="fill:none;stroke:#e55843;stroke-width:0.97191411px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
-       inkscape:export-xdpi="153.60004"
-       inkscape:export-ydpi="153.60004" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path3821"
-       d="m 281.07458,106.47959 4.08703,0.087"
-       style="fill:none;stroke:#e55843;stroke-width:0.91296762px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
-       inkscape:export-xdpi="153.60004"
-       inkscape:export-ydpi="153.60004" />
-    <g
-       transform="translate(-4,30)"
-       id="g3823"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
-       inkscape:export-xdpi="153.60004"
-       inkscape:export-ydpi="153.60004">
-      <path
-         transform="matrix(0.95073369,0,0,0.9507337,14.046715,4.8538663)"
-         d="m 297.48993,92.212189 a 6.0609155,6.0609155 0 0 1 -6.06091,6.060915 6.0609155,6.0609155 0 0 1 -6.06092,-6.060915 6.0609155,6.0609155 0 0 1 6.06092,-6.060916 6.0609155,6.0609155 0 0 1 6.06091,6.060916 z"
-         sodipodi:ry="6.0609155"
-         sodipodi:rx="6.0609155"
-         sodipodi:cy="92.212189"
-         sodipodi:cx="291.42902"
-         id="path3825"
-         style="fill:#01c5ad;fill-opacity:0.24481327;stroke:#8af9f7;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         sodipodi:type="arc" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3827"
-         d="m 291.1181,90.495411 0,4.055382"
-         style="fill:none;stroke:#8af9f7;stroke-width:0.97191411px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3829"
-         d="m 289.07458,92.479587 4.08703,0.08703"
-         style="fill:none;stroke:#8af9f7;stroke-width:0.91296762px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g3831"
-       transform="translate(-18,40)"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
-       inkscape:export-xdpi="153.60004"
-       inkscape:export-ydpi="153.60004">
-      <path
-         sodipodi:type="arc"
-         style="fill:#01c5ad;fill-opacity:0.24481327;stroke:#8af9f7;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="path3833"
-         sodipodi:cx="291.42902"
-         sodipodi:cy="92.212189"
-         sodipodi:rx="6.0609155"
-         sodipodi:ry="6.0609155"
-         d="m 297.48993,92.212189 a 6.0609155,6.0609155 0 0 1 -6.06091,6.060915 6.0609155,6.0609155 0 0 1 -6.06092,-6.060915 6.0609155,6.0609155 0 0 1 6.06092,-6.060916 6.0609155,6.0609155 0 0 1 6.06091,6.060916 z"
-         transform="matrix(0.95073369,0,0,0.9507337,14.046715,4.8538663)" />
-      <path
-         style="fill:none;stroke:#8af9f7;stroke-width:0.97191411px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 291.1181,90.495411 0,4.055382"
-         id="path3835"
-         inkscape:connector-curvature="0" />
-      <path
-         style="fill:none;stroke:#8af9f7;stroke-width:0.91296762px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 289.07458,92.479587 4.08703,0.08703"
-         id="path3837"
-         inkscape:connector-curvature="0" />
-    </g>
-    <g
-       transform="translate(-36,46)"
-       id="g3839"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
-       inkscape:export-xdpi="153.60004"
-       inkscape:export-ydpi="153.60004">
-      <path
-         transform="matrix(0.95073369,0,0,0.9507337,14.046715,4.8538663)"
-         d="m 297.48993,92.212189 a 6.0609155,6.0609155 0 0 1 -6.06091,6.060915 6.0609155,6.0609155 0 0 1 -6.06092,-6.060915 6.0609155,6.0609155 0 0 1 6.06092,-6.060916 6.0609155,6.0609155 0 0 1 6.06091,6.060916 z"
-         sodipodi:ry="6.0609155"
-         sodipodi:rx="6.0609155"
-         sodipodi:cy="92.212189"
-         sodipodi:cx="291.42902"
-         id="path3841"
-         style="fill:#01c5ad;fill-opacity:0.24481327;stroke:#8af9f7;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         sodipodi:type="arc" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3843"
-         d="m 291.1181,90.495411 0,4.055382"
-         style="fill:none;stroke:#8af9f7;stroke-width:0.97191411px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
-      <path
-         inkscape:connector-curvature="0"
-         id="path3845"
-         d="m 289.07458,92.479587 4.08703,0.08703"
-         style="fill:none;stroke:#8af9f7;stroke-width:0.91296762px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-    <g
-       id="g3847"
-       transform="translate(-48,38)"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
-       inkscape:export-xdpi="153.60004"
-       inkscape:export-ydpi="153.60004">
-      <path
-         sodipodi:type="arc"
-         style="fill:#01c5ad;fill-opacity:0.24481327;stroke:#8af9f7;stroke-width:0.5;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         id="path3849"
-         sodipodi:cx="291.42902"
-         sodipodi:cy="92.212189"
-         sodipodi:rx="6.0609155"
-         sodipodi:ry="6.0609155"
-         d="m 297.48993,92.212189 a 6.0609155,6.0609155 0 0 1 -6.06091,6.060915 6.0609155,6.0609155 0 0 1 -6.06092,-6.060915 6.0609155,6.0609155 0 0 1 6.06092,-6.060916 6.0609155,6.0609155 0 0 1 6.06091,6.060916 z"
-         transform="matrix(0.95073369,0,0,0.9507337,14.046715,4.8538663)" />
-      <path
-         style="fill:none;stroke:#8af9f7;stroke-width:0.97191411px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 291.1181,90.495411 0,4.055382"
-         id="path3851"
-         inkscape:connector-curvature="0" />
-      <path
-         style="fill:none;stroke:#8af9f7;stroke-width:0.91296762px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-         d="m 289.07458,92.479587 4.08703,0.08703"
-         id="path3853"
-         inkscape:connector-curvature="0" />
-    </g>
-    <rect
-       style="fill:#01c5ad;fill-opacity:0.24481327;stroke:#c2bcda;stroke-width:0.52146924;stroke-linecap:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="rect3855"
-       width="35.478531"
-       height="29.053286"
-       x="236.84114"
-       y="76.01371"
-       ry="2.5238261"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
-       inkscape:export-xdpi="153.60004"
-       inkscape:export-ydpi="153.60004" />
-    <path
-       style="fill:none;stroke:#c2bcda;stroke-width:1.04293847px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 249.31916,82.19685 0,3.631661"
+       style="fill:#ffffff;stroke:#fffcfc;stroke-width:1.83649421px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 252.20882,96.661178 0,6.394942"
        id="path3860"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <path
        inkscape:connector-curvature="0"
        id="path3862"
-       d="m 270.17792,82.19685 0,3.631661"
-       style="fill:none;stroke:#c2bcda;stroke-width:1.04293847px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       d="m 288.93868,96.661178 0,6.394942"
+       style="fill:#ffffff;stroke:#fffcfc;stroke-width:1.83649421px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <path
-       style="fill:none;stroke:#c2bcda;stroke-width:1.04293847px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 244.10446,82.19685 0,3.631661"
+       style="fill:#ffffff;stroke:#fffcfc;stroke-width:1.83649421px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 243.02634,96.661178 0,6.394942"
        id="path3864"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <path
        inkscape:connector-curvature="0"
        id="path3866"
-       d="m 259.74853,82.19685 0,3.631661"
-       style="fill:none;stroke:#c2bcda;stroke-width:1.04293847px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       d="m 270.57373,96.661178 0,6.394942"
+       style="fill:#ffffff;stroke:#fffcfc;stroke-width:1.83649421px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <path
-       style="fill:none;stroke:#c2bcda;stroke-width:1.04293847px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 264.96322,82.19685 0,3.631661"
+       style="fill:#ffffff;stroke:#fffcfc;stroke-width:1.83649421px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 279.7562,96.661178 0,6.394942"
        id="path3868"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <path
        inkscape:connector-curvature="0"
        id="path3870"
-       d="m 254.53383,82.19685 0,3.631661"
-       style="fill:none;stroke:#c2bcda;stroke-width:1.04293847px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       d="m 261.39125,96.661178 0,6.394942"
+       style="fill:#ffffff;stroke:#fffcfc;stroke-width:1.83649421px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <path
-       style="fill:none;stroke:#c2bcda;stroke-width:1.04293847px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 238.88978,82.19685 0,3.631661"
+       style="fill:#ffffff;stroke:#fffcfc;stroke-width:1.83649421px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 233.84388,96.661178 0,6.394942"
        id="path3872"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <path
-       style="fill:#b8b3d9;fill-opacity:1;stroke:#a9aaed;stroke-width:1.04293847px;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
-       d="m 249.177,77.893386 5.21469,3.128815 5.21469,-3.128815 z"
+       style="fill:#aefafa;fill-opacity:1;stroke:#97edf2;stroke-width:1.227;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 246.59648,85.79594 14.13376,8.48026 14.13377,-8.48026 z"
        id="path3874"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cccc"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <text
        xml:space="preserve"
-       style="font-size:4.17175388px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#c8b7b7;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
-       x="241.07808"
-       y="89.935074"
+       style="font-size:7.34597683px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="237.69722"
+       y="110.28729"
        id="text3876"
        sodipodi:linespacing="125%"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004"><tspan
          sodipodi:role="line"
          id="tspan3878"
-         x="241.07808"
-         y="89.935074">80</tspan></text>
+         x="237.69722"
+         y="110.28729">80</tspan></text>
     <text
        sodipodi:linespacing="125%"
        id="text3880"
-       y="89.935074"
-       x="256.67563"
-       style="font-size:4.17175388px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#c8b7b7;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       y="110.28729"
+       x="265.16272"
+       style="font-size:7.34597683px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
        xml:space="preserve"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004"><tspan
-         y="89.935074"
-         x="256.67563"
+         y="110.28729"
+         x="265.16272"
          id="tspan3882"
          sodipodi:role="line">90</tspan></text>
     <path
-       style="fill:none;stroke:#ffefc3;stroke-width:1.09147346;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 237.90091,98.117806 c 3.29384,-1.985296 5.67924,-6.555759 8.77867,-6.423389 3.09944,0.132373 9.09997,12.034923 24.58034,11.562133"
+       style="fill:none;stroke:#1ce9ed;stroke-width:4.78902482999999979;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 227.00038,124.67597 c 6.92756,-3.43296 11.9445,-11.33613 18.46315,-11.10723 6.51869,0.22889 19.13889,20.8106 51.69692,19.99306"
        id="path3884"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="czc"
-       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/DailyRaceIcon.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/svg/DailyRaceIcon.png"
        inkscape:export-xdpi="153.60004"
        inkscape:export-ydpi="153.60004" />
     <path
@@ -754,44 +647,127 @@
        inkscape:export-xdpi="93.322876"
        inkscape:export-ydpi="93.322876" />
     <circle
+       id="circle4020"
+       style="fill:#00bebe;fill-opacity:1;stroke:none"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_live.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"
+       cx="75.345818"
+       cy="319.41528"
+       r="28.449638"
+       sodipodi:cx="75.345818"
+       sodipodi:cy="319.41528"
+       sodipodi:rx="28.449638"
+       sodipodi:ry="28.449638"
+       transform="translate(-0.53571432,3.0714289)" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path4022"
+       d="m 79.58427,335.55095 0,0 0,0 -20.45063,-19.09638 c -0.04268,11.76511 6.924238,19.26373 20.45063,19.09638 z"
+       style="fill:#84e9f4;fill-opacity:1;stroke:#84e9f4;stroke-width:0.99247772;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_live.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 79.618547,326.2991 c -0.976633,-7.21322 -5.252911,-10.1715 -11.712302,-10.31462 l 0,0 0,0 0,0"
+       id="path4024"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_live.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path4026"
+       d="M 88.761569,326.29533 C 87.022862,313.45352 79.409756,308.18686 67.910029,307.9321 l 0,0 0,0 0,0"
+       style="fill:none;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_live.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="M 97.897727,326.17041 C 95.407607,307.77887 84.504406,300.23616 68.034932,299.87127 l 0,0 0,0 0,0"
+       id="path4028"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_live.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:#84e9f4;fill-opacity:1;stroke:#84e9f4;stroke-width:1.70000005;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 65.571428,331.8979 -5.357143,10.71429 10.357143,-0.17857 z"
+       id="path4032"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_live.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <circle
+       transform="translate(79.285713,8.2500002)"
+       sodipodi:ry="28.449638"
+       sodipodi:rx="28.449638"
+       sodipodi:cy="319.41528"
+       sodipodi:cx="75.345818"
        r="28.449638"
        cy="319.41528"
        cx="75.345818"
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_drain.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
        style="fill:#00bebe;fill-opacity:1;stroke:none"
-       id="circle4342" />
-    <rect
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_drain.png"
-       style="fill:#84e9f4;fill-opacity:1;stroke:none"
-       id="rect4344"
-       width="29.761972"
-       height="41.126194"
-       x="60.464832"
-       y="298.85217"
-       ry="2.8395662" />
-    <rect
-       ry="0.27639395"
-       y="295.86835"
-       x="71.829048"
-       height="4.003087"
-       width="7.0335393"
-       id="rect4346"
-       style="fill:#84e9f4;fill-opacity:1;stroke:none"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_drain.png"
+       id="circle4034" />
+    <path
+       style="fill:#84e9f4;fill-opacity:1;stroke:#84e9f4;stroke-width:0.99247772;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="m 159.22713,337.69381 0,0 0,0 -20.45063,-19.09638 c -0.0427,11.76511 6.92424,19.26373 20.45063,19.09638 z"
+       id="path4036"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
     <path
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_drain.png"
-       sodipodi:nodetypes="ccccccc"
        inkscape:connector-curvature="0"
-       id="path4348"
-       d="m 58.052663,339.13019 16.471272,-30.66239 3.32416,9.65107 14.790878,-18.41852 -15.404117,31.94303 -3.775075,-10.33962 z"
-       style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#ffffff;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       id="path4044"
+       d="m 145.21429,334.04076 -5.35715,10.71429 10.35715,-0.17857 z"
+       style="fill:#84e9f4;fill-opacity:1;stroke:#84e9f4;stroke-width:1.70000005;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       sodipodi:type="arc"
+       style="fill:none;stroke:#ffffff;stroke-width:1.490291;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path6196"
+       sodipodi:cx="148.39285"
+       sodipodi:cy="315.93362"
+       sodipodi:rx="2.8571429"
+       sodipodi:ry="3.0357141"
+       d="m 151.25,315.93362 a 2.8571429,3.0357141 0 1 1 -5.71429,0 2.8571429,3.0357141 0 1 1 5.71429,0 z"
+       transform="matrix(1.706922,0,0,1.6065149,-102.09367,-190.35995)"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       transform="matrix(1.706922,0,0,1.6065149,-86.008521,-190.35995)"
+       d="m 151.25,315.93362 a 2.8571429,3.0357141 0 1 1 -5.71429,0 2.8571429,3.0357141 0 1 1 5.71429,0 z"
+       sodipodi:ry="3.0357141"
+       sodipodi:rx="2.8571429"
+       sodipodi:cy="315.93362"
+       sodipodi:cx="148.39285"
+       id="path6198"
+       style="fill:none;stroke:#ffffff;stroke-width:1.490291;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <path
+       style="fill:none;stroke:#ffffff;stroke-width:2.46785855;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 151.32242,322.07495 16.32989,0"
+       id="path6200"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
   </g>
 </svg>

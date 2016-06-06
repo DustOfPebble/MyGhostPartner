@@ -24,7 +24,6 @@ public class GeoData {
     private final String BearingID = "Bear";
     private final String HeartbeatID = "Heart";
 
-    Random Generator = new Random();
     private double Longitude = 0.0;
     private double Latitude = 0.0;
     private float Altitude = 0.0f;
@@ -34,18 +33,9 @@ public class GeoData {
     private int Heartbeat = 0;
 
     private int ElapsedDays = 0;
+    private boolean Live = true; // by default data are Live values
 
-    public GeoData() {
-        Generator = new Random();
-        // Preload Data with home values  [48.781687, 2.046504] ...
-        Longitude = 2.0465;
-        Latitude = 48.7816;
-        Altitude = 100.f;
-        Accuracy = 10.0f;
-        Speed = 20.0f;
-        Bearing = 0f;
-        Heartbeat = 60;
-    }
+    public GeoData() { }
 
     public double getLongitude() {return Longitude;}
     public double getLatitude() {return Latitude;}
@@ -56,16 +46,14 @@ public class GeoData {
     public int getHeartbeat() {return Heartbeat;}
     public int getElapsedDays() {return ElapsedDays;}
 
+    public boolean isLive() {return Live;}
+    public void setSimulated() { Live= false;}
+
     public void setHeartbeat(int value) { Heartbeat = value;} // Provisionning function
 
     public void setElapsedDays(int value) { ElapsedDays = value;} // Provisionning function
 
     public void setGPS(Location GPS) {
-        // Converting Longitude & Latitude to 2D cartesian distance from an origin
-        Cartesian = new PointF(
-                DataManager.dX(GPS.getLongitude()),
-                DataManager.dY(GPS.getLatitude())
-            );
         Longitude = GPS.getLongitude();
         Latitude = GPS.getLatitude();
         Altitude = (float)GPS.getAltitude();
@@ -97,16 +85,18 @@ public class GeoData {
         try {
                Longitude = GeoJSON.getDouble(LongitudeID);
                Latitude = GeoJSON.getDouble(LatitudeID);
-               Cartesian = new PointF(DataManager.dX(Longitude),DataManager.dY(Latitude));
                Altitude = (float)GeoJSON.getDouble(AltitudeID);
                Speed = (float)GeoJSON.getDouble(SpeedID);
                Bearing = (float)GeoJSON.getDouble(BearingID);
-            } catch (Exception Missing) { Log.d("GeoData", "GeoData from JSon => Missing Lat./long."); return false;}
+               Accuracy = (float)GeoJSON.getDouble(AccuracyID);
+        }
+        catch (Exception Missing) { Log.d("GeoData", "GeoData from JSon => Missing required value"); return false;}
 
-         try { Accuracy = (float)GeoJSON.getDouble(AccuracyID);} catch (Exception Missing) { Accuracy = 10.0f;}
-         try { Heartbeat = GeoJSON.getInt(HeartbeatID);} catch (Exception Missing) { Heartbeat = 0;}
+        try { Heartbeat = GeoJSON.getInt(HeartbeatID);} catch (Exception Missing) { Heartbeat = 0;}
         return true;
     }
 
-    public PointF getCartesian() {return Cartesian;}
+    public PointF getCoordinate() {return Cartesian;}
+    public void setCoordinate(PointF Coordinate) { Cartesian = Coordinate;}
+
 }

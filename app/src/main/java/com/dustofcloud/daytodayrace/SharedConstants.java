@@ -11,6 +11,6 @@ public class SharedConstants {
     static public final short BatterySaveMode=20;
     static public final short BatteryDrainMode=21;
 
-    static public final short EnabledFakeGPS=100;
-    static public final short DisabledFakeGPS=101;
+    static public final short ReplayedGPS=30;
+    static public final short LiveGPS=31;
 }

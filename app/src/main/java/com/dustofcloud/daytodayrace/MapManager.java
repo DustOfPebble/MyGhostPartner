@@ -27,8 +27,9 @@ public class MapManager extends ImageView implements EventsGPS {
     private Thread MapBuilding = null;
     private Bitmap MapInUse = null;
 
-    private static final int ColorMarker = 0xffa02c2c;
-    private static final int Transparency = 60;
+    private static final int ColorMarker = 0xffff5555;
+    private static final int Transparency = 100;
+    private static final float LineThickness = 4f;
 
     public MapManager(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -36,7 +37,7 @@ public class MapManager extends ImageView implements EventsGPS {
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setUpdateCallback(this);
         LineMode = new Paint();
-        LineMode.setStrokeWidth(5f);
+        LineMode.setStrokeWidth(LineThickness);
         LineMode.setStyle(Paint.Style.STROKE);
         FillMode = new Paint();
 
@@ -50,7 +51,7 @@ public class MapManager extends ImageView implements EventsGPS {
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
 
         InUseGeo = geoInfo;
-        this.WorldOrigin = geoInfo.getCartesian();
+        this.WorldOrigin = geoInfo.getCoordinate();
         PointF SizeView = BackendService.getViewArea(); // Read From backend because it's subject to change
 
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
@@ -107,7 +108,7 @@ public class MapManager extends ImageView implements EventsGPS {
          if (MapInUse !=null) canvas.drawBitmap(MapInUse,0f,0f,null);
 
          if (WorldOrigin !=null) {
-             Log.d("PointsDrawer", "Offset is ["+WorldOrigin.x+","+WorldOrigin.y+"]");
+             Log.d("MapManager", "Offset is ["+WorldOrigin.x+","+WorldOrigin.y+"]");
              LineMode.setColor(ColorMarker);
              FillMode.setColor(ColorMarker);
              Radius = Math.max(MetersToPixels.x, MetersToPixels.y)*InUseGeo.getAccuracy();

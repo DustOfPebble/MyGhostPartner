@@ -81,14 +81,14 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         if (WriteToFile == null) Log.d("DataManager", "Couldn't create a new DB...");
 
         TrigEvents = new SimulateGPS(this);
-//        if (TrigEvents.load("RetourTCRCar.DailyDB", 1000))  TrigEvents.sendGPS();
+        if (TrigEvents.load("RetourTCRCar.DailyDB", 1000))  TrigEvents.sendGPS();
     }
 
-    static public float dX(double longitude) {
+    public float dX(double longitude) {
         return earthRadiusCorrected * (float) Math.toRadians(longitude-originLongitude);
     }
 
-    static public float dY(double latitude) {
+    public float dY(double latitude) {
         return  earthRadius * (float) Math.toRadians(latitude-originLatitude);
     }
 
@@ -109,7 +109,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     }
     public void processLocationChanged(GeoData update) {
         if (update == null) return;
-        Log.d("DataManager", "GPS notification ==> [" + update.getLongitude() + "°N," + update.getLatitude() + "°E]");
+        Log.d("DataManager", "GPS notification ==> [" + update.getLongitude() + "°E," + update.getLatitude() + "°N]");
         if ( !originSet ) {
             originSet = true;
             originLatitude = update.getLatitude();
@@ -119,13 +119,19 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             LoadingFiles = new Thread(ReadFromFile);
             LoadingFiles.start();
         }
+        // Converting Longitude & Latitude to 2D cartesian distance from an origin
+        update.setCoordinate(new PointF(dX(update.getLongitude()),dY(update.getLatitude())));
+        Log.d("DataManager", "Coordinate["+update.getCoordinate().x+","+update.getCoordinate().y+"]");
 
-        GeoStorage.store(update);
+        if (update.isLive()) {
+            GeoStorage.store(update);
 
-        try { WriteToFile.writeGeoData(update); }
-        catch ( Exception writerError ) {
-            Log.d("DataManager","Failed to write new GeoData ...");
-            writerError.printStackTrace();
+            try { WriteToFile.writeGeoData(update); }
+            catch ( Exception writerError )
+                {
+                    Log.d("DataManager","Failed to write new GeoData ...");
+                    writerError.printStackTrace();
+                }
         }
 
         // Loop over registered clients callback ...
@@ -135,6 +141,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     @Override
     public void onLoaded(GeoData Loaded) {
         if (Loaded == null) return;
+        Loaded.setCoordinate(new PointF(dX(Loaded.getLongitude()),dY(Loaded.getLatitude())));
         GeoStorage.store(Loaded);
     }
 

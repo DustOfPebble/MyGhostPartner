@@ -15,7 +15,7 @@
     <com.dustofcloud.daytodayrace.ControlSwitch
         android:id="@+id/switch_sleep_locker"
         android:clickable="true"
-        android:padding="5dp"
+        android:layout_margin="5dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
@@ -26,7 +26,7 @@
     <com.dustofcloud.daytodayrace.ControlSwitch
         android:id="@+id/switch_light_enhancer"
         android:clickable="true"
-        android:padding="5dp"
+        android:layout_margin="5dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
@@ -37,13 +37,25 @@
     <com.dustofcloud.daytodayrace.ControlSwitch
         android:id="@+id/switch_battery_saver"
         android:clickable="true"
-        android:padding="5dp"
+        android:layout_margin="5dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/switch_light_enhancer"
         app:HighMode="@drawable/battery_drain"
         app:LowMode="@drawable/battery_save"
+        />
+
+    <com.dustofcloud.daytodayrace.ControlSwitch
+        android:id="@+id/gps_provider"
+        android:clickable="true"
+        android:layout_margin="5dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        app:HighMode="@drawable/gps_live"
+        app:LowMode="@drawable/gps_replay"
         />
 
 </RelativeLayout>

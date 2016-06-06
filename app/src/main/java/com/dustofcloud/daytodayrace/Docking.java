@@ -11,6 +11,7 @@ public class Docking extends Activity implements EventsControlSwitch {
     private ControlSwitch SleepLocker = null;
     private ControlSwitch BatterySaver = null;
     private ControlSwitch LightEnhancer = null;
+    private ControlSwitch GPSProvider = null;
 
     private int BackPressedCount = 0;
 //    private DataManager BackendService;
@@ -34,6 +35,9 @@ public class Docking extends Activity implements EventsControlSwitch {
         BatterySaver.setMode(SharedConstants.BatteryDrainMode, SharedConstants.BatterySaveMode);
         BatterySaver.registerControlSwitch(this);
 
+        GPSProvider = (ControlSwitch) findViewById(R.id.gps_provider);
+        GPSProvider.setMode(SharedConstants.LiveGPS, SharedConstants.ReplayedGPS);
+        GPSProvider.registerControlSwitch(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 //        BackendService = (DataManager) DataManager.getBackend();

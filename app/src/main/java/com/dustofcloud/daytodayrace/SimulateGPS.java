@@ -54,15 +54,17 @@ public class SimulateGPS {
         try {
             while (true) {
                 GeoString = Storage.readLine();
+//                Log.d("SimulateGPS", "JSON Block="+GeoString );
                 geoInfo = new GeoData();
                 if (!geoInfo.fromJSON(GeoString)) break;
                 geoInfo.setElapsedDays(NbDays);
+                geoInfo.setSimulated();
                 NbGeoData++;
                 Collection.add(geoInfo);
             }
         }
         catch(Exception FileError) {}
-        Log.d("SimulateGPS", NbGeoData +" Blocks Loaded ...");
+        Log.d("SimulateGPS", NbGeoData +" Records loaded ...");
         return true;
     }
 

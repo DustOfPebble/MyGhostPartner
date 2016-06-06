@@ -7,15 +7,16 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.View;
 
 import java.util.ArrayList;
 
 public class MapBuilder extends Canvas implements Runnable {
 
-    private static final int ColorFiltered = 0xff84e9f4;
-    private static final int ColorComputed = 0xff00d4aa;
-    private static final int Transparency = 60;
+    private static final int ColorFiltered = 0xff2ad4ff;
+    private static final int ColorComputed = 0xff55ff99;
+    private static final int FillTransparency = 80;
+    private static final int LineTransparency = 120;
+    private static final float LineThickness = 5f;
 
     private Canvas OffScreenBuffer;
     private Paint LineMode;
@@ -34,7 +35,7 @@ public class MapBuilder extends Canvas implements Runnable {
         Map = Bitmap.createBitmap(width, height, android.graphics.Bitmap.Config.ARGB_8888);
         OffScreenBuffer = new Canvas(Map);
         LineMode = new Paint();
-        LineMode.setStrokeWidth(5f);
+        LineMode.setStrokeWidth(LineThickness);
         LineMode.setStyle(Paint.Style.STROKE);
         FillMode = new Paint();
 
@@ -79,10 +80,11 @@ public class MapBuilder extends Canvas implements Runnable {
         Log.d("MapBuilder", "Drawing "+ FilteredPoints.size()+ " points in view");
         // Drawing all points from Storage
         LineMode.setColor(ColorFiltered);
+        LineMode.setAlpha(LineTransparency);
         FillMode.setColor(ColorFiltered);
-        FillMode.setAlpha(Transparency);
+        FillMode.setAlpha(FillTransparency);
         for (GeoData Marker : FilteredPoints) {
-            Cartesian = Marker.getCartesian();
+            Cartesian = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
                     (Cartesian.x -WorldOrigin.x)* MeterToPixelFactor + GraphicCenter.x,
@@ -95,10 +97,11 @@ public class MapBuilder extends Canvas implements Runnable {
         Log.d("MapBuilder", "Drawing "+ ComputedPoints.size()+ " points in use");
         // Drawing all points from Storage
         LineMode.setColor(ColorComputed);
+        LineMode.setAlpha(LineTransparency);
         FillMode.setColor(ColorComputed);
-        FillMode.setAlpha(Transparency);
+        FillMode.setAlpha(FillTransparency);
         for (GeoData Marker : ComputedPoints) {
-            Cartesian = Marker.getCartesian();
+            Cartesian = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
                     (Cartesian.x -WorldOrigin.x)* MeterToPixelFactor + GraphicCenter.x,

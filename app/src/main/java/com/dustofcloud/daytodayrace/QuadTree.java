@@ -1,7 +1,6 @@
 package com.dustofcloud.daytodayrace;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -50,7 +49,7 @@ public class QuadTree {
 
     public void store(GeoData geoData) {
         // Should we store this new point ?
-        PointF Cartesian = geoData.getCartesian();
+        PointF Cartesian = geoData.getCoordinate();
         if (isStorage) {
             Storage.add(geoData);
 //            Log.d("QuadTree","Stored cartesian["+ Cartesian.x+","+Cartesian.y+"]");
