@@ -17,6 +17,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     private PointF InUseArea = new PointF(10f,10f); // In Use area : values in meters
     private PointF InViewArea = new PointF(200f,200f); // In View area : values in meters (subject to change vs  speed)
 
+    private int RunningMode = SharedConstants.SwitchForeground;
+
     static private final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     static private float earthRadiusCorrected = earthRadius; // Value at Equator to Zero at Pole
 
@@ -27,12 +29,12 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // Value in meters
     private static final long MIN_TIME_BW_UPDATES = 1000; // value in ms
 
-    SimulateGPS TrigEvents= null;
-    QuadTree GeoStorage = null;
-    FileWriter WriteToFile=null;
-    FileReader ReadFromFile=null;
-    Thread LoadingFiles=null;
-    FileManager FilesHandler=null;
+    private SimulateGPS TrigEvents= null;
+    private QuadTree GeoStorage = null;
+    private FileWriter WriteToFile=null;
+    private FileReader ReadFromFile=null;
+    private Thread LoadingFiles=null;
+    private FileManager FilesHandler=null;
 
     // Specific to manage Callback to clients
     static Context BackendContext = null;
@@ -134,7 +136,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         }
 
         // Loop over registered clients callback ...
-        if (Clients.size() !=0) for (EventsGPS Client :Clients) { Client.processLocationChanged(update);}
+        if (RunningMode == SharedConstants.SwitchForeground)
+            for (EventsGPS Client :Clients) { Client.processLocationChanged(update);}
     }
 
     public void setMode(int ModeID)
@@ -150,6 +153,9 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this );
         }
+
+        if (ModeID == SharedConstants.SwitchForeground)   RunningMode = ModeID;
+        if (ModeID == SharedConstants.SwitchBackground)   RunningMode = ModeID;
     }
 
     @Override

@@ -23,7 +23,6 @@ public class MapBuilder implements Runnable {
     private Paint FillMode;
 
     private ArrayList<GeoData> FilteredPoints = null;
-    private ArrayList<GeoData> ComputedPoints = null;
 
     private PointF GraphicCenter = new PointF(0f,0f);
     private PointF WorldOrigin = null;
@@ -50,10 +49,6 @@ public class MapBuilder implements Runnable {
         FilteredPoints = new ArrayList<GeoData>(Collection);
     }
 
-    public void setComputedPoints(ArrayList<GeoData> Collection){
-        ComputedPoints = new ArrayList<GeoData>(Collection);
-    }
-
     public void setWorldOrigin(PointF Reference) { WorldOrigin = Reference;}
     public void setMeterToPixelFactor(float Factor) { MeterToPixelFactor = Factor;}
 
@@ -64,9 +59,7 @@ public class MapBuilder implements Runnable {
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
         // Do all safety check
-        if ((ComputedPoints == null) || (FilteredPoints == null)) {
-             return;
-        }
+        if (FilteredPoints == null) { return; }
 
         PointF Cartesian = null; // Do not allocate ==> We get a copy each time
         PointF Pixel = new PointF(0f,0f); // Allocate because it is updated on the fly
@@ -87,29 +80,13 @@ public class MapBuilder implements Runnable {
             Cartesian = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
-                    (Cartesian.x -WorldOrigin.x)* MeterToPixelFactor + GraphicCenter.x,
-                    (Cartesian.y -WorldOrigin.y)* MeterToPixelFactor + GraphicCenter.y
+                    GraphicCenter.x - (Cartesian.x -WorldOrigin.x)* MeterToPixelFactor,
+                    GraphicCenter.y - (Cartesian.y -WorldOrigin.y)* MeterToPixelFactor
             );
             OffScreenBuffer.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
             OffScreenBuffer.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
         }
 
-        Log.d("MapBuilder", "Drawing "+ ComputedPoints.size()+ " points in use");
-        // Drawing all points from Storage
-        LineMode.setColor(ColorComputed);
-        LineMode.setAlpha(LineTransparency);
-        FillMode.setColor(ColorComputed);
-        FillMode.setAlpha(FillTransparency);
-        for (GeoData Marker : ComputedPoints) {
-            Cartesian = Marker.getCoordinate();
-            Radius = MeterToPixelFactor * Marker.getAccuracy();
-            Pixel.set(
-                    (Cartesian.x -WorldOrigin.x)* MeterToPixelFactor + GraphicCenter.x,
-                    (Cartesian.y -WorldOrigin.y)* MeterToPixelFactor + GraphicCenter.y
-            );
-            OffScreenBuffer.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
-            OffScreenBuffer.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
-        }
         long EndRender = SystemClock.elapsedRealtime();
         Log.d("MapBuilder", "Rendering was "+ (EndRender - StartRender)+ " ms.");
     }

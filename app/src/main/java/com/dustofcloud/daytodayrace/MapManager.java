@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.util.AttributeSet;
@@ -26,10 +27,18 @@ public class MapManager extends ImageView implements EventsGPS {
     private MapBuilder MapImage = null;
     private Thread MapBuilding = null;
     private Bitmap MapInUse = null;
+    private Point BitMapSize = new Point(0,0);
 
-    private static final int ColorMarker = 0xffff5555;
-    private static final int Transparency = 100;
-    private static final float LineThickness = 4f;
+    private static final int MarkerColor = 0xffff5555;
+    private static final int MarkerTransparency = 100;
+    private static final float MarkerLineThickness = 4f;
+
+    private static final int ComputedColor = 0xff55ff99;
+    private static final int ComputedFillTransparency = 80;
+    private static final int ComputedLineTransparency = 120;
+    private static final float ComputedLineThickness = 5f;
+
+
 
     public MapManager(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -37,7 +46,6 @@ public class MapManager extends ImageView implements EventsGPS {
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setUpdateCallback(this);
         LineMode = new Paint();
-        LineMode.setStrokeWidth(LineThickness);
         LineMode.setStyle(Paint.Style.STROKE);
         FillMode = new Paint();
 
@@ -73,17 +81,20 @@ public class MapManager extends ImageView implements EventsGPS {
         // Filtering InUse
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
 
+        if (null == MapBuilding) MapBuilding = new Thread(MapImage);
+
         if (MapBuilding.getState() == Thread.State.TERMINATED) {
+            MapBuilding.interrupt();
             MapInUse = Bitmap.createBitmap(MapImage.getMap());
             MapBuilding = new Thread(MapImage);
         }
-        if (MapBuilding.getState() == Thread.State.NEW){
+        if (MapBuilding.getState() == Thread.State.NEW) {
             MapImage.setFilteredPoints(GeoInView);
-            MapImage.setComputedPoints(GeoInUse);
             MapImage.setMeterToPixelFactor(Math.max(MetersToPixels.x, MetersToPixels.y));
             MapImage.setWorldOrigin(WorldOrigin);
             MapBuilding.start();
         }
+
         invalidate();
     }
 
@@ -93,15 +104,19 @@ public class MapManager extends ImageView implements EventsGPS {
         int Width = MeasureSpec.getSize(widthMeasureSpec);
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
-        MapImage = new MapBuilder(Width, Height);
-        MapBuilding = new Thread(MapImage);
-        Log.d("MapManager","Image size ["+this.getWidth()+" px x "+this.getHeight()+" px]");
+        if ((Width == 0 ) || (Height == 0)) return;
+        if ((BitMapSize.x == Width) && (BitMapSize.y == Height)) return;
+        BitMapSize.set(Width,Height);
+        MapImage = new MapBuilder(BitMapSize.x, BitMapSize.x);
+        Log.d("MapManager","Image size ["+BitMapSize.x+" px x "+BitMapSize.x+" px]");
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         PointF Pixel = new PointF(0f,0f); // Allocate because it is updated on the fly
-        Float Radius ;
+        PointF Coords; // Allocate because it is updated on the fly
+        Float MeterToPixelFactor = Math.max(MetersToPixels.x, MetersToPixels.y) ;
+        Float Radius;
 
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
@@ -113,16 +128,36 @@ public class MapManager extends ImageView implements EventsGPS {
              Log.d("MapManager","Rotating Map of "+InUseGeo.getBearing()+"°");
          }
 
+        Log.d("MapManager", "Drawing "+ GeoInUse.size()+ " points in use");
+        // Drawing all points from Storage
+        LineMode.setColor(ComputedColor);
+        LineMode.setAlpha(ComputedLineTransparency);
+        LineMode.setStrokeWidth(ComputedLineThickness);
+        FillMode.setColor(ComputedColor);
+        FillMode.setAlpha(ComputedFillTransparency);
+        for (GeoData Marker : GeoInUse) {
+            Coords = Marker.getCoordinate();
+            Radius = MeterToPixelFactor * Marker.getAccuracy();
+            Pixel.set(
+                    (WorldOrigin.x - Coords.x)* MeterToPixelFactor + GraphicCenter.x ,
+                    (WorldOrigin.y - Coords.y)* MeterToPixelFactor + GraphicCenter.y
+            );
+            canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
+            canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
+        }
+
+
          if (WorldOrigin !=null) {
              Log.d("MapManager", "Offset is ["+WorldOrigin.x+","+WorldOrigin.y+"]");
-             LineMode.setColor(ColorMarker);
-             FillMode.setColor(ColorMarker);
-             Radius = Math.max(MetersToPixels.x, MetersToPixels.y)*InUseGeo.getAccuracy();
+             LineMode.setColor(MarkerColor);
+             FillMode.setColor(MarkerColor);
+             LineMode.setStrokeWidth(MarkerLineThickness);
+             Radius = MeterToPixelFactor * InUseGeo.getAccuracy();
              Float MinRadius = (Radius/10 < 10)? 10:Radius/10;
              Pixel.set(GraphicCenter.x,GraphicCenter.y);
              canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
              canvas.drawCircle(Pixel.x, Pixel.y,MinRadius ,FillMode);
-             FillMode.setAlpha(Transparency);
+             FillMode.setAlpha(MarkerTransparency);
              canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
          }
 

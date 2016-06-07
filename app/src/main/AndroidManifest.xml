@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".DataManager"
@@ -15,7 +14,9 @@
         android:theme="@style/AppTheme" >
          <activity
             android:name=".Docking"
-            android:label="@string/title_activity_docking" >
+            android:label="@string/title_activity_docking"
+            android:screenOrientation="portrait"
+             android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -42,10 +42,17 @@ public class Docking extends Activity implements EventsControlSwitch {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        BackendService.setMode(SharedConstants.SwitchBackground);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         BackPressedCount = 0;
         BackendService = (DataManager) DataManager.getBackend();
+        BackendService.setMode(SharedConstants.SwitchForeground);
     }
 
     @Override
@@ -64,7 +71,10 @@ public class Docking extends Activity implements EventsControlSwitch {
     @Override
     public void onBackPressed() {
         BackPressedCount++;
-        if (BackPressedCount > 1) { super.onBackPressed(); }
+        if (BackPressedCount > 1) {
+            BackendService.setMode(SharedConstants.SwitchBackground);
+            super.onBackPressed();
+        }
         else { Toast.makeText(Docking.this, "Press back again to exit !", Toast.LENGTH_SHORT).show(); }
     }
 }
