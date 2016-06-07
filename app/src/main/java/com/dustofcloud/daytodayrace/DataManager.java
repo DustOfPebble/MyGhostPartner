@@ -17,6 +17,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     private PointF InUseArea = new PointF(10f,10f); // In Use area : values in meters
     private PointF InViewArea = new PointF(200f,200f); // In View area : values in meters (subject to change vs  speed)
 
+    private GeoData LastUpdate;
+
     private int RunningMode = SharedConstants.SwitchForeground;
 
     static private final float earthRadius = 6400000f; // Earth Radius is 6400 kms
@@ -30,7 +32,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     private static final long MIN_TIME_BW_UPDATES = 1000; // value in ms
 
     private SimulateGPS TrigEvents= null;
-    private QuadTree GeoStorage = null;
+    private QuadTree HighAccuracyStorage = null;
+    private QuadTree LowAccuracyStorage = null;
     private FileWriter WriteToFile=null;
     private FileReader ReadFromFile=null;
     private Thread LoadingFiles=null;
@@ -94,11 +97,11 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     }
 
     public ArrayList<GeoData> getInView(RectF ViewArea){
-        return GeoStorage.search(ViewArea);
+        return HighAccuracyStorage.search(ViewArea);
     }
 
     public ArrayList<GeoData> getInUse(RectF UseArea){
-        return GeoStorage.search(UseArea);
+        return HighAccuracyStorage.search(UseArea);
     }
 
     @Override
@@ -116,7 +119,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
             originLatitude = update.getLatitude();
             originLongitude = update.getLongitude();
             earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
-            GeoStorage = new QuadTree(GeoArea); // Create QuadTree storage area
+            HighAccuracyStorage = new QuadTree(GeoArea); // Create QuadTree storage area
+            LowAccuracyStorage = new QuadTree(GeoArea); // Create QuadTree storage area
             LoadingFiles = new Thread(ReadFromFile);
             LoadingFiles.start();
         }
@@ -124,16 +128,16 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         update.setCoordinate(new PointF(dX(update.getLongitude()),dY(update.getLatitude())));
         Log.d("DataManager", "Coordinate["+update.getCoordinate().x+","+update.getCoordinate().y+"]");
 
-        if (update.isLive()) {
-            GeoStorage.store(update);
+        if (LastUpdate !=null) {
+            if (LastUpdate.isLive()) {
+                if (LastUpdate.getAccuracy() <= SharedConstants.LowPrecisionLimit) HighAccuracyStorage.store(LastUpdate);
+                else  LowAccuracyStorage.store(LastUpdate);
 
-            try { WriteToFile.writeGeoData(update); }
-            catch ( Exception writerError )
-                {
-                    Log.d("DataManager","Failed to write new GeoData ...");
-                    writerError.printStackTrace();
-                }
+                try { WriteToFile.writeGeoData(update); }
+                catch ( Exception writerError ) { Log.d("DataManager","Failed to write new GeoData ..."); }
+            }
         }
+        LastUpdate = update;
 
         // Loop over registered clients callback ...
         if (RunningMode == SharedConstants.SwitchForeground)
@@ -162,7 +166,8 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     public void onLoaded(GeoData Loaded) {
         if (Loaded == null) return;
         Loaded.setCoordinate(new PointF(dX(Loaded.getLongitude()),dY(Loaded.getLatitude())));
-        GeoStorage.store(Loaded);
+        if (Loaded.getAccuracy() <= SharedConstants.LowPrecisionLimit) HighAccuracyStorage.store(Loaded);
+        else  LowAccuracyStorage.store(Loaded);
     }
 
     @Override

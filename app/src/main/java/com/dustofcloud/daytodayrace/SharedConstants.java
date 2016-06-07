@@ -17,5 +17,7 @@ public class SharedConstants {
     static public final short SwitchForeground=100;
     static public final short SwitchBackground=101;
 
+    static public final short LowPrecisionLimit=10; // Value in meters
+
 
 }
