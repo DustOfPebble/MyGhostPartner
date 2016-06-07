@@ -13,9 +13,9 @@ import java.util.ArrayList;
 public class MapBuilder implements Runnable {
 
     private static final int ColorFiltered = 0xff2ad4ff;
-    private static final int ColorComputed = 0xff55ff99;
-    private static final int FillTransparency = 80;
-    private static final int LineTransparency = 120;
+    private static final int ColorBackground = 0xff000000;
+    private static final int FillTransparency = 30;
+    private static final int LineTransparency = 70;
     private static final float LineThickness = 5f;
 
     private Canvas OffScreenBuffer;
@@ -67,7 +67,7 @@ public class MapBuilder implements Runnable {
 
         long StartRender = SystemClock.elapsedRealtime();
         // Erase existing Bitmap ...
-        OffScreenBuffer.drawColor(Color.BLACK);
+        OffScreenBuffer.drawColor(ColorBackground);
 
         // Do the drawing
         Log.d("MapBuilder", "Drawing "+ FilteredPoints.size()+ " points in view");

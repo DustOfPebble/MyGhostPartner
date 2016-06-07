@@ -107,8 +107,8 @@ public class MapManager extends ImageView implements EventsGPS {
         if ((Width == 0 ) || (Height == 0)) return;
         if ((BitMapSize.x == Width) && (BitMapSize.y == Height)) return;
         BitMapSize.set(Width,Height);
-        MapImage = new MapBuilder(BitMapSize.x, BitMapSize.x);
-        Log.d("MapManager","Image size ["+BitMapSize.x+" px x "+BitMapSize.x+" px]");
+        MapImage = new MapBuilder(BitMapSize.x, BitMapSize.y);
+        Log.d("MapManager","Image size ["+BitMapSize.x+" px x "+BitMapSize.y+" px]");
     }
 
     @Override
