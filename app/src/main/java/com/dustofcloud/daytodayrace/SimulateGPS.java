@@ -4,13 +4,17 @@ import android.os.Handler;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class SimulateGPS {
-    private ArrayList<GeoData> Collection;
+    private ArrayList<GeoData> RecordsCollection;
+    ArrayList<File> FilesCollection = null;
+
     private int Index=0;
+    private int FileIndex=0;
     private DataManager Notify;
     private FileManager FileHandler;
     private Handler trigger = new Handler();
@@ -21,25 +25,38 @@ public class SimulateGPS {
     {
         Notify = Parent;
         FileHandler= new FileManager(Notify);
-        Collection = new ArrayList<GeoData>();
+        RecordsCollection = new ArrayList<GeoData>();
+
+        // Check access to Directory storage
+        File Directory = Parent.getFilesDir();
+        File Files[] =  Directory.listFiles();
+        FilesCollection = new ArrayList<File>();
+        for (File Item : Files ) {
+            if (!Item.getPath().endsWith(SharedConstants.FilesSignature)) continue;
+            if (!Item.canRead()) continue;
+            FilesCollection.add(Item);
+        }
     }
 
-    public Boolean load(String ReplayedFile, int Delay)  {
+    public String load(int Delay)  {
+        if (FilesCollection.size() == 0) return "";
         EventsDelay = Delay;
-        Collection.clear();
+        RecordsCollection.clear();
 
-        FileInputStream Stream = FileHandler.getStream(ReplayedFile);
-        if (Stream == null)
-        {
-            Log.d("SimulateGPS", "Stream is not defined...");
-            return false; // File does not exists !
-        }
-        Log.d("SimulateGPS", "Using "+ReplayedFile+" as simulation");
+        FileInputStream ReadStream = null;
+        try { ReadStream = new FileInputStream(FilesCollection.get(FileIndex)); }
+            catch (Exception StreamError) {
+                FileIndex++;
+                if (FileIndex == FilesCollection.size()) FileIndex = 0;
+                return "";
+            }
+
+        Log.d("SimulateGPS", "Using "+FilesCollection.get(FileIndex).getName()+" as simulation");
         BufferedReader Storage;
-        try { Storage = new BufferedReader(new InputStreamReader(Stream, "UTF-8"));}
+        try { Storage = new BufferedReader(new InputStreamReader(ReadStream, "UTF-8"));}
         catch (Exception FileError) {
             Log.d("SimulateGPS", "Failed to Open data stream...");
-            return false;
+            return "";
         }
 
         String TimeString;
@@ -56,25 +73,29 @@ public class SimulateGPS {
         try {
             while (true) {
                 GeoString = Storage.readLine();
-//                Log.d("SimulateGPS", "JSON Block="+GeoString );
                 geoInfo = new GeoData();
                 if (!geoInfo.fromJSON(GeoString)) break;
                 geoInfo.setElapsedDays(NbDays);
                 geoInfo.setSimulated();
                 NbGeoData++;
-                Collection.add(geoInfo);
+                RecordsCollection.add(geoInfo);
             }
         }
         catch(Exception FileError) {}
         Log.d("SimulateGPS", NbGeoData +" Records loaded ...");
         Index = 0;
-        return true;
+
+        String SelectedFile =FilesCollection.get(FileIndex).getName();
+
+        FileIndex++;
+        if (FileIndex == FilesCollection.size()) FileIndex = 0;
+        return SelectedFile;
     }
 
     public void sendGPS() {
-        Log.d("SimulateGPS", "Simulating new GPS position ...");
-        if (Index == Collection.size()) Index=0;
-        Notify.processLocationChanged(Collection.get(Index));
+//        Log.d("SimulateGPS", "Simulating new GPS position ...");
+        if (Index == RecordsCollection.size()) Index=0;
+        Notify.processLocationChanged(RecordsCollection.get(Index));
         trigger.postDelayed(task, EventsDelay);
         Index++;
     }

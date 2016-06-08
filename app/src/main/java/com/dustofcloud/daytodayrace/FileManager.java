@@ -11,7 +11,6 @@ import java.util.Calendar;
 import java.util.regex.Pattern;
 
 public class FileManager {
-    private final String Signature = ".DailyDB";
     ArrayList<File> Collection = null;
     private File InUseDB = null;
     int LastFile = 0;
@@ -34,13 +33,13 @@ public class FileManager {
                                 "-"+
                                 String.format("%2s", String.valueOf(Hour)).replace(' ', '0') +
                                 String.format("%2s", String.valueOf(Minute)).replace(' ', '0') +
-                                Signature;
+                                SharedConstants.FilesSignature;
 
         // Collect all database from storage directory
         File Files[] =  Directory.listFiles();
         Collection = new ArrayList();
         for (File Item : Files ) {
-            if (!Item.getPath().endsWith(Signature)) continue;
+            if (!Item.getPath().endsWith(SharedConstants.FilesSignature)) continue;
             if (!Item.canRead()) continue;
             Log.d("FileManager", "Found DailyDB file => " + Item.getPath() );
             Collection.add(Item);

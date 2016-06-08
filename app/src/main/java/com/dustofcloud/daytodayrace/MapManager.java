@@ -68,9 +68,10 @@ public class MapManager extends ImageView implements EventsGPS {
         MetersToPixels.set((float)MinSize / SizeView.x,(float)MinSize / SizeView.y);
 
         PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
+        float Extract = Math.max(Size.x, Size.y);
         GeoInView = new ArrayList<GeoData>(BackendService.getInView(
-                new RectF(this.WorldOrigin.x - Size.x/2,this.WorldOrigin.y - Size.y/2,
-                          this.WorldOrigin.x + Size.x/2, this.WorldOrigin.y + Size.y/2
+                new RectF(this.WorldOrigin.x - Extract/2,this.WorldOrigin.y - Extract/2,
+                          this.WorldOrigin.x + Extract/2, this.WorldOrigin.y + Extract/2
                         ))
                 );
 
@@ -107,7 +108,7 @@ public class MapManager extends ImageView implements EventsGPS {
 
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
-        canvas.rotate(InUseGeo.getBearing(),GraphicCenter.x,GraphicCenter.y);
+        canvas.rotate(-InUseGeo.getBearing(),GraphicCenter.x,GraphicCenter.y);
         Log.d("MapManager","Rotation is "+InUseGeo.getBearing()+"°");
 
         // Do the drawing

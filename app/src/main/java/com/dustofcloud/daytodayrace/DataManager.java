@@ -147,7 +147,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     public void setMode(int ModeID)
     {
         if (ModeID == SharedConstants.ReplayedGPS)  {
-            if (TrigEvents.load("RetourTCRCar.DailyDB", 1000))   {
+            if (!TrigEvents.load(1000).isEmpty())   {
                 SourceGPS.removeUpdates(this);
                 TrigEvents.sendGPS();
             }
