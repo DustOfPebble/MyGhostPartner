@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
@@ -24,10 +25,6 @@ public class MapManager extends ImageView implements EventsGPS {
     private Paint LineMode;
     private Paint FillMode;
     private GeoData InUseGeo = null;
-    private MapBuilder MapImage = null;
-    private Thread MapBuilding = null;
-    private Bitmap MapInUse = null;
-    private Point BitMapSize = new Point(0,0);
 
     private static final int MarkerColor = 0xffff5555;
     private static final int MarkerTransparency = 100;
@@ -37,6 +34,11 @@ public class MapManager extends ImageView implements EventsGPS {
     private static final int ComputedFillTransparency = 80;
     private static final int ComputedLineTransparency = 120;
     private static final float ComputedLineThickness = 5f;
+
+    private static final int ExtractedColor = 0xff2ad4ff;
+    private static final int ExtractedFillTransparency = 30;
+    private static final int ExtractedLineTransparency = 70;
+    private static final float ExtractedLineThickness = 5f;
 
 
 
@@ -81,20 +83,6 @@ public class MapManager extends ImageView implements EventsGPS {
         // Filtering InUse
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
 
-        if (null == MapBuilding) MapBuilding = new Thread(MapImage);
-
-        if (MapBuilding.getState() == Thread.State.TERMINATED) {
-            MapBuilding.interrupt();
-            MapInUse = Bitmap.createBitmap(MapImage.getMap());
-            MapBuilding = new Thread(MapImage);
-        }
-        if (MapBuilding.getState() == Thread.State.NEW) {
-            MapImage.setFilteredPoints(GeoInView);
-            MapImage.setMeterToPixelFactor(Math.max(MetersToPixels.x, MetersToPixels.y));
-            MapImage.setWorldOrigin(WorldOrigin);
-            MapBuilding.start();
-        }
-
         invalidate();
     }
 
@@ -104,11 +92,6 @@ public class MapManager extends ImageView implements EventsGPS {
         int Width = MeasureSpec.getSize(widthMeasureSpec);
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
-        if ((Width == 0 ) || (Height == 0)) return;
-        if ((BitMapSize.x == Width) && (BitMapSize.y == Height)) return;
-        BitMapSize.set(Width,Height);
-        MapImage = new MapBuilder(BitMapSize.x, BitMapSize.y);
-        Log.d("MapManager","Image size ["+BitMapSize.x+" px x "+BitMapSize.y+" px]");
     }
 
     @Override
@@ -118,17 +101,36 @@ public class MapManager extends ImageView implements EventsGPS {
         Float MeterToPixelFactor = Math.max(MetersToPixels.x, MetersToPixels.y) ;
         Float Radius;
 
+        if (null == InUseGeo ) {super.onDraw(canvas);return;}
+
+        long StartRender = SystemClock.elapsedRealtime();
+
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
-         if (MapInUse !=null)
-         {
-             canvas.rotate(InUseGeo.getBearing(),GraphicCenter.x,GraphicCenter.y);
-             canvas.drawBitmap(MapInUse,0f,0f,null);
-             canvas.restore();
-             Log.d("MapManager","Rotating Map of "+InUseGeo.getBearing()+"°");
-         }
+        canvas.rotate(InUseGeo.getBearing(),GraphicCenter.x,GraphicCenter.y);
+        Log.d("MapManager","Rotation is "+InUseGeo.getBearing()+"°");
 
-        Log.d("MapManager", "Drawing "+ GeoInUse.size()+ " points in use");
+        // Do the drawing
+        Log.d("MapManager", "Drawing "+ GeoInView.size()+ " extracted points");
+        // Drawing all points from Storage
+        LineMode.setColor(ExtractedColor);
+        LineMode.setAlpha(ExtractedLineTransparency);
+        LineMode.setStrokeWidth(ExtractedLineThickness);
+        FillMode.setColor(ExtractedColor);
+        FillMode.setAlpha(ExtractedFillTransparency);
+        for (GeoData Marker : GeoInView) {
+            Coords = Marker.getCoordinate();
+            Radius = MeterToPixelFactor * Marker.getAccuracy();
+            Pixel.set(
+                    (Coords.x - WorldOrigin.x)* MeterToPixelFactor + GraphicCenter.x ,
+                    (WorldOrigin.y - Coords.y)* MeterToPixelFactor + GraphicCenter.y
+            );
+
+            canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
+            canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
+        }
+
+        Log.d("MapManager", "Drawing "+ GeoInUse.size()+ " computed points");
         // Drawing all points from Storage
         LineMode.setColor(ComputedColor);
         LineMode.setAlpha(ComputedLineTransparency);
@@ -139,7 +141,7 @@ public class MapManager extends ImageView implements EventsGPS {
             Coords = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
-                    (WorldOrigin.x - Coords.x)* MeterToPixelFactor + GraphicCenter.x ,
+                    (Coords.x - WorldOrigin.x)* MeterToPixelFactor + GraphicCenter.x ,
                     (WorldOrigin.y - Coords.y)* MeterToPixelFactor + GraphicCenter.y
             );
             canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
@@ -160,6 +162,9 @@ public class MapManager extends ImageView implements EventsGPS {
              FillMode.setAlpha(MarkerTransparency);
              canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
          }
+
+        long EndRender = SystemClock.elapsedRealtime();
+        Log.d("MapManager", "Rendering was "+ (EndRender - StartRender)+ " ms.");
 
         super.onDraw(canvas);
     }
