@@ -55,13 +55,17 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     }
 
     // Return area size selection for statistics
-    public PointF getSelectionArea(){
+    public PointF getComputedSize(){
         return InUseArea;
     }
 
     // Return area size selection for statistics
-    public PointF getViewArea(){
+    public PointF getDisplayedSize(){
         return InViewArea;
+    }
+
+    public ArrayList<GeoData> extract(RectF searchZone){
+        return HighAccuracyStorage.search(searchZone);
     }
 
     @Override
@@ -96,15 +100,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         return  earthRadius * (float) Math.toRadians(latitude-originLatitude);
     }
 
-    public ArrayList<GeoData> getInView(RectF ViewArea){
-        return HighAccuracyStorage.search(ViewArea);
-    }
-
-    public ArrayList<GeoData> getInUse(RectF UseArea){
-        return HighAccuracyStorage.search(UseArea);
-    }
-
-    @Override
+     @Override
     public void onLocationChanged(Location update) {
         if (update == null) return;
         GeoData geoInfo = new GeoData();

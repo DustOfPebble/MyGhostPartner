@@ -1,10 +1,8 @@
 package com.dustofcloud.daytodayrace;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.SystemClock;
@@ -62,21 +60,21 @@ public class MapManager extends ImageView implements EventsGPS {
 
         InUseGeo = geoInfo;
         this.WorldOrigin = geoInfo.getCoordinate();
-        PointF SizeView = BackendService.getViewArea(); // Read From backend because it's subject to change
+        PointF SizeView = BackendService.getDisplayedSize(); // Read From backend because it's subject to change
 
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
         MetersToPixels.set((float)MinSize / SizeView.x,(float)MinSize / SizeView.y);
 
         PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
         float Extract = Math.max(Size.x, Size.y);
-        GeoInView = new ArrayList<GeoData>(BackendService.getInView(
+        GeoInView = new ArrayList<GeoData>(BackendService.extract(
                 new RectF(this.WorldOrigin.x - Extract/2,this.WorldOrigin.y - Extract/2,
                           this.WorldOrigin.x + Extract/2, this.WorldOrigin.y + Extract/2
                         ))
                 );
 
-        PointF SizeSelection = BackendService.getSelectionArea(); // Read From backend because it's subject to change
-        ArrayList<GeoData> CollectedSelection = BackendService.getInUse(
+        PointF SizeSelection = BackendService.getComputedSize(); // Read From backend because it's subject to change
+        ArrayList<GeoData> CollectedSelection = BackendService.extract(
                 new RectF(this.WorldOrigin.x - SizeSelection.x / 2, this.WorldOrigin.y - SizeSelection.y / 2,
                           this.WorldOrigin.x + SizeSelection.x / 2, this.WorldOrigin.y + SizeSelection.y / 2
                         )
