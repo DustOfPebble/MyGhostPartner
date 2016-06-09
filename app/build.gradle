@@ -5,8 +5,8 @@ android {
     buildToolsVersion '21.1.2'
     defaultConfig {
         applicationId "com.dustofcloud.daytodayrace"
-        minSdkVersion 19
-        targetSdkVersion 19
+        minSdkVersion 14
+        targetSdkVersion 14
         versionCode 1
         versionName "1.0"
     }
@@ -22,5 +22,4 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-
 }
