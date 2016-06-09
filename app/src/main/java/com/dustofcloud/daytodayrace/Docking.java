@@ -105,6 +105,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         searchZone.set(this.ViewCenter.x - SizeSelection.x / 2, this.ViewCenter.y - SizeSelection.y / 2,
                        this.ViewCenter.x + SizeSelection.x / 2, this.ViewCenter.y + SizeSelection.y / 2  );
         CollectedSelection = BackendService.extract(searchZone);
+
         Speeds.clear();
         Speeds.add(new Statistic(geoInfo.getSpeed(),geoInfo.getElapsedDays()));
         for (GeoData item: CollectedSelection) {
