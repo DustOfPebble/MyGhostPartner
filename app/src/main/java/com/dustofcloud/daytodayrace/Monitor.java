@@ -2,6 +2,7 @@ package com.dustofcloud.daytodayrace;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.widget.ImageView;
@@ -9,8 +10,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 public class Monitor extends ImageView {
-    private Docking Controler = null;
-
+    private ArrayList<Pair> Collected;
 
     public Monitor(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -18,7 +18,7 @@ public class Monitor extends ImageView {
 
         // Loading Attributes from XML definitions ...
         if (attrs == null) return;
-        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ControlSwitch, 0, 0);
+        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.Monitor, 0, 0);
         try
         {
 //            highIcon = attributes.getDrawable(R.styleable.ControlSwitch_HighMode);
@@ -30,11 +30,9 @@ public class Monitor extends ImageView {
         invalidate();
     }
 
-    public  void registerManager(Docking controler) {
-        this.Controler = controler;
-    }
-
     public  void updateStatistics(ArrayList<Pair> values) {
+        Collected = values;
+        invalidate();
     }
 
 
@@ -44,5 +42,17 @@ public class Monitor extends ImageView {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    @Override
+    protected void onDraw(Canvas canvas) {
+        float liveValue = 0f;
 
+        if (null != Collected) {
+            for (Pair Infos:  Collected) {
+
+            }
+
+        }
+
+        super.onDraw(canvas);
+    }
 }

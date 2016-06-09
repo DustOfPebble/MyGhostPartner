@@ -1,9 +1,13 @@
 package com.dustofcloud.daytodayrace;
 
 import android.app.Activity;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class Docking extends Activity implements EventsProcessGPS {
 
@@ -12,7 +16,14 @@ public class Docking extends Activity implements EventsProcessGPS {
     private ControlSwitch LightEnhancer = null;
     private ControlSwitch GPSProvider = null;
 
+    private Monitor SpeedInfo = null;
+
     private MapManager MapView = null;
+
+    private RectF searchZone = new RectF();
+    private PointF ViewCenter;
+    private ArrayList<GeoData> CollectedSelection;
+
 
     private int BackPressedCount = 0;
     private DataManager BackendService;
@@ -43,6 +54,8 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider = (ControlSwitch) findViewById(R.id.gps_provider);
         GPSProvider.setMode(SharedConstants.LiveGPS, SharedConstants.ReplayedGPS);
         GPSProvider.registerManager(this);
+
+        SpeedInfo = (Monitor) findViewById(R.id.speed_info);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
@@ -85,5 +98,12 @@ public class Docking extends Activity implements EventsProcessGPS {
 
     @Override
     public void processLocationChanged(GeoData geoInfo){
+        if (BackendService == null) return;
+        PointF SizeSelection = BackendService.getComputedSize();
+        ViewCenter = geoInfo.getCoordinate();
+        searchZone.set(this.ViewCenter.x - SizeSelection.x / 2, this.ViewCenter.y - SizeSelection.y / 2,
+                       this.ViewCenter.x + SizeSelection.x / 2, this.ViewCenter.y + SizeSelection.y / 2  );
+        CollectedSelection = BackendService.extract(searchZone);
+
     }
 }

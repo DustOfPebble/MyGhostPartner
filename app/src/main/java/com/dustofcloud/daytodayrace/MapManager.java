@@ -18,7 +18,7 @@ public class MapManager extends ImageView implements EventsProcessGPS {
     private DataManager BackendService =null;
     private ArrayList<GeoData> GeoInView =null;
     private ArrayList<GeoData> GeoInUse =null;
-    private PointF WorldOrigin ;
+    private PointF ViewCenter;
     private PointF GraphicCenter = new PointF(0f,0f) ;
     private Paint LineMode;
     private Paint FillMode;
@@ -63,12 +63,12 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         if (BackendService == null) return;
 
         InUseGeo = geoInfo;
-        WorldOrigin = geoInfo.getCoordinate();
+        ViewCenter = geoInfo.getCoordinate();
 
         // Extracting active point around first because we will make a List copy ...
         PointF SizeSelection = BackendService.getComputedSize();
-        searchZone.set(this.WorldOrigin.x - SizeSelection.x / 2, this.WorldOrigin.y - SizeSelection.y / 2,
-                       this.WorldOrigin.x + SizeSelection.x / 2, this.WorldOrigin.y + SizeSelection.y / 2  );
+        searchZone.set(this.ViewCenter.x - SizeSelection.x / 2, this.ViewCenter.y - SizeSelection.y / 2,
+                       this.ViewCenter.x + SizeSelection.x / 2, this.ViewCenter.y + SizeSelection.y / 2  );
         ArrayList<GeoData> CollectedSelection = BackendService.extract(searchZone );
         // Filtering InUse
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
@@ -79,8 +79,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         MetersToPixels.set((float)MinSize / SizeView.x,(float)MinSize / SizeView.y);
         PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
         float Extract = Math.max(Size.x, Size.y);
-        searchZone.set(this.WorldOrigin.x - Extract/2,this.WorldOrigin.y - Extract/2,
-                       this.WorldOrigin.x + Extract/2, this.WorldOrigin.y + Extract/2);
+        searchZone.set(this.ViewCenter.x - Extract/2,this.ViewCenter.y - Extract/2,
+                       this.ViewCenter.x + Extract/2, this.ViewCenter.y + Extract/2);
         GeoInView = BackendService.extract(searchZone);
 
         invalidate();
@@ -123,8 +123,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
             Coords = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
-                    (Coords.x - WorldOrigin.x)* MeterToPixelFactor + GraphicCenter.x ,
-                    (WorldOrigin.y - Coords.y)* MeterToPixelFactor + GraphicCenter.y
+                    (Coords.x - ViewCenter.x)* MeterToPixelFactor + GraphicCenter.x ,
+                    (ViewCenter.y - Coords.y)* MeterToPixelFactor + GraphicCenter.y
             );
 
             canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
@@ -142,16 +142,16 @@ public class MapManager extends ImageView implements EventsProcessGPS {
             Coords = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
-                    (Coords.x - WorldOrigin.x)* MeterToPixelFactor + GraphicCenter.x ,
-                    (WorldOrigin.y - Coords.y)* MeterToPixelFactor + GraphicCenter.y
+                    (Coords.x - ViewCenter.x)* MeterToPixelFactor + GraphicCenter.x ,
+                    (ViewCenter.y - Coords.y)* MeterToPixelFactor + GraphicCenter.y
             );
             canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
             canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
         }
 
 
-        if (WorldOrigin !=null) {
-            Log.d("MapManager", "Offset is ["+WorldOrigin.x+","+WorldOrigin.y+"]");
+        if (ViewCenter !=null) {
+            Log.d("MapManager", "Offset is ["+ ViewCenter.x+","+ ViewCenter.y+"]");
             LineMode.setColor(MarkerColor);
             FillMode.setColor(MarkerColor);
             LineMode.setStrokeWidth(MarkerLineThickness);
