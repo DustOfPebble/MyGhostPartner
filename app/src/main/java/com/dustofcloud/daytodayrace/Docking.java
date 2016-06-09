@@ -5,21 +5,28 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-public class Docking extends Activity implements EventsControlSwitch {
+public class Docking extends Activity implements EventsProcessGPS {
 
     private ControlSwitch SleepLocker = null;
     private ControlSwitch BatterySaver = null;
     private ControlSwitch LightEnhancer = null;
     private ControlSwitch GPSProvider = null;
 
+    private MapManager MapView = null;
+
     private int BackPressedCount = 0;
     private DataManager BackendService;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docking);
+
+        BackendService = (DataManager) getApplication();
+        BackendService.setUpdateCallback(this);
+
+        MapView = (MapManager)  findViewById(R.id.map_manager);
+        MapView.setBackend(BackendService);
 
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
         SleepLocker.setMode(SharedConstants.ScreenLocked, SharedConstants.ScreenUnLocked);
@@ -38,7 +45,6 @@ public class Docking extends Activity implements EventsControlSwitch {
         GPSProvider.registerControlSwitch(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        BackendService = (DataManager) DataManager.getBackend();
     }
 
     @Override
@@ -55,7 +61,6 @@ public class Docking extends Activity implements EventsControlSwitch {
         BackendService.setMode(SharedConstants.SwitchForeground);
     }
 
-    @Override
     public void onStatusChanged(short Status) {
         if (Status == SharedConstants.ScreenLocked)
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -76,5 +81,9 @@ public class Docking extends Activity implements EventsControlSwitch {
             super.onBackPressed();
         }
         else { Toast.makeText(Docking.this, "Press back again to exit !", Toast.LENGTH_SHORT).show(); }
+    }
+
+    @Override
+    public void processLocationChanged(GeoData geoInfo){
     }
 }

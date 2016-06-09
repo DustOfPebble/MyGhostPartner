@@ -1,6 +1,6 @@
 package com.dustofcloud.daytodayrace;
 
 
-public interface EventsGPS {
+public interface EventsProcessGPS {
     void processLocationChanged(GeoData geoInfo);
 }

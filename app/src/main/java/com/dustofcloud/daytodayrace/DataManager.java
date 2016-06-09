@@ -12,7 +12,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-public class DataManager extends Application implements  EventsFileReader, LocationListener {
+public class DataManager extends Application implements LocationListener {
     private  RectF GeoArea = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
     private PointF InUseArea = new PointF(10f,10f); // Values in meters
     private PointF InViewArea = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
@@ -31,21 +31,23 @@ public class DataManager extends Application implements  EventsFileReader, Locat
     private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 5; // Value in meters
     private static final long MIN_TIME_BW_UPDATES = 1000; // value in ms
 
-    private SimulateGPS TrigEvents= null;
+    private SimulateGPS EventsSimulatedGPS = null;
+
     private QuadTree HighAccuracyStorage = null;
     private QuadTree LowAccuracyStorage = null;
     private FileWriter WriteToFile=null;
+
     private FileReader ReadFromFile=null;
     private Thread LoadingFiles=null;
     private FileManager FilesHandler=null;
 
     // Specific to manage Callback to clients
     static Context BackendContext = null;
-    static ArrayList<EventsGPS> Clients = new ArrayList<EventsGPS>();
+    static ArrayList<EventsProcessGPS> Clients = new ArrayList<EventsProcessGPS>();
     public static LocationManager SourceGPS;
 
     // Storing callbacks instance from client View
-    public void setUpdateCallback(EventsGPS updateClient){
+    public void setUpdateCallback(EventsProcessGPS updateClient){
         Clients.add(updateClient);
     }
 
@@ -89,7 +91,7 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         catch (Exception ErrorDB) {}
         if (WriteToFile == null) Log.d("DataManager", "Couldn't create a new DB...");
 
-        TrigEvents = new SimulateGPS(this);
+        EventsSimulatedGPS = new SimulateGPS(this);
     }
 
     public float dX(double longitude) {
@@ -137,19 +139,19 @@ public class DataManager extends Application implements  EventsFileReader, Locat
 
         // Loop over registered clients callback ...
         if (RunningMode == SharedConstants.SwitchForeground)
-            for (EventsGPS Client :Clients) { Client.processLocationChanged(update);}
+            for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(update);}
     }
 
     public void setMode(int ModeID)
     {
         if (ModeID == SharedConstants.ReplayedGPS)  {
-            if (!TrigEvents.load(1000).isEmpty())   {
+            if (!EventsSimulatedGPS.load(1000).isEmpty())   {
                 SourceGPS.removeUpdates(this);
-                TrigEvents.sendGPS();
+                EventsSimulatedGPS.sendGPS();
             }
         }
         if (ModeID == SharedConstants.LiveGPS)  {
-            TrigEvents.stop();
+            EventsSimulatedGPS.stop();
             SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this );
         }
@@ -158,7 +160,6 @@ public class DataManager extends Application implements  EventsFileReader, Locat
         if (ModeID == SharedConstants.SwitchBackground)   RunningMode = ModeID;
     }
 
-    @Override
     public void onLoaded(GeoData Loaded) {
         if (Loaded == null) return;
         Loaded.setCoordinate(new PointF(dX(Loaded.getLongitude()),dY(Loaded.getLatitude())));

@@ -12,10 +12,10 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class MapManager extends ImageView implements EventsGPS {
+public class MapManager extends ImageView implements EventsProcessGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
-    private DataManager BackendService;
+    private DataManager BackendService =null;
     private ArrayList<GeoData> GeoInView =null;
     private ArrayList<GeoData> GeoInUse =null;
     private PointF WorldOrigin ;
@@ -39,12 +39,9 @@ public class MapManager extends ImageView implements EventsGPS {
     private static final float ExtractedLineThickness = 5f;
 
 
-
     public MapManager(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
-        BackendService = (DataManager) DataManager.getBackend();
-        BackendService.setUpdateCallback(this);
         LineMode = new Paint();
         LineMode.setStyle(Paint.Style.STROKE);
         FillMode = new Paint();
@@ -53,10 +50,16 @@ public class MapManager extends ImageView implements EventsGPS {
         GeoInUse = new ArrayList<GeoData>();
     }
 
+    public void setBackend(DataManager backend) {
+        BackendService = backend;
+        BackendService.setUpdateCallback(this);
+    }
+
     @Override
     public void processLocationChanged(GeoData geoInfo) {
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
+        if (BackendService == null) return;
 
         InUseGeo = geoInfo;
         WorldOrigin = geoInfo.getCoordinate();

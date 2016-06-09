@@ -11,7 +11,7 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
 
     private Drawable highIcon = null;
     private Drawable lowIcon = null;
-    private EventsControlSwitch Controler = null;
+    private Docking Controler = null;
 
     private short highStatus = -1;
     private short lowStatus = -1;
@@ -34,7 +34,7 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
 
          this.setOnClickListener(this);
          Status = highStatus;
-         this.setBackground(highIcon);
+         this.setImageDrawable(highIcon);
          invalidate();
     }
 
@@ -44,8 +44,8 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
         lowStatus = lowEvent;
     }
 
-    public  void registerControlSwitch(EventsControlSwitch Actuator) {
-        this.Controler = Actuator;
+    public  void registerControlSwitch(Docking controler) {
+        this.Controler = controler;
         Controler.onStatusChanged(Status);
     }
 
@@ -57,8 +57,8 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
 
     public void onClick(View V) {
         Status = (Status == highStatus) ? lowStatus : highStatus;
-        if (Status == highStatus)  this.setBackground(highIcon);
-        if (Status == lowStatus)  this.setBackground(lowIcon);
+        if (Status == highStatus)  this.setImageDrawable(highIcon);
+        if (Status == lowStatus)  this.setImageDrawable(lowIcon);
         Controler.onStatusChanged(Status);
         invalidate();
     }

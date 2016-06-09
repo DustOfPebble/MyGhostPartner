@@ -8,12 +8,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class FileReader implements Runnable {
-    EventsFileReader NotifyClient = null;
+    DataManager Notify = null;
     FileManager FilesHandler= null;
 
-    public FileReader(FileManager FilesHandler, EventsFileReader Suscriber ) {
-        this.NotifyClient = Suscriber;
-        this.FilesHandler =  FilesHandler;
+    public FileReader(FileManager handler, DataManager Client ) {
+       Notify = Client;
+       FilesHandler =  handler;
     }
 
     @Override
@@ -44,7 +44,7 @@ public class FileReader implements Runnable {
             geoInfo = new GeoData();
             if (geoInfo.fromJSON(GeoString)) {
                 geoInfo.setElapsedDays(NbDays);
-                NotifyClient.onLoaded(geoInfo);
+                Notify.onLoaded(geoInfo);
                 NbGeoData++;
             }
             //Log.d("FileReader", "Loaded GeoData -> [Long:" + geoInfo.getLongitude() + "°E,Lat:" + geoInfo.getLatitude() + "°N]");
