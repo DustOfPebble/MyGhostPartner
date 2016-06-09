@@ -30,19 +30,19 @@ public class Docking extends Activity implements EventsProcessGPS {
 
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
         SleepLocker.setMode(SharedConstants.ScreenLocked, SharedConstants.ScreenUnLocked);
-        SleepLocker.registerControlSwitch(this);
+        SleepLocker.registerManager(this);
 
         LightEnhancer = (ControlSwitch) findViewById(R.id.switch_light_enhancer);
         LightEnhancer.setMode(SharedConstants.LightEnhanced, SharedConstants.LightNormal);
-        LightEnhancer.registerControlSwitch(this);
+        LightEnhancer.registerManager(this);
 
         BatterySaver = (ControlSwitch) findViewById(R.id.switch_battery_saver);
         BatterySaver.setMode(SharedConstants.BatteryDrainMode, SharedConstants.BatterySaveMode);
-        BatterySaver.registerControlSwitch(this);
+        BatterySaver.registerManager(this);
 
         GPSProvider = (ControlSwitch) findViewById(R.id.gps_provider);
         GPSProvider.setMode(SharedConstants.LiveGPS, SharedConstants.ReplayedGPS);
-        GPSProvider.registerControlSwitch(this);
+        GPSProvider.registerManager(this);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }

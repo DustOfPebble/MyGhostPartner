@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 public class Monitor extends ImageView {
+    private Docking Controler = null;
+
 
     public Monitor(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -24,11 +26,16 @@ public class Monitor extends ImageView {
         }
         finally { attributes.recycle();}
 
-        this.setOnClickListener(this);
-        Status = highStatus;
         this.setImageDrawable(highIcon);
         invalidate();
 */    }
+
+    public  void registerManager(Docking controler) {
+        this.Controler = controler;
+    }
+
+    public  void updateStatistics(ArrayList<Pair> values) {
+    }
 
 
     @Override

@@ -109,19 +109,26 @@ public class DataManager extends Application implements LocationListener {
         geoInfo.setGPS(update);
         processLocationChanged(geoInfo);
     }
+
+    private void init(GeoData update) {
+        originLatitude = update.getLatitude();
+        originLongitude = update.getLongitude();
+        earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
+        HighAccuracyStorage = new QuadTree(GeoArea); // Create QuadTree storage area
+        LowAccuracyStorage = new QuadTree(GeoArea); // Create QuadTree storage area
+        LoadingFiles = new Thread(ReadFromFile);
+        LoadingFiles.start();
+    }
+
     public void processLocationChanged(GeoData update) {
         if (update == null) return;
         Log.d("DataManager", "GPS notification ==> [" + update.getLongitude() + "°E," + update.getLatitude() + "°N]");
+
         if ( !originSet ) {
+            init(update);
             originSet = true;
-            originLatitude = update.getLatitude();
-            originLongitude = update.getLongitude();
-            earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
-            HighAccuracyStorage = new QuadTree(GeoArea); // Create QuadTree storage area
-            LowAccuracyStorage = new QuadTree(GeoArea); // Create QuadTree storage area
-            LoadingFiles = new Thread(ReadFromFile);
-            LoadingFiles.start();
         }
+
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
         update.setCoordinate(new PointF(dX(update.getLongitude()),dY(update.getLatitude())));
         Log.d("DataManager", "Coordinate["+update.getCoordinate().x+","+update.getCoordinate().y+"]");

@@ -44,7 +44,7 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
         lowStatus = lowEvent;
     }
 
-    public  void registerControlSwitch(Docking controler) {
+    public  void registerManager(Docking controler) {
         this.Controler = controler;
         Controler.onStatusChanged(Status);
     }
