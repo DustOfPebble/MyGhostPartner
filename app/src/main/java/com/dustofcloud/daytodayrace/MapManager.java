@@ -23,6 +23,7 @@ public class MapManager extends ImageView implements EventsProcessGPS {
     private Paint LineMode;
     private Paint FillMode;
     private GeoData InUseGeo = null;
+    private RectF searchZone = new RectF();
 
     private static final int MarkerColor = 0xffff5555;
     private static final int MarkerTransparency = 100;
@@ -66,14 +67,11 @@ public class MapManager extends ImageView implements EventsProcessGPS {
 
         // Extracting active point around first because we will make a List copy ...
         PointF SizeSelection = BackendService.getComputedSize();
-        ArrayList<GeoData> CollectedSelection = BackendService.extract(
-                new RectF(this.WorldOrigin.x - SizeSelection.x / 2, this.WorldOrigin.y - SizeSelection.y / 2,
-                          this.WorldOrigin.x + SizeSelection.x / 2, this.WorldOrigin.y + SizeSelection.y / 2
-                        )
-                );
+        searchZone.set(this.WorldOrigin.x - SizeSelection.x / 2, this.WorldOrigin.y - SizeSelection.y / 2,
+                       this.WorldOrigin.x + SizeSelection.x / 2, this.WorldOrigin.y + SizeSelection.y / 2  );
+        ArrayList<GeoData> CollectedSelection = BackendService.extract(searchZone );
         // Filtering InUse
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
-
 
         // Extracting Map background at least to avoid list copy...
         PointF SizeView = BackendService.getDisplayedSize();
@@ -81,10 +79,9 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         MetersToPixels.set((float)MinSize / SizeView.x,(float)MinSize / SizeView.y);
         PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
         float Extract = Math.max(Size.x, Size.y);
-        GeoInView = BackendService.extract(
-                    new RectF(this.WorldOrigin.x - Extract/2,this.WorldOrigin.y - Extract/2,
-                              this.WorldOrigin.x + Extract/2, this.WorldOrigin.y + Extract/2
-                        ));
+        searchZone.set(this.WorldOrigin.x - Extract/2,this.WorldOrigin.y - Extract/2,
+                       this.WorldOrigin.x + Extract/2, this.WorldOrigin.y + Extract/2);
+        GeoInView = BackendService.extract(searchZone);
 
         invalidate();
     }
