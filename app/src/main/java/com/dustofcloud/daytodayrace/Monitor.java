@@ -10,7 +10,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 public class Monitor extends ImageView {
-    private ArrayList<Pair> Collected;
+    private ArrayList<Statistic> Collected;
+    private float MeanValue;
 
     public Monitor(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -30,11 +31,16 @@ public class Monitor extends ImageView {
         invalidate();
     }
 
-    public  void updateStatistics(ArrayList<Pair> values) {
+    public  void updateStatistics(ArrayList<Statistic> values) {
         Collected = values;
+        MeanValue = 0f;
+
+        if (null != Collected) {
+            for (Statistic item:  Collected) { MeanValue+=item.value; }
+            if (Collected.size() > 0) MeanValue = MeanValue / Collected.size();
+        }
         invalidate();
     }
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
@@ -44,14 +50,6 @@ public class Monitor extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        float liveValue = 0f;
-
-        if (null != Collected) {
-            for (Pair Infos:  Collected) {
-
-            }
-
-        }
 
         super.onDraw(canvas);
     }

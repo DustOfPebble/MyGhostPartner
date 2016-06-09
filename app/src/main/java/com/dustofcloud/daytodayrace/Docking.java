@@ -23,7 +23,7 @@ public class Docking extends Activity implements EventsProcessGPS {
     private RectF searchZone = new RectF();
     private PointF ViewCenter;
     private ArrayList<GeoData> CollectedSelection;
-
+    private ArrayList<Statistic> Speeds;
 
     private int BackPressedCount = 0;
     private DataManager BackendService;
@@ -56,6 +56,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider.registerManager(this);
 
         SpeedInfo = (Monitor) findViewById(R.id.speed_info);
+        Speeds = new ArrayList<Statistic>();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
@@ -104,6 +105,12 @@ public class Docking extends Activity implements EventsProcessGPS {
         searchZone.set(this.ViewCenter.x - SizeSelection.x / 2, this.ViewCenter.y - SizeSelection.y / 2,
                        this.ViewCenter.x + SizeSelection.x / 2, this.ViewCenter.y + SizeSelection.y / 2  );
         CollectedSelection = BackendService.extract(searchZone);
+        Speeds.clear();
+        Speeds.add(new Statistic(geoInfo.getSpeed(),geoInfo.getElapsedDays()));
+        for (GeoData item: CollectedSelection) {
+            Speeds.add(new Statistic(item.getSpeed(),item.getElapsedDays()));
+        }
+        SpeedInfo.updateStatistics(Speeds);
 
     }
 }
