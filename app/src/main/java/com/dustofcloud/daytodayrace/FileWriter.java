@@ -1,6 +1,6 @@
 package com.dustofcloud.daytodayrace;
 
-import android.util.JsonWriter;
+import android.os.Handler;
 import android.util.Log;
 
 import java.io.BufferedWriter;
@@ -12,21 +12,31 @@ import java.util.ArrayList;
 public class FileWriter {
     FileManager FilesHandler = null;
     private ArrayList<GeoData> geoDataBuffer = null;
-    private int geoDataCount = 60; // Number of stored data between storage (every minute)
+    private int WriteLoopWait = 60000; // Wwrite every minute
     static FileOutputStream Stream = null;
     static BufferedWriter Storage =null;
-    private boolean isTimeWritten;
+    private boolean isHeaderWritten;
+
+    private Handler trigger = new Handler();
+    private Runnable task = new Runnable() { public void run() { triggeredWrite();} };
+
 
     public FileWriter(FileManager FilesHandler) throws IOException{
         this.FilesHandler = FilesHandler;
         geoDataBuffer = new ArrayList();
-        isTimeWritten = false;
+        isHeaderWritten = false;
+        trigger.postDelayed(task, WriteLoopWait);
+        Log.d("FileWriter", "Initializing next write in "+WriteLoopWait/1000+"s");
     }
 
-    public void writeGeoData(GeoData geoInfo) throws IOException {
-        geoDataBuffer.add(geoInfo);
-        if (geoDataBuffer.size() < geoDataCount) return;
-        flushBuffer();
+    public void writeGeoData(GeoData geoInfo) { geoDataBuffer.add(geoInfo); }
+
+    public void triggeredWrite() {
+        if (geoDataBuffer.size() == 0) return;
+        try { flushBuffer(); }
+        catch (Exception BufferWriteFailed) {Log.d("FileWriter", "Failed to write GPS datas");}
+        trigger.postDelayed(task, WriteLoopWait);
+        Log.d("FileWriter", "Triggering next write in "+WriteLoopWait/1000+"s");
     }
 
     public void flushBuffer() throws IOException {
@@ -34,11 +44,11 @@ public class FileWriter {
         Log.d("FileWriter","Writing "+geoDataBuffer.size()+" GeoData elements of buffer." );
         Storage = new  BufferedWriter(new OutputStreamWriter(Stream, "UTF-8"));
 
-        if (!isTimeWritten) {
+        if (!isHeaderWritten) {
             TimeStamps Now = new TimeStamps();
             Storage.write(Now.getNowToJSON());
             Storage.newLine();
-            isTimeWritten=true;
+            isHeaderWritten =true;
         }
 
         for (GeoData geoInfo : geoDataBuffer) {
@@ -49,6 +59,5 @@ public class FileWriter {
         Storage.close();
         geoDataBuffer.clear();
     }
-
 }
 

@@ -138,8 +138,7 @@ public class DataManager extends Application implements LocationListener {
                 if (LastUpdate.getAccuracy() <= SharedConstants.LowPrecisionLimit) HighAccuracyStorage.store(LastUpdate);
                 else  LowAccuracyStorage.store(LastUpdate);
 
-                try { WriteToFile.writeGeoData(update); }
-                catch ( Exception writerError ) { Log.d("DataManager","Failed to write new GeoData ..."); }
+                WriteToFile.writeGeoData(update);
             }
         }
         LastUpdate = update;
