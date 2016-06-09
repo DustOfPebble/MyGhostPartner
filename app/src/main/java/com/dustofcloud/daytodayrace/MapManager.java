@@ -59,21 +59,10 @@ public class MapManager extends ImageView implements EventsGPS {
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
 
         InUseGeo = geoInfo;
-        this.WorldOrigin = geoInfo.getCoordinate();
-        PointF SizeView = BackendService.getDisplayedSize(); // Read From backend because it's subject to change
+        WorldOrigin = geoInfo.getCoordinate();
 
-        int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
-        MetersToPixels.set((float)MinSize / SizeView.x,(float)MinSize / SizeView.y);
-
-        PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
-        float Extract = Math.max(Size.x, Size.y);
-        GeoInView = new ArrayList<GeoData>(BackendService.extract(
-                new RectF(this.WorldOrigin.x - Extract/2,this.WorldOrigin.y - Extract/2,
-                          this.WorldOrigin.x + Extract/2, this.WorldOrigin.y + Extract/2
-                        ))
-                );
-
-        PointF SizeSelection = BackendService.getComputedSize(); // Read From backend because it's subject to change
+        // Extracting active point around first because we will make a List copy ...
+        PointF SizeSelection = BackendService.getComputedSize();
         ArrayList<GeoData> CollectedSelection = BackendService.extract(
                 new RectF(this.WorldOrigin.x - SizeSelection.x / 2, this.WorldOrigin.y - SizeSelection.y / 2,
                           this.WorldOrigin.x + SizeSelection.x / 2, this.WorldOrigin.y + SizeSelection.y / 2
@@ -81,6 +70,18 @@ public class MapManager extends ImageView implements EventsGPS {
                 );
         // Filtering InUse
         GeoInUse = new ArrayList<GeoData>(CollectedSelection);
+
+
+        // Extracting Map background at least to avoid list copy...
+        PointF SizeView = BackendService.getDisplayedSize();
+        int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
+        MetersToPixels.set((float)MinSize / SizeView.x,(float)MinSize / SizeView.y);
+        PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
+        float Extract = Math.max(Size.x, Size.y);
+        GeoInView = BackendService.extract(
+                    new RectF(this.WorldOrigin.x - Extract/2,this.WorldOrigin.y - Extract/2,
+                              this.WorldOrigin.x + Extract/2, this.WorldOrigin.y + Extract/2
+                        ));
 
         invalidate();
     }
@@ -95,11 +96,12 @@ public class MapManager extends ImageView implements EventsGPS {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        PointF Pixel = new PointF(0f,0f); // Allocate because it is updated on the fly
-        PointF Coords; // Allocate because it is updated on the fly
+        PointF Pixel = new PointF(0f,0f); // Allocate because it reused directly
         Float MeterToPixelFactor = Math.max(MetersToPixels.x, MetersToPixels.y) ;
+        PointF Coords;
         Float Radius;
 
+        // Avoid crash during first initialisation
         if (null == InUseGeo ) {super.onDraw(canvas);return;}
 
         long StartRender = SystemClock.elapsedRealtime();
@@ -148,19 +150,19 @@ public class MapManager extends ImageView implements EventsGPS {
         }
 
 
-         if (WorldOrigin !=null) {
-             Log.d("MapManager", "Offset is ["+WorldOrigin.x+","+WorldOrigin.y+"]");
-             LineMode.setColor(MarkerColor);
-             FillMode.setColor(MarkerColor);
-             LineMode.setStrokeWidth(MarkerLineThickness);
-             Radius = MeterToPixelFactor * InUseGeo.getAccuracy();
-             Float MinRadius = (Radius/10 < 10)? 10:Radius/10;
-             Pixel.set(GraphicCenter.x,GraphicCenter.y);
-             canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
-             canvas.drawCircle(Pixel.x, Pixel.y,MinRadius ,FillMode);
-             FillMode.setAlpha(MarkerTransparency);
-             canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
-         }
+        if (WorldOrigin !=null) {
+            Log.d("MapManager", "Offset is ["+WorldOrigin.x+","+WorldOrigin.y+"]");
+            LineMode.setColor(MarkerColor);
+            FillMode.setColor(MarkerColor);
+            LineMode.setStrokeWidth(MarkerLineThickness);
+            Radius = MeterToPixelFactor * InUseGeo.getAccuracy();
+            Float MinRadius = (Radius/10 < 10)? 10:Radius/10;
+            Pixel.set(GraphicCenter.x,GraphicCenter.y);
+            canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
+            canvas.drawCircle(Pixel.x, Pixel.y,MinRadius ,FillMode);
+            FillMode.setAlpha(MarkerTransparency);
+            canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
+        }
 
         long EndRender = SystemClock.elapsedRealtime();
         Log.d("MapManager", "Rendering was "+ (EndRender - StartRender)+ " ms.");
