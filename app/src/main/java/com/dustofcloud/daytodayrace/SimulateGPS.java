@@ -16,7 +16,6 @@ public class SimulateGPS {
     private int Index=0;
     private int FileIndex=0;
     private DataManager Notify;
-    private FileManager FileHandler;
     private Handler trigger = new Handler();
     private Runnable task = new Runnable() { public void run() { sendGPS();} };
     private int EventsDelay = 1000;
@@ -24,7 +23,6 @@ public class SimulateGPS {
     public SimulateGPS(DataManager Parent)
     {
         Notify = Parent;
-        FileHandler= new FileManager(Notify);
         RecordsCollection = new ArrayList<GeoData>();
 
         // Check access to Directory storage
