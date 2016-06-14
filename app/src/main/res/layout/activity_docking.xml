@@ -61,8 +61,8 @@
     <com.dustofcloud.daytodayrace.Monitor
         android:id="@+id/speed_info"
         android:layout_margin="2dp"
-        android:layout_width="100dp"
-        android:layout_height="70dp"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         app:Thumb="@drawable/gps_live"

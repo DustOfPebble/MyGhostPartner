@@ -5,8 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -14,13 +14,16 @@ import java.util.ArrayList;
 public class Monitor extends ImageView {
     private ArrayList<Statistic> Collected;
     private float MeanValue;
-    private Path MonitorFrame;
-    private Path MonitorFrameFilled;
-    private Paint FrameBorderPainter;
-    private Paint FrameBackgroundPainter;
-    private static final int FrameBorderColor = 0xff84e9f4;
-    private static final int FrameBackgroundColor = 0xff00bebe;
-    private static final float FrameBorderThickness = 5f;
+    private Path Frame;
+    private Path FrameFilled;
+    private Paint BorderPainter;
+    private Paint BackgroundPainter;
+    private Paint TextPainter;
+
+    private static final int BorderColor = 0xff84e9f4;
+    private static final int BackgroundColor = 0xff00bebe;
+    private static final float BorderThickness = 5f;
+    private static final int TextColor = 0xfffffcfc;
 
 
     public Monitor(Context context, AttributeSet attrs) {
@@ -38,16 +41,21 @@ public class Monitor extends ImageView {
         finally { attributes.recycle();}
 
 //        this.setImageDrawable(highIcon);
-        FrameBorderPainter = new Paint();
-        FrameBorderPainter.setStyle(Paint.Style.STROKE);
-        FrameBorderPainter.setColor(FrameBorderColor);
-        FrameBorderPainter.setStrokeWidth(FrameBorderThickness);
+        BorderPainter = new Paint();
+        BorderPainter.setStyle(Paint.Style.STROKE);
+        BorderPainter.setColor(BorderColor);
+        BorderPainter.setStrokeWidth(BorderThickness);
 
-        FrameBackgroundPainter = new Paint();
-        FrameBackgroundPainter.setStyle(Paint.Style.FILL);
-        FrameBorderPainter.setColor(FrameBackgroundColor);
-        MonitorFrame = new Path();
-        MonitorFrameFilled = MonitorFrame;
+        BackgroundPainter = new Paint();
+        BackgroundPainter.setStyle(Paint.Style.FILL);
+        BackgroundPainter.setColor(BackgroundColor);
+        Frame = new Path();
+        FrameFilled = new Path();
+
+        TextPainter = new Paint();
+        TextPainter.setStrokeWidth(2);
+        TextPainter.setTextAlign(Paint.Align.CENTER);
+        TextPainter.setColor(TextColor);
 
     }
 
@@ -70,13 +78,16 @@ public class Monitor extends ImageView {
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
         if ((Width == 0) || (Height == 0)) return;
-        MonitorFrame.moveTo(0,0);
-        MonitorFrame.lineTo(Width,0);
-        MonitorFrame.lineTo(Width,Height);
-        MonitorFrame.lineTo(0,Height);
-        MonitorFrame.close();
-        MonitorFrameFilled = new Path(MonitorFrame);
-        MonitorFrameFilled.setFillType(Path.FillType.WINDING);
+        int Rounded = Math.min(Width/10, Height/10);
+        Frame.reset();
+        Frame.addRoundRect( new RectF( BorderThickness,BorderThickness,
+                                              Width - (2*BorderThickness) ,
+                                              Height - (2*BorderThickness) )
+                                   ,Rounded,Rounded, Path.Direction.CW);
+        FrameFilled.set(Frame);
+        FrameFilled.setFillType(Path.FillType.WINDING);
+
+        TextPainter.setTextSize(Height/5);
 
     }
 
@@ -84,8 +95,10 @@ public class Monitor extends ImageView {
     protected void onDraw(Canvas canvas) {
 
         super.onDraw(canvas);
-        canvas.drawPath(MonitorFrameFilled,FrameBackgroundPainter);
-        canvas.drawPath(MonitorFrame,FrameBorderPainter);
+        canvas.drawPath(FrameFilled, BackgroundPainter);
+        canvas.drawPath(Frame, BorderPainter);
+
+        canvas.drawText(String.valueOf(MeanValue),0,canvas.getHeight()/2,TextPainter);
 
     }
 }
