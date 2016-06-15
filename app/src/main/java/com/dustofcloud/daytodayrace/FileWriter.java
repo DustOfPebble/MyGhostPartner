@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class FileWriter {
     FileManager FilesHandler = null;
     private ArrayList<GeoData> geoDataBuffer = null;
-    private int WriteLoopWait = 60000; // Wwrite every minute
+    private int WriteLoopWait = 60000; // Write every minute
     static FileOutputStream Stream = null;
     static BufferedWriter Storage =null;
     private boolean isHeaderWritten;
