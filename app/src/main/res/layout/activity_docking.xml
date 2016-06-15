@@ -59,14 +59,21 @@
         />
 
     <com.dustofcloud.daytodayrace.Monitor
-        android:id="@+id/speed_info"
+        android:id="@+id/left_monitor"
         android:layout_margin="2dp"
         android:layout_width="130dp"
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        app:Thumb="@drawable/gps_live"
-        app:Unit="km/h"
+        />
+
+    <com.dustofcloud.daytodayrace.Monitor
+        android:id="@+id/right_monitor"
+        android:layout_margin="2dp"
+        android:layout_width="130dp"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         />
 
 

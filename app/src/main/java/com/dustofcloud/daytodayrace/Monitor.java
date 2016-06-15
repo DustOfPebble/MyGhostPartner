@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -25,22 +27,14 @@ public class Monitor extends ImageView {
     private static final float BorderThickness = 5f;
     private static final int TextColor = 0xfffffcfc;
 
+    private String Unit ="";
+    private BitmapDrawable Icon = null;
+
 
     public Monitor(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
 
-        // Loading Attributes from XML definitions ...
-        if (attrs == null) return;
-        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.Monitor, 0, 0);
-        try
-        {
-//            highIcon = attributes.getDrawable(R.styleable.ControlSwitch_HighMode);
- //           lowIcon = attributes.getDrawable(R.styleable.ControlSwitch_LowMode);
-        }
-        finally { attributes.recycle();}
-
-//        this.setImageDrawable(highIcon);
         BorderPainter = new Paint();
         BorderPainter.setStyle(Paint.Style.STROKE);
         BorderPainter.setColor(BorderColor);
@@ -88,7 +82,6 @@ public class Monitor extends ImageView {
         FrameFilled.setFillType(Path.FillType.WINDING);
 
         TextPainter.setTextSize(Height/5);
-
     }
 
     @Override
@@ -99,6 +92,5 @@ public class Monitor extends ImageView {
         canvas.drawPath(Frame, BorderPainter);
 
         canvas.drawText(String.valueOf(MeanValue),0,canvas.getHeight()/2,TextPainter);
-
     }
 }

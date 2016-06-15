@@ -3,9 +3,4 @@
         <attr name="HighMode" format="integer" />
         <attr name="LowMode" format="integer" />
     </declare-styleable>
-
-    <declare-styleable name="Monitor">
-        <attr name="Thumb" format="integer" />
-        <attr name="Unit" format="string" />
-    </declare-styleable>
  </resources>

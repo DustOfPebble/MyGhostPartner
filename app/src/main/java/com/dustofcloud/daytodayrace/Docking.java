@@ -16,7 +16,8 @@ public class Docking extends Activity implements EventsProcessGPS {
     private ControlSwitch LightEnhancer = null;
     private ControlSwitch GPSProvider = null;
 
-    private Monitor SpeedInfo = null;
+    private Monitor LeftMonitor = null;
+    private Monitor RightMonitor = null;
 
     private MapManager MapView = null;
 
@@ -55,7 +56,9 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider.setMode(SharedConstants.LiveGPS, SharedConstants.ReplayedGPS);
         GPSProvider.registerManager(this);
 
-        SpeedInfo = (Monitor) findViewById(R.id.speed_info);
+        LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
+        RightMonitor = (Monitor) findViewById(R.id.right_monitor);
+
         Speeds = new ArrayList<Statistic>();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -111,7 +114,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         for (GeoData item: CollectedSelection) {
             Speeds.add(new Statistic(item.getSpeed(),item.getElapsedDays()));
         }
-        SpeedInfo.updateStatistics(Speeds);
+        LeftMonitor.updateStatistics(Speeds);
 
     }
 }
