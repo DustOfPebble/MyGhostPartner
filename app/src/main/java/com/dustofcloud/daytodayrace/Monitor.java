@@ -1,13 +1,11 @@
 package com.dustofcloud.daytodayrace;
 
 import android.content.Context;
-import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -18,40 +16,35 @@ public class Monitor extends ImageView {
     private float MeanValue;
     private Path Frame;
     private Path FrameFilled;
-    private Paint BorderPainter;
-    private Paint BackgroundPainter;
-    private Paint TextPainter;
+    private Paint MonitorPainter;
 
     private static final int BorderColor = 0xff84e9f4;
     private static final int BackgroundColor = 0xff00bebe;
     private static final float BorderThickness = 5f;
     private static final int TextColor = 0xfffffcfc;
+    private static final int HistoryColor = 0xfffffcfc;
 
     private String Unit ="";
-    private BitmapDrawable Icon = null;
+    private Bitmap Thumbnail = null;
+    private int TicksCount = 1;
+    private float TicksScale = 1f;
+    private String FormatDigits = "%.0f";
 
 
     public Monitor(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
 
-        BorderPainter = new Paint();
-        BorderPainter.setStyle(Paint.Style.STROKE);
-        BorderPainter.setColor(BorderColor);
-        BorderPainter.setStrokeWidth(BorderThickness);
-
-        BackgroundPainter = new Paint();
-        BackgroundPainter.setStyle(Paint.Style.FILL);
-        BackgroundPainter.setColor(BackgroundColor);
+        MonitorPainter = new Paint();
         Frame = new Path();
         FrameFilled = new Path();
-
-        TextPainter = new Paint();
-        TextPainter.setStrokeWidth(2);
-        TextPainter.setTextAlign(Paint.Align.CENTER);
-        TextPainter.setColor(TextColor);
-
     }
+
+    public void setDigits(int nb) { FormatDigits = "%."+String.valueOf(nb)+"f"; }
+    public void setTicksCount(int nb) { TicksCount = nb;}
+    public void setTicksScale(float scale) { TicksScale = scale;}
+    public void setUnit(String Unit) { this.Unit = Unit; }
+    public void setThumbnail(Bitmap Thumbnail) { this.Thumbnail = Thumbnail; }
 
     public  void updateStatistics(ArrayList<Statistic> values) {
         Collected = values;
@@ -81,16 +74,33 @@ public class Monitor extends ImageView {
         FrameFilled.set(Frame);
         FrameFilled.setFillType(Path.FillType.WINDING);
 
-        TextPainter.setTextSize(Height/5);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
 
         super.onDraw(canvas);
-        canvas.drawPath(FrameFilled, BackgroundPainter);
-        canvas.drawPath(Frame, BorderPainter);
 
-        canvas.drawText(String.valueOf(MeanValue),0,canvas.getHeight()/2,TextPainter);
+        float FontValueSize = canvas.getHeight()/5;
+        float FontTicksSize = canvas.getHeight()/8;
+        float Range = SharedConstants.NbTicks * TicksScale;
+        float LiveValue = Collected.get(0).value;
+
+
+        MonitorPainter.setStyle(Paint.Style.FILL);
+        MonitorPainter.setColor(BackgroundColor);
+        canvas.drawPath(FrameFilled, MonitorPainter);
+
+        MonitorPainter.setStyle(Paint.Style.STROKE);
+        MonitorPainter.setColor(BorderColor);
+        MonitorPainter.setStrokeWidth(BorderThickness);
+        canvas.drawPath(Frame, MonitorPainter);
+
+        MonitorPainter.setStrokeWidth(2);
+        MonitorPainter.setStyle(Paint.Style.FILL);
+        MonitorPainter.setTextAlign(Paint.Align.CENTER);
+        MonitorPainter.setColor(TextColor);
+        MonitorPainter.setTextSize(FontValueSize);
+        canvas.drawText(String.format(FormatDigits,LiveValue),canvas.getWidth()/2,FontValueSize,MonitorPainter);
     }
 }

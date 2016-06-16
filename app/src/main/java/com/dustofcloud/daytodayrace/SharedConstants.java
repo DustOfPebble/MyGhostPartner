@@ -20,7 +20,8 @@ public class SharedConstants {
     static public final short HighPrecisionLimit=3; // Value in meters
     static public final short LowPrecisionLimit=10; // Value in meters
 
-    static final String FilesSignature = ".DailyDB";
+    static public final String FilesSignature = ".DailyDB";
+    static public short NbTicks =10;
 
 
 

@@ -65,6 +65,7 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:visibility="invisible"
         />
 
     <com.dustofcloud.daytodayrace.Monitor
@@ -74,6 +75,7 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:visibility="invisible"
         />
 
 

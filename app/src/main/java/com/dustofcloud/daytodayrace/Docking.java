@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -57,9 +58,19 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider.registerManager(this);
 
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
+        LeftMonitor.setVisibility(View.INVISIBLE);
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);
+        RightMonitor.setVisibility(View.INVISIBLE);
 
         Speeds = new ArrayList<Statistic>();
+
+        // Hardcoded settings for Speed in left Monitor
+        LeftMonitor.setDigits(1);
+        LeftMonitor.setTicksCount(5);
+        LeftMonitor.setTicksScale(0.2f);
+        LeftMonitor.setUnit("km/h");
+
+        // Right monitor will be Heartbeat or Power is Heartbeat is missing
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
@@ -115,6 +126,7 @@ public class Docking extends Activity implements EventsProcessGPS {
             Speeds.add(new Statistic(item.getSpeed(),item.getElapsedDays()));
         }
         LeftMonitor.updateStatistics(Speeds);
+        if (LeftMonitor.getVisibility() == View.INVISIBLE) LeftMonitor.setVisibility(View.VISIBLE);
 
     }
 }
