@@ -6,23 +6,31 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Monitor extends ImageView {
     private ArrayList<Statistic> Collected;
     private float MeanValue;
     private Path Frame;
     private Path FrameFilled;
+    private Path Arrow;
+    private Path ArrowFilled;
     private Paint MonitorPainter;
 
+    private static final int ArrowBorderColor = 0xff84e9f4;
+    private static final int ArrowColor = 0xff00ffe5;
     private static final int BorderColor = 0xff84e9f4;
-    private static final int BackgroundColor = 0xff00bebe;
+    private static final int BackgroundColor = 0xff002929;
     private static final float BorderThickness = 5f;
     private static final int TextColor = 0xfffffcfc;
-    private static final int HistoryColor = 0xfffffcfc;
+    private static final int HistoryColor = 0xffffdd55;
+    private static final float HistoryStrokeWidth = 20f;
 
     private String Unit ="";
     private Bitmap Thumbnail = null;
@@ -30,6 +38,13 @@ public class Monitor extends ImageView {
     private float TicksScale = 1f;
     private String FormatDigits = "%.0f";
 
+    private int MaxOpacity = 256;
+    private int MinOpacity = 90;
+    private int MaxDays = 5;
+
+    float HistoryOffset;
+    float HistoryStrokeHeight;
+    float Rounded;
 
     public Monitor(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -38,6 +53,8 @@ public class Monitor extends ImageView {
         MonitorPainter = new Paint();
         Frame = new Path();
         FrameFilled = new Path();
+        Arrow = new Path();
+        ArrowFilled = new Path();
     }
 
     public void setDigits(int nb) { FormatDigits = "%."+String.valueOf(nb)+"f"; }
@@ -65,28 +82,49 @@ public class Monitor extends ImageView {
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
         if ((Width == 0) || (Height == 0)) return;
-        int Rounded = Math.min(Width/10, Height/10);
+        Rounded = Math.min(Width/10, Height/10);
         Frame.reset();
-        Frame.addRoundRect( new RectF( BorderThickness,BorderThickness,
-                                              Width - (2*BorderThickness) ,
-                                              Height - (2*BorderThickness) )
+        float offset = BorderThickness / 2;
+        Frame.addRoundRect( new RectF(offset,offset,Width - offset,Height - offset)
                                    ,Rounded,Rounded, Path.Direction.CW);
+//        Frame.addRoundRect( new RectF(0f,0f,Width,Height),Rounded,Rounded, Path.Direction.CW);
         FrameFilled.set(Frame);
         FrameFilled.setFillType(Path.FillType.WINDING);
+
+        float ArrowWidth = Width / 5;
+        float ArrowHeight = ArrowWidth /2;
+        Arrow.reset();
+        Arrow.moveTo(0f,0f);
+        Arrow.lineTo(ArrowWidth /2, 0f);
+        Arrow.lineTo(0f, ArrowHeight);
+        Arrow.lineTo(-ArrowWidth /2,0f);
+        Arrow.close();
+
+        ArrowFilled.set(Arrow);
+        ArrowFilled.setFillType(Path.FillType.WINDING);
+
+        HistoryStrokeHeight = Height / 5;
+        HistoryOffset = Height - (HistoryStrokeHeight + Rounded);
 
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
 
-        super.onDraw(canvas);
+        float Height = canvas.getHeight();
+        float Width = canvas.getWidth();
+        if ((Width == 0) || (Height == 0)) { super.onDraw(canvas);return;}
 
-        float FontValueSize = canvas.getHeight()/5;
-        float FontTicksSize = canvas.getHeight()/8;
-        float Range = SharedConstants.NbTicks * TicksScale;
+        float FontValueSize = Height/5;
+        float FontTicksSize = Height/8;
+        float Range = (SharedConstants.NbTicks * TicksScale);
+        float PhysicToPixels = (Width - (2 * Rounded)) / Range;
         float LiveValue = Collected.get(0).value;
+        int Opacity = 0;
 
+        long StartRender = SystemClock.elapsedRealtime();
 
+        // Drawing Frame
         MonitorPainter.setStyle(Paint.Style.FILL);
         MonitorPainter.setColor(BackgroundColor);
         canvas.drawPath(FrameFilled, MonitorPainter);
@@ -96,11 +134,55 @@ public class Monitor extends ImageView {
         MonitorPainter.setStrokeWidth(BorderThickness);
         canvas.drawPath(Frame, MonitorPainter);
 
-        MonitorPainter.setStrokeWidth(2);
+        // Drawing Live Value
         MonitorPainter.setStyle(Paint.Style.FILL);
         MonitorPainter.setTextAlign(Paint.Align.CENTER);
         MonitorPainter.setColor(TextColor);
         MonitorPainter.setTextSize(FontValueSize);
-        canvas.drawText(String.format(FormatDigits,LiveValue),canvas.getWidth()/2,FontValueSize,MonitorPainter);
+        canvas.drawText(String.format(Locale.ENGLISH,FormatDigits,LiveValue),
+                        canvas.getWidth()/2,FontValueSize - BorderThickness,
+                        MonitorPainter
+                       );
+
+        // Drawing Unit string
+        MonitorPainter.setStyle(Paint.Style.FILL);
+        MonitorPainter.setTextAlign(Paint.Align.RIGHT);
+        MonitorPainter.setColor(TextColor);
+        MonitorPainter.setTextSize(FontTicksSize);
+        canvas.drawText(Unit,Width-Rounded,FontValueSize,MonitorPainter);
+
+        // Drawing Arrow
+        canvas.save();
+        canvas.translate(Width / 2,FontValueSize + BorderThickness);
+        MonitorPainter.setStyle(Paint.Style.FILL);
+        MonitorPainter.setColor(ArrowColor);
+        canvas.drawPath(ArrowFilled, MonitorPainter);
+
+        MonitorPainter.setStyle(Paint.Style.STROKE);
+        MonitorPainter.setColor(ArrowBorderColor);
+        MonitorPainter.setStrokeWidth(BorderThickness);
+        canvas.drawPath(Arrow, MonitorPainter);
+        canvas.restore();
+
+        // Drawing History values
+        canvas.save();
+        canvas.translate(Width / 2,HistoryOffset);
+        MonitorPainter.setColor(HistoryColor);
+        MonitorPainter.setStrokeWidth(HistoryStrokeWidth);
+        MonitorPainter.setStrokeCap(Paint.Cap.ROUND);
+        float X;
+        for (Statistic infos: Collected) {
+            Opacity = MaxOpacity -  (((MaxOpacity - MinOpacity) / MaxDays) * infos.nbDays);
+            if (infos.nbDays > MaxDays) Opacity = MinOpacity;
+            MonitorPainter.setAlpha(Opacity);
+            X = (LiveValue - infos.value) * PhysicToPixels;
+            canvas.drawLine(X,0,X,HistoryStrokeHeight,MonitorPainter);
+        }
+        canvas.restore();
+
+        long EndRender = SystemClock.elapsedRealtime();
+        Log.d("Monitor", "Rendering was "+ (EndRender - StartRender)+ " ms.");
+
+        super.onDraw(canvas);
     }
 }
