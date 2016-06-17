@@ -851,5 +851,14 @@
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\heart_thumb.png"
        inkscape:export-xdpi="162"
        inkscape:export-ydpi="162" />
+    <path
+       style="fill:#6cbcd1;fill-opacity:1;stroke:#d5f6fd;stroke-width:1.73751163;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 240.23923,35.889653 256.2606,50.891118 272.28197,35.889653 Z"
+       id="path3874-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\arrow.png"
+       inkscape:export-xdpi="153.10001"
+       inkscape:export-ydpi="153.10001" />
   </g>
 </svg>

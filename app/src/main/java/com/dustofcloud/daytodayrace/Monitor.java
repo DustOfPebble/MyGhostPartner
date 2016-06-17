@@ -28,6 +28,7 @@ public class Monitor extends ImageView {
 
     private String Unit ="";
     private Bitmap Thumbnail = null;
+    private Bitmap ResizedThumbnail =null;
     private int TicksCount = 1;
     private float TicksScale = 1f;
     private String FormatDigits = "%.0f";
@@ -58,6 +59,7 @@ public class Monitor extends ImageView {
 
     public  void updateStatistics(ArrayList<Statistic> values) {
         Collected = values;
+        Log.d("Monitor","Live value:"+Collected.get(0).value);
         DisplayedValue = String.format(Locale.ENGLISH,FormatDigits,Collected.get(0).value);
         invalidate();
     }
@@ -86,6 +88,8 @@ public class Monitor extends ImageView {
 
         HistoryStrokeHeight = Height / 5;
         HistoryOffset = Height - (HistoryStrokeHeight + Rounded);
+
+        ResizedThumbnail = Bitmap.createScaledBitmap(Thumbnail, Height/5, Width/5, false);
 
     }
 
@@ -122,6 +126,9 @@ public class Monitor extends ImageView {
         MonitorPainter.setColor(TextColor);
         MonitorPainter.setTextSize(FontTicksSize);
         canvas.drawText(Unit,Width-Rounded,FontValueSize,MonitorPainter);
+
+        // Drawing Thumbnail
+        canvas.drawBitmap(ResizedThumbnail, 0f,0f, null);
 
         // Drawing Arrow
         canvas.save();

@@ -90,10 +90,10 @@ public class Docking extends Activity implements EventsProcessGPS {
         LeftMonitor.setUnit("km/h");
 
         // Hardcoded settings for Heartbeat in right Monitor
-        LeftMonitor.setDigits(0);
-        LeftMonitor.setTicksCount(5);
-        LeftMonitor.setTicksScale(1.0f);
-        LeftMonitor.setUnit("bpm");
+        RightMonitor.setDigits(0);
+        RightMonitor.setTicksCount(5);
+        RightMonitor.setTicksScale(1.0f);
+        RightMonitor.setUnit("bpm");
     }
 
     @Override
@@ -174,9 +174,9 @@ public class Docking extends Activity implements EventsProcessGPS {
         CollectedSelection = BackendService.extract(searchZone);
 
         Speeds.clear();
-        Speeds.add(new Statistic(geoInfo.getSpeed(),geoInfo.getElapsedDays()));
+        Speeds.add(new Statistic(geoInfo.getSpeed()*3.6f,geoInfo.getElapsedDays()));
         for (GeoData item: CollectedSelection) {
-            Speeds.add(new Statistic(item.getSpeed(),item.getElapsedDays()));
+            Speeds.add(new Statistic(item.getSpeed()*3.6f,item.getElapsedDays()));
         }
         LeftMonitor.updateStatistics(Speeds);
         if (LeftMonitor.getVisibility() == View.INVISIBLE) LeftMonitor.setVisibility(View.VISIBLE);
