@@ -30,7 +30,7 @@ public class GeoData {
     private float Accuracy = 0.0f;
     private float Speed = 0.0f;
     private float Bearing = 0.0f;
-    private int Heartbeat = 0;
+    private short Heartbeat = -1;
 
     private int ElapsedDays = 0;
     private boolean Live = true; // by default data are Live values
@@ -49,7 +49,7 @@ public class GeoData {
     public boolean isLive() {return Live;}
     public void setSimulated() { Live= false;}
 
-    public void setHeartbeat(int value) { Heartbeat = value;} // Provisionning function
+    public void setHeartbeat(int value) { Heartbeat = (short) value;} // Provisionning function
 
     public void setElapsedDays(int value) { ElapsedDays = value;} // Provisionning function
 
@@ -71,7 +71,7 @@ public class GeoData {
             GeoJSON.put(AltitudeID, Math.floor(Altitude * 10) / 10); // Cut at 1 digit to save space
             GeoJSON.put(SpeedID, Math.floor(Speed * 10) / 10); // Cut at 1 digit to save space
             GeoJSON.put(BearingID, Math.floor(Bearing * 10) / 10); // Cut at 1 digit to save space
-            GeoJSON.put(HeartbeatID, Heartbeat);
+            if (Heartbeat > -1) GeoJSON.put(HeartbeatID, Heartbeat);
         } catch (Exception JSONBuilder) {}
 //        Log.d("GeoData", "JSon from GeoData =" + GeoJSON.toString());
         return GeoJSON.toString();
@@ -92,7 +92,7 @@ public class GeoData {
         }
         catch (Exception Missing) { Log.d("GeoData", "GeoData from JSon => Missing required value"); return false;}
 
-        try { Heartbeat = GeoJSON.getInt(HeartbeatID);} catch (Exception Missing) { Heartbeat = 0;}
+        try { Heartbeat = (short) GeoJSON.getInt(HeartbeatID);} catch (Exception Missing) { Heartbeat = -1;}
         return true;
     }
 

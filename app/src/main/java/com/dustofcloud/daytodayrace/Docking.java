@@ -50,6 +50,10 @@ public class Docking extends Activity implements EventsProcessGPS {
         SleepLocker.registerModes(SharedConstants.SleepLocked, SharedConstants.SleepUnLocked);
         SleepLocker.registerManager(this);
         SleepLocker.setMode(BackendService.getModeSleep());
+        if (BackendService.getModeSleep() == SharedConstants.SleepLocked)
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         LightEnhancer = (ControlSwitch) findViewById(R.id.switch_light_enhancer);
         LightEnhancer.registerModes(SharedConstants.LightEnhanced, SharedConstants.LightNormal);
@@ -66,25 +70,30 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider.registerManager(this);
         GPSProvider.setMode(BackendService.getModeGPS());
 
-        LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
-        LeftMonitor.setVisibility(View.INVISIBLE);
-        RightMonitor = (Monitor) findViewById(R.id.right_monitor);
-        RightMonitor.setVisibility(View.INVISIBLE);
-
         SpeedThumb = BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb);
         HeartThumb = BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb);
+
+        LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
+        LeftMonitor.setThumbnail(SpeedThumb);
+        LeftMonitor.setVisibility(View.INVISIBLE);
+
+        RightMonitor = (Monitor) findViewById(R.id.right_monitor);
+        RightMonitor.setThumbnail(HeartThumb);
+        RightMonitor.setVisibility(View.INVISIBLE);
 
         Speeds = new ArrayList<Statistic>();
 
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor.setDigits(1);
-        LeftMonitor.setTicksCount(5);
-        LeftMonitor.setTicksScale(0.2f);
+        LeftMonitor.setTicksCount(10);
+        LeftMonitor.setTicksScale(0.5f);
         LeftMonitor.setUnit("km/h");
 
-        // Right monitor will be Heartbeat or Power is Heartbeat is missing
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        // Hardcoded settings for Heartbeat in right Monitor
+        LeftMonitor.setDigits(0);
+        LeftMonitor.setTicksCount(5);
+        LeftMonitor.setTicksScale(1.0f);
+        LeftMonitor.setUnit("bpm");
     }
 
     @Override
