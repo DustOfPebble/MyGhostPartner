@@ -41,6 +41,13 @@ public class DataManager extends Application implements LocationListener {
     private Thread LoadingFiles=null;
     private FileManager FilesHandler=null;
 
+    // Holding Persistent state/default for HMI Switch
+    private short ModeGPS = SharedConstants.LiveGPS;
+    private short ModeLight = SharedConstants.LightEnhanced;
+    private short ModeBattery = SharedConstants.BatteryDrainMode;
+    private short ModeScreen = SharedConstants.ScreenLocked;
+
+
     // Specific to manage Callback to clients
     static Context BackendContext = null;
     static ArrayList<EventsProcessGPS> Clients = new ArrayList<EventsProcessGPS>();
@@ -50,6 +57,16 @@ public class DataManager extends Application implements LocationListener {
     public void setUpdateCallback(EventsProcessGPS updateClient){
         Clients.add(updateClient);
     }
+
+    // Getter/Setter for ControlSwitch mode
+    public void storeModeGPS(short mode) {ModeGPS = mode;}
+    public short getModeGPS() {return ModeGPS;}
+    public void storeModeScreen(short mode) {ModeScreen = mode;}
+    public short getModeScreen() {return ModeScreen;}
+    public void storeModeLight(short mode) {ModeLight = mode;}
+    public short getModeLight() {return ModeLight;}
+    public void storeModeBattery(short mode) {ModeBattery = mode;}
+    public short getModeBattery() {return ModeBattery;}
 
     // Return Application in order to setup callback from client
     static public Context getBackend(){

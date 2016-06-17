@@ -33,21 +33,22 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
         finally { attributes.recycle();}
 
          this.setOnClickListener(this);
-         Status = highStatus;
-         this.setImageDrawable(highIcon);
-         invalidate();
     }
 
-     public void setMode(short highEvent, short lowEvent)
+     public void registerModes(short highEvent, short lowEvent)
     {
         highStatus = highEvent;
         lowStatus = lowEvent;
     }
 
-    public  void registerManager(Docking controler) {
-        this.Controler = controler;
-        Controler.onStatusChanged(Status);
+    public void setMode(short modeEvent) {
+        Status = modeEvent;
+        if (Status == highStatus)  this.setImageDrawable(highIcon);
+        if (Status == lowStatus)  this.setImageDrawable(lowIcon);
+        invalidate();
     }
+
+    public  void registerManager(Docking controler) { this.Controler = controler;}
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
@@ -56,10 +57,6 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
     }
 
     public void onClick(View V) {
-        Status = (Status == highStatus) ? lowStatus : highStatus;
-        if (Status == highStatus)  this.setImageDrawable(highIcon);
-        if (Status == lowStatus)  this.setImageDrawable(lowIcon);
-        Controler.onStatusChanged(Status);
-        invalidate();
+        Controler.onStatusChanged( ((Status == highStatus) ? lowStatus : highStatus) );
     }
 }

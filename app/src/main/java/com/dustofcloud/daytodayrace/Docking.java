@@ -1,6 +1,8 @@
 package com.dustofcloud.daytodayrace;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
@@ -19,6 +21,9 @@ public class Docking extends Activity implements EventsProcessGPS {
 
     private Monitor LeftMonitor = null;
     private Monitor RightMonitor = null;
+
+    private Bitmap SpeedThumb = null;
+    private Bitmap HeartThumb = null;
 
     private MapManager MapView = null;
 
@@ -42,25 +47,32 @@ public class Docking extends Activity implements EventsProcessGPS {
         MapView.setBackend(BackendService);
 
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
-        SleepLocker.setMode(SharedConstants.ScreenLocked, SharedConstants.ScreenUnLocked);
+        SleepLocker.registerModes(SharedConstants.ScreenLocked, SharedConstants.ScreenUnLocked);
         SleepLocker.registerManager(this);
+        SleepLocker.setMode(BackendService.getModeScreen());
 
         LightEnhancer = (ControlSwitch) findViewById(R.id.switch_light_enhancer);
-        LightEnhancer.setMode(SharedConstants.LightEnhanced, SharedConstants.LightNormal);
+        LightEnhancer.registerModes(SharedConstants.LightEnhanced, SharedConstants.LightNormal);
         LightEnhancer.registerManager(this);
+        LightEnhancer.setMode(BackendService.getModeLight());
 
         BatterySaver = (ControlSwitch) findViewById(R.id.switch_battery_saver);
-        BatterySaver.setMode(SharedConstants.BatteryDrainMode, SharedConstants.BatterySaveMode);
+        BatterySaver.registerModes(SharedConstants.BatteryDrainMode, SharedConstants.BatterySaveMode);
         BatterySaver.registerManager(this);
+        BatterySaver.setMode(BackendService.getModeBattery());
 
         GPSProvider = (ControlSwitch) findViewById(R.id.gps_provider);
-        GPSProvider.setMode(SharedConstants.LiveGPS, SharedConstants.ReplayedGPS);
+        GPSProvider.registerModes(SharedConstants.LiveGPS, SharedConstants.ReplayedGPS);
         GPSProvider.registerManager(this);
+        GPSProvider.setMode(BackendService.getModeGPS());
 
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
         LeftMonitor.setVisibility(View.INVISIBLE);
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);
         RightMonitor.setVisibility(View.INVISIBLE);
+
+        SpeedThumb = BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb);
+        HeartThumb = BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb);
 
         Speeds = new ArrayList<Statistic>();
 
