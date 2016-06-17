@@ -20,6 +20,7 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        android:background="@drawable/switch_frame"
         app:HighMode="@drawable/sleep_locked"
         app:LowMode="@drawable/sleep_unlocked"
         />
@@ -31,6 +32,7 @@
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/switch_sleep_locker"
+        android:background="@drawable/switch_frame"
         app:HighMode="@drawable/light_max"
         app:LowMode="@drawable/light_low"
         />
@@ -42,6 +44,7 @@
         android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/switch_light_enhancer"
+        android:background="@drawable/switch_frame"
         app:HighMode="@drawable/battery_drain"
         app:LowMode="@drawable/battery_save"
         />
@@ -54,6 +57,7 @@
         android:layout_height="50dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:background="@drawable/switch_frame"
         app:HighMode="@drawable/gps_live"
         app:LowMode="@drawable/gps_replay"
         />
@@ -65,6 +69,7 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:background="@drawable/monitor_frame"
         android:visibility="invisible"
         />
 
@@ -75,8 +80,8 @@
         android:layout_height="100dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
+        android:background="@drawable/monitor_frame"
         android:visibility="invisible"
         />
-
 
 </RelativeLayout>

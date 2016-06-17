@@ -2,8 +2,8 @@ package com.dustofcloud.daytodayrace;
 
 
 public class SharedConstants {
-    static public final short ScreenLocked =10;
-    static public final short ScreenUnLocked =11;
+    static public final short SleepLocked =10;
+    static public final short SleepUnLocked =11;
 
     static public final short LightEnhanced=10;
     static public final short LightNormal=11;

@@ -19,7 +19,7 @@ public class DataManager extends Application implements LocationListener {
 
     private GeoData LastUpdate;
 
-    private int RunningMode = SharedConstants.SwitchForeground;
+    private int ActivityMode = SharedConstants.SwitchForeground;
 
     static private final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     static private float earthRadiusCorrected = earthRadius; // Value at Equator to Zero at Pole
@@ -45,7 +45,7 @@ public class DataManager extends Application implements LocationListener {
     private short ModeGPS = SharedConstants.LiveGPS;
     private short ModeLight = SharedConstants.LightEnhanced;
     private short ModeBattery = SharedConstants.BatteryDrainMode;
-    private short ModeScreen = SharedConstants.ScreenLocked;
+    private short ModeScreen = SharedConstants.SleepLocked;
 
 
     // Specific to manage Callback to clients
@@ -59,10 +59,23 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Getter/Setter for ControlSwitch mode
-    public void storeModeGPS(short mode) {ModeGPS = mode;}
+    public void storeModeGPS(short mode) {
+        ModeGPS = mode;
+        if (ModeGPS == SharedConstants.ReplayedGPS)  {
+            if (!EventsSimulatedGPS.load(1000).isEmpty())   {
+                SourceGPS.removeUpdates(this);
+                EventsSimulatedGPS.sendGPS();
+            }
+        }
+        if (ModeGPS == SharedConstants.LiveGPS)  {
+            EventsSimulatedGPS.stop();
+            SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                    MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this );
+        }
+    }
     public short getModeGPS() {return ModeGPS;}
-    public void storeModeScreen(short mode) {ModeScreen = mode;}
-    public short getModeScreen() {return ModeScreen;}
+    public void storeModeSleep(short mode) {ModeScreen = mode;}
+    public short getModeSleep() {return ModeScreen;}
     public void storeModeLight(short mode) {ModeLight = mode;}
     public short getModeLight() {return ModeLight;}
     public void storeModeBattery(short mode) {ModeBattery = mode;}
@@ -161,27 +174,11 @@ public class DataManager extends Application implements LocationListener {
         LastUpdate = update;
 
         // Loop over registered clients callback ...
-        if (RunningMode == SharedConstants.SwitchForeground)
+        if (ActivityMode == SharedConstants.SwitchForeground)
             for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(update);}
     }
 
-    public void setMode(int ModeID)
-    {
-        if (ModeID == SharedConstants.ReplayedGPS)  {
-            if (!EventsSimulatedGPS.load(1000).isEmpty())   {
-                SourceGPS.removeUpdates(this);
-                EventsSimulatedGPS.sendGPS();
-            }
-        }
-        if (ModeID == SharedConstants.LiveGPS)  {
-            EventsSimulatedGPS.stop();
-            SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                    MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this );
-        }
-
-        if (ModeID == SharedConstants.SwitchForeground)   RunningMode = ModeID;
-        if (ModeID == SharedConstants.SwitchBackground)   RunningMode = ModeID;
-    }
+    public void setActivityMode(int mode) { ActivityMode = mode; }
 
     public void onLoaded(GeoData Loaded) {
         if (Loaded == null) return;

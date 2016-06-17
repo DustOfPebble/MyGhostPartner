@@ -47,9 +47,9 @@ public class Docking extends Activity implements EventsProcessGPS {
         MapView.setBackend(BackendService);
 
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
-        SleepLocker.registerModes(SharedConstants.ScreenLocked, SharedConstants.ScreenUnLocked);
+        SleepLocker.registerModes(SharedConstants.SleepLocked, SharedConstants.SleepUnLocked);
         SleepLocker.registerManager(this);
-        SleepLocker.setMode(BackendService.getModeScreen());
+        SleepLocker.setMode(BackendService.getModeSleep());
 
         LightEnhancer = (ControlSwitch) findViewById(R.id.switch_light_enhancer);
         LightEnhancer.registerModes(SharedConstants.LightEnhanced, SharedConstants.LightNormal);
@@ -90,7 +90,7 @@ public class Docking extends Activity implements EventsProcessGPS {
     @Override
     protected void onPause() {
         super.onPause();
-        BackendService.setMode(SharedConstants.SwitchBackground);
+        BackendService.setActivityMode(SharedConstants.SwitchBackground);
     }
 
     @Override
@@ -98,26 +98,58 @@ public class Docking extends Activity implements EventsProcessGPS {
         super.onResume();
         BackPressedCount = 0;
         BackendService = (DataManager) DataManager.getBackend();
-        BackendService.setMode(SharedConstants.SwitchForeground);
+        BackendService.setActivityMode(SharedConstants.SwitchForeground);
+        GPSProvider.setMode(BackendService.getModeGPS());
+        LightEnhancer.setMode(BackendService.getModeLight());
+        BatterySaver.setMode(BackendService.getModeBattery());
+        SleepLocker.setMode(BackendService.getModeSleep());
     }
 
     public void onStatusChanged(short Status) {
-        if (Status == SharedConstants.ScreenLocked)
+        if (Status == SharedConstants.SleepLocked) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        if (Status == SharedConstants.ScreenUnLocked)
+            BackendService.storeModeSleep(Status);
+            SleepLocker.setMode(Status);
+            }
+        if (Status == SharedConstants.SleepUnLocked) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        if (Status == SharedConstants.LiveGPS)
-            BackendService.setMode(SharedConstants.LiveGPS);
-        if (Status == SharedConstants.ReplayedGPS)
-            BackendService.setMode(SharedConstants.ReplayedGPS);
+            BackendService.storeModeSleep(Status);
+            SleepLocker.setMode(Status);
+        }
 
+        if (Status == SharedConstants.LiveGPS) {
+            BackendService.storeModeGPS(Status);
+            GPSProvider.setMode(Status);
+        }
+        if (Status == SharedConstants.ReplayedGPS) {
+            BackendService.storeModeGPS(Status);
+            GPSProvider.setMode(Status);
+        }
+
+        if (Status == SharedConstants.LightEnhanced) {
+            BackendService.storeModeLight(Status);
+            LightEnhancer.setMode(Status);
+        }
+        if (Status == SharedConstants.LightNormal) {
+            BackendService.storeModeLight(Status);
+            LightEnhancer.setMode(Status);
+        }
+
+        if (Status == SharedConstants.BatteryDrainMode) {
+            BackendService.storeModeBattery(Status);
+            BatterySaver.setMode(Status);
+        }
+        if (Status == SharedConstants.BatterySaveMode) {
+            BackendService.storeModeBattery(Status);
+            BatterySaver.setMode(Status);
+        }
     }
 
     @Override
     public void onBackPressed() {
         BackPressedCount++;
         if (BackPressedCount > 1) {
-            BackendService.setMode(SharedConstants.SwitchBackground);
+            BackendService.setActivityMode(SharedConstants.SwitchBackground);
             super.onBackPressed();
         }
         else { Toast.makeText(Docking.this, "Press back again to exit !", Toast.LENGTH_SHORT).show(); }

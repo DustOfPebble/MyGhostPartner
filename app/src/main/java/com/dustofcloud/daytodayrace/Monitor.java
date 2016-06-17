@@ -16,18 +16,12 @@ import java.util.Locale;
 
 public class Monitor extends ImageView {
     private ArrayList<Statistic> Collected;
-    private float MeanValue;
-    private Path Frame;
-    private Path FrameFilled;
     private Path Arrow;
     private Path ArrowFilled;
     private Paint MonitorPainter;
 
     private static final int ArrowBorderColor = 0xff84e9f4;
     private static final int ArrowColor = 0xff00ffe5;
-    private static final int BorderColor = 0xff84e9f4;
-    private static final int BackgroundColor = 0xff002929;
-    private static final float BorderThickness = 5f;
     private static final int TextColor = 0xfffffcfc;
     private static final int HistoryColor = 0xffffdd55;
     private static final float HistoryStrokeWidth = 20f;
@@ -37,6 +31,7 @@ public class Monitor extends ImageView {
     private int TicksCount = 1;
     private float TicksScale = 1f;
     private String FormatDigits = "%.0f";
+    private String DisplayedValue;
 
     private int MaxOpacity = 256;
     private int MinOpacity = 90;
@@ -51,8 +46,6 @@ public class Monitor extends ImageView {
         this.setAdjustViewBounds(true);
 
         MonitorPainter = new Paint();
-        Frame = new Path();
-        FrameFilled = new Path();
         Arrow = new Path();
         ArrowFilled = new Path();
     }
@@ -65,12 +58,7 @@ public class Monitor extends ImageView {
 
     public  void updateStatistics(ArrayList<Statistic> values) {
         Collected = values;
-        MeanValue = 0f;
-
-        if (null != Collected) {
-            for (Statistic item:  Collected) { MeanValue+=item.value; }
-            if (Collected.size() > 0) MeanValue = MeanValue / Collected.size();
-        }
+        DisplayedValue = String.format(Locale.ENGLISH,FormatDigits,Collected.get(0).value);
         invalidate();
     }
 
@@ -83,13 +71,6 @@ public class Monitor extends ImageView {
         this.setMeasuredDimension(Width, Height);
         if ((Width == 0) || (Height == 0)) return;
         Rounded = Math.min(Width/10, Height/10);
-        Frame.reset();
-        float offset = BorderThickness / 2;
-        Frame.addRoundRect( new RectF(offset,offset,Width - offset,Height - offset)
-                                   ,Rounded,Rounded, Path.Direction.CW);
-//        Frame.addRoundRect( new RectF(0f,0f,Width,Height),Rounded,Rounded, Path.Direction.CW);
-        FrameFilled.set(Frame);
-        FrameFilled.setFillType(Path.FillType.WINDING);
 
         float ArrowWidth = Width / 5;
         float ArrowHeight = ArrowWidth /2;
@@ -124,23 +105,14 @@ public class Monitor extends ImageView {
 
         long StartRender = SystemClock.elapsedRealtime();
 
-        // Drawing Frame
-        MonitorPainter.setStyle(Paint.Style.FILL);
-        MonitorPainter.setColor(BackgroundColor);
-        canvas.drawPath(FrameFilled, MonitorPainter);
-
-        MonitorPainter.setStyle(Paint.Style.STROKE);
-        MonitorPainter.setColor(BorderColor);
-        MonitorPainter.setStrokeWidth(BorderThickness);
-        canvas.drawPath(Frame, MonitorPainter);
 
         // Drawing Live Value
         MonitorPainter.setStyle(Paint.Style.FILL);
         MonitorPainter.setTextAlign(Paint.Align.CENTER);
         MonitorPainter.setColor(TextColor);
         MonitorPainter.setTextSize(FontValueSize);
-        canvas.drawText(String.format(Locale.ENGLISH,FormatDigits,LiveValue),
-                        canvas.getWidth()/2,FontValueSize - BorderThickness,
+        canvas.drawText(DisplayedValue,
+                        canvas.getWidth()/2,FontValueSize,
                         MonitorPainter
                        );
 
@@ -153,14 +125,13 @@ public class Monitor extends ImageView {
 
         // Drawing Arrow
         canvas.save();
-        canvas.translate(Width / 2,FontValueSize + BorderThickness);
+        canvas.translate(Width / 2,FontValueSize);
         MonitorPainter.setStyle(Paint.Style.FILL);
         MonitorPainter.setColor(ArrowColor);
         canvas.drawPath(ArrowFilled, MonitorPainter);
 
         MonitorPainter.setStyle(Paint.Style.STROKE);
         MonitorPainter.setColor(ArrowBorderColor);
-        MonitorPainter.setStrokeWidth(BorderThickness);
         canvas.drawPath(Arrow, MonitorPainter);
         canvas.restore();
 
