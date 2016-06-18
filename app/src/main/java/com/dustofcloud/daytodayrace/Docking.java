@@ -114,6 +114,11 @@ public class Docking extends Activity implements EventsProcessGPS {
         SleepLocker.setMode(BackendService.getModeSleep());
     }
 
+    public void showMessage(String Message)  {
+        if (Message.isEmpty()) return;
+        Toast.makeText(Docking.this, Message , Toast.LENGTH_SHORT).show();
+    }
+
     public void onStatusChanged(short Status) {
         if (Status == SharedConstants.SleepLocked) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

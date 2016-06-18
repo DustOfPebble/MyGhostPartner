@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class SimulateGPS {
+public class SimulateGPS implements Runnable {
     private ArrayList<GeoData> RecordsCollection;
     ArrayList<File> FilesCollection = null;
 
@@ -19,6 +19,8 @@ public class SimulateGPS {
     private Handler trigger = new Handler();
     private Runnable task = new Runnable() { public void run() { sendGPS();} };
     private int EventsDelay = 1000;
+    private Thread Loading =null;
+    private FileInputStream ReadStream = null;
 
     public SimulateGPS(DataManager Parent)
     {
@@ -41,7 +43,6 @@ public class SimulateGPS {
         EventsDelay = Delay;
         RecordsCollection.clear();
 
-        FileInputStream ReadStream = null;
         try { ReadStream = new FileInputStream(FilesCollection.get(FileIndex)); }
             catch (Exception StreamError) {
                 FileIndex++;
@@ -49,13 +50,46 @@ public class SimulateGPS {
                 return "";
             }
 
+        // Check if we have a previously loading thread still running
+        if (Loading != null) Loading.interrupt();
+        Loading = new Thread(this);
+
+        String SelectedFile =FilesCollection.get(FileIndex).getName();
+
+        FileIndex++;
+        if (FileIndex == FilesCollection.size()) FileIndex = 0;
+        return SelectedFile;
+    }
+
+    public void sendGPS() {
+//        Log.d("SimulateGPS", "Simulating new GPS position ...");
+        if (Index >= RecordsCollection.size()) Index=0;
+        Notify.processLocationChanged(RecordsCollection.get(Index));
+        trigger.postDelayed(task, EventsDelay);
+        Index++;
+    }
+
+    public void stop()
+    {
+        Log.d("SimulateGPS", "Stopping GPS simulation ...");
+        trigger.removeCallbacks(task);
+    }
+
+    // Loading file asynchronous process ...
+    @Override
+    public void run() {
+        // Moves the current Thread into the background
+        android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
+
         Log.d("SimulateGPS", "Using "+FilesCollection.get(FileIndex).getName()+" as simulation");
         BufferedReader Storage;
         try { Storage = new BufferedReader(new InputStreamReader(ReadStream, "UTF-8"));}
         catch (Exception FileError) {
             Log.d("SimulateGPS", "Failed to Open data stream...");
-            return "";
+            return ;
         }
+
+        Index = 0;
 
         String TimeString;
         int NbDays = 0;
@@ -81,27 +115,5 @@ public class SimulateGPS {
         }
         catch(Exception FileError) {}
         Log.d("SimulateGPS", NbGeoData +" Records loaded ...");
-        Index = 0;
-
-        String SelectedFile =FilesCollection.get(FileIndex).getName();
-
-        FileIndex++;
-        if (FileIndex == FilesCollection.size()) FileIndex = 0;
-        return SelectedFile;
     }
-
-    public void sendGPS() {
-//        Log.d("SimulateGPS", "Simulating new GPS position ...");
-        if (Index == RecordsCollection.size()) Index=0;
-        Notify.processLocationChanged(RecordsCollection.get(Index));
-        trigger.postDelayed(task, EventsDelay);
-        Index++;
-    }
-
-    public void stop()
-    {
-        Log.d("SimulateGPS", "Stopping GPS simulation ...");
-        trigger.removeCallbacks(task);
-    }
-
 }
