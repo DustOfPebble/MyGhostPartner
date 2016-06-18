@@ -53,6 +53,7 @@ public class SimulateGPS implements Runnable {
         // Check if we have a previously loading thread still running
         if (Loading != null) Loading.interrupt();
         Loading = new Thread(this);
+        Loading.start();
 
         String SelectedFile =FilesCollection.get(FileIndex).getName();
 
@@ -63,9 +64,10 @@ public class SimulateGPS implements Runnable {
 
     public void sendGPS() {
 //        Log.d("SimulateGPS", "Simulating new GPS position ...");
+        trigger.postDelayed(task, EventsDelay);
+        if (RecordsCollection.size() == 0) return;
         if (Index >= RecordsCollection.size()) Index=0;
         Notify.processLocationChanged(RecordsCollection.get(Index));
-        trigger.postDelayed(task, EventsDelay);
         Index++;
     }
 

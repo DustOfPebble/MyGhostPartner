@@ -30,7 +30,9 @@ public class Docking extends Activity implements EventsProcessGPS {
     private RectF searchZone = new RectF();
     private PointF ViewCenter;
     private ArrayList<GeoData> CollectedSelection;
+
     private ArrayList<Statistic> Speeds;
+    private ArrayList<Statistic> HeartBeats;
 
     private int BackPressedCount = 0;
     private DataManager BackendService;
@@ -73,27 +75,22 @@ public class Docking extends Activity implements EventsProcessGPS {
         SpeedThumb = BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb);
         HeartThumb = BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb);
 
+        // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
         LeftMonitor.setThumbnail(SpeedThumb);
+        LeftMonitor.setRuleSettings(-5f,80f,10, 0.1f, 5f);
+        LeftMonitor.setUnit("km/h");
         LeftMonitor.setVisibility(View.INVISIBLE);
 
+        // Hardcoded settings for Heartbeat in right Monitor
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);
         RightMonitor.setThumbnail(HeartThumb);
+        RightMonitor.setRuleSettings(40f,200f,10, 1f, 5f);
+        RightMonitor.setUnit("bpm");
         RightMonitor.setVisibility(View.INVISIBLE);
 
         Speeds = new ArrayList<Statistic>();
-
-        // Hardcoded settings for Speed in left Monitor
-        LeftMonitor.setDigits(1);
-        LeftMonitor.setTicksCount(10);
-        LeftMonitor.setTicksScale(0.5f);
-        LeftMonitor.setUnit("km/h");
-
-        // Hardcoded settings for Heartbeat in right Monitor
-        RightMonitor.setDigits(0);
-        RightMonitor.setTicksCount(5);
-        RightMonitor.setTicksScale(1.0f);
-        RightMonitor.setUnit("bpm");
+        HeartBeats = new ArrayList<Statistic>();
     }
 
     @Override
