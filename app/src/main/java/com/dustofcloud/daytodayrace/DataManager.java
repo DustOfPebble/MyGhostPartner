@@ -47,7 +47,6 @@ public class DataManager extends Application implements LocationListener {
     private short ModeBattery = SharedConstants.BatteryDrainMode;
     private short ModeScreen = SharedConstants.SleepLocked;
 
-
     // Specific to manage Callback to clients
     static Context BackendContext = null;
     static ArrayList<EventsProcessGPS> Clients = new ArrayList<EventsProcessGPS>();
