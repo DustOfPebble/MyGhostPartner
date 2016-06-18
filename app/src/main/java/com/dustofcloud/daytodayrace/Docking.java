@@ -61,11 +61,13 @@ public class Docking extends Activity implements EventsProcessGPS {
         LightEnhancer.registerModes(SharedConstants.LightEnhanced, SharedConstants.LightNormal);
         LightEnhancer.registerManager(this);
         LightEnhancer.setMode(BackendService.getModeLight());
+        LightEnhancer.setVisibility(View.INVISIBLE);
 
         BatterySaver = (ControlSwitch) findViewById(R.id.switch_battery_saver);
         BatterySaver.registerModes(SharedConstants.BatteryDrainMode, SharedConstants.BatterySaveMode);
         BatterySaver.registerManager(this);
         BatterySaver.setMode(BackendService.getModeBattery());
+        BatterySaver.setVisibility(View.INVISIBLE);
 
         GPSProvider = (ControlSwitch) findViewById(R.id.gps_provider);
         GPSProvider.registerModes(SharedConstants.LiveGPS, SharedConstants.ReplayedGPS);
@@ -78,14 +80,14 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
         LeftMonitor.setThumbnail(SpeedThumb);
-        LeftMonitor.setRuleSettings(-5f,80f,10, 0.1f, 5f);
+        LeftMonitor.setRuleSettings(10, 0.5f, 2f);
         LeftMonitor.setUnit("km/h");
         LeftMonitor.setVisibility(View.INVISIBLE);
 
         // Hardcoded settings for Heartbeat in right Monitor
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);
         RightMonitor.setThumbnail(HeartThumb);
-        RightMonitor.setRuleSettings(40f,200f,10, 1f, 5f);
+        RightMonitor.setRuleSettings(10, 1f, 5f);
         RightMonitor.setUnit("bpm");
         RightMonitor.setVisibility(View.INVISIBLE);
 
@@ -109,11 +111,6 @@ public class Docking extends Activity implements EventsProcessGPS {
         LightEnhancer.setMode(BackendService.getModeLight());
         BatterySaver.setMode(BackendService.getModeBattery());
         SleepLocker.setMode(BackendService.getModeSleep());
-    }
-
-    public void showMessage(String Message)  {
-        if (Message.isEmpty()) return;
-        Toast.makeText(Docking.this, Message , Toast.LENGTH_SHORT).show();
     }
 
     public void onStatusChanged(short Status) {

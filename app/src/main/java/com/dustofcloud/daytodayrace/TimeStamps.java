@@ -28,7 +28,7 @@ public class TimeStamps {
         JSONObject TimeJSON = new JSONObject();
         try {
             TimeJSON.put(YearID, Now.get(Calendar.YEAR));
-            TimeJSON.put(MonthID, Now.get(Calendar.MONTH));
+            TimeJSON.put(MonthID, Now.get(Calendar.MONTH)+1);// Month is from 0 to 11
             TimeJSON.put(DayID, Now.get(Calendar.DAY_OF_MONTH));
         } catch (Exception JSONBuilder) {}
         Log.d("TimeStamps", " Now JSon from TimeStamps =" + TimeJSON.toString());
@@ -49,7 +49,7 @@ public class TimeStamps {
 
         Calendar Before = Calendar.getInstance();
         Before.set(Calendar.DAY_OF_MONTH,Day);
-        Before.set(Calendar.MONTH,Month);
+        Before.set(Calendar.MONTH,Month-1); // Month is from 0 to 11
         Before.set(Calendar.YEAR, Year);
 
         return (int) ((Now.getTimeInMillis() - Before.getTimeInMillis())/MS_PER_DAY);

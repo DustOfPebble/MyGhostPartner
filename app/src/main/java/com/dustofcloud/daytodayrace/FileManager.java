@@ -22,7 +22,7 @@ public class FileManager {
         // Calculate today database file
         Calendar Today = Calendar.getInstance();
         int Day = Today.get(Calendar.DAY_OF_MONTH);
-        int Month = Today.get(Calendar.MONTH);
+        int Month = Today.get(Calendar.MONTH)+1; // Month is from 0 to 11
         int Year = Today.get(Calendar.YEAR);
         int Hour = Today.get(Calendar.HOUR_OF_DAY);
         int Minute = Today.get(Calendar.MINUTE);
