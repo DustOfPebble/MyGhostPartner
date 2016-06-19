@@ -37,6 +37,7 @@ public class Monitor extends ImageView {
     private float VuMeterLongTicks;
     private float VuMeterShortTicks;
     private float VuMeterOffset;
+    private Bitmap VuMeter;
 
     private Paint UnitPainter;
     private float UnitFontSize;
@@ -45,6 +46,7 @@ public class Monitor extends ImageView {
     private int MaxOpacity = 256;
     private int MinOpacity = 90;
     private int MaxDays = 5;
+    private Bitmap HistoryStats;
 
     float HistoryOffset;
     float HistoryStrokeHeight;
@@ -81,6 +83,52 @@ public class Monitor extends ImageView {
 
     public  void updateStatistics(ArrayList<Statistic> values) {
         Collected = values;
+        float LiveValue = Collected.get(0).value;
+
+        long StartRender = SystemClock.elapsedRealtime();
+
+        VuMeter = Bitmap.createBitmap(this.getWidth(),(int)(VuMeterFontSize+VuMeterLongTicks), Bitmap.Config.ARGB_8888);
+        Canvas DrawVuMeter = new Canvas(VuMeter);
+        DrawVuMeter.translate(VuMeter.getWidth() / 2, 0f);
+
+        float Extension = DisplayedRange /2;
+        float TicksPhysic = -Extension + LiveValue;
+        float TicksPixels = -Extension * PhysicToPixels;
+        float TicksIsLabel = 0f;
+
+        while (TicksPhysic < (LiveValue + Extension))
+        {
+            if (TicksIsLabel >= TicksLabel)
+            {
+                DrawVuMeter.drawLine(TicksPixels,0f,TicksPixels, VuMeterLongTicks, VuMeterPainter);
+                DrawVuMeter.drawText(String.format("%.0f", TicksPhysic),TicksPixels, VuMeterLongTicks +VuMeterFontSize, VuMeterPainter);
+                TicksIsLabel = 0f;
+            }
+            else
+            {   DrawVuMeter.drawLine(TicksPixels,0f,TicksPixels, VuMeterShortTicks, VuMeterPainter); }
+
+            TicksPixels += (PhysicToPixels*Ticks);
+            TicksPhysic += Ticks;
+            TicksIsLabel += Ticks;
+        }
+
+        HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)HistoryStrokeHeight, Bitmap.Config.ARGB_8888);
+        Canvas DrawHistoryStats = new Canvas(HistoryStats);
+        DrawHistoryStats.translate(HistoryStats.getWidth() / 2, 0f);
+        int Opacity;
+        float X;
+        for (Statistic Instant: Collected) {
+            Opacity = MaxOpacity -  (((MaxOpacity - MinOpacity) / MaxDays) * Instant.nbDays);
+            if (Instant.nbDays > MaxDays) Opacity = MinOpacity;
+            HistoryPainter.setAlpha(Opacity);
+            X = (LiveValue - Instant.value) * PhysicToPixels;
+            DrawHistoryStats.drawLine(X,0,X,HistoryStrokeHeight, HistoryPainter);
+        }
+
+        long EndRender = SystemClock.elapsedRealtime();
+        Log.d("Monitor", "Bitmap update was "+ (EndRender - StartRender)+ " ms.");
+        
+        // Requesting a View redraw
         invalidate();
     }
 
@@ -128,10 +176,6 @@ public class Monitor extends ImageView {
         float Width = canvas.getWidth();
         if ((Width == 0) || (Height == 0)) { super.onDraw(canvas);return;}
 
-        float LiveValue = Collected.get(0).value;
-
-        long StartRender = SystemClock.elapsedRealtime();
-
         // Drawing Unit
         canvas.drawText(Unit,Width - Padding,UnitFontSize +Padding, UnitPainter);
 
@@ -139,50 +183,13 @@ public class Monitor extends ImageView {
         canvas.drawBitmap(ResizedIcon, Padding, Padding, null);
 
         // Drawing VuMeter ...
-        canvas.save();
-        canvas.translate(Width / 2,VuMeterOffset);
-
-        float Extension = DisplayedRange /2;
-        float TicksPhysic = -Extension + LiveValue;
-        float TicksPixels = -Extension * PhysicToPixels;
-        float TicksIsLabel = 0f;
-
-        while (TicksPhysic < (LiveValue + Extension))
-        {
-            if (TicksIsLabel >= TicksLabel)
-            {
-                canvas.drawLine(TicksPixels,0f,TicksPixels, VuMeterLongTicks, VuMeterPainter);
-                canvas.drawText(String.format("%.0f", TicksPhysic),TicksPixels, VuMeterLongTicks +VuMeterFontSize, VuMeterPainter);
-                TicksIsLabel = 0f;
-            }
-            else
-            {   canvas.drawLine(TicksPixels,0f,TicksPixels, VuMeterShortTicks, VuMeterPainter); }
-
-            TicksPixels += (PhysicToPixels*Ticks);
-            TicksPhysic += Ticks;
-            TicksIsLabel += Ticks;
-        }
-        canvas.restore();
+        canvas.drawBitmap(VuMeter,Padding, VuMeterOffset, null);
 
         // Drawing Marker
         canvas.drawBitmap(ResizedMarker,(Width/2) - (ResizedMarker.getWidth()/2), Padding, null);
 
         // Drawing History values
-        int Opacity;
-        canvas.save();
-        canvas.translate(Width / 2,HistoryOffset);
-        float X;
-        for (Statistic Instant: Collected) {
-            Opacity = MaxOpacity -  (((MaxOpacity - MinOpacity) / MaxDays) * Instant.nbDays);
-            if (Instant.nbDays > MaxDays) Opacity = MinOpacity;
-            HistoryPainter.setAlpha(Opacity);
-            X = (LiveValue - Instant.value) * PhysicToPixels;
-            canvas.drawLine(X,0,X,HistoryStrokeHeight, HistoryPainter);
-        }
-        canvas.restore();
-
-        long EndRender = SystemClock.elapsedRealtime();
-        Log.d("Monitor", "Rendering was "+ (EndRender - StartRender)+ " ms.");
+        canvas.drawBitmap(HistoryStats,Padding, HistoryOffset, null);
 
         super.onDraw(canvas);
     }
