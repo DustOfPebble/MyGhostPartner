@@ -127,7 +127,7 @@ public class Monitor extends ImageView {
 
         long EndRender = SystemClock.elapsedRealtime();
         Log.d("Monitor", "Bitmap update was "+ (EndRender - StartRender)+ " ms.");
-        
+
         // Requesting a View redraw
         invalidate();
     }
