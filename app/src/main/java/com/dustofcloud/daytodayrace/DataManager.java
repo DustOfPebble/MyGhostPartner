@@ -79,6 +79,7 @@ public class DataManager extends Application implements LocationListener {
     public short getModeLight() {return ModeLight;}
     public void storeModeBattery(short mode) {ModeBattery = mode;}
     public short getModeBattery() {return ModeBattery;}
+    public void setActivityMode(int mode) { ActivityMode = mode; }
 
     // Return Application in order to setup callback from client
     static public Context getBackend(){
@@ -164,8 +165,10 @@ public class DataManager extends Application implements LocationListener {
 
         if (LastUpdate !=null) {
             if (LastUpdate.isLive()) {
-                if (LastUpdate.getAccuracy() <= SharedConstants.LowPrecisionLimit) HighAccuracyStorage.store(LastUpdate);
-                else  LowAccuracyStorage.store(LastUpdate);
+                if (LastUpdate.getAccuracy() <= SharedConstants.LowPrecisionLimit)
+                    HighAccuracyStorage.store(LastUpdate);
+                else
+                    LowAccuracyStorage.store(LastUpdate);
 
                 WriteToFile.writeGeoData(update);
             }
@@ -177,13 +180,13 @@ public class DataManager extends Application implements LocationListener {
             for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(update);}
     }
 
-    public void setActivityMode(int mode) { ActivityMode = mode; }
-
     public void onLoaded(GeoData Loaded) {
         if (Loaded == null) return;
         Loaded.setCoordinate(new PointF(dX(Loaded.getLongitude()),dY(Loaded.getLatitude())));
-        if (Loaded.getAccuracy() <= SharedConstants.LowPrecisionLimit) HighAccuracyStorage.store(Loaded);
-        else  LowAccuracyStorage.store(Loaded);
+        if (Loaded.getAccuracy() <= SharedConstants.LowPrecisionLimit)
+            HighAccuracyStorage.store(Loaded);
+        else
+            LowAccuracyStorage.store(Loaded);
     }
 
     @Override
