@@ -33,8 +33,7 @@ public class DataManager extends Application implements LocationListener {
 
     private SimulateGPS EventsSimulatedGPS = null;
 
-    private QuadTree HighAccuracyStorage = null;
-    private QuadTree LowAccuracyStorage = null;
+    private QuadTree SearchableStorage = null;
     private FileWriter WriteToFile=null;
 
     private FileReader ReadFromFile=null;
@@ -97,7 +96,7 @@ public class DataManager extends Application implements LocationListener {
     }
 
     public ArrayList<GeoData> extract(RectF searchZone){
-        return HighAccuracyStorage.search(searchZone);
+        return SearchableStorage.search(searchZone);
     }
 
     @Override
@@ -144,8 +143,7 @@ public class DataManager extends Application implements LocationListener {
         originLatitude = update.getLatitude();
         originLongitude = update.getLongitude();
         earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
-        HighAccuracyStorage = new QuadTree(GeoArea); // Create QuadTree storage area
-        LowAccuracyStorage = new QuadTree(GeoArea); // Create QuadTree storage area
+        SearchableStorage = new QuadTree(GeoArea); // Create QuadTree storage area
         LoadingFiles = new Thread(ReadFromFile);
         LoadingFiles.start();
     }
@@ -165,11 +163,7 @@ public class DataManager extends Application implements LocationListener {
 
         if (LastUpdate !=null) {
             if (LastUpdate.isLive()) {
-                if (LastUpdate.getAccuracy() <= SharedConstants.LowPrecisionLimit)
-                    HighAccuracyStorage.store(LastUpdate);
-                else
-                    LowAccuracyStorage.store(LastUpdate);
-
+                SearchableStorage.store(LastUpdate);
                 WriteToFile.writeGeoData(update);
             }
         }
@@ -183,10 +177,7 @@ public class DataManager extends Application implements LocationListener {
     public void onLoaded(GeoData Loaded) {
         if (Loaded == null) return;
         Loaded.setCoordinate(new PointF(dX(Loaded.getLongitude()),dY(Loaded.getLatitude())));
-        if (Loaded.getAccuracy() <= SharedConstants.LowPrecisionLimit)
-            HighAccuracyStorage.store(Loaded);
-        else
-            LowAccuracyStorage.store(Loaded);
+        SearchableStorage.store(Loaded);
     }
 
     @Override
