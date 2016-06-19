@@ -18,12 +18,14 @@ public class Monitor extends ImageView {
     private float HistoryStrokeWidth;
 
     private ArrayList<Statistic> Collected;
+
     private Bitmap LoadedMarker;
-    private Bitmap SizedMarker;
+    private Bitmap ResizedMarker;
+
+    private Bitmap LoadedIcon = null;
+    private Bitmap ResizedIcon =null;
 
     private String Unit ="";
-    private Bitmap Thumbnail = null;
-    private Bitmap SizedThumbnail =null;
 
     private Paint VuMeterPainter;
     private int NbTicks;
@@ -75,7 +77,7 @@ public class Monitor extends ImageView {
     }
 
     public void setUnit(String Unit) { this.Unit = Unit; }
-    public void setThumbnail(Bitmap Thumbnail) { this.Thumbnail = Thumbnail; }
+    public void setIcon(Bitmap ProvidedIcon) { this.LoadedIcon = ProvidedIcon; }
 
     public  void updateStatistics(ArrayList<Statistic> values) {
         Collected = values;
@@ -93,14 +95,14 @@ public class Monitor extends ImageView {
 
         Padding = Math.min(Width/20, Height/20);
 
-        int ThumbnailSize = Math.max( Height/5, Width/5);
-        SizedThumbnail = Bitmap.createScaledBitmap(Thumbnail, ThumbnailSize,ThumbnailSize, false);
-        SizedMarker = Bitmap.createScaledBitmap(LoadedMarker, ThumbnailSize,ThumbnailSize, false);
+        int IconSize = Math.max( Height/5, Width/5);
+        ResizedIcon = Bitmap.createScaledBitmap(LoadedIcon, IconSize,IconSize, false);
+        ResizedMarker = Bitmap.createScaledBitmap(LoadedMarker, IconSize,IconSize, false);
 
         UnitFontSize = Height/6;
         UnitPainter.setTextSize(UnitFontSize);
 
-        VuMeterOffset = SizedMarker.getHeight() + Padding;
+        VuMeterOffset = ResizedMarker.getHeight() + Padding;
         VuMeterFontSize = Height / 6;
         VuMeterPainter.setTextSize(VuMeterFontSize);
         VuMeterStrokeWidth = Width / 30;
@@ -130,11 +132,11 @@ public class Monitor extends ImageView {
 
         long StartRender = SystemClock.elapsedRealtime();
 
-        // Drawing Unit string
+        // Drawing Unit
         canvas.drawText(Unit,Width - Padding,UnitFontSize +Padding, UnitPainter);
 
-        // Drawing Thumbnail
-        canvas.drawBitmap(SizedThumbnail, Padding, Padding, null);
+        // Drawing Icon
+        canvas.drawBitmap(ResizedIcon, Padding, Padding, null);
 
         // Drawing VuMeter ...
         canvas.save();
@@ -163,7 +165,7 @@ public class Monitor extends ImageView {
         canvas.restore();
 
         // Drawing Marker
-        canvas.drawBitmap(SizedMarker,(Width/2) - (SizedMarker.getWidth()/2), Padding, null);
+        canvas.drawBitmap(ResizedMarker,(Width/2) - (ResizedMarker.getWidth()/2), Padding, null);
 
         // Drawing History values
         int Opacity;
