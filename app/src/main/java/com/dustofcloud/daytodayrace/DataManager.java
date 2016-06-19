@@ -13,7 +13,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class DataManager extends Application implements LocationListener {
-    private  RectF GeoArea = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
+    private  RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
     private PointF InUseArea = new PointF(10f,10f); // Values in meters
     private PointF InViewArea = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
 
@@ -143,7 +143,7 @@ public class DataManager extends Application implements LocationListener {
         originLatitude = update.getLatitude();
         originLongitude = update.getLongitude();
         earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
-        SearchableStorage = new QuadTree(GeoArea); // Create QuadTree storage area
+        SearchableStorage = new QuadTree(SearchableZone); // Create QuadTree storage area
         LoadingFiles = new Thread(ReadFromFile);
         LoadingFiles.start();
     }
