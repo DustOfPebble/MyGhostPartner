@@ -34,11 +34,15 @@ public class DataManager extends Application implements LocationListener {
     private SimulateGPS EventsSimulatedGPS = null;
 
     private QuadTree SearchableStorage = null;
-    private FileWriter WriteToFile=null;
 
+    // File Management
+    private FileManager FilesHandler=null;
+    private FileWriter WriteToFile=null;
     private FileReader ReadFromFile=null;
     private Thread LoadingFiles=null;
-    private FileManager FilesHandler=null;
+
+    // HeartBeat Provider
+    private static HeartBeatProvider HearBeatService = null;
 
     // Holding Persistent state/default for HMI Switch
     private short ModeGPS = SharedConstants.LiveGPS;
@@ -46,10 +50,11 @@ public class DataManager extends Application implements LocationListener {
     private short ModeBattery = SharedConstants.BatteryDrainMode;
     private short ModeScreen = SharedConstants.SleepLocked;
 
-    // Specific to manage Callback to clients
-    static Context BackendContext = null;
+    // Returning instance of this to Activity ...
+    static Context Backend = null;
+
     static ArrayList<EventsProcessGPS> Clients = new ArrayList<EventsProcessGPS>();
-    public static LocationManager SourceGPS;
+    private static LocationManager SourceGPS;
 
     // Storing callbacks instance from client View
     public void setUpdateCallback(EventsProcessGPS updateClient){
@@ -83,7 +88,7 @@ public class DataManager extends Application implements LocationListener {
 
     // Return Application in order to setup callback from client
     static public Context getBackend(){
-        return BackendContext;
+        return Backend;
     }
 
     // Return area size selection for statistics
@@ -105,7 +110,10 @@ public class DataManager extends Application implements LocationListener {
     {
         super.onCreate();
         Log.d("DataManager", "DataManager has been created...");
-        BackendContext = this;
+        Backend = this;
+
+        // Starting HeartBeat if HeartBeat Sensor is connected
+        HearBeatService = new HeartBeatProvider(this);
 
         SourceGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
         SourceGPS.requestLocationUpdates(
@@ -147,6 +155,10 @@ public class DataManager extends Application implements LocationListener {
         SearchableStorage = new QuadTree(SearchableZone); // Create QuadTree storage area
         LoadingFiles = new Thread(ReadFromFile);
         LoadingFiles.start();
+    }
+
+    public void processHeartBeatChanged(int Frequency)  {
+
     }
 
     public void processLocationChanged(GeoData update) {
