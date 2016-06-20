@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.drawable.shapes.RectShape;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,7 +17,14 @@ import java.util.ArrayList;
 public class Monitor extends ImageView {
     private static final int TextColor = 0xfffffcfc;
     private static final int HistoryColor = 0xffffe57e;
-    private float HistoryStrokeWidth;
+    private static final int BorderColor =  0xff84e9f4;
+    private static final int FrameRadius = 8; // Value in "DP"
+    private static final int FrameBorder = 2; // Value in "DP"
+
+    private RectF Frame;
+    private Paint FramePainter;
+    private float FramePixelsFactor;
+    private float Radius;
 
     private ArrayList<Statistic> Collected;
 
@@ -48,6 +57,7 @@ public class Monitor extends ImageView {
     private float UnitFontSize;
 
     private Paint HistoryPainter;
+    private float HistoryStrokeWidth;
     private int MaxOpacity = 256;
     private int MinOpacity = 90;
     private int MaxDays = 5;
@@ -75,6 +85,11 @@ public class Monitor extends ImageView {
 
         UnitPainter.setTextAlign(Paint.Align.RIGHT);
         VuMeterPainter.setTextAlign(Paint.Align.CENTER);
+
+        Frame = new RectF();
+        FramePainter = new Paint();
+        FramePainter.setStyle(Paint.Style.STROKE);
+        FramePainter.setColor(BorderColor);
     }
 
     public void setRuleSettings(int NbTicksDisplayed,  int NbTicksLabel, float TicksStep, float PhysicMin, float PhysicMax) {
@@ -184,6 +199,15 @@ public class Monitor extends ImageView {
         // Loading for VuMeter display
         DisplayedRange = (NbTicksDisplayed - 1) * TicksStep;
         PhysicToPixels = (Width) / DisplayedRange;
+
+
+        // Frame settings
+        FramePixelsFactor = this.getResources().getDisplayMetrics().density;
+        float StrokeWidth = FramePixelsFactor*FrameBorder;
+        FramePainter.setStrokeWidth(StrokeWidth);
+        Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
+        Radius = FrameRadius*FramePixelsFactor;
+
     }
 
     @Override
@@ -208,6 +232,9 @@ public class Monitor extends ImageView {
 
         // Drawing History values
         canvas.drawBitmap(HistoryStats,0f, HistoryOffset, null);
+
+        // Drawing Frame ...
+        canvas.drawRoundRect(Frame,Radius,Radius,FramePainter);
 
         super.onDraw(canvas);
     }
