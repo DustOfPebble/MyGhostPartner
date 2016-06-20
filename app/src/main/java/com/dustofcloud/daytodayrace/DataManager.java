@@ -18,6 +18,7 @@ public class DataManager extends Application implements LocationListener {
     private PointF InViewArea = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
 
     private GeoData LastUpdate;
+    private int LastHeartBeat = -1;
 
     private int ActivityMode = SharedConstants.SwitchForeground;
 
@@ -49,6 +50,7 @@ public class DataManager extends Application implements LocationListener {
     private short ModeLight = SharedConstants.LightEnhanced;
     private short ModeBattery = SharedConstants.BatteryDrainMode;
     private short ModeScreen = SharedConstants.SleepLocked;
+    private short ModeHeartBeat = SharedConstants.DisconnetedHeartBeat;
 
     // Returning instance of this to Activity ...
     static Context Backend = null;
@@ -77,6 +79,15 @@ public class DataManager extends Application implements LocationListener {
         }
     }
     public short getModeGPS() {return ModeGPS;}
+
+    public void storeModeHeartBeat(short mode) {
+        ModeHeartBeat = mode;
+        if (ModeHeartBeat == SharedConstants.ConnectedHeartBeat) HearBeatService.searchSensor();
+    }
+
+
+    public short getModeHeartBeat() {return ModeHeartBeat;}
+
     public void storeModeSleep(short mode) {ModeScreen = mode;}
     public short getModeSleep() {return ModeScreen;}
     public void storeModeLight(short mode) {ModeLight = mode;}
@@ -158,7 +169,8 @@ public class DataManager extends Application implements LocationListener {
     }
 
     public void processHeartBeatChanged(int Frequency)  {
-
+        LastUpdate.setHeartbeat(Frequency);
+        LastHeartBeat = Frequency;
     }
 
     public void processLocationChanged(GeoData update) {
@@ -173,6 +185,9 @@ public class DataManager extends Application implements LocationListener {
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
         update.setCoordinate(new PointF(dX(update.getLongitude()),dY(update.getLatitude())));
         Log.d("DataManager", "Coordinate["+update.getCoordinate().x+","+update.getCoordinate().y+"]");
+
+        // Updating with Last HeartBeat
+        update.setHeartbeat(LastHeartBeat);
 
         if (LastUpdate !=null) {
             if (LastUpdate.isLive()) {

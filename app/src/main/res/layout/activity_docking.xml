@@ -62,6 +62,19 @@
         app:LowMode="@drawable/gps_replay"
         />
 
+    <com.dustofcloud.daytodayrace.ControlSwitch
+        android:id="@+id/heartbeat_provider"
+        android:clickable="true"
+        android:layout_margin="5dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/gps_provider"
+        android:background="@drawable/switch_frame"
+        app:HighMode="@drawable/heartbeat_connected"
+        app:LowMode="@drawable/heartbeat_disconnected"
+        />
+
     <com.dustofcloud.daytodayrace.Monitor
         android:id="@+id/left_monitor"
         android:layout_margin="2dp"

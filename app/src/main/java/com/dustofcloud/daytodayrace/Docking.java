@@ -18,6 +18,7 @@ public class Docking extends Activity implements EventsProcessGPS {
     private ControlSwitch BatterySaver = null;
     private ControlSwitch LightEnhancer = null;
     private ControlSwitch GPSProvider = null;
+    private ControlSwitch HeartBeatProvider = null;
 
     private Monitor LeftMonitor = null;
     private Monitor RightMonitor = null;
@@ -73,6 +74,11 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider.registerModes(SharedConstants.LiveGPS, SharedConstants.ReplayedGPS);
         GPSProvider.registerManager(this);
         GPSProvider.setMode(BackendService.getModeGPS());
+
+        HeartBeatProvider = (ControlSwitch) findViewById(R.id.heartbeat_provider);
+        HeartBeatProvider.registerModes(SharedConstants.ConnectedHeartBeat, SharedConstants.DisconnetedHeartBeat);
+        HeartBeatProvider.registerManager(this);
+        HeartBeatProvider.setMode(BackendService.getModeHeartBeat());
 
         SpeedThumb = BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb);
         HeartThumb = BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb);

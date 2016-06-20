@@ -14,6 +14,9 @@ public class SharedConstants {
     static public final short ReplayedGPS=30;
     static public final short LiveGPS=31;
 
+    static public final short ConnectedHeartBeat=40;
+    static public final short DisconnetedHeartBeat=41;
+
     static public final short SwitchForeground=100;
     static public final short SwitchBackground=101;
 

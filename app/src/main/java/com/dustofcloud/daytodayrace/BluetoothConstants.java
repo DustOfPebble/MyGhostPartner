@@ -1,6 +1,10 @@
 package com.dustofcloud.daytodayrace;
 
 public class BluetoothConstants {
+
+    // Searching Timeout
+    public static int SCAN_TIMEOUT = 60; // 60 seconds
+
     // Used During Scanning
     public  static final int TYPE_UUID16 = 0x3; // UUID id Expected Format
     public  static final String UUID_HEART_RATE = "180d"; // MIO GLOBAL LINK Heart Rate Service

@@ -14,7 +14,6 @@ public class HeartBeatProvider extends BluetoothGattCallback{
 
     private DataManager Backend;
 
-
     private BluetoothGatt DataProvider;
     private BluetoothDevice Sensor = null;
     private BluetoothGattCharacteristic Monitor;
@@ -25,7 +24,10 @@ public class HeartBeatProvider extends BluetoothGattCallback{
         Sensor = null;
         Backend = Client;
         Finder = new SensorFinder(this);
-        Finder.findSensor(60);
+    }
+
+    public void searchSensor() {
+        Finder.findSensor(BluetoothConstants.SCAN_TIMEOUT);
     }
 
     public void setDevice(BluetoothDevice Sensor){
