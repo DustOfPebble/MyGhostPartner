@@ -80,14 +80,14 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
         LeftMonitor.setIcon(SpeedThumb);
-        LeftMonitor.setRuleSettings(20,10, 0.5f); // One Label every 5 km/h
+        LeftMonitor.setRuleSettings(10,4, 0.25f,0f,80f); // One Label every 5 km/h
         LeftMonitor.setUnit("km/h");
         LeftMonitor.setVisibility(View.INVISIBLE);
 
         // Hardcoded settings for Heartbeat in right Monitor
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);
         RightMonitor.setIcon(HeartThumb);
-        RightMonitor.setRuleSettings(10,2,1f);
+        RightMonitor.setRuleSettings(10,2,1f,20f,220f);
         RightMonitor.setUnit("bpm");
         RightMonitor.setVisibility(View.INVISIBLE);
 

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Monitor extends ImageView {
     private static final int TextColor = 0xfffffcfc;
-    private static final int HistoryColor = 0xffffdd55;
+    private static final int HistoryColor = 0xffffe57e;
     private float HistoryStrokeWidth;
 
     private ArrayList<Statistic> Collected;
@@ -27,16 +27,21 @@ public class Monitor extends ImageView {
 
     private String Unit ="";
 
+    private float LiveValue =0f;
+
     private Paint VuMeterPainter;
     private int NbTicksDisplayed;
     private float DisplayedRange;
     private float TicksStep, NbTicksLabel;
+    private float PhysicMax, PhysicMin;
     private float PhysicToPixels;
     private float VuMeterFontSize;
     private float VuMeterStrokeWidth;
     private float VuMeterLongTicks;
     private float VuMeterShortTicks;
     private float VuMeterOffset;
+    private float VuMeterStartValue;
+
     private Bitmap VuMeter;
 
     private Paint UnitPainter;
@@ -72,10 +77,12 @@ public class Monitor extends ImageView {
         VuMeterPainter.setTextAlign(Paint.Align.CENTER);
     }
 
-    public void setRuleSettings(int NbTicksDisplayed,  int NbTicksLabel, float TicksStep) {
+    public void setRuleSettings(int NbTicksDisplayed,  int NbTicksLabel, float TicksStep, float PhysicMin, float PhysicMax) {
         this.NbTicksDisplayed = NbTicksDisplayed;
         this.NbTicksLabel = NbTicksLabel;
         this.TicksStep = TicksStep;
+        this.PhysicMax = PhysicMax;
+        this.PhysicMin = PhysicMin;
     }
 
     public void setUnit(String Unit) { this.Unit = Unit; }
@@ -83,38 +90,48 @@ public class Monitor extends ImageView {
 
     public  void updateStatistics(ArrayList<Statistic> values) {
         Collected = values;
-        float LiveValue = Collected.get(0).value;
+        LiveValue = Collected.get(0).value;
 
         long StartRender = SystemClock.elapsedRealtime();
 
-        VuMeter = Bitmap.createBitmap(this.getWidth(),(int)(VuMeterFontSize+VuMeterLongTicks), Bitmap.Config.ARGB_8888);
+        int FirstLabel = (int)LiveValue - (int)(DisplayedRange/2)-2;
+        int LastLabel = (int)LiveValue + (int)(DisplayedRange/2)+3;
+        int VuMeterWidth = (int) ((LastLabel - FirstLabel) * PhysicToPixels);
+        VuMeter = Bitmap.createBitmap(VuMeterWidth,(int)(VuMeterFontSize+VuMeterLongTicks+VuMeterStrokeWidth), Bitmap.Config.ARGB_8888);
         Canvas DrawVuMeter = new Canvas(VuMeter);
-        DrawVuMeter.translate(VuMeter.getWidth() / 2, 0f);
 
-        float Extension = DisplayedRange /2;
-        float TicksPhysic = -Extension + LiveValue;
-        float TicksPixels = -Extension * PhysicToPixels;
-        float TicksIsLabel = 0f;
+        float TicksPhysic = (float)FirstLabel;
+        float TicksPixels = 0;
+        float NbTicksCount = NbTicksLabel; // Force a Label on first ticks
+        float LongTickBeginY = VuMeterStrokeWidth/2;
+        float LongTicksEndY = VuMeterLongTicks + LongTickBeginY ;
+        float ShortTicksBeginY = VuMeterStrokeWidth/2;
+        float ShortTicksEndY = VuMeterShortTicks + ShortTicksBeginY ;
 
-        while (TicksPhysic < (LiveValue + Extension))
+        while (TicksPhysic <= (float)LastLabel)
         {
-            if (TicksIsLabel >= NbTicksLabel)
-            {
-                DrawVuMeter.drawLine(TicksPixels,0f,TicksPixels, VuMeterLongTicks, VuMeterPainter);
-                DrawVuMeter.drawText(String.format("%.0f", TicksPhysic),TicksPixels, VuMeterLongTicks +VuMeterFontSize, VuMeterPainter);
-                TicksIsLabel = 0f;
+            if ((TicksPhysic >= PhysicMin) && (TicksPhysic <= PhysicMax)) {
+                if (NbTicksCount >= NbTicksLabel) {
+                    DrawVuMeter.drawLine(TicksPixels, LongTickBeginY, TicksPixels, LongTicksEndY, VuMeterPainter);
+                    DrawVuMeter.drawText(String.format("%.0f", TicksPhysic), TicksPixels, VuMeterLongTicks + VuMeterFontSize + VuMeterStrokeWidth, VuMeterPainter);
+                    NbTicksCount = 0;
+                } else {
+                    DrawVuMeter.drawLine(TicksPixels, ShortTicksBeginY, TicksPixels, ShortTicksEndY, VuMeterPainter);
+                }
             }
-            else
-            {   DrawVuMeter.drawLine(TicksPixels,0f,TicksPixels, VuMeterShortTicks, VuMeterPainter); }
 
             TicksPixels += (PhysicToPixels* TicksStep);
             TicksPhysic += TicksStep;
-            TicksIsLabel += TicksStep;
+            NbTicksCount++;
         }
+        VuMeterStartValue = (float) FirstLabel;
 
-        HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)HistoryStrokeHeight, Bitmap.Config.ARGB_8888);
+        HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryStrokeHeight + HistoryStrokeWidth), Bitmap.Config.ARGB_8888);
         Canvas DrawHistoryStats = new Canvas(HistoryStats);
         DrawHistoryStats.translate(HistoryStats.getWidth() / 2, 0f);
+        float HistoryBeginY = HistoryStrokeWidth/2;
+        float HistoryEndY = HistoryBeginY + HistoryStrokeHeight ;
+
         int Opacity;
         float X;
         for (Statistic Instant: Collected) {
@@ -122,7 +139,7 @@ public class Monitor extends ImageView {
             if (Instant.nbDays > MaxDays) Opacity = MinOpacity;
             HistoryPainter.setAlpha(Opacity);
             X = (LiveValue - Instant.value) * PhysicToPixels;
-            DrawHistoryStats.drawLine(X,0,X,HistoryStrokeHeight, HistoryPainter);
+            DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
         }
 
         long EndRender = SystemClock.elapsedRealtime();
@@ -151,22 +168,22 @@ public class Monitor extends ImageView {
         UnitPainter.setTextSize(UnitFontSize);
 
         VuMeterOffset = ResizedMarker.getHeight() + Padding;
-        VuMeterFontSize = Height / 6;
+        VuMeterFontSize = Height/6;
         VuMeterPainter.setTextSize(VuMeterFontSize);
-        VuMeterStrokeWidth = Width / 30;
+        VuMeterStrokeWidth = Width/30;
         VuMeterPainter.setStrokeWidth(VuMeterStrokeWidth);
-        VuMeterLongTicks = Height / 6;
-        VuMeterShortTicks = Height / 8;
+        VuMeterLongTicks = Height/6 - VuMeterStrokeWidth ;
+        VuMeterShortTicks = Height/8 - VuMeterStrokeWidth;
 
-        HistoryOffset = VuMeterOffset + VuMeterLongTicks + VuMeterFontSize;
-        HistoryStrokeHeight = Height / 5;
+        HistoryStrokeWidth = Width/20;
+        HistoryStrokeHeight = Height/4 - HistoryStrokeWidth;
         HistoryOffset = Height - (HistoryStrokeHeight + Padding);
-        HistoryStrokeWidth = Width / 20;
         HistoryPainter.setStrokeWidth(HistoryStrokeWidth);
+        HistoryOffset = Height - Padding - HistoryStrokeWidth - HistoryStrokeHeight;
 
         // Loading for VuMeter display
-        DisplayedRange = (NbTicksDisplayed * TicksStep);
-        PhysicToPixels = (Width - (2 * Padding)) / DisplayedRange;
+        DisplayedRange = (NbTicksDisplayed - 1) * TicksStep;
+        PhysicToPixels = (Width) / DisplayedRange;
     }
 
     @Override
@@ -183,13 +200,14 @@ public class Monitor extends ImageView {
         canvas.drawBitmap(ResizedIcon, Padding, Padding, null);
 
         // Drawing VuMeter ...
-        canvas.drawBitmap(VuMeter,Padding, VuMeterOffset, null);
+        float VueMeterPixelShift = (Width/2) - (PhysicToPixels *(LiveValue - (int)VuMeterStartValue));
+        canvas.drawBitmap(VuMeter, VueMeterPixelShift, VuMeterOffset, null);
 
         // Drawing Marker
         canvas.drawBitmap(ResizedMarker,(Width/2) - (ResizedMarker.getWidth()/2), Padding, null);
 
         // Drawing History values
-        canvas.drawBitmap(HistoryStats,Padding, HistoryOffset, null);
+        canvas.drawBitmap(HistoryStats,0f, HistoryOffset, null);
 
         super.onDraw(canvas);
     }
