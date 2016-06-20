@@ -79,6 +79,7 @@ public class DataManager extends Application implements LocationListener {
     public void storeModeBattery(short mode) {ModeBattery = mode;}
     public short getModeBattery() {return ModeBattery;}
     public void setActivityMode(int mode) { ActivityMode = mode; }
+    public GeoData getLastUpdate(){ return LastUpdate; }
 
     // Return Application in order to setup callback from client
     static public Context getBackend(){
