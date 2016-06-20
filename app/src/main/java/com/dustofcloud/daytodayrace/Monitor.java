@@ -110,8 +110,8 @@ public class Monitor extends ImageView {
 
         long StartRender = SystemClock.elapsedRealtime();
 
-        if (isVuMeterFits()) buildVuMeter(new Canvas());
-        buildHistory(new Canvas());
+        if (isVuMeterFits()) buildVuMeter();
+        buildHistory();
 
         long EndRender = SystemClock.elapsedRealtime();
         Log.d("Monitor", "Bitmap update was "+ (EndRender - StartRender)+ " ms.");
@@ -180,6 +180,7 @@ public class Monitor extends ImageView {
 
         // Drawing VuMeter ...
         float VueMeterPixelShift = (Width/2) - (PhysicToPixels *(LiveValue - (int)VuMeterStartValue));
+        if (isVuMeterFits()) buildVuMeter();
         canvas.drawBitmap(VuMeter, VueMeterPixelShift, VuMeterOffset, null);
 
         // Drawing Marker
@@ -217,10 +218,10 @@ public class Monitor extends ImageView {
         return false;
     }
 
-    private void buildVuMeter(Canvas DrawVuMeter)  {
+    private void buildVuMeter()  {
         int VuMeterWidth = (int) ((VuMeterStopValue - VuMeterStartValue) * PhysicToPixels);
         VuMeter = Bitmap.createBitmap(VuMeterWidth,(int)(VuMeterFontSize+VuMeterLongTicks+VuMeterStrokeWidth), Bitmap.Config.ARGB_8888);
-        DrawVuMeter.setBitmap(VuMeter);
+        Canvas DrawVuMeter = new Canvas(VuMeter);
 
         float TicksPhysic = VuMeterStartValue;
         float TicksPixels = 0;
@@ -248,9 +249,9 @@ public class Monitor extends ImageView {
         }
     }
 
-    private void buildHistory(Canvas DrawHistoryStats)  {
+    private void buildHistory()  {
         HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryStrokeHeight + HistoryStrokeWidth), Bitmap.Config.ARGB_8888);
-        DrawHistoryStats.setBitmap(HistoryStats);
+        Canvas DrawHistoryStats = new Canvas(HistoryStats);
         DrawHistoryStats.translate(HistoryStats.getWidth() / 2, 0f);
         float HistoryBeginY = HistoryStrokeWidth/2;
         float HistoryEndY = HistoryBeginY + HistoryStrokeHeight ;
