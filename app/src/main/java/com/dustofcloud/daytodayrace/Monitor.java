@@ -28,9 +28,9 @@ public class Monitor extends ImageView {
     private String Unit ="";
 
     private Paint VuMeterPainter;
-    private int NbTicks;
+    private int NbTicksDisplayed;
     private float DisplayedRange;
-    private float Ticks, TicksLabel;
+    private float TicksStep, NbTicksLabel;
     private float PhysicToPixels;
     private float VuMeterFontSize;
     private float VuMeterStrokeWidth;
@@ -72,10 +72,10 @@ public class Monitor extends ImageView {
         VuMeterPainter.setTextAlign(Paint.Align.CENTER);
     }
 
-    public void setRuleSettings(int TicksDisplayed, float TicksStep, float TicksStepLabel) {
-        NbTicks = TicksDisplayed;
-        Ticks = TicksStep;
-        TicksLabel = TicksStepLabel;
+    public void setRuleSettings(int NbTicksDisplayed,  int NbTicksLabel, float TicksStep) {
+        this.NbTicksDisplayed = NbTicksDisplayed;
+        this.NbTicksLabel = NbTicksLabel;
+        this.TicksStep = TicksStep;
     }
 
     public void setUnit(String Unit) { this.Unit = Unit; }
@@ -98,7 +98,7 @@ public class Monitor extends ImageView {
 
         while (TicksPhysic < (LiveValue + Extension))
         {
-            if (TicksIsLabel >= TicksLabel)
+            if (TicksIsLabel >= NbTicksLabel)
             {
                 DrawVuMeter.drawLine(TicksPixels,0f,TicksPixels, VuMeterLongTicks, VuMeterPainter);
                 DrawVuMeter.drawText(String.format("%.0f", TicksPhysic),TicksPixels, VuMeterLongTicks +VuMeterFontSize, VuMeterPainter);
@@ -107,9 +107,9 @@ public class Monitor extends ImageView {
             else
             {   DrawVuMeter.drawLine(TicksPixels,0f,TicksPixels, VuMeterShortTicks, VuMeterPainter); }
 
-            TicksPixels += (PhysicToPixels*Ticks);
-            TicksPhysic += Ticks;
-            TicksIsLabel += Ticks;
+            TicksPixels += (PhysicToPixels* TicksStep);
+            TicksPhysic += TicksStep;
+            TicksIsLabel += TicksStep;
         }
 
         HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)HistoryStrokeHeight, Bitmap.Config.ARGB_8888);
@@ -165,7 +165,7 @@ public class Monitor extends ImageView {
         HistoryPainter.setStrokeWidth(HistoryStrokeWidth);
 
         // Loading for VuMeter display
-        DisplayedRange = (NbTicks * Ticks);
+        DisplayedRange = (NbTicksDisplayed * TicksStep);
         PhysicToPixels = (Width - (2 * Padding)) / DisplayedRange;
     }
 
