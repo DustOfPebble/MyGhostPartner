@@ -226,8 +226,12 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Managing Toast from Backend ...
-    public static String getBackendMessage()  { return BackendMessage; }
     public static void setBackendMessage(String ToastMessage)  { BackendMessage =ToastMessage; }
+    public static String getBackendMessage()  {
+        String SentMessage = new String(BackendMessage);
+        BackendMessage ="";
+        return SentMessage;
+    }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) { }

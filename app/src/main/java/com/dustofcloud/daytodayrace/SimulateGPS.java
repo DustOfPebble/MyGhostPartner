@@ -16,7 +16,7 @@ public class SimulateGPS implements Runnable {
     private int Index=0;
     private int FileIndex=0;
     private DataManager Notify;
-    private Handler trigger = new Handler();
+    private Handler EventTrigger = new Handler();
     private Runnable task = new Runnable() { public void run() { sendGPS();} };
     private int EventsDelay = 1000;
     private Thread Loading =null;
@@ -64,7 +64,7 @@ public class SimulateGPS implements Runnable {
 
     public void sendGPS() {
 //        Log.d("SimulateGPS", "Simulating new GPS position ...");
-        trigger.postDelayed(task, EventsDelay);
+        EventTrigger.postDelayed(task, EventsDelay);
         if (RecordsCollection.size() == 0) return;
         if (Index >= RecordsCollection.size()) Index=0;
         Notify.processLocationChanged(RecordsCollection.get(Index));
@@ -74,7 +74,7 @@ public class SimulateGPS implements Runnable {
     public void stop()
     {
         Log.d("SimulateGPS", "Stopping GPS simulation ...");
-        trigger.removeCallbacks(task);
+        EventTrigger.removeCallbacks(task);
     }
 
     // Loading file asynchronous process ...

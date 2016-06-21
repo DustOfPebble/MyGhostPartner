@@ -12,25 +12,28 @@ public class SensorFinder implements BluetoothAdapter.LeScanCallback, Runnable {
 
     private BluetoothAdapter Bluetooth;
     private HeartBeatProvider Listener;
-
-    private int TimeOut = 0; // 0 means scanning forever ..
+    private boolean isScanning;
     private Handler EventTrigger;
 
     @Override
     public void run() {
         Bluetooth.stopLeScan(this);
-        Listener.setDevice(null); // ==> Null means TimeOut reached ...
+        isScanning = false;
+        Log.d("SensorFinder", "Timeout reached...");
     }
 
     public SensorFinder(HeartBeatProvider Client) {
         Listener = Client;
         EventTrigger = new Handler();
+        isScanning = false;
         Bluetooth = BluetoothAdapter.getDefaultAdapter();
     }
 
     public void findSensor(int Timeout){
+        if (isScanning) return;
         Bluetooth.startLeScan(this);
-        EventTrigger.postDelayed(this, TimeOut);
+        isScanning = true;
+        EventTrigger.postDelayed(this, Timeout);
     }
 
     @Override
@@ -49,10 +52,9 @@ public class SensorFinder implements BluetoothAdapter.LeScanCallback, Runnable {
                 int uuid = (data[1] & 0xFF) << 8;
                 uuid += (data[0] & 0xFF);
                 String UUID = Integer.toHexString(uuid);
-                Log.d("UUID", UUID);
                 if (BluetoothConstants.UUID_HEART_RATE.equals(UUID)) {
-                    Log.d("Bluetooth ====>", "Device found");
                     Listener.setDevice(DeviceFound);
+                    Log.d("SensorFinder", "HeartBeat sensor found...");
                     break;
                 }
             }
