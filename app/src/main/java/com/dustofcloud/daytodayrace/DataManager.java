@@ -22,6 +22,7 @@ public class DataManager extends Application implements LocationListener {
 
     private int ActivityMode = SharedConstants.SwitchForeground;
 
+    static private String BackendMessage="";
     static private final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     static private float earthRadiusCorrected = earthRadius; // Value at Equator to Zero at Pole
 
@@ -221,6 +222,9 @@ public class DataManager extends Application implements LocationListener {
         Loaded.setCoordinate(new PointF(dX(Loaded.getLongitude()),dY(Loaded.getLatitude())));
         SearchableStorage.store(Loaded);
     }
+
+    public static String getMessages()  { return BackendMessage; }
+
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) { }
