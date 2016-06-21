@@ -31,7 +31,11 @@ public class HeartBeatProvider extends BluetoothGattCallback{
     }
 
     public void setDevice(BluetoothDevice Sensor){
-        if (Sensor == null) return;
+        if (Sensor == null)  {
+            Backend.setBackendMessage("Heartbeat sensor not found.");
+            Backend.HeartBeatStateChanged(SharedConstants.DisconnectedHeartBeat);
+            return;
+        }
         this.Sensor = Sensor;
         DataProvider = this.Sensor.connectGatt(Backend,false, this);
     }
@@ -40,10 +44,10 @@ public class HeartBeatProvider extends BluetoothGattCallback{
     public void onConnectionStateChange(BluetoothGatt GATT_Server, int status, int newState) {
         if (newState == BluetoothProfile.STATE_CONNECTED) {
             DataProvider.discoverServices();
-            Backend.processHeartBeatChanged(0);
+            Backend.HeartBeatStateChanged(SharedConstants.ConnectedHeartBeat);
         }
         if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-            Backend.processHeartBeatChanged(-1);
+            Backend.HeartBeatStateChanged(SharedConstants.DisconnectedHeartBeat);
         }
     }
 

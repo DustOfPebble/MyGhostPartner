@@ -51,7 +51,7 @@ public class DataManager extends Application implements LocationListener {
     private short ModeLight = SharedConstants.LightEnhanced;
     private short ModeBattery = SharedConstants.BatteryDrainMode;
     private short ModeScreen = SharedConstants.SleepLocked;
-    private short ModeHeartBeat = SharedConstants.DisconnetedHeartBeat;
+    private short ModeHeartBeat = SharedConstants.DisconnectedHeartBeat;
 
     // Returning instance of this to Activity ...
     static Context Backend = null;
@@ -83,8 +83,10 @@ public class DataManager extends Application implements LocationListener {
 
     public short getModeHeartBeat() {return ModeHeartBeat;}
     public void storeModeHeartBeat(short mode) {
+         if (mode == SharedConstants.ConnectedHeartBeat) HearBeatService.searchSensor();
+    }
+    public void HeartBeatStateChanged(short mode) {
         ModeHeartBeat = mode;
-        if (ModeHeartBeat == SharedConstants.ConnectedHeartBeat) HearBeatService.searchSensor();
     }
 
     // Managing sleep state for HMI
@@ -223,8 +225,9 @@ public class DataManager extends Application implements LocationListener {
         SearchableStorage.store(Loaded);
     }
 
-    public static String getMessages()  { return BackendMessage; }
-
+    // Managing Toast from Backend ...
+    public static String getBackendMessage()  { return BackendMessage; }
+    public static void setBackendMessage(String ToastMessage)  { BackendMessage =ToastMessage; }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) { }
