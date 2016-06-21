@@ -64,6 +64,7 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Getter/Setter for ControlSwitch mode
+    public short getModeGPS() {return ModeGPS;}
     public void storeModeGPS(short mode) {
         ModeGPS = mode;
         if (ModeGPS == SharedConstants.ReplayedGPS)  {
@@ -78,23 +79,29 @@ public class DataManager extends Application implements LocationListener {
                     MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this );
         }
     }
-    public short getModeGPS() {return ModeGPS;}
 
+    public short getModeHeartBeat() {return ModeHeartBeat;}
     public void storeModeHeartBeat(short mode) {
         ModeHeartBeat = mode;
         if (ModeHeartBeat == SharedConstants.ConnectedHeartBeat) HearBeatService.searchSensor();
     }
 
-
-    public short getModeHeartBeat() {return ModeHeartBeat;}
-
-    public void storeModeSleep(short mode) {ModeScreen = mode;}
+    // Managing sleep state for HMI
     public short getModeSleep() {return ModeScreen;}
-    public void storeModeLight(short mode) {ModeLight = mode;}
+    public void storeModeSleep(short mode) {ModeScreen = mode;}
+
+    // Managing backlight intensity for screen --> Not implemented
     public short getModeLight() {return ModeLight;}
-    public void storeModeBattery(short mode) {ModeBattery = mode;}
+    public void storeModeLight(short mode) {ModeLight = mode;}
+
+    // Managing Animation behaviour to reduce energy comsumption--> Not implemented
     public short getModeBattery() {return ModeBattery;}
+    public void storeModeBattery(short mode) {ModeBattery = mode;}
+
+    // Called on Sleep/Wakeup of activity
     public void setActivityMode(int mode) { ActivityMode = mode; }
+
+    // Called from activity to retreived last position on WakeUp
     public GeoData getLastUpdate(){ return LastUpdate; }
 
     // Return Application in order to setup callback from client
@@ -112,8 +119,23 @@ public class DataManager extends Application implements LocationListener {
         return InViewArea;
     }
 
+    // Return all Point from a geographic area (in cartesian/meters)
     public ArrayList<GeoData> extract(RectF searchZone){
         return SearchableStorage.search(searchZone);
+    }
+
+    // Filter and return Point that match a Speed Range and Bearing Range --> Not Used
+    public ArrayList<GeoData> filter(ArrayList<GeoData> Collected){
+        return Collected;
+    }
+
+    // Utility function to convert Latitude/Longitude to cartesian/metric values
+    private static float dX(double longitude) {
+        return earthRadiusCorrected * (float) Math.toRadians(longitude-originLongitude);
+    }
+
+    private static float dY(double latitude) {
+        return  earthRadius * (float) Math.toRadians(latitude-originLatitude);
     }
 
     @Override
@@ -143,15 +165,7 @@ public class DataManager extends Application implements LocationListener {
         EventsSimulatedGPS = new SimulateGPS(this);
     }
 
-    public float dX(double longitude) {
-        return earthRadiusCorrected * (float) Math.toRadians(longitude-originLongitude);
-    }
-
-    public float dY(double latitude) {
-        return  earthRadius * (float) Math.toRadians(latitude-originLatitude);
-    }
-
-     @Override
+    @Override
     public void onLocationChanged(Location update) {
         if (update == null) return;
         GeoData geoInfo = new GeoData();

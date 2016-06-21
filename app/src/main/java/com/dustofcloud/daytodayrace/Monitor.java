@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.drawable.shapes.RectShape;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
