@@ -93,7 +93,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Hardcoded settings for Heartbeat in right Monitor
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);
         RightMonitor.setIcon(HeartThumb);
-        RightMonitor.setRuleSettings(10,5,1f,20f,220f); // One Label every 5 bpm
+        RightMonitor.setRuleSettings(12,5,1f,20f,220f); // One Label every 5 bpm
         RightMonitor.setUnit("bpm");
         RightMonitor.setVisibility(View.INVISIBLE);
 
@@ -123,7 +123,6 @@ public class Docking extends Activity implements EventsProcessGPS {
         if (null == LastGPS) return;
         processLocationChanged(LastGPS);
     }
-
 
     public void onStatusChanged(short Status) {
         if (Status == SharedConstants.SleepLocked) {

@@ -113,7 +113,7 @@ public class Monitor extends ImageView {
         buildHistory();
 
         long EndRender = SystemClock.elapsedRealtime();
-        Log.d("Monitor", "Bitmap update was "+ (EndRender - StartRender)+ " ms.");
+        Log.d("Monitor", "Bitmaps construction was "+ (EndRender - StartRender)+ " ms.");
 
         // Requesting a View redraw
         invalidate();
@@ -205,11 +205,11 @@ public class Monitor extends ImageView {
         if (UnitLabelStep < 1) UnitLabelStep = 1;
         Modulo = PreviousUnit % UnitLabelStep;
         if (Modulo > 0) PreviousLabel = PreviousUnit - Modulo;
-        if ((PreviousUnit - PreviousLabel) < 1) PreviousLabel--;
+        if ((PreviousUnit - PreviousLabel) < 1) PreviousLabel = PreviousLabel - UnitLabelStep;
 
         Modulo = NextUnit % UnitLabelStep;
         if (Modulo > 0) NextLabel = NextUnit + (UnitLabelStep - Modulo);
-        if ((NextLabel - NextUnit) < 2) NextLabel++;
+        if ((NextLabel - NextUnit) < 2) NextLabel = NextLabel + UnitLabelStep;
 
         if ((VuMeterStartValue == (float) PreviousLabel) && (VuMeterStopValue == (float) NextLabel)) return true;
         VuMeterStartValue = (float) PreviousLabel;
