@@ -161,7 +161,6 @@ public class Monitor extends ImageView {
         FramePainter.setStrokeWidth(StrokeWidth);
         Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
         Radius = FrameRadius*FramePixelsFactor;
-
     }
 
     @Override

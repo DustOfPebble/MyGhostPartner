@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -13,6 +14,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class Docking extends Activity implements EventsProcessGPS {
+
+    private Handler EventTrigger = new Handler();
+    private Runnable task = new Runnable() { public void run() { loadStatus();} };
+    private int EventsDelay = 1000;
 
     private ControlSwitch SleepLocker = null;
     private ControlSwitch BatterySaver = null;
@@ -99,6 +104,8 @@ public class Docking extends Activity implements EventsProcessGPS {
 
         Speeds = new ArrayList<Statistic>();
         HeartBeats = new ArrayList<Statistic>();
+
+        EventTrigger=new Handler();
     }
 
     @Override
@@ -113,10 +120,8 @@ public class Docking extends Activity implements EventsProcessGPS {
         BackPressedCount = 0;
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setActivityMode(SharedConstants.SwitchForeground);
-        GPSProvider.setMode(BackendService.getModeGPS());
-        LightEnhancer.setMode(BackendService.getModeLight());
-        BatterySaver.setMode(BackendService.getModeBattery());
-        SleepLocker.setMode(BackendService.getModeSleep());
+
+        loadStatus();
 
         // Force a refreshed display
         GeoData LastGPS = BackendService.getLastUpdate();
@@ -164,6 +169,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         }
         if (Status == SharedConstants.ConnectedHeartBeat) {
             BackendService.storeModeHeartBeat(Status);
+            EventTrigger.postDelayed(task, BluetoothConstants.SCAN_TIMEOUT+EventsDelay);
         }
         if (Status == SharedConstants.DisconnectedHeartBeat) {
             BackendService.storeModeHeartBeat(Status);
@@ -180,18 +186,22 @@ public class Docking extends Activity implements EventsProcessGPS {
         else { Toast.makeText(Docking.this, "Press back again to exit !", Toast.LENGTH_SHORT).show(); }
     }
 
-    @Override
-    public void processLocationChanged(GeoData geoInfo){
+    private void loadStatus() {
         if (BackendService == null) return;
-
         // Checking for a pending message
         String ToastMessage = BackendService.getBackendMessage();
         if (!ToastMessage.isEmpty()) Toast.makeText(Docking.this, ToastMessage, Toast.LENGTH_SHORT).show();
 
-        // Propagate HeartBeat status
-        short HeartBeatStatus = BackendService.getModeHeartBeat();
-        if (HeartBeatStatus == SharedConstants.ConnectedHeartBeat) RightMonitor.setVisibility(View.VISIBLE);
         HeartBeatSensor.setMode(BackendService.getModeHeartBeat());
+        GPSProvider.setMode(BackendService.getModeGPS());
+        LightEnhancer.setMode(BackendService.getModeLight());
+        BatterySaver.setMode(BackendService.getModeBattery());
+        SleepLocker.setMode(BackendService.getModeSleep());
+    }
+
+    @Override
+    public void processLocationChanged(GeoData geoInfo){
+        if (BackendService == null) return;
 
         PointF SizeSelection = BackendService.getComputedSize();
         ViewCenter = geoInfo.getCoordinate();
@@ -215,6 +225,6 @@ public class Docking extends Activity implements EventsProcessGPS {
             Speeds.add(new Statistic(item.getHeartbeat(),item.getElapsedDays()));
         }
         RightMonitor.updateStatistics(HeartBeats);
-
+        if ((RightMonitor.getVisibility() == View.INVISIBLE) && (geoInfo.getHeartbeat() >0 )) RightMonitor.setVisibility(View.VISIBLE);
     }
 }

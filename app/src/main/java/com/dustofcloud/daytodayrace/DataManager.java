@@ -186,8 +186,9 @@ public class DataManager extends Application implements LocationListener {
     }
 
     public void processHeartBeatChanged(int Frequency)  {
-        LastUpdate.setHeartbeat(Frequency);
         LastHeartBeat = Frequency;
+        if (null == LastUpdate) return;
+        LastUpdate.setHeartbeat(Frequency);
     }
 
     public void processLocationChanged(GeoData update) {
