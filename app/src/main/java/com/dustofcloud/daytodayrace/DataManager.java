@@ -64,7 +64,7 @@ public class DataManager extends Application implements LocationListener {
         Clients.add(updateClient);
     }
 
-    // Getter/Setter for ControlSwitch mode
+    // Managing state for GPS
     public short getModeGPS() {return ModeGPS;}
     public void storeModeGPS(short mode) {
         ModeGPS = mode;
@@ -81,6 +81,7 @@ public class DataManager extends Application implements LocationListener {
         }
     }
 
+    // Managing state for Heartbeat sensor
     public short getModeHeartBeat() {return ModeHeartBeat;}
     public void storeModeHeartBeat(short mode) {
          if (mode == SharedConstants.ConnectedHeartBeat) HearBeatService.searchSensor();
@@ -97,14 +98,14 @@ public class DataManager extends Application implements LocationListener {
     public short getModeLight() {return ModeLight;}
     public void storeModeLight(short mode) {ModeLight = mode;}
 
-    // Managing Animation behaviour to reduce energy comsumption--> Not implemented
+    // Managing Animation behaviour to reduce energy consumption --> Not implemented
     public short getModeBattery() {return ModeBattery;}
     public void storeModeBattery(short mode) {ModeBattery = mode;}
 
     // Called on Sleep/Wakeup of activity
     public void setActivityMode(int mode) { ActivityMode = mode; }
 
-    // Called from activity to retreived last position on WakeUp
+    // Called from activity to retrieved last position on WakeUp
     public GeoData getLastUpdate(){ return LastUpdate; }
 
     // Return Application in order to setup callback from client
@@ -123,13 +124,24 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Return all Point from a geographic area (in cartesian/meters)
-    public ArrayList<GeoData> extract(RectF searchZone){
-        return SearchableStorage.search(searchZone);
-    }
+    public ArrayList<GeoData> extract(RectF searchZone){ return SearchableStorage.search(searchZone); }
+
+    // Convert angle from [0,360°] to [-180°,180°]
+    private float signed(float Angle) { return  ((Angle > 180)? (180 - Angle) : Angle); }
 
     // Filter and return Point that match a Speed Range and Bearing Range --> Not Used
     public ArrayList<GeoData> filter(ArrayList<GeoData> Collected){
-        return Collected;
+        ArrayList<GeoData> Filtered = new ArrayList<GeoData>();
+        float SpeedRange = SharedConstants.SpeedMatchingFactor * LastUpdate.getSpeed();
+        float Heading = signed(LastUpdate.getBearing());
+        float ExtractedHeading;
+        for (GeoData Extracted : Collected) {
+            if (Math.abs(Extracted.getSpeed() - LastUpdate.getSpeed()) > SpeedRange) continue;
+            ExtractedHeading = signed(Extracted.getBearing());
+            if (Math.abs(ExtractedHeading - Heading) > SharedConstants.BearingMatchingGap) continue;
+            Filtered.add(Extracted);
+        }
+        return Filtered;
     }
 
     // Utility function to convert Latitude/Longitude to cartesian/metric values
@@ -150,6 +162,7 @@ public class DataManager extends Application implements LocationListener {
 
         // Starting HeartBeat if HeartBeat Sensor is connected
         HearBeatService = new HeartBeatProvider(this);
+        HearBeatService.searchSensor();
 
         SourceGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
         SourceGPS.requestLocationUpdates(
@@ -168,12 +181,11 @@ public class DataManager extends Application implements LocationListener {
         EventsSimulatedGPS = new SimulateGPS(this);
     }
 
-    @Override
-    public void onLocationChanged(Location update) {
-        if (update == null) return;
-        GeoData geoInfo = new GeoData();
-        geoInfo.setGPS(update);
-        processLocationChanged(geoInfo);
+    public void processHeartBeatChanged(int Frequency)  {
+        if (ModeGPS == SharedConstants.ReplayedGPS) return;
+        LastHeartBeat = Frequency;
+        if (null == LastUpdate) return;
+        LastUpdate.setHeartbeat(Frequency);
     }
 
     private void init(GeoData update) {
@@ -185,15 +197,17 @@ public class DataManager extends Application implements LocationListener {
         LoadingFiles.start();
     }
 
-    public void processHeartBeatChanged(int Frequency)  {
-        LastHeartBeat = Frequency;
-        if (null == LastUpdate) return;
-        LastUpdate.setHeartbeat(Frequency);
+    @Override
+    public void onLocationChanged(Location update) {
+        if (update == null) return;
+        GeoData geoInfo = new GeoData();
+        geoInfo.setGPS(update);
+        processLocationChanged(geoInfo);
     }
 
     public void processLocationChanged(GeoData update) {
         if (update == null) return;
-        Log.d("DataManager", "GPS notification ==> [" + update.getLongitude() + "°E," + update.getLatitude() + "°N]");
+        Log.d("DataManager", "GPS [" + update.getLongitude() + "°E," + update.getLatitude() + "°N]");
 
         if ( !originSet ) {
             init(update);
@@ -201,8 +215,8 @@ public class DataManager extends Application implements LocationListener {
         }
 
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
-        update.setCoordinate(new PointF(dX(update.getLongitude()),dY(update.getLatitude())));
-        Log.d("DataManager", "Coordinate["+update.getCoordinate().x+","+update.getCoordinate().y+"]");
+        PointF Displacement =new PointF(dX(update.getLongitude()),dY(update.getLatitude()));
+        update.setCoordinate(Displacement);
 
         // Updating with Last HeartBeat
         update.setHeartbeat(LastHeartBeat);
@@ -227,9 +241,9 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Managing Toast from Backend ...
-    public static void setBackendMessage(String ToastMessage)  { BackendMessage =ToastMessage; }
-    public static String getBackendMessage()  {
-        String SentMessage = new String(BackendMessage);
+    public  void setBackendMessage(String ToastMessage)  { BackendMessage =ToastMessage; }
+    public String getBackendMessage()  {
+        String SentMessage = BackendMessage;
         BackendMessage ="";
         return SentMessage;
     }

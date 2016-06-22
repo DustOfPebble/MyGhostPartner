@@ -121,6 +121,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setActivityMode(SharedConstants.SwitchForeground);
 
+        // Refresh all button internal state
         loadStatus();
 
         // Force a refreshed display
@@ -210,21 +211,22 @@ public class Docking extends Activity implements EventsProcessGPS {
         CollectedSelection = BackendService.extract(searchZone);
 
         // Updating Speeds Statistics
+        LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
         Speeds.add(new Statistic(geoInfo.getSpeed()*3.6f,geoInfo.getElapsedDays()));
         for (GeoData item: CollectedSelection) {
             Speeds.add(new Statistic(item.getSpeed()*3.6f,item.getElapsedDays()));
         }
         LeftMonitor.updateStatistics(Speeds);
-        if (LeftMonitor.getVisibility() == View.INVISIBLE) LeftMonitor.setVisibility(View.VISIBLE);
 
         // Updating HeartBeats Statistics
+        if (geoInfo.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
+        RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
         HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));
         for (GeoData item: CollectedSelection) {
             Speeds.add(new Statistic(item.getHeartbeat(),item.getElapsedDays()));
         }
         RightMonitor.updateStatistics(HeartBeats);
-        if ((RightMonitor.getVisibility() == View.INVISIBLE) && (geoInfo.getHeartbeat() >0 )) RightMonitor.setVisibility(View.VISIBLE);
     }
 }
