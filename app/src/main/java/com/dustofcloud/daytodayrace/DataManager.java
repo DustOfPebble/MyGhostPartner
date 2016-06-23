@@ -14,8 +14,6 @@ import java.util.ArrayList;
 
 public class DataManager extends Application implements LocationListener {
     private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
-    private ArrayList<GeoData> ExtractedDisplay = new ArrayList<GeoData>();
-    private ArrayList<GeoData> ExtractedStats = new ArrayList<GeoData>();
     private PointF StatisticsSelectionSize = new PointF(10f,10f); // Values in meters
     private PointF DisplayedSelectionSize = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
 
@@ -196,6 +194,13 @@ public class DataManager extends Application implements LocationListener {
         SearchableStorage = new QuadTree(SearchableZone); // Create QuadTree storage area
         LoadingFiles = new Thread(ReadFromFile);
         LoadingFiles.start();
+    }
+
+    public void shutdown() {
+        if (LoadingFiles!= null) LoadingFiles.interrupt();
+        WriteToFile.shutdown();
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(0);
     }
 
     @Override

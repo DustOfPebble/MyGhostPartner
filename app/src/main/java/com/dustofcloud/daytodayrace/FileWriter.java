@@ -31,6 +31,11 @@ public class FileWriter {
 
     public void writeGeoData(GeoData geoInfo) { geoDataBuffer.add(geoInfo); }
 
+    public void shutdown() {
+        triggeredWrite();
+        trigger.removeCallbacks(task);
+    }
+
     public void triggeredWrite() {
         if (geoDataBuffer.size() == 0) return;
         try { flushBuffer(); }

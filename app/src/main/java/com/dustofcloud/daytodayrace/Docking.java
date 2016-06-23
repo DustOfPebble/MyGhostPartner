@@ -107,11 +107,13 @@ public class Docking extends Activity implements EventsProcessGPS {
     protected void onPause() {
         super.onPause();
         BackendService.setActivityMode(SharedConstants.SwitchBackground);
+        Toast.makeText(Docking.this, "Switching GPS recording to background...", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Toast.makeText(Docking.this, "Restoring display...", Toast.LENGTH_SHORT).show();
         BackPressedCount = 0;
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setActivityMode(SharedConstants.SwitchForeground);
@@ -176,7 +178,9 @@ public class Docking extends Activity implements EventsProcessGPS {
     public void onBackPressed() {
         BackPressedCount++;
         if (BackPressedCount > 1) {
-            BackendService.setActivityMode(SharedConstants.SwitchBackground);
+            BackendService.shutdown();
+            this.finish();
+            System.exit(0);
             super.onBackPressed();
         }
         else { Toast.makeText(Docking.this, "Press back again to exit !", Toast.LENGTH_SHORT).show(); }
