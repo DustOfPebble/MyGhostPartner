@@ -28,14 +28,11 @@ public class Docking extends Activity implements EventsProcessGPS {
     private Monitor LeftMonitor = null;
     private Monitor RightMonitor = null;
 
-    private Bitmap SpeedThumb = null;
-    private Bitmap HeartThumb = null;
-
     private MapManager MapView = null;
 
-    private RectF searchZone = new RectF();
     private PointF ViewCenter;
-    private ArrayList<GeoData> CollectedSelection;
+    private RectF searchZone = new RectF();
+    private ArrayList<GeoData> CollectedStatistics;
 
     private ArrayList<Statistic> Speeds;
     private ArrayList<Statistic> HeartBeats;
@@ -85,19 +82,17 @@ public class Docking extends Activity implements EventsProcessGPS {
         HeartBeatSensor.registerManager(this);
         HeartBeatSensor.setMode(BackendService.getModeHeartBeat());
 
-        SpeedThumb = BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb);
-        HeartThumb = BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb);
 
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
-        LeftMonitor.setIcon(SpeedThumb);
+        LeftMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
         LeftMonitor.setRuleSettings(10,5,1f,0f,80f); // One Label  every 1 km/h
         LeftMonitor.setUnit("km/h");
         LeftMonitor.setVisibility(View.INVISIBLE);
 
         // Hardcoded settings for Heartbeat in right Monitor
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);
-        RightMonitor.setIcon(HeartThumb);
+        RightMonitor.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb));
         RightMonitor.setRuleSettings(12,5,1f,20f,220f); // One Label every 5 bpm
         RightMonitor.setUnit("bpm");
         RightMonitor.setVisibility(View.INVISIBLE);
@@ -170,7 +165,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         }
         if (Status == SharedConstants.ConnectedHeartBeat) {
             BackendService.storeModeHeartBeat(Status);
-            EventTrigger.postDelayed(task, BluetoothConstants.SCAN_TIMEOUT+EventsDelay);
+            EventTrigger.postDelayed(task, BluetoothConstants.SCAN_TIMEOUT + EventsDelay);
         }
         if (Status == SharedConstants.DisconnectedHeartBeat) {
             BackendService.storeModeHeartBeat(Status);
@@ -204,17 +199,18 @@ public class Docking extends Activity implements EventsProcessGPS {
     public void processLocationChanged(GeoData geoInfo){
         if (BackendService == null) return;
 
-        PointF SizeSelection = BackendService.getComputedSize();
+        // Collecting data from backend
+        PointF SizeSelection = BackendService.getExtractStatisticsSize();
         ViewCenter = geoInfo.getCoordinate();
         searchZone.set(this.ViewCenter.x - SizeSelection.x / 2, this.ViewCenter.y - SizeSelection.y / 2,
                        this.ViewCenter.x + SizeSelection.x / 2, this.ViewCenter.y + SizeSelection.y / 2  );
-        CollectedSelection = BackendService.extract(searchZone);
+        CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
 
         // Updating Speeds Statistics
         LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
         Speeds.add(new Statistic(geoInfo.getSpeed()*3.6f,geoInfo.getElapsedDays()));
-        for (GeoData item: CollectedSelection) {
+        for (GeoData item: CollectedStatistics) {
             Speeds.add(new Statistic(item.getSpeed()*3.6f,item.getElapsedDays()));
         }
         LeftMonitor.updateStatistics(Speeds);
@@ -224,7 +220,8 @@ public class Docking extends Activity implements EventsProcessGPS {
         RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
         HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));
-        for (GeoData item: CollectedSelection) {
+        for (GeoData item: CollectedStatistics) {
+            if (item.getHeartbeat() == -1) return;
             Speeds.add(new Statistic(item.getHeartbeat(),item.getElapsedDays()));
         }
         RightMonitor.updateStatistics(HeartBeats);

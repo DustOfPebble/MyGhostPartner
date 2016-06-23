@@ -13,9 +13,11 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class DataManager extends Application implements LocationListener {
-    private  RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
-    private PointF InUseArea = new PointF(10f,10f); // Values in meters
-    private PointF InViewArea = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
+    private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
+    private ArrayList<GeoData> ExtractedDisplay = new ArrayList<GeoData>();
+    private ArrayList<GeoData> ExtractedStats = new ArrayList<GeoData>();
+    private PointF StatisticsSelectionSize = new PointF(10f,10f); // Values in meters
+    private PointF DisplayedSelectionSize = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
 
     private GeoData LastUpdate;
     private int LastHeartBeat = -1;
@@ -114,13 +116,13 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Return area size selection for statistics
-    public PointF getComputedSize(){
-        return InUseArea;
+    public PointF getExtractStatisticsSize(){
+        return StatisticsSelectionSize;
     }
 
     // Return area size selection for statistics
-    public PointF getDisplayedSize(){
-        return InViewArea;
+    public PointF getExtractDisplayedSize(){
+        return DisplayedSelectionSize;
     }
 
     // Return all Point from a geographic area (in cartesian/meters)
@@ -157,7 +159,6 @@ public class DataManager extends Application implements LocationListener {
     public void onCreate()
     {
         super.onCreate();
-        Log.d("DataManager", "DataManager has been created...");
         Backend = this;
 
         // Starting HeartBeat if HeartBeat Sensor is connected
@@ -209,10 +210,7 @@ public class DataManager extends Application implements LocationListener {
         if (update == null) return;
         Log.d("DataManager", "GPS [" + update.getLongitude() + "°E," + update.getLatitude() + "°N]");
 
-        if ( !originSet ) {
-            init(update);
-            originSet = true;
-        }
+        if ( !originSet ) { init(update); originSet = true; }
 
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
         PointF Displacement =new PointF(dX(update.getLongitude()),dY(update.getLatitude()));

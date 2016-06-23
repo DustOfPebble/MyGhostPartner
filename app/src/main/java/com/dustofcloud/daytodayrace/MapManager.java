@@ -16,8 +16,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
     private DataManager BackendService =null;
-    private ArrayList<GeoData> GeoInView =null;
-    private ArrayList<GeoData> GeoInUse =null;
+    private ArrayList<GeoData> CollectedDisplayed =null;
+    private ArrayList<GeoData> CollectedStatistics =null;
     private PointF ViewCenter;
     private PointF GraphicCenter = new PointF(0f,0f) ;
     private Paint LineMode;
@@ -47,8 +47,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         LineMode.setStyle(Paint.Style.STROKE);
         FillMode = new Paint();
 
-        GeoInView = new ArrayList<GeoData>();
-        GeoInUse = new ArrayList<GeoData>();
+        CollectedDisplayed = new ArrayList<GeoData>();
+        CollectedStatistics = new ArrayList<GeoData>();
     }
 
     public void setBackend(DataManager backend) {
@@ -64,24 +64,23 @@ public class MapManager extends ImageView implements EventsProcessGPS {
 
         InUseGeo = geoInfo;
         ViewCenter = geoInfo.getCoordinate();
+        PointF Size;
 
         // Extracting active point around first because we will make a List copy ...
-        PointF SizeSelection = BackendService.getComputedSize();
-        searchZone.set(this.ViewCenter.x - SizeSelection.x / 2, this.ViewCenter.y - SizeSelection.y / 2,
-                       this.ViewCenter.x + SizeSelection.x / 2, this.ViewCenter.y + SizeSelection.y / 2  );
-        ArrayList<GeoData> CollectedSelection = BackendService.extract(searchZone );
-        // Filtering InUse
-        GeoInUse = new ArrayList<GeoData>(CollectedSelection);
+        Size = BackendService.getExtractStatisticsSize();
+        searchZone.set(this.ViewCenter.x - Size.x / 2, this.ViewCenter.y - Size.y / 2,
+                       this.ViewCenter.x + Size.x / 2, this.ViewCenter.y + Size.y / 2  );
+        CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
 
         // Extracting Map background at least to avoid list copy...
-        PointF SizeView = BackendService.getDisplayedSize();
+        Size = BackendService.getExtractDisplayedSize();
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
-        MetersToPixels.set((float)MinSize / SizeView.x,(float)MinSize / SizeView.y);
-        PointF Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
+        MetersToPixels.set((float)MinSize / Size.x,(float)MinSize / Size.y);
+        Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
         float Extract = Math.max(Size.x, Size.y);
         searchZone.set(this.ViewCenter.x - Extract/2,this.ViewCenter.y - Extract/2,
                        this.ViewCenter.x + Extract/2, this.ViewCenter.y + Extract/2);
-        GeoInView = BackendService.extract(searchZone);
+        CollectedDisplayed = BackendService.extract(searchZone);
 
         invalidate();
     }
@@ -112,14 +111,14 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         Log.d("MapManager","Rotation is "+InUseGeo.getBearing()+"°");
 
         // Do the drawing
-        Log.d("MapManager", "Drawing "+ GeoInView.size()+ " extracted points");
+        Log.d("MapManager", "Drawing "+ CollectedDisplayed.size()+ " extracted points");
         // Drawing all points from Storage
         LineMode.setColor(ExtractedColor);
         LineMode.setAlpha(ExtractedLineTransparency);
         LineMode.setStrokeWidth(ExtractedLineThickness);
         FillMode.setColor(ExtractedColor);
         FillMode.setAlpha(ExtractedFillTransparency);
-        for (GeoData Marker : GeoInView) {
+        for (GeoData Marker : CollectedDisplayed) {
             Coords = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
@@ -131,14 +130,14 @@ public class MapManager extends ImageView implements EventsProcessGPS {
             canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
         }
 
-        Log.d("MapManager", "Drawing "+ GeoInUse.size()+ " computed points");
+        Log.d("MapManager", "Drawing "+ CollectedStatistics.size()+ " computed points");
         // Drawing all points from Storage
         LineMode.setColor(ComputedColor);
         LineMode.setAlpha(ComputedLineTransparency);
         LineMode.setStrokeWidth(ComputedLineThickness);
         FillMode.setColor(ComputedColor);
         FillMode.setAlpha(ComputedFillTransparency);
-        for (GeoData Marker : GeoInUse) {
+        for (GeoData Marker : CollectedStatistics) {
             Coords = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
