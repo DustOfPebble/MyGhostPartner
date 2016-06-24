@@ -132,7 +132,10 @@ public class DataManager extends Application implements LocationListener {
     // Filter and return Point that match a Speed Range and Bearing Range --> Not Used
     public ArrayList<GeoData> filter(ArrayList<GeoData> Collected){
         ArrayList<GeoData> Filtered = new ArrayList<GeoData>();
-        float SpeedRange = SharedConstants.SpeedMatchingFactor * LastUpdate.getSpeed();
+        float SpeedRange = SharedConstants.SpeedMatchingFactor * LastUpdate.getSpeed() * 3.6f;
+        if (SpeedRange < 2) SpeedRange =2;
+        if (SpeedRange >10) SpeedRange =10;
+
         float Heading = signed(LastUpdate.getBearing());
         float ExtractedHeading;
         for (GeoData Extracted : Collected) {

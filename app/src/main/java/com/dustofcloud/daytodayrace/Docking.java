@@ -28,11 +28,8 @@ public class Docking extends Activity implements EventsProcessGPS {
     private Monitor LeftMonitor = null;
     private Monitor RightMonitor = null;
 
-    private MapManager MapView = null;
-
     private PointF ViewCenter;
     private RectF searchZone = new RectF();
-    private ArrayList<GeoData> CollectedStatistics;
 
     private ArrayList<Statistic> Speeds;
     private ArrayList<Statistic> HeartBeats;
@@ -48,7 +45,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         BackendService = (DataManager) getApplication();
         BackendService.setUpdateCallback(this);
 
-        MapView = (MapManager)  findViewById(R.id.map_manager);
+        MapManager MapView = (MapManager)  findViewById(R.id.map_manager);
         MapView.setBackend(BackendService);
 
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
@@ -203,12 +200,14 @@ public class Docking extends Activity implements EventsProcessGPS {
     public void processLocationChanged(GeoData geoInfo){
         if (BackendService == null) return;
 
-        // Collecting data from backend
+        // Setting collection area
         PointF SizeSelection = BackendService.getExtractStatisticsSize();
         ViewCenter = geoInfo.getCoordinate();
         searchZone.set(this.ViewCenter.x - SizeSelection.x / 2, this.ViewCenter.y - SizeSelection.y / 2,
                        this.ViewCenter.x + SizeSelection.x / 2, this.ViewCenter.y + SizeSelection.y / 2  );
-        CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
+
+        // Collecting data from backend
+        ArrayList<GeoData> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
 
         // Updating Speeds Statistics
         LeftMonitor.setVisibility(View.VISIBLE);
