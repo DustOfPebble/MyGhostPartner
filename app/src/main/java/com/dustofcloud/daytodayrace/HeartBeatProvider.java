@@ -32,7 +32,7 @@ public class HeartBeatProvider extends BluetoothGattCallback{
 
     public void setDevice(BluetoothDevice Sensor){
         if (Sensor == null)  {
-            Backend.setBackendMessage("Heartbeat sensor not found.");
+            Backend.setBackendMessage(Backend.getResources().getString(R.string.heartbeat_sensor_found));
             Backend.HeartBeatStateChanged(SharedConstants.DisconnectedHeartBeat);
             return;
         }

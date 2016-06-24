@@ -1,0 +1,4 @@
+<resources>
+    <string name="message_back_key_pressed">Appuyer 2 fois pour quitter !</string>
+    <string name="heartbeat_sensor_found">Capteur cardiaque connecté.</string>
+</resources>

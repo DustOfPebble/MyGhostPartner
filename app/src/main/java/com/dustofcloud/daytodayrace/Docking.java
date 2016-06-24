@@ -183,7 +183,7 @@ public class Docking extends Activity implements EventsProcessGPS {
             System.exit(0);
             super.onBackPressed();
         }
-        else { Toast.makeText(Docking.this, "Press back again to exit !", Toast.LENGTH_SHORT).show(); }
+        else { Toast.makeText(Docking.this, getResources().getString(R.string.message_back_key_pressed), Toast.LENGTH_SHORT).show(); }
     }
 
     private void loadStatus() {

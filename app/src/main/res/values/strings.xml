@@ -1,4 +1,6 @@
 <resources>
-    <string name="app_name">DayToDayRace</string>
-    <string name="title_activity_docking">DailyRace</string>
+    <string name="app_name" translatable="false">DailyRace</string>
+    <string name="title_activity_docking" translatable="false">DailyRace</string>
+    <string name="message_back_key_pressed">Press twice to exit !</string>
+    <string name="heartbeat_sensor_found">Heartbeat sensor connected.</string>
 </resources>
