@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Handler;
 import android.util.Log;
-
 import java.util.Arrays;
 
 
@@ -17,9 +16,9 @@ public class SensorFinder implements BluetoothAdapter.LeScanCallback, Runnable {
 
     @Override
     public void run() {
+        Log.d("SensorFinder", "Timeout reached...");
         Bluetooth.stopLeScan(this);
         isScanning = false;
-        Log.d("SensorFinder", "Timeout reached...");
     }
 
     public SensorFinder(HeartBeatProvider Client) {
@@ -55,6 +54,8 @@ public class SensorFinder implements BluetoothAdapter.LeScanCallback, Runnable {
                 if (BluetoothConstants.UUID_HEART_RATE.equals(UUID)) {
                     Listener.setDevice(DeviceFound);
                     Log.d("SensorFinder", "HeartBeat sensor found...");
+                    Bluetooth.stopLeScan(this);
+                    EventTrigger.removeCallbacks(this);
                     break;
                 }
             }

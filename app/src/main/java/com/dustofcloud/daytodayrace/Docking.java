@@ -99,6 +99,8 @@ public class Docking extends Activity implements EventsProcessGPS {
         HeartBeats = new ArrayList<Statistic>();
 
         EventTrigger=new Handler();
+        // Registering Timeout triggers
+        EventTrigger.postDelayed(task,EventsDelay);
     }
 
     @Override

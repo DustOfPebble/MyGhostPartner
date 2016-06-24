@@ -13,7 +13,7 @@
    height="297mm"
    id="svg2"
    version="1.1"
-   inkscape:version="0.91 r13725"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="icons.svg">
   <defs
      id="defs4">
@@ -120,10 +120,10 @@
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="657"
-     inkscape:window-x="-8"
-     inkscape:window-y="-8"
+     inkscape:window-width="1920"
+     inkscape:window-height="1036"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      showguides="false" />
   <metadata
@@ -134,7 +134,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -724,7 +724,8 @@
          cx="148.39285"
          cy="315.93362"
          rx="2.8571429"
-         ry="3.0357141" />
+         ry="3.0357141"
+         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z" />
       <ellipse
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -735,7 +736,8 @@
          cx="148.39285"
          cy="315.93362"
          rx="2.8571429"
-         ry="3.0357141" />
+         ry="3.0357141"
+         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z" />
       <path
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -810,7 +812,8 @@
          sodipodi:cx="482.62875"
          sodipodi:cy="100.38033"
          sodipodi:rx="9.5899982"
-         sodipodi:ry="9.3565474" />
+         sodipodi:ry="9.3565474"
+         d="m 492.21875,100.38033 c 0,5.16748 -4.29359,9.35655 -9.59,9.35655 -5.29641,0 -9.58999,-4.18907 -9.58999,-9.35655 0,-5.167475 4.29358,-9.356544 9.58999,-9.356544 5.29641,0 9.59,4.189069 9.59,9.356544 z" />
       <ellipse
          transform="translate(1.4778465,-12.284991)"
          ry="9.3565474"
@@ -822,7 +825,8 @@
          sodipodi:cx="515.55762"
          sodipodi:cy="100.05581"
          sodipodi:rx="9.5899982"
-         sodipodi:ry="9.3565474" />
+         sodipodi:ry="9.3565474"
+         d="m 525.14762,100.05581 c 0,5.16748 -4.29359,9.35655 -9.59,9.35655 -5.29641,0 -9.59,-4.18907 -9.59,-9.35655 0,-5.167479 4.29359,-9.356548 9.59,-9.356548 5.29641,0 9.59,4.189069 9.59,9.356548 z" />
       <ellipse
          transform="translate(1.4778465,-12.284991)"
          ry="4.8909216"
@@ -834,7 +838,8 @@
          sodipodi:cx="504.88214"
          sodipodi:cy="73.151237"
          sodipodi:rx="5.0129528"
-         sodipodi:ry="4.8909216" />
+         sodipodi:ry="4.8909216"
+         d="m 509.89509,73.151237 c 0,2.701182 -2.24437,4.890922 -5.01295,4.890922 -2.76858,0 -5.01295,-2.18974 -5.01295,-4.890922 0,-2.701181 2.24437,-4.890921 5.01295,-4.890921 2.76858,0 5.01295,2.18974 5.01295,4.890921 z" />
       <path
          sodipodi:nodetypes="cccc"
          inkscape:connector-curvature="0"
@@ -882,7 +887,7 @@
        cx="73.423637"
        inkscape:export-ydpi="162"
        inkscape:export-xdpi="162"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\heatbeat_connected.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/heartbeat_connected.png"
        style="fill:none;fill-opacity:1;stroke:none"
        id="circle4235" />
     <path
@@ -897,28 +902,28 @@
     <path
        inkscape:export-ydpi="162"
        inkscape:export-xdpi="162"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\heatbeat_connected.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/heartbeat_connected.png"
        sodipodi:nodetypes="czczc"
        inkscape:connector-curvature="0"
        id="path4245"
        d="m 71.831801,409.46482 c -11.12717,-5.77678 -15.74385,-15.81894 -12.88714,-23.39714 2.8567,-7.5782 10.99718,-2.91197 13.94346,2.1664 3.63624,-5.28519 10.45232,-10.0964 14.78854,-2.1664 4.33619,7.92998 -5.37643,19.92124 -15.84486,23.39714 z"
-       style="fill:#84e9f4;stroke:#ffffff;stroke-width:4.80637026;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1" />
+       style="fill:#daf8fc;stroke:#ffffff;stroke-width:4.80637025999999956;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1" />
     <circle
        id="circle4247"
        style="fill:none;fill-opacity:1;stroke:none"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\heatbeat_disconnected.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/heartbeat_disconnected.png"
        inkscape:export-xdpi="162"
        inkscape:export-ydpi="162"
        cx="150.73616"
        cy="393.16718"
        r="28.449638" />
     <path
-       style="fill:none;fill-opacity:1;stroke:#daf8fc;stroke-width:4.80637026;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#84e9f4;fill-opacity:1;stroke:none;stroke-width:4.80637025999999956;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        d="m 149.14432,406.85878 c -11.12717,-5.77678 -15.74385,-15.81894 -12.88714,-23.39714 2.8567,-7.5782 10.99718,-2.91197 13.94346,2.1664 3.63624,-5.28519 10.45232,-10.0964 14.78854,-2.1664 4.33619,7.92998 -5.37643,19.92124 -15.84486,23.39714 z"
        id="path4249"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="czczc"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\heatbeat_disconnected.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/heartbeat_disconnected.png"
        inkscape:export-xdpi="162"
        inkscape:export-ydpi="162" />
   </g>

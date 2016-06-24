@@ -8,6 +8,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -16,6 +17,10 @@ public class DataManager extends Application implements LocationListener {
     private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
     private PointF StatisticsSelectionSize = new PointF(10f,10f); // Values in meters
     private PointF DisplayedSelectionSize = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
+
+    private Handler TimeoutGPS = new Handler();
+    private Runnable task = new Runnable() { public void run() { queryGPG();} };
+    private int TimoutDelay = 2000;
 
     private GeoData LastUpdate;
     private int LastHeartBeat = -1;
@@ -71,6 +76,7 @@ public class DataManager extends Application implements LocationListener {
         if (ModeGPS == SharedConstants.ReplayedGPS)  {
             if (!EventsSimulatedGPS.load(1000).isEmpty())   {
                 SourceGPS.removeUpdates(this);
+                TimeoutGPS.removeCallbacks(task);
                 EventsSimulatedGPS.sendGPS();
             }
         }
@@ -78,16 +84,15 @@ public class DataManager extends Application implements LocationListener {
             EventsSimulatedGPS.stop();
             SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this );
+            TimeoutGPS.postDelayed(task,TimoutDelay);
         }
     }
 
     // Managing state for Heartbeat sensor
     public short getModeHeartBeat() {return ModeHeartBeat;}
     public void storeModeHeartBeat(short mode) {
-         if (mode == SharedConstants.ConnectedHeartBeat) HearBeatService.searchSensor();
-    }
-    public void HeartBeatStateChanged(short mode) {
         ModeHeartBeat = mode;
+        if (ModeHeartBeat == SharedConstants.ConnectedHeartBeat) HearBeatService.searchSensor();
     }
 
     // Managing sleep state for HMI
@@ -103,7 +108,11 @@ public class DataManager extends Application implements LocationListener {
     public void storeModeBattery(short mode) {ModeBattery = mode;}
 
     // Called on Sleep/Wakeup of activity
-    public void setActivityMode(int mode) { ActivityMode = mode; }
+    public void setActivityMode(int mode) {
+        ActivityMode = mode;
+        if (ActivityMode == SharedConstants.SwitchBackground) TimeoutGPS.removeCallbacks(task);
+        if (ActivityMode == SharedConstants.SwitchForeground) TimeoutGPS.postDelayed(task,TimoutDelay);
+    }
 
     // Called from activity to retrieved last position on WakeUp
     public GeoData getLastUpdate(){ return LastUpdate; }
@@ -202,8 +211,19 @@ public class DataManager extends Application implements LocationListener {
     public void shutdown() {
         if (LoadingFiles!= null) LoadingFiles.interrupt();
         WriteToFile.shutdown();
+        TimeoutGPS.removeCallbacks(task);
+        SourceGPS.removeUpdates(this);
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);
+    }
+
+    private void queryGPG() {
+        Location LastKnownGPS = SourceGPS.getLastKnownLocation(LOCATION_SERVICE);
+        if (LastKnownGPS == null) return;
+        GeoData LastGPS = new GeoData();
+        LastGPS.setGPS(LastKnownGPS);
+        LastGPS.setSimulated();
+        processLocationChanged(LastGPS);
     }
 
     @Override
@@ -216,6 +236,7 @@ public class DataManager extends Application implements LocationListener {
 
     public void processLocationChanged(GeoData update) {
         if (update == null) return;
+
         Log.d("DataManager", "GPS [" + update.getLongitude() + "°E," + update.getLatitude() + "°N]");
 
         if ( !originSet ) { init(update); originSet = true; }
@@ -236,8 +257,10 @@ public class DataManager extends Application implements LocationListener {
         LastUpdate = update;
 
         // Loop over registered clients callback ...
-        if (ActivityMode == SharedConstants.SwitchForeground)
+        if (ActivityMode == SharedConstants.SwitchForeground) {
+            TimeoutGPS.removeCallbacks(task);
             for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(update);}
+        }
     }
 
     public void onLoaded(GeoData Loaded) {
@@ -247,10 +270,10 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Managing Toast from Backend ...
-    public  void setBackendMessage(String ToastMessage)  { BackendMessage =ToastMessage; }
+    public  void setBackendMessage(String ToastMessage)  { BackendMessage = ToastMessage; }
     public String getBackendMessage()  {
-        String SentMessage = BackendMessage;
-        BackendMessage ="";
+        String SentMessage = new String(BackendMessage);
+        BackendMessage = "";
         return SentMessage;
     }
 

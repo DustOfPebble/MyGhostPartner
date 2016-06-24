@@ -31,12 +31,13 @@ public class HeartBeatProvider extends BluetoothGattCallback{
     }
 
     public void setDevice(BluetoothDevice Sensor){
-        if (Sensor == null)  {
+        this.Sensor = Sensor;
+        if (this.Sensor == null)  {
             Backend.setBackendMessage(Backend.getResources().getString(R.string.heartbeat_sensor_found));
-            Backend.HeartBeatStateChanged(SharedConstants.DisconnectedHeartBeat);
+            Backend.storeModeHeartBeat(SharedConstants.DisconnectedHeartBeat);
             return;
         }
-        this.Sensor = Sensor;
+        Backend.storeModeHeartBeat(SharedConstants.ConnectedHeartBeat);
         DataProvider = this.Sensor.connectGatt(Backend,false, this);
     }
 
@@ -44,10 +45,10 @@ public class HeartBeatProvider extends BluetoothGattCallback{
     public void onConnectionStateChange(BluetoothGatt GATT_Server, int status, int newState) {
         if (newState == BluetoothProfile.STATE_CONNECTED) {
             DataProvider.discoverServices();
-            Backend.HeartBeatStateChanged(SharedConstants.ConnectedHeartBeat);
+            Backend.storeModeHeartBeat(SharedConstants.ConnectedHeartBeat);
         }
         if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-            Backend.HeartBeatStateChanged(SharedConstants.DisconnectedHeartBeat);
+            Backend.storeModeHeartBeat(SharedConstants.DisconnectedHeartBeat);
         }
     }
 
