@@ -17,7 +17,7 @@ public class Docking extends Activity implements EventsProcessGPS {
 
     private Handler EventTrigger = new Handler();
     private Runnable task = new Runnable() { public void run() { loadStatus();} };
-    private int EventsDelay = 1000;
+    private int EventsDelay = 2000;
 
     private ControlSwitch SleepLocker = null;
     private ControlSwitch BatterySaver = null;
@@ -27,6 +27,8 @@ public class Docking extends Activity implements EventsProcessGPS {
 
     private Monitor LeftMonitor = null;
     private Monitor RightMonitor = null;
+
+    private MapManager MapView = null;
 
     private PointF ViewCenter;
     private RectF searchZone = new RectF();
@@ -45,7 +47,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         BackendService = (DataManager) getApplication();
         BackendService.setUpdateCallback(this);
 
-        MapManager MapView = (MapManager)  findViewById(R.id.map_manager);
+        MapView = (MapManager)  findViewById(R.id.map_manager);
         MapView.setBackend(BackendService);
 
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
@@ -104,24 +106,27 @@ public class Docking extends Activity implements EventsProcessGPS {
     protected void onPause() {
         super.onPause();
         BackendService.setActivityMode(SharedConstants.SwitchBackground);
-        Toast.makeText(Docking.this, "Switching GPS recording to background...", Toast.LENGTH_SHORT).show();
+        if (BackendService.getModeGPS() == SharedConstants.LiveGPS) {
+            Toast.makeText(this,getResources().getString(R.string.GPS_record_background), Toast.LENGTH_SHORT).show();
+        }
+        if (BackendService.getModeGPS() == SharedConstants.ReplayedGPS) {
+            Toast.makeText(this,getResources().getString(R.string.GPS_replay_background), Toast.LENGTH_SHORT).show();
+        }
+
+        // Remove all registered Timeout triggers
+        EventTrigger.removeCallbacks(task);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(Docking.this, "Restoring display...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getResources().getString(R.string.restore_display), Toast.LENGTH_SHORT).show();
         BackPressedCount = 0;
         BackendService = (DataManager) DataManager.getBackend();
         BackendService.setActivityMode(SharedConstants.SwitchForeground);
 
         // Refresh all button internal state
         loadStatus();
-
-        // Force a refreshed display
-        GeoData LastGPS = BackendService.getLastUpdate();
-        if (null == LastGPS) return;
-        processLocationChanged(LastGPS);
     }
 
     public void onStatusChanged(short Status) {
@@ -180,25 +185,37 @@ public class Docking extends Activity implements EventsProcessGPS {
             System.exit(0);
             super.onBackPressed();
         }
-        else { Toast.makeText(Docking.this, getResources().getString(R.string.message_back_key_pressed), Toast.LENGTH_SHORT).show(); }
+        else { Toast.makeText(this, getResources().getString(R.string.message_back_key_pressed), Toast.LENGTH_SHORT).show(); }
     }
 
     private void loadStatus() {
         if (BackendService == null) return;
         // Checking for a pending message
         String ToastMessage = BackendService.getBackendMessage();
-        if (!ToastMessage.isEmpty()) Toast.makeText(Docking.this, ToastMessage, Toast.LENGTH_SHORT).show();
+        if (!ToastMessage.isEmpty()) Toast.makeText(this, ToastMessage, Toast.LENGTH_SHORT).show();
 
+        // updating Buttons status
         HeartBeatSensor.setMode(BackendService.getModeHeartBeat());
         GPSProvider.setMode(BackendService.getModeGPS());
         LightEnhancer.setMode(BackendService.getModeLight());
         BatterySaver.setMode(BackendService.getModeBattery());
         SleepLocker.setMode(BackendService.getModeSleep());
+
+        // Force a refreshed display
+        GeoData LastGPS = BackendService.getLastUpdate();
+        if (null == LastGPS) return;
+        // Refreshing Statistics
+        processLocationChanged(LastGPS);
+        // Refreshing Map Display
+        MapView.processLocationChanged(LastGPS);
     }
 
     @Override
     public void processLocationChanged(GeoData geoInfo){
         if (BackendService == null) return;
+
+        // Remove all registered Timeout triggers
+        EventTrigger.removeCallbacks(task);
 
         // Setting collection area
         PointF SizeSelection = BackendService.getExtractStatisticsSize();
@@ -228,5 +245,8 @@ public class Docking extends Activity implements EventsProcessGPS {
             Speeds.add(new Statistic(item.getHeartbeat(),item.getElapsedDays()));
         }
         RightMonitor.updateStatistics(HeartBeats);
+
+        // Registering Timeout triggers
+        EventTrigger.postDelayed(task,EventsDelay);
     }
 }

@@ -1,4 +1,7 @@
 <resources>
     <string name="message_back_key_pressed">Appuyer 2 fois pour quitter !</string>
     <string name="heartbeat_sensor_found">Capteur cardiaque connecté.</string>
+    <string name="GPS_replay_background">Simulation GPS en tâche de fond...</string>
+    <string name="GPS_record_background">Enregistrement GPSen tâche de fond...</string>
+    <string name="restore_display">Mise à jour de l'affichage</string>
 </resources>
