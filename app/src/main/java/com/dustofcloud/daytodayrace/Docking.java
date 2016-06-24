@@ -1,7 +1,6 @@
 package com.dustofcloud.daytodayrace;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PointF;
 import android.graphics.RectF;
@@ -84,7 +83,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
         LeftMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
-        LeftMonitor.setRuleSettings(10,5,1f,0f,80f); // One Label  every 1 km/h
+        LeftMonitor.setRuleSettings(17,5,1f,0f,80f); // One Label  every 1 km/h
         LeftMonitor.setUnit("km/h");
         LeftMonitor.setVisibility(View.INVISIBLE);
 
@@ -169,7 +168,7 @@ public class Docking extends Activity implements EventsProcessGPS {
             BatterySaver.setMode(Status);
         }
         if (Status == SharedConstants.ConnectedHeartBeat) {
-            BackendService.storeModeHeartBeat(Status);
+            BackendService.storeModeHeartBeat(SharedConstants.SearchHeartBeat);
             EventTrigger.postDelayed(task, BluetoothConstants.SCAN_TIMEOUT + EventsDelay);
         }
         if (Status == SharedConstants.DisconnectedHeartBeat) {

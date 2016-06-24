@@ -92,7 +92,7 @@ public class DataManager extends Application implements LocationListener {
     public short getModeHeartBeat() {return ModeHeartBeat;}
     public void storeModeHeartBeat(short mode) {
         ModeHeartBeat = mode;
-        if (ModeHeartBeat == SharedConstants.ConnectedHeartBeat) HearBeatService.searchSensor();
+        if (ModeHeartBeat == SharedConstants.SearchHeartBeat) HearBeatService.searchSensor();
     }
 
     // Managing sleep state for HMI
@@ -142,8 +142,8 @@ public class DataManager extends Application implements LocationListener {
     public ArrayList<GeoData> filter(ArrayList<GeoData> Collected){
         ArrayList<GeoData> Filtered = new ArrayList<GeoData>();
         float SpeedRange = SharedConstants.SpeedMatchingFactor * LastUpdate.getSpeed() * 3.6f;
-        if (SpeedRange < 2) SpeedRange =2;
-        if (SpeedRange >10) SpeedRange =10;
+        if (SpeedRange < 2) SpeedRange = 2;
+        if (SpeedRange >10) SpeedRange = 10;
 
         float Heading = signed(LastUpdate.getBearing());
         float ExtractedHeading;
@@ -171,7 +171,7 @@ public class DataManager extends Application implements LocationListener {
         super.onCreate();
         Backend = this;
 
-        // Starting HeartBeat if HeartBeat Sensor is connected
+        // Starting HeartBeat if HeartBeat Sensor is available
         HearBeatService = new HeartBeatProvider(this);
         HearBeatService.searchSensor();
 
@@ -245,6 +245,9 @@ public class DataManager extends Application implements LocationListener {
 
         // Updating with Last HeartBeat
         update.setHeartbeat(LastHeartBeat);
+
+        if (null == LastUpdate) LastUpdate = update;
+
         if (update.isLive()) {
             SearchableStorage.store(update);
             WriteToFile.writeGeoData(update);
@@ -254,6 +257,7 @@ public class DataManager extends Application implements LocationListener {
             TimeoutGPS.removeCallbacks(task);
             for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(update);}
         }
+        // Avoid processing last Update as record and Live
         LastUpdate = update;
     }
 

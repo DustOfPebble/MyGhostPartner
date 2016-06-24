@@ -16,6 +16,7 @@ public class SharedConstants {
 
     static public final short ConnectedHeartBeat=40;
     static public final short DisconnectedHeartBeat =41;
+    static public final short SearchHeartBeat =42;
 
     static public final short SwitchForeground=100;
     static public final short SwitchBackground=101;
