@@ -195,8 +195,6 @@ public class DataManager extends Application implements LocationListener {
     public void processHeartBeatChanged(int Frequency)  {
         if (ModeGPS == SharedConstants.ReplayedGPS) return;
         LastHeartBeat = Frequency;
-        if (null == LastUpdate) return;
-        LastUpdate.setHeartbeat(Frequency);
     }
 
     private void init(GeoData update) {
@@ -247,20 +245,16 @@ public class DataManager extends Application implements LocationListener {
 
         // Updating with Last HeartBeat
         update.setHeartbeat(LastHeartBeat);
-
-        if (LastUpdate !=null) {
-            if (LastUpdate.isLive()) {
-                SearchableStorage.store(LastUpdate);
-                WriteToFile.writeGeoData(update);
-            }
+        if (update.isLive()) {
+            SearchableStorage.store(update);
+            WriteToFile.writeGeoData(update);
         }
-        LastUpdate = update;
-
         // Loop over registered clients callback ...
         if (ActivityMode == SharedConstants.SwitchForeground) {
             TimeoutGPS.removeCallbacks(task);
             for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(update);}
         }
+        LastUpdate = update;
     }
 
     public void onLoaded(GeoData Loaded) {

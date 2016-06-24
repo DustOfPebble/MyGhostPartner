@@ -49,10 +49,9 @@ public class GeoData {
     public boolean isLive() {return Live;}
     public void setSimulated() { Live= false;}
 
-    public void setHeartbeat(int value) { Heartbeat = (short) value;} // Provisionning function
+    public void setHeartbeat(int value) { Heartbeat = (short) value;}
 
-    public void setElapsedDays(int value) { ElapsedDays = value;} // Provisionning function
-
+    public void setElapsedDays(int value) { ElapsedDays = value;}
     public void setGPS(Location GPS) {
         Longitude = GPS.getLongitude();
         Latitude = GPS.getLatitude();
@@ -71,9 +70,8 @@ public class GeoData {
             GeoJSON.put(AltitudeID, Math.floor(Altitude * 10) / 10); // Cut at 1 digit to save space
             GeoJSON.put(SpeedID, Math.floor(Speed * 10) / 10); // Cut at 1 digit to save space
             GeoJSON.put(BearingID, Math.floor(Bearing * 10) / 10); // Cut at 1 digit to save space
-            if (Heartbeat > -1) GeoJSON.put(HeartbeatID, Heartbeat);
+            if (Heartbeat != -1) GeoJSON.put(HeartbeatID, Heartbeat);
         } catch (Exception JSONBuilder) {}
-//        Log.d("GeoData", "JSon from GeoData =" + GeoJSON.toString());
         return GeoJSON.toString();
     }
 

@@ -241,7 +241,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         LeftMonitor.updateStatistics(Speeds);
 
         // Updating HeartBeats Statistics
-        if (geoInfo.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
+//        if (geoInfo.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
         RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
         HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));

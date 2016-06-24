@@ -254,14 +254,18 @@ public class Monitor extends ImageView {
         float HistoryBeginY = HistoryStrokeWidth/2;
         float HistoryEndY = HistoryBeginY + HistoryStrokeHeight ;
 
+        Log.d("Monitor", "Unit["+Unit+"]->Live:"+LiveValue );
+
         int Opacity;
         float X;
-        for (Statistic Instant: Collected) {
-            Opacity = MaxOpacity -  (((MaxOpacity - MinOpacity) / MaxDays) * Instant.nbDays);
-            if (Instant.nbDays > MaxDays) Opacity = MinOpacity;
+        for (Statistic Stats: Collected) {
+            Opacity = MaxOpacity -  (((MaxOpacity - MinOpacity) / MaxDays) * Stats.nbDays);
+            if (Stats.nbDays > MaxDays) Opacity = MinOpacity;
             HistoryPainter.setAlpha(Opacity);
-            X = (LiveValue - Instant.value) * PhysicToPixels;
+            X = (LiveValue - Stats.value) * PhysicToPixels;
             DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
+
+            Log.d("Monitor", "Unit["+Unit+"]->Stats:"+Stats.value );
         }
 
     }
