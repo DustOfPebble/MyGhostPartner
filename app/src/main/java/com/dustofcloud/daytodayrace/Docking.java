@@ -204,7 +204,11 @@ public class Docking extends Activity implements EventsProcessGPS {
 
         // Force a refreshed display
         GeoData LastGPS = BackendService.getLastUpdate();
-        if (null == LastGPS) return;
+        if (null == LastGPS) {
+            // Registering Timeout triggers
+            EventTrigger.postDelayed(task,EventsDelay);
+            return;
+        }
         // Refreshing Statistics
         processLocationChanged(LastGPS);
         // Refreshing Map Display
