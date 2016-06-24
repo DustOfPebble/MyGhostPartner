@@ -30,7 +30,6 @@ public class Docking extends Activity implements EventsProcessGPS {
 
     private MapManager MapView = null;
 
-    private PointF ViewCenter;
     private RectF searchZone = new RectF();
 
     private ArrayList<Statistic> Speeds;
@@ -219,9 +218,9 @@ public class Docking extends Activity implements EventsProcessGPS {
 
         // Setting collection area
         PointF SizeSelection = BackendService.getExtractStatisticsSize();
-        ViewCenter = geoInfo.getCoordinate();
-        searchZone.set(this.ViewCenter.x - SizeSelection.x / 2, this.ViewCenter.y - SizeSelection.y / 2,
-                       this.ViewCenter.x + SizeSelection.x / 2, this.ViewCenter.y + SizeSelection.y / 2  );
+        PointF ViewCenter = geoInfo.getCoordinate();
+        searchZone.set(ViewCenter.x - SizeSelection.x / 2, ViewCenter.y - SizeSelection.y / 2,
+                       ViewCenter.x + SizeSelection.x / 2, ViewCenter.y + SizeSelection.y / 2  );
 
         // Collecting data from backend
         ArrayList<GeoData> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
