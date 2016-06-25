@@ -186,8 +186,7 @@ public class DataManager extends Application implements LocationListener {
         ReadFromFile = new FileReader(FilesHandler, this);
 
         try{ WriteToFile = new FileWriter(FilesHandler);}
-        catch (Exception ErrorDB) {}
-        if (WriteToFile == null) Log.d("DataManager", "Couldn't create a new DB...");
+        catch (Exception ErrorDB) {Log.d("DataManager", "Couldn't create a new DB...");}
 
         EventsSimulatedGPS = new SimulateGPS(this);
     }
@@ -244,7 +243,7 @@ public class DataManager extends Application implements LocationListener {
         update.setCoordinate(Displacement);
 
         // Updating with Last HeartBeat
-        update.setHeartbeat(LastHeartBeat);
+        if (update.isLive()) update.setHeartbeat(LastHeartBeat);
 
         if (null == LastUpdate) LastUpdate = update;
 
@@ -270,7 +269,7 @@ public class DataManager extends Application implements LocationListener {
     // Managing Toast from Backend ...
     public  void setBackendMessage(String ToastMessage)  { BackendMessage = ToastMessage; }
     public String getBackendMessage()  {
-        String SentMessage = new String(BackendMessage);
+        String SentMessage = BackendMessage;
         BackendMessage = "";
         return SentMessage;
     }

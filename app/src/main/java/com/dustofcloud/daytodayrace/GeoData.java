@@ -71,13 +71,13 @@ public class GeoData {
             GeoJSON.put(SpeedID, Math.floor(Speed * 10) / 10); // Cut at 1 digit to save space
             GeoJSON.put(BearingID, Math.floor(Bearing * 10) / 10); // Cut at 1 digit to save space
             if (Heartbeat != -1) GeoJSON.put(HeartbeatID, Heartbeat);
-        } catch (Exception JSONBuilder) {}
+        } catch (Exception JSONBuilder) { Log.d("GeoData", "ToJSON => Error in JSON construction.");}
         return GeoJSON.toString();
     }
 
      public boolean fromJSON(String GeoString) {
         if (GeoString == null) return false;
-        JSONObject GeoJSON = null;
+        JSONObject GeoJSON;
         try { GeoJSON = new JSONObject(GeoString); } catch (Exception JSONBuilder)
         { Log.d("GeoData", "GeoData from JSon => Failed to parse ["+GeoString+"]"); return false;}
         try {
@@ -91,6 +91,7 @@ public class GeoData {
         catch (Exception Missing) { Log.d("GeoData", "GeoData from JSon => Missing required value"); return false;}
 
         try { Heartbeat = (short) GeoJSON.getInt(HeartbeatID);} catch (Exception Missing) { Heartbeat = -1;}
+//        Log.d("GeoData","reloaded Heartbeat="+Heartbeat);
         return true;
     }
 
