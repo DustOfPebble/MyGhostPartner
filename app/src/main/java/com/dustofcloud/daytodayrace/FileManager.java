@@ -8,12 +8,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.regex.Pattern;
 
 public class FileManager {
-    ArrayList<File> Collection = null;
+    private ArrayList<File> Collection = null;
     private File InUseDB = null;
-    int LastFile = 0;
+    private int LastFileIndex = 0;
 
     public FileManager(Context context) {
         // Check access to Directory storage
@@ -57,29 +56,16 @@ public class FileManager {
     }
 
     public FileInputStream getNextStream() {
-        FileInputStream ReadStream = null;
-        if (LastFile == Collection.size()) return ReadStream;
-        Log.d("FileManager","Selecting data from " + Collection.get(LastFile).getPath());
-        try { ReadStream = new FileInputStream(Collection.get(LastFile)); }
+        if (LastFileIndex == Collection.size()) return null;
+        FileInputStream ReadStream;
+        Log.d("FileManager","Selecting data from " + Collection.get(LastFileIndex).getPath());
+        try { ReadStream = new FileInputStream(Collection.get(LastFileIndex)); }
         catch (Exception StreamError) {
             Log.d("FileManager","Can't open stream "+ InUseDB.getPath()+" for reading...");
             ReadStream = null;
         }
-        LastFile++;
+        LastFileIndex++;
         return ReadStream;
     }
 
-    public FileInputStream getStream(String MatchSearch) {
-        FileInputStream ReadStream = null;
-        for (File FileDB: Collection ) {
-            if (FileDB.getPath().indexOf(MatchSearch) == 0) continue;
-            try { ReadStream = new FileInputStream(FileDB); }
-            catch (Exception StreamError) {
-                Log.d("FileManager","Can't open stream "+ FileDB.getPath()+" for reading...");
-                ReadStream = null;
-            }
-        }
-        if (ReadStream == null) Log.d("FileManager","Couldn't find matching file with" + MatchSearch);
-        return ReadStream;
-    }
 }
