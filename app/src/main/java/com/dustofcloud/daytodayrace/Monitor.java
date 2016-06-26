@@ -251,12 +251,9 @@ public class Monitor extends ImageView {
 
         Log.d("Monitor", "Unit["+Unit+"]->Live:"+LiveValue );
 
-        int Opacity = MinOpacity;
+        HistoryPainter.setAlpha(GraphicsConstants.HistoryOpacity);
         float X;
         for (Statistic Stats: Collected) {
-//            Opacity = MaxOpacity -  (((MaxOpacity - MinOpacity) / MaxDays) * Stats.nbDays);
-//            if (Stats.nbDays > MaxDays) Opacity = MinOpacity;
-            HistoryPainter.setAlpha(Opacity);
             X = (LiveValue - Stats.value) * PhysicToPixels;
             DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
 
