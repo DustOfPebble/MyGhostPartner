@@ -25,19 +25,6 @@ public class MapManager extends ImageView implements EventsProcessGPS {
     private GeoData InUseGeo = null;
     private RectF searchZone = new RectF();
 
-    private static final int MarkerColor = 0xffff5555;
-    private static final int MarkerTransparency = 100;
-    private static final float MarkerLineThickness = 4f;
-
-    private static final int ComputedColor = 0xff55ff99;
-    private static final int ComputedFillTransparency = 80;
-    private static final int ComputedLineTransparency = 120;
-    private static final float ComputedLineThickness = 5f;
-
-    private static final int ExtractedColor = 0xff2ad4ff;
-    private static final int ExtractedFillTransparency = 30;
-    private static final int ExtractedLineTransparency = 70;
-    private static final float ExtractedLineThickness = 5f;
 
 
     public MapManager(Context context, AttributeSet attrs) {
@@ -113,11 +100,11 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         // Do the drawing
         Log.d("MapManager", "Drawing "+ CollectedDisplayed.size()+ " extracted points");
         // Drawing all points from Storage
-        LineMode.setColor(ExtractedColor);
-        LineMode.setAlpha(ExtractedLineTransparency);
-        LineMode.setStrokeWidth(ExtractedLineThickness);
-        FillMode.setColor(ExtractedColor);
-        FillMode.setAlpha(ExtractedFillTransparency);
+        LineMode.setColor(GraphicsConstants.ExtractedColor);
+        LineMode.setAlpha(GraphicsConstants.ExtractedLineTransparency);
+        LineMode.setStrokeWidth(GraphicsConstants.ExtractedLineThickness);
+        FillMode.setColor(GraphicsConstants.ExtractedColor);
+        FillMode.setAlpha(GraphicsConstants.ExtractedFillTransparency);
         for (GeoData Marker : CollectedDisplayed) {
             Coords = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
@@ -132,11 +119,11 @@ public class MapManager extends ImageView implements EventsProcessGPS {
 
         Log.d("MapManager", "Drawing "+ CollectedStatistics.size()+ " computed points");
         // Drawing all points from Storage
-        LineMode.setColor(ComputedColor);
-        LineMode.setAlpha(ComputedLineTransparency);
-        LineMode.setStrokeWidth(ComputedLineThickness);
-        FillMode.setColor(ComputedColor);
-        FillMode.setAlpha(ComputedFillTransparency);
+        LineMode.setColor(GraphicsConstants.FilteredColor);
+        LineMode.setAlpha(GraphicsConstants.FilteredLineTransparency);
+        LineMode.setStrokeWidth(GraphicsConstants.FilteredLineThickness);
+        FillMode.setColor(GraphicsConstants.FilteredColor);
+        FillMode.setAlpha(GraphicsConstants.FilteredFillTransparency);
         for (GeoData Marker : CollectedStatistics) {
             Coords = Marker.getCoordinate();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
@@ -151,15 +138,15 @@ public class MapManager extends ImageView implements EventsProcessGPS {
 
         if (ViewCenter !=null) {
             Log.d("MapManager", "Offset is ["+ ViewCenter.x+","+ ViewCenter.y+"]");
-            LineMode.setColor(MarkerColor);
-            FillMode.setColor(MarkerColor);
-            LineMode.setStrokeWidth(MarkerLineThickness);
+            LineMode.setColor(GraphicsConstants.MarkerColor);
+            FillMode.setColor(GraphicsConstants.MarkerColor);
+            LineMode.setStrokeWidth(GraphicsConstants.MarkerLineThickness);
             Radius = MeterToPixelFactor * InUseGeo.getAccuracy();
             Float MinRadius = (Radius/10 < 10)? 10:Radius/10;
             Pixel.set(GraphicCenter.x,GraphicCenter.y);
             canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
             canvas.drawCircle(Pixel.x, Pixel.y,MinRadius ,FillMode);
-            FillMode.setAlpha(MarkerTransparency);
+            FillMode.setAlpha(GraphicsConstants.MarkerTransparency);
             canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
         }
 

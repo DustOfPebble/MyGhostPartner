@@ -14,11 +14,6 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 public class Monitor extends ImageView {
-    private static final int TextColor = 0xfffffcfc;
-    private static final int HistoryColor = 0xffffe57e;
-    private static final int BorderColor =  0xff84e9f4;
-    private static final int FrameRadius = 8; // Value in "DP"
-    private static final int FrameBorder = 2; // Value in "DP"
 
     private RectF Frame;
     private Paint FramePainter;
@@ -73,12 +68,12 @@ public class Monitor extends ImageView {
 
         LoadedMarker = BitmapFactory.decodeResource(getResources(),R.drawable.arrow);
         HistoryPainter = new Paint();
-        HistoryPainter.setColor(HistoryColor);
+        HistoryPainter.setColor(GraphicsConstants.HistoryColor);
         HistoryPainter.setStrokeCap(Paint.Cap.ROUND);
 
         VuMeterPainter = new Paint();
         VuMeterPainter.setStyle(Paint.Style.FILL);
-        VuMeterPainter.setColor(TextColor);
+        VuMeterPainter.setColor(GraphicsConstants.TextColor);
         VuMeterPainter.setStrokeCap(Paint.Cap.ROUND);
 
         UnitPainter = new Paint(VuMeterPainter);
@@ -89,7 +84,7 @@ public class Monitor extends ImageView {
         Frame = new RectF();
         FramePainter = new Paint();
         FramePainter.setStyle(Paint.Style.STROKE);
-        FramePainter.setColor(BorderColor);
+        FramePainter.setColor(GraphicsConstants.BorderColor);
     }
 
     public void setRuleSettings(int NbTicksDisplayed,  int NbTicksLabel, float TicksStep, float PhysicMin, float PhysicMax) {
@@ -140,7 +135,7 @@ public class Monitor extends ImageView {
         VuMeterOffset = ResizedMarker.getHeight() + Padding;
         VuMeterFontSize = Height/6;
         VuMeterPainter.setTextSize(VuMeterFontSize);
-        VuMeterStrokeWidth = Width/30;
+        VuMeterStrokeWidth = Width/50;
         VuMeterPainter.setStrokeWidth(VuMeterStrokeWidth);
         VuMeterLongTicks = Height/6 - VuMeterStrokeWidth ;
         VuMeterShortTicks = Height/8 - VuMeterStrokeWidth;
@@ -157,10 +152,10 @@ public class Monitor extends ImageView {
 
         // Frame settings
         FramePixelsFactor = this.getResources().getDisplayMetrics().density;
-        float StrokeWidth = FramePixelsFactor*FrameBorder;
+        float StrokeWidth = FramePixelsFactor  *GraphicsConstants.FrameBorder;
         FramePainter.setStrokeWidth(StrokeWidth);
         Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
-        Radius = FrameRadius*FramePixelsFactor;
+        Radius = GraphicsConstants.FrameRadius * FramePixelsFactor;
     }
 
     @Override
@@ -256,11 +251,11 @@ public class Monitor extends ImageView {
 
         Log.d("Monitor", "Unit["+Unit+"]->Live:"+LiveValue );
 
-        int Opacity;
+        int Opacity = MinOpacity;
         float X;
         for (Statistic Stats: Collected) {
-            Opacity = MaxOpacity -  (((MaxOpacity - MinOpacity) / MaxDays) * Stats.nbDays);
-            if (Stats.nbDays > MaxDays) Opacity = MinOpacity;
+//            Opacity = MaxOpacity -  (((MaxOpacity - MinOpacity) / MaxDays) * Stats.nbDays);
+//            if (Stats.nbDays > MaxDays) Opacity = MinOpacity;
             HistoryPainter.setAlpha(Opacity);
             X = (LiveValue - Stats.value) * PhysicToPixels;
             DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);

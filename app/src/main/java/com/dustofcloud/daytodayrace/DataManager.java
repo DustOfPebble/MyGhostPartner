@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class DataManager extends Application implements LocationListener {
     private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
-    private PointF StatisticsSelectionSize = new PointF(10f,10f); // Values in meters
+    private PointF StatisticsSelectionSize = new PointF(20f,20f); // Values in meters
     private PointF DisplayedSelectionSize = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
 
     private Handler TimeoutGPS = new Handler();
@@ -214,6 +214,7 @@ public class DataManager extends Application implements LocationListener {
 
     public void shutdown() {
         if (LoadingFiles!= null) LoadingFiles.interrupt();
+        EventsSimulatedGPS.stop();
         WriteToFile.shutdown();
         TimeoutGPS.removeCallbacks(task);
         SourceGPS.removeUpdates(this);

@@ -83,14 +83,14 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
         LeftMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
-        LeftMonitor.setRuleSettings(17,5,1f,0f,80f); // One Label  every 1 km/h
+        LeftMonitor.setRuleSettings(18,5,1f,0f,80f); // One Label  every 1 km/h
         LeftMonitor.setUnit("km/h");
         LeftMonitor.setVisibility(View.INVISIBLE);
 
         // Hardcoded settings for Heartbeat in right Monitor
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);
         RightMonitor.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb));
-        RightMonitor.setRuleSettings(12,5,1f,20f,220f); // One Label every 5 bpm
+        RightMonitor.setRuleSettings(22,10,1f,20f,220f); // One Label every 5 bpm
         RightMonitor.setUnit("bpm");
         RightMonitor.setVisibility(View.INVISIBLE);
 
@@ -245,8 +245,8 @@ public class Docking extends Activity implements EventsProcessGPS {
         HeartBeats.clear();
         HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));
         for (GeoData item: CollectedStatistics) {
-            if (item.getHeartbeat() == -1) return;
-            Speeds.add(new Statistic(item.getHeartbeat(),item.getElapsedDays()));
+            if (item.getHeartbeat() == -1) continue;
+            HeartBeats.add(new Statistic(item.getHeartbeat(),item.getElapsedDays()));
         }
         RightMonitor.updateStatistics(HeartBeats);
 
