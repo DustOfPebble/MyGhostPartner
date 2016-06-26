@@ -21,14 +21,16 @@ public class SimulateGPS implements Runnable {
     private int EventsDelay = 1000;
     private Thread Loading =null;
     private FileInputStream ReadStream = null;
+    private FileManager SourcesManager;
 
-    public SimulateGPS(DataManager Parent)
+    public SimulateGPS(DataManager Manager, FileManager SourceGPS)
     {
-        Notify = Parent;
+        SourcesManager = SourceGPS;
+        Notify = Manager;
         RecordsCollection = new ArrayList<GeoData>();
 
         // Check access to Directory storage
-        File Directory = Parent.getFilesDir();
+        File Directory = SourcesManager.getDirectory();
         File Files[] =  Directory.listFiles();
         FilesCollection = new ArrayList<File>();
         for (File Item : Files ) {

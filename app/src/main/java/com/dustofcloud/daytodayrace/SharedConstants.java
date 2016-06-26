@@ -2,6 +2,10 @@ package com.dustofcloud.daytodayrace;
 
 
 public class SharedConstants {
+
+    static public final String FilesWorkingSpace = "DailyRace.Files";
+    static public final String FilesSignature = ".DailyDB";
+
     static public final short SleepLocked =10;
     static public final short SleepUnLocked =11;
 
@@ -20,8 +24,6 @@ public class SharedConstants {
 
     static public final short SwitchForeground=100;
     static public final short SwitchBackground=101;
-
-    static public final String FilesSignature = ".DailyDB";
 
     static public final float SpeedMatchingFactor = 0.1f; // 10%
     static public final float BearingMatchingGap = 60f; // 60°

@@ -77,8 +77,11 @@ public class DataManager extends Application implements LocationListener {
             if (!EventsSimulatedGPS.load(1000).isEmpty())   {
                 SourceGPS.removeUpdates(this);
                 TimeoutGPS.removeCallbacks(task);
+                LastUpdate = null;
+                originSet=false; // Re-enter the Init function...
                 EventsSimulatedGPS.sendGPS();
             }
+
         }
         if (ModeGPS == SharedConstants.LiveGPS)  {
             EventsSimulatedGPS.stop();
@@ -175,6 +178,7 @@ public class DataManager extends Application implements LocationListener {
         HearBeatService = new HeartBeatProvider(this);
         HearBeatService.searchSensor();
 
+        // Startup mode is always GPS Live mode
         SourceGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
         SourceGPS.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
@@ -188,7 +192,8 @@ public class DataManager extends Application implements LocationListener {
         try{ WriteToFile = new FileWriter(FilesHandler);}
         catch (Exception ErrorDB) {Log.d("DataManager", "Couldn't create a new DB...");}
 
-        EventsSimulatedGPS = new SimulateGPS(this);
+        // Initialize GPS simulator ...
+        EventsSimulatedGPS = new SimulateGPS(this, FilesHandler);
     }
 
     public void processHeartBeatChanged(int Frequency)  {
@@ -201,6 +206,8 @@ public class DataManager extends Application implements LocationListener {
         originLongitude = update.getLongitude();
         earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
         SearchableStorage = new QuadTree(SearchableZone); // Create QuadTree storage area
+        if (LoadingFiles!= null) LoadingFiles.interrupt();
+        FilesHandler.resetStreams(); // Forcing to reload all files
         LoadingFiles = new Thread(ReadFromFile);
         LoadingFiles.start();
     }
