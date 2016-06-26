@@ -233,21 +233,23 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Updating Speeds Statistics
         LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
-        Speeds.add(new Statistic(geoInfo.getSpeed()*3.6f,geoInfo.getElapsedDays()));
+        if (geoInfo.isLive()) Speeds.add(new Statistic(geoInfo.getSpeed()*3.6f,geoInfo.getElapsedDays()));
         for (GeoData item: CollectedStatistics) {
             Speeds.add(new Statistic(item.getSpeed()*3.6f,item.getElapsedDays()));
         }
+        if (Speeds.isEmpty()) Speeds.add(new Statistic(geoInfo.getSpeed()*3.6f,geoInfo.getElapsedDays()));
         LeftMonitor.updateStatistics(Speeds);
 
         // Updating HeartBeats Statistics
         if (geoInfo.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
         RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
-        HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));
+        if (geoInfo.isLive()) HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));
         for (GeoData item: CollectedStatistics) {
             if (item.getHeartbeat() == -1) continue;
             HeartBeats.add(new Statistic(item.getHeartbeat(),item.getElapsedDays()));
         }
+        if (HeartBeats.isEmpty()) HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));
         RightMonitor.updateStatistics(HeartBeats);
 
         // Registering Timeout triggers
