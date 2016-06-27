@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class Monitor extends ImageView {
@@ -20,7 +21,7 @@ public class Monitor extends ImageView {
     private float FramePixelsFactor;
     private float Radius;
 
-    private ArrayList<Statistic> Collected;
+    private ArrayList<Float> Collected;
 
     private Bitmap LoadedMarker;
     private Bitmap ResizedMarker;
@@ -53,9 +54,6 @@ public class Monitor extends ImageView {
 
     private Paint HistoryPainter;
     private float HistoryStrokeWidth;
-    private int MaxOpacity = 256;
-    private int MinOpacity = 90;
-    private int MaxDays = 5;
     private Bitmap HistoryStats;
 
     float HistoryOffset;
@@ -87,10 +85,10 @@ public class Monitor extends ImageView {
         FramePainter.setColor(GraphicsConstants.BorderColor);
     }
 
-    public void setRuleSettings(int NbTicksDisplayed,  int NbTicksLabel, float TicksStep, float PhysicMin, float PhysicMax) {
-        this.NbTicksDisplayed = NbTicksDisplayed;
-        this.NbTicksLabel = NbTicksLabel;
-        this.TicksStep = TicksStep;
+    public void setNbTicksDisplayed(int NbTicksDisplayed) { this.NbTicksDisplayed = NbTicksDisplayed; }
+    public void setNbTicksLabel(int NbTicksLabel) { this.NbTicksLabel = NbTicksLabel; }
+    public void setTicksStep(float TicksStep) { this.TicksStep = TicksStep; }
+    public void setPhysicRange(float PhysicMin, float PhysicMax) {
         this.PhysicMax = PhysicMax;
         this.PhysicMin = PhysicMin;
     }
@@ -98,9 +96,9 @@ public class Monitor extends ImageView {
     public void setUnit(String Unit) { this.Unit = Unit; }
     public void setIcon(Bitmap ProvidedIcon) { this.LoadedIcon = ProvidedIcon; }
 
-    public  void updateStatistics(ArrayList<Statistic> values) {
+    public  void updateStatistics(ArrayList<Float> values) {
         Collected = values;
-        LiveValue = Collected.get(0).value;
+        LiveValue = Collected.get(0);
 
         long StartRender = SystemClock.elapsedRealtime();
 
@@ -253,11 +251,11 @@ public class Monitor extends ImageView {
 
         HistoryPainter.setAlpha(GraphicsConstants.HistoryOpacity);
         float X;
-        for (Statistic Stats: Collected) {
-            X = (LiveValue - Stats.value) * PhysicToPixels;
+        for (Float Stats: Collected) {
+            X = (LiveValue - Stats) * PhysicToPixels;
             DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
 
-            Log.d("Monitor", "Unit["+Unit+"]->Stats:"+Stats.value );
+            Log.d("Monitor", "Unit["+Unit+"]->Stats:"+Stats );
         }
 
     }

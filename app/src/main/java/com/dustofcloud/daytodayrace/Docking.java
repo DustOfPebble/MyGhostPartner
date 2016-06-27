@@ -31,8 +31,8 @@ public class Docking extends Activity implements EventsProcessGPS {
 
     private RectF searchZone = new RectF();
 
-    private ArrayList<Statistic> Speeds;
-    private ArrayList<Statistic> HeartBeats;
+    private ArrayList<Float> Speeds;
+    private ArrayList<Float> HeartBeats;
 
     private int BackPressedCount = 0;
     private DataManager BackendService;
@@ -83,19 +83,25 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
         LeftMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
-        LeftMonitor.setRuleSettings(18,5,1f,0f,80f); // One Label  every 1 km/h
+        LeftMonitor.setNbTicksDisplayed(18);
+        LeftMonitor.setNbTicksLabel(5);
+        LeftMonitor.setTicksStep(1f);
+        LeftMonitor.setPhysicRange(0f,80f);
         LeftMonitor.setUnit("km/h");
         LeftMonitor.setVisibility(View.INVISIBLE);
 
         // Hardcoded settings for Heartbeat in right Monitor
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);
         RightMonitor.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb));
-        RightMonitor.setRuleSettings(22,10,1f,20f,220f); // One Label every 5 bpm
+        RightMonitor.setNbTicksDisplayed(22);
+        RightMonitor.setNbTicksLabel(10);
+        RightMonitor.setTicksStep(1f);
+        RightMonitor.setPhysicRange(20f,220f);
         RightMonitor.setUnit("bpm");
         RightMonitor.setVisibility(View.INVISIBLE);
 
-        Speeds = new ArrayList<Statistic>();
-        HeartBeats = new ArrayList<Statistic>();
+        Speeds = new ArrayList<Float>();
+        HeartBeats = new ArrayList<Float>();
 
         EventTrigger=new Handler();
         // Registering Timeout triggers
@@ -232,27 +238,27 @@ public class Docking extends Activity implements EventsProcessGPS {
 
         // Registering Timeout triggers
         EventTrigger.postDelayed(task,EventsDelay);
-        
+
         // Updating Speeds Statistics
         LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
-        if (geoInfo.isLive()) Speeds.add(new Statistic(geoInfo.getSpeed()*3.6f,geoInfo.getElapsedDays()));
+        if (geoInfo.isLive()) Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
         for (GeoData item: CollectedStatistics) {
-            Speeds.add(new Statistic(item.getSpeed()*3.6f,item.getElapsedDays()));
+            Speeds.add(Float.valueOf(item.getSpeed()*3.6f));
         }
-        if (Speeds.isEmpty()) Speeds.add(new Statistic(geoInfo.getSpeed()*3.6f,geoInfo.getElapsedDays()));
+        if (Speeds.isEmpty()) Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
         LeftMonitor.updateStatistics(Speeds);
 
         // Updating HeartBeats Statistics
         if (geoInfo.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
         RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
-        if (geoInfo.isLive()) HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));
+        if (geoInfo.isLive()) HeartBeats.add(Float.valueOf(geoInfo.getHeartbeat()));
         for (GeoData item: CollectedStatistics) {
             if (item.getHeartbeat() == -1) continue;
-            HeartBeats.add(new Statistic(item.getHeartbeat(),item.getElapsedDays()));
+            HeartBeats.add(Float.valueOf(item.getHeartbeat()));
         }
-        if (HeartBeats.isEmpty()) HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));
+        if (HeartBeats.isEmpty()) HeartBeats.add(Float.valueOf(geoInfo.getHeartbeat()));
         RightMonitor.updateStatistics(HeartBeats);
     }
 }
