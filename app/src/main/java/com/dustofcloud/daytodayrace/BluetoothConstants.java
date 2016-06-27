@@ -1,6 +1,11 @@
 package com.dustofcloud.daytodayrace;
 
+import android.os.Build;
+
 public class BluetoothConstants {
+
+    // Bluetooth Low Energy Enabled
+    public static final boolean LowEnergy =(android.os.Build.VERSION.SDK_INT >=  Build.VERSION_CODES.JELLY_BEAN_MR2);
 
     // Searching Timeout
     public static int SCAN_TIMEOUT = 10000; // 60 seconds

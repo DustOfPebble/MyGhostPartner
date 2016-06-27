@@ -1,5 +1,6 @@
 package com.dustofcloud.daytodayrace;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
@@ -9,7 +10,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 
 import java.util.UUID;
-
+@SuppressLint("NewApi")
 public class HeartBeatProvider extends BluetoothGattCallback{
 
     private DataManager Backend;

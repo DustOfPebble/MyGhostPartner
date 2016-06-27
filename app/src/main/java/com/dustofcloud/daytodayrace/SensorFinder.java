@@ -1,12 +1,13 @@
 package com.dustofcloud.daytodayrace;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.os.Handler;
 import android.util.Log;
 import java.util.Arrays;
 
-
+@SuppressLint("NewApi")
 public class SensorFinder implements BluetoothAdapter.LeScanCallback, Runnable {
 
     private BluetoothAdapter Bluetooth;

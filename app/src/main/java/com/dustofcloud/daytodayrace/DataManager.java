@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -95,6 +96,7 @@ public class DataManager extends Application implements LocationListener {
     public short getModeHeartBeat() {return ModeHeartBeat;}
     public void storeModeHeartBeat(short mode) {
         ModeHeartBeat = mode;
+        if (!BluetoothConstants.LowEnergy) return;
         if (ModeHeartBeat == SharedConstants.SearchHeartBeat) HearBeatService.searchSensor();
     }
 
@@ -175,8 +177,10 @@ public class DataManager extends Application implements LocationListener {
         Backend = this;
 
         // Starting HeartBeat if HeartBeat Sensor is available
-        HearBeatService = new HeartBeatProvider(this);
-        HearBeatService.searchSensor();
+        if (BluetoothConstants.LowEnergy) {
+            HearBeatService = new HeartBeatProvider(this);
+            HearBeatService.searchSensor();
+        }
 
         // Startup mode is always GPS Live mode
         SourceGPS = (LocationManager) getSystemService(LOCATION_SERVICE);

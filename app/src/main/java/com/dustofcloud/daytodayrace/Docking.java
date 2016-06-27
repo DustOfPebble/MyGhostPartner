@@ -230,6 +230,9 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Collecting data from backend
         ArrayList<GeoData> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
 
+        // Registering Timeout triggers
+        EventTrigger.postDelayed(task,EventsDelay);
+        
         // Updating Speeds Statistics
         LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
@@ -251,8 +254,5 @@ public class Docking extends Activity implements EventsProcessGPS {
         }
         if (HeartBeats.isEmpty()) HeartBeats.add(new Statistic(geoInfo.getHeartbeat(),geoInfo.getElapsedDays()));
         RightMonitor.updateStatistics(HeartBeats);
-
-        // Registering Timeout triggers
-        EventTrigger.postDelayed(task,EventsDelay);
     }
 }
