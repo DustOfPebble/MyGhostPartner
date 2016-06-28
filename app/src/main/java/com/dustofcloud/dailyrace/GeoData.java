@@ -1,17 +1,10 @@
-package com.dustofcloud.daytodayrace;
+package com.dustofcloud.dailyrace;
 
 import android.graphics.PointF;
 import android.location.Location;
-import android.util.JsonReader;
-import android.util.JsonWriter;
 import android.util.Log;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.Random;
 
 public class GeoData {
     private PointF Cartesian;

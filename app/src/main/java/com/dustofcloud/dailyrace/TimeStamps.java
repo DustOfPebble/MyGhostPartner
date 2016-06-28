@@ -1,6 +1,5 @@
-package com.dustofcloud.daytodayrace;
+package com.dustofcloud.dailyrace;
 
-import android.provider.CalendarContract;
 import android.util.Log;
 
 import org.json.JSONObject;

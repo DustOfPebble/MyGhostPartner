@@ -1,4 +1,4 @@
-package com.dustofcloud.daytodayrace;
+package com.dustofcloud.dailyrace;
 
 public class GraphicsConstants {
 

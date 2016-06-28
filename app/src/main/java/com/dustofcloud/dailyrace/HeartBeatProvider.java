@@ -1,4 +1,4 @@
-package com.dustofcloud.daytodayrace;
+package com.dustofcloud.dailyrace;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;

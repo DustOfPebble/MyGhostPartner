@@ -1,4 +1,4 @@
-package com.dustofcloud.daytodayrace;
+package com.dustofcloud.dailyrace;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,7 +11,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 
 public class Monitor extends ImageView {

@@ -1,4 +1,4 @@
-package com.dustofcloud.daytodayrace;
+package com.dustofcloud.dailyrace;
 
 import android.app.Application;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.graphics.RectF;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;

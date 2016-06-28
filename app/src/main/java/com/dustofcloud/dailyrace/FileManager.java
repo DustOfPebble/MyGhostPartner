@@ -1,4 +1,4 @@
-package com.dustofcloud.daytodayrace;
+package com.dustofcloud.dailyrace;
 
 import android.content.Context;
 import android.os.Environment;
@@ -9,7 +9,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.PriorityQueue;
 
 public class FileManager {
     private ArrayList<File> Collection = null;

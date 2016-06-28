@@ -1,4 +1,4 @@
-package com.dustofcloud.daytodayrace;
+package com.dustofcloud.dailyrace;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
