@@ -56,7 +56,7 @@ public class Monitor extends ImageView {
     private Bitmap HistoryStats;
 
     float HistoryOffset;
-    float HistoryStrokeHeight;
+    float HistoryHeight;
     float Padding;
 
     public Monitor(Context context, AttributeSet attrs) {
@@ -138,10 +138,9 @@ public class Monitor extends ImageView {
         VuMeterShortTicks = Height/8 - VuMeterStrokeWidth;
 
         HistoryStrokeWidth = Width/20;
-        HistoryStrokeHeight = Height/4 - HistoryStrokeWidth;
-        HistoryOffset = Height - (HistoryStrokeHeight + Padding);
+        HistoryHeight = Height/4;
+        HistoryOffset = Height - (HistoryHeight + Padding);
         HistoryPainter.setStrokeWidth(HistoryStrokeWidth);
-        HistoryOffset = Height - Padding - HistoryStrokeWidth - HistoryStrokeHeight;
 
         // Loading for VuMeter display
         DisplayedRange = (NbTicksDisplayed - 1) * TicksStep;
@@ -240,22 +239,37 @@ public class Monitor extends ImageView {
     }
 
     private void buildHistory()  {
-        HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryStrokeHeight + HistoryStrokeWidth), Bitmap.Config.ARGB_8888);
+        HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryHeight), Bitmap.Config.ARGB_8888);
         Canvas DrawHistoryStats = new Canvas(HistoryStats);
-        DrawHistoryStats.translate(HistoryStats.getWidth() / 2, 0f);
-        float HistoryBeginY = HistoryStrokeWidth/2;
-        float HistoryEndY = HistoryBeginY + HistoryStrokeHeight ;
 
-        Log.d("Monitor", "Unit["+Unit+"]->Live:"+LiveValue );
+//        Log.d("Monitor", "Unit["+Unit+"]->Live:"+LiveValue );
+        int[] Classes = new int[NbTicksDisplayed];
+        int MaxClasse = 0;
+        int ClasseIndex;
+        int IndexMax= NbTicksDisplayed /2;
 
-        HistoryPainter.setAlpha(GraphicsConstants.HistoryOpacity);
-        float X;
         for (Float Stats: Collected) {
-            X = (LiveValue - Stats) * PhysicToPixels;
-            DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
-
-            Log.d("Monitor", "Unit["+Unit+"]->Stats:"+Stats );
+            ClasseIndex = (int)((Stats - LiveValue)/ TicksStep)+IndexMax;
+            if (ClasseIndex < 0) continue;
+            if (ClasseIndex >= NbTicksDisplayed) continue;
+            Classes[ClasseIndex]++;
+            if (Classes[ClasseIndex] > MaxClasse) MaxClasse = Classes[ClasseIndex];
+ //           Log.d("Monitor", "Unit["+Unit+"]->Stats:"+Stats+" Classe["+ClasseIndex+"]="+Classes[ClasseIndex]);
         }
+
+        float X = HistoryStrokeWidth/2;
+        float HistoryBeginY;
+        if (MaxClasse ==0) MaxClasse=1;
+        float Factor =  (HistoryHeight - HistoryStrokeWidth) /MaxClasse;
+        float HistoryEndY = HistoryHeight - HistoryStrokeWidth/2;
+        float TicksGraphic = DrawHistoryStats.getWidth() / NbTicksDisplayed;
+
+        for (int Index=0; Index < NbTicksDisplayed; Index++) {
+            HistoryBeginY = HistoryEndY - (Factor * Classes[Index]);
+            DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
+            X += TicksGraphic;
+        }
+
 
     }
 
