@@ -137,9 +137,10 @@ public class Monitor extends ImageView {
         VuMeterLongTicks = Height/6 - VuMeterStrokeWidth ;
         VuMeterShortTicks = Height/8 - VuMeterStrokeWidth;
 
-        HistoryStrokeWidth = Width/20;
         HistoryHeight = Height/4;
         HistoryOffset = Height - (HistoryHeight + Padding);
+        if (NbTicksDisplayed == 0) NbTicksDisplayed = 1;
+        HistoryStrokeWidth = Width/NbTicksDisplayed;
         HistoryPainter.setStrokeWidth(HistoryStrokeWidth);
 
         // Loading for VuMeter display
