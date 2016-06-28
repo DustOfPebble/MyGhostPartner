@@ -1,4 +1,4 @@
-package com.dustofcloud.dailyrace;
+package com.dustcloud.dailyrace;
 
 import android.content.Context;
 import android.graphics.Bitmap;
