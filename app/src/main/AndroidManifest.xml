@@ -19,7 +19,7 @@
             android:name="com.dustcloud.dailyrace.Docking"
             android:label="@string/title_activity_docking"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:theme="@android:style/Theme.NoTitleBar"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

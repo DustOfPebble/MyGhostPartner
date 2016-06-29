@@ -71,6 +71,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@+id/gps_provider"
         android:background="@drawable/switch_frame"
+        android:visibility="invisible"
         app:HighMode="@drawable/heartbeat_connected"
         app:LowMode="@drawable/heartbeat_disconnected"
         />

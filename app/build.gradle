@@ -4,7 +4,7 @@ android {
     compileSdkVersion 19
     buildToolsVersion '21.1.2'
     defaultConfig {
-        applicationId "com.dustofcloud.daytodayrace"
+        applicationId 'com.dustcloud.dailyrace'
         minSdkVersion 14
         targetSdkVersion 14
         versionCode 1

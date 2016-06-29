@@ -74,10 +74,13 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider.registerManager(this);
         GPSProvider.setMode(BackendService.getModeGPS());
 
-        HeartBeatSensor = (ControlSwitch) findViewById(R.id.heartbeat_provider);
-        HeartBeatSensor.registerModes(SharedConstants.ConnectedHeartBeat, SharedConstants.DisconnectedHeartBeat);
-        HeartBeatSensor.registerManager(this);
-        HeartBeatSensor.setMode(BackendService.getModeHeartBeat());
+        if (BluetoothConstants.isLowEnergy) {
+            HeartBeatSensor = (ControlSwitch) findViewById(R.id.heartbeat_provider);
+            HeartBeatSensor.registerModes(SharedConstants.ConnectedHeartBeat, SharedConstants.DisconnectedHeartBeat);
+            HeartBeatSensor.registerManager(this);
+            HeartBeatSensor.setMode(BackendService.getModeHeartBeat());
+            HeartBeatSensor.setVisibility(View.VISIBLE);
+        }
 
 
         // Hardcoded settings for Speed in left Monitor
