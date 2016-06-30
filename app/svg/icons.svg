@@ -7,16 +7,41 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="210mm"
    height="297mm"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="icons.svg">
   <defs
      id="defs4">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4278">
+      <stop
+         style="stop-color:#00b916;stop-opacity:1"
+         offset="0"
+         id="stop4280" />
+      <stop
+         style="stop-color:#005a13;stop-opacity:1"
+         offset="1"
+         id="stop4282" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient4270">
+      <stop
+         style="stop-color:#4785ff;stop-opacity:1"
+         offset="0"
+         id="stop4272" />
+      <stop
+         style="stop-color:#bad9ff;stop-opacity:1"
+         offset="1"
+         id="stop4274" />
+    </linearGradient>
     <marker
        inkscape:stockid="Arrow1Send"
        orient="auto"
@@ -106,6 +131,26 @@
          offset="1"
          id="stop3800" />
     </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4270"
+       id="linearGradient4276"
+       x1="335.9501"
+       y1="621.33185"
+       x2="333.83722"
+       y2="756.55707"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.71826211,-19.42254,146.149)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4278"
+       id="linearGradient4284"
+       x1="380.32089"
+       y1="753.38776"
+       x2="402.50626"
+       y2="998.48346"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1,0,0,0.85674992,-16.121142,39.386964)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -114,16 +159,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.709207"
-     inkscape:cx="244.35674"
-     inkscape:cy="917.57363"
+     inkscape:zoom="0.94656911"
+     inkscape:cx="402.1562"
+     inkscape:cy="271.19453"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1036"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-width="1280"
+     inkscape:window-height="657"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      showguides="false" />
   <metadata
@@ -134,7 +179,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -142,6 +187,47 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#780000;stroke-width:1;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4373"
+       width="623.42981"
+       height="304.40939"
+       x="72.988342"
+       y="593.71863"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+       inkscape:export-xdpi="147.33333"
+       inkscape:export-ydpi="147.33333" />
+    <rect
+       ry="0"
+       y="593.18701"
+       x="72.488342"
+       height="97.127129"
+       width="624.36011"
+       id="rect4268"
+       style="opacity:1;fill:url(#linearGradient4276);fill-opacity:1;stroke:none;stroke-width:7.19999981;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+       inkscape:export-xdpi="147.33333"
+       inkscape:export-ydpi="147.33333" />
+    <rect
+       style="opacity:1;fill:url(#linearGradient4284);fill-opacity:1;stroke:none;stroke-width:7.19999981;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4264"
+       width="624.36011"
+       height="209.9857"
+       x="72.620399"
+       y="688.47229"
+       ry="0"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+       inkscape:export-xdpi="147.33333"
+       inkscape:export-ydpi="147.33333" />
+    <path
+       style="fill:#fdde82;fill-opacity:1;fill-rule:evenodd;stroke:#ffe596;stroke-width:0.89366049px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 71.906945,756.89593 c 0,0 99.708265,-2.67831 113.955195,13.09625 14.24696,15.77451 -14.95003,57.80972 6.29796,71.39668 25.20558,16.11763 380.22668,8.27632 403.03336,-15.42498 17.32791,-18.00762 -6.67584,-54.02164 9.47748,-66.74492 16.15333,-12.72325 90.73664,-10.77175 90.73664,-10.77175 l 0,7.60385 c 0,0 -58.70028,-1.68207 -71.7395,8.44873 -13.03923,10.1308 42.45825,52.91098 4.21998,93.78081 -38.23828,40.86982 -449.52751,42.72602 -478.96665,6.75897 -29.43915,-35.96706 34.21696,-63.35039 13.71344,-85.54366 -20.50351,-22.19326 -90.727905,-16.68589 -90.727905,-16.68589 z"
+       id="path4286"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="czsszcczzzzcc"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+       inkscape:export-xdpi="147.33333"
+       inkscape:export-ydpi="147.33333" />
     <path
        transform="matrix(1.0431002,0,0,1.0241347,-94.511665,-114.35703)"
        d="m 191.92898,219.49141 a 27.274118,27.779196 0 1 1 -54.54824,0 27.274118,27.779196 0 1 1 54.54824,0 z"
@@ -150,7 +236,7 @@
        sodipodi:cy="219.49141"
        sodipodi:cx="164.65486"
        id="path3769"
-       style="fill:none;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;fill-opacity:1"
+       style="fill:#000000;stroke:none;stroke-width:3;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;fill-opacity:1"
        sodipodi:type="arc"
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\sleep_unlocked.png"
        inkscape:export-xdpi="90"
@@ -295,7 +381,7 @@
        inkscape:export-xdpi="90"
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\sleep_locked.png"
        sodipodi:type="arc"
-       style="fill:none;fill-opacity:1;stroke:none"
+       style="fill:#000000;fill-opacity:1;stroke:none"
        id="path3993"
        sodipodi:cx="164.65486"
        sodipodi:cy="219.49141"
@@ -327,7 +413,7 @@
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\light_max.png"
-       style="fill:none;fill-opacity:1;stroke:none"
+       style="fill:#000000;fill-opacity:1;stroke:none"
        id="path3999"
        transform="matrix(1.0431002,0,0,1.0241347,-95.648087,-48.104492)"
        d="m 191.92898,219.49141 a 27.274118,27.779196 0 1 1 -54.54824,0 27.274118,27.779196 0 1 1 54.54824,0 z"
@@ -467,7 +553,7 @@
        inkscape:export-ydpi="90" />
     <circle
        id="path4203"
-       style="fill:none;fill-opacity:1;stroke:none"
+       style="fill:#000000;fill-opacity:1;stroke:none"
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\light_low.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
@@ -563,7 +649,7 @@
     </g>
     <circle
        id="circle4294"
-       style="fill:none;fill-opacity:1;stroke:none"
+       style="fill:#000000;fill-opacity:1;stroke:none"
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_drain.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
@@ -608,7 +694,7 @@
        inkscape:export-ydpi="93.322876"
        inkscape:export-xdpi="93.322876"
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_save.png"
-       style="fill:none;fill-opacity:1;stroke:none"
+       style="fill:#000000;fill-opacity:1;stroke:none"
        id="circle4322" />
     <rect
        inkscape:export-ydpi="93.322876"
@@ -643,7 +729,7 @@
        inkscape:export-ydpi="93.322876" />
     <circle
        id="circle4020"
-       style="fill:none;fill-opacity:1;stroke:none"
+       style="fill:#000000;fill-opacity:1;stroke:none"
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_live.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
@@ -706,7 +792,7 @@
        inkscape:export-ydpi="90"
        inkscape:export-xdpi="90"
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_replay.png"
-       style="fill:none;fill-opacity:1;stroke:none"
+       style="fill:#000000;fill-opacity:1;stroke:none"
        id="circle4034" />
     <g
        id="g4281"
@@ -724,8 +810,7 @@
          cx="148.39285"
          cy="315.93362"
          rx="2.8571429"
-         ry="3.0357141"
-         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z" />
+         ry="3.0357141" />
       <ellipse
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -736,8 +821,7 @@
          cx="148.39285"
          cy="315.93362"
          rx="2.8571429"
-         ry="3.0357141"
-         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z" />
+         ry="3.0357141" />
       <path
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -812,8 +896,7 @@
          sodipodi:cx="482.62875"
          sodipodi:cy="100.38033"
          sodipodi:rx="9.5899982"
-         sodipodi:ry="9.3565474"
-         d="m 492.21875,100.38033 c 0,5.16748 -4.29359,9.35655 -9.59,9.35655 -5.29641,0 -9.58999,-4.18907 -9.58999,-9.35655 0,-5.167475 4.29358,-9.356544 9.58999,-9.356544 5.29641,0 9.59,4.189069 9.59,9.356544 z" />
+         sodipodi:ry="9.3565474" />
       <ellipse
          transform="translate(1.4778465,-12.284991)"
          ry="9.3565474"
@@ -825,8 +908,7 @@
          sodipodi:cx="515.55762"
          sodipodi:cy="100.05581"
          sodipodi:rx="9.5899982"
-         sodipodi:ry="9.3565474"
-         d="m 525.14762,100.05581 c 0,5.16748 -4.29359,9.35655 -9.59,9.35655 -5.29641,0 -9.59,-4.18907 -9.59,-9.35655 0,-5.167479 4.29359,-9.356548 9.59,-9.356548 5.29641,0 9.59,4.189069 9.59,9.356548 z" />
+         sodipodi:ry="9.3565474" />
       <ellipse
          transform="translate(1.4778465,-12.284991)"
          ry="4.8909216"
@@ -838,8 +920,7 @@
          sodipodi:cx="504.88214"
          sodipodi:cy="73.151237"
          sodipodi:rx="5.0129528"
-         sodipodi:ry="4.8909216"
-         d="m 509.89509,73.151237 c 0,2.701182 -2.24437,4.890922 -5.01295,4.890922 -2.76858,0 -5.01295,-2.18974 -5.01295,-4.890922 0,-2.701181 2.24437,-4.890921 5.01295,-4.890921 2.76858,0 5.01295,2.18974 5.01295,4.890921 z" />
+         sodipodi:ry="4.8909216" />
       <path
          sodipodi:nodetypes="cccc"
          inkscape:connector-curvature="0"
@@ -873,22 +954,13 @@
        inkscape:export-xdpi="153.10001"
        inkscape:export-ydpi="153.10001" />
     <circle
-       id="circle4233"
-       style="fill:none;fill-opacity:1;stroke:none"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_save.png"
-       inkscape:export-xdpi="93.322876"
-       inkscape:export-ydpi="93.322876"
-       cx="153.88518"
-       cy="249.41527"
-       r="28.449638" />
-    <circle
        r="28.449638"
        cy="395.77319"
        cx="73.423637"
        inkscape:export-ydpi="162"
        inkscape:export-xdpi="162"
        inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/heartbeat_connected.png"
-       style="fill:none;fill-opacity:1;stroke:none"
+       style="fill:#000000;fill-opacity:1;stroke:none"
        id="circle4235" />
     <path
        style="fill:none;stroke:#ffffff;stroke-width:6.60024786;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
@@ -910,7 +982,7 @@
        style="fill:#daf8fc;stroke:#ffffff;stroke-width:4.80637025999999956;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1" />
     <circle
        id="circle4247"
-       style="fill:none;fill-opacity:1;stroke:none"
+       style="fill:#000000;fill-opacity:1;stroke:none"
        inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/heartbeat_disconnected.png"
        inkscape:export-xdpi="162"
        inkscape:export-ydpi="162"
@@ -926,5 +998,346 @@
        inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/heartbeat_disconnected.png"
        inkscape:export-xdpi="162"
        inkscape:export-ydpi="162" />
+    <g
+       id="g4309"
+       transform="matrix(0.6906846,0,0,0.6906846,121.41565,208.33994)"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+       inkscape:export-xdpi="147.33333"
+       inkscape:export-ydpi="147.33333">
+      <ellipse
+         transform="matrix(0.86061406,0.50925773,-0.50925773,0.86061406,0,0)"
+         ry="55.991684"
+         rx="44.898994"
+         cy="612.02728"
+         cx="721.00275"
+         id="path4241"
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#a8a8a8;stroke-width:16.70000076;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <ellipse
+         style="opacity:1;fill:none;fill-opacity:1;stroke:#a8a8a8;stroke-width:16.70000076;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse4243"
+         cx="865.56445"
+         cy="526.48468"
+         rx="44.898994"
+         ry="55.991684"
+         transform="matrix(0.86061406,0.50925773,-0.50925773,0.86061406,0,0)" />
+      <path
+         sodipodi:nodetypes="zczz"
+         inkscape:connector-curvature="0"
+         id="path4250"
+         d="m 457.25246,755.66659 c -4.62699,-28.58786 -27.88254,-7.41647 -27.88254,-7.41647 0,0 -19.15992,-9.54462 -17.9319,14.68462 1.22801,24.22922 50.44142,21.31971 45.81444,-7.26815 z"
+         style="fill:#d2d2d2;fill-opacity:1;fill-rule:evenodd;stroke:#d2d2d2;stroke-width:4.89375067;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="sccs"
+         inkscape:connector-curvature="0"
+         id="path4247"
+         d="m 400.4633,760.63384 c -1.48802,-27.11148 53.62038,-42.77155 63.93904,-13.52718 -10.39957,9.43524 -30.27827,10.76145 -37.83384,11.73634 1.39607,8.24482 -24.86742,24.3432 -26.1052,1.79084 z"
+         style="fill:#d2d2d2;fill-opacity:1;fill-rule:evenodd;stroke:#a5a5a5;stroke-width:5.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         transform="matrix(0.61250458,-0.79046704,0.8087241,0.58818818,0,0)"
+         ry="6.0564632"
+         y="806.01117"
+         x="-463.42154"
+         height="12.112926"
+         width="72.812675"
+         id="rect4252"
+         style="opacity:1;fill:#d2d2d2;fill-opacity:1;stroke:#d2d2d2;stroke-width:5.50127172;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         inkscape:transform-center-x="3.1693407"
+         style="opacity:1;fill:#d2d2d2;fill-opacity:1;stroke:#d2d2d2;stroke-width:9.47265053;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect4254"
+         width="62.023777"
+         height="7.8362532"
+         x="-762.75476"
+         y="435.16763"
+         ry="3.9181268"
+         transform="matrix(-0.83429957,-0.55131137,-0.39109573,0.92035,0,0)" />
+      <rect
+         transform="matrix(-0.8818307,-0.47156613,-0.56655147,0.82402635,0,0)"
+         ry="4.7279224"
+         y="564.58173"
+         x="-842.27399"
+         height="9.4558439"
+         width="55.524349"
+         id="rect4256"
+         style="opacity:1;fill:#d2d2d2;fill-opacity:1;stroke:#d2d2d2;stroke-width:7.22235823;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <rect
+         style="opacity:1;fill:#d2d2d2;fill-opacity:1;stroke:#d2d2d2;stroke-width:6.20071936;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect4258"
+         width="47.736759"
+         height="7.3477221"
+         x="675.97864"
+         y="-698.24915"
+         ry="3.673861"
+         transform="matrix(-0.34889179,0.93716302,-0.9444618,-0.32862121,0,0)" />
+      <rect
+         inkscape:transform-center-y="-18.018912"
+         inkscape:transform-center-x="-7.4017731"
+         style="opacity:1;fill:#d2d2d2;fill-opacity:1;stroke:#d2d2d2;stroke-width:6.52018452;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect4260"
+         width="55.524349"
+         height="9.4558439"
+         x="-901.28485"
+         y="-276.54169"
+         ry="4.7279224"
+         transform="matrix(-0.12130901,-0.99261479,-0.99994634,0.01035944,0,0)" />
+      <rect
+         inkscape:transform-center-y="-10.331442"
+         inkscape:transform-center-x="-1.7802762"
+         transform="matrix(-0.6692683,0.74302082,-0.91869694,-0.3949632,0,0)"
+         ry="3.5037799"
+         y="-930.5755"
+         x="701.57776"
+         height="7.0075598"
+         width="41.792919"
+         id="rect4262"
+         style="opacity:1;fill:#d2d2d2;fill-opacity:1;stroke:#d2d2d2;stroke-width:7.32495213;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <path
+       style="fill:#ffbcb3;fill-opacity:1;fill-rule:evenodd;stroke:#ff7157;stroke-width:1.2325238px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 130.52244,620.98926 c -50.650416,-0.22904 -6.27906,40.08575 -0.60742,68.86133 5.9663,-29.32663 51.25783,-68.63228 0.60742,-68.86133 z m -0.14062,10.47852 a 8.7774944,7.2834525 0 0 1 8.77734,7.2832 8.7774944,7.2834525 0 0 1 -8.77734,7.2832 8.7774944,7.2834525 0 0 1 -8.77735,-7.2832 8.7774944,7.2834525 0 0 1 8.77735,-7.2832 z"
+       id="path4288"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+       inkscape:export-xdpi="147.33333"
+       inkscape:export-ydpi="147.33333" />
+    <g
+       id="g4303"
+       transform="matrix(0.5752302,0,0,0.5752302,34.143821,288.45048)"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+       inkscape:export-xdpi="147.33333"
+       inkscape:export-ydpi="147.33333">
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path4301"
+         d="m 208.41879,705.43514 10.45829,39.90153 -73.20803,-1.49404 19.42254,-38.84508 z"
+         style="fill:#a24113;fill-opacity:1;fill-rule:evenodd;stroke:#923100;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path4297"
+         d="m 192.46725,738.45488 10.3938,-29.45572 9.07406,36.17502 -3.51631,54.32149 -20.91659,2.98809"
+         style="fill:#cdcdcd;fill-opacity:1;fill-rule:evenodd;stroke:#a0a0a0;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path4295"
+         d="m 192.36629,738.63614 -4.52744,63.71945 -75.78573,-3.60693 4.48212,-62.00273 z"
+         style="fill:#cdcdcd;fill-opacity:1;fill-rule:evenodd;stroke:#878787;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4299"
+         d="m 111.30609,736.37242 84.41335,2.24106 12.69935,-33.61593 -82.9193,0 z"
+         style="fill:#c8744c;fill-opacity:1;fill-rule:evenodd;stroke:#ad6e18;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+    <path
+       inkscape:connector-curvature="0"
+       id="path4321"
+       d="m 645.49019,604.31493 c -40.65604,-0.18384 -5.04007,32.176 -0.48756,55.27356 4.78902,-23.53987 41.14359,-55.0897 0.48756,-55.27356 z m -0.11287,8.41089 a 7.0455122,5.8462758 0 0 1 7.04539,5.84608 7.0455122,5.8462758 0 0 1 -7.04539,5.84607 7.0455122,5.8462758 0 0 1 -7.0454,-5.84607 7.0455122,5.8462758 0 0 1 7.0454,-5.84608 z"
+       style="fill:#ffbcb3;fill-opacity:1;fill-rule:evenodd;stroke:#ff7157;stroke-width:0.98932123px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+       inkscape:export-xdpi="147.33333"
+       inkscape:export-ydpi="147.33333" />
+    <g
+       id="g4377"
+       transform="translate(-3.4334524,7.65924)"
+       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+       inkscape:export-xdpi="147.33333"
+       inkscape:export-ydpi="147.33333">
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path4325"
+         d="m 626.75091,655.03982 -11.95353,8.9353 1.12064,73.34384 13.07417,3.72305"
+         style="fill:#85c9cf;fill-opacity:1;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89859015;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path4323"
+         d="m 679.04187,654.94716 -51.91794,0 1.49404,85.90739 53.03848,-5.22915 z"
+         style="fill:#85c9cf;fill-opacity:1;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89999998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:connector-curvature="0"
+         id="path4327"
+         d="m 636.8352,655.32067 c 1.49404,84.03984 1.49404,84.03984 1.49404,84.03984"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89999998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89770436;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 648.78637,654.94598 c 1.49636,83.48193 1.49636,83.48193 1.49636,83.48193"
+         id="path4331"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:connector-curvature="0"
+         id="path4333"
+         d="m 660.3659,654.99303 c 1.49494,82.18994 1.49494,82.18994 1.49494,82.18994"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89999998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89412743;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 670.82128,655.16067 c 1.50076,81.05958 1.50076,81.05958 1.50076,81.05958"
+         id="path4335"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:connector-curvature="0"
+         id="path4337"
+         d="m 622.64032,658.0282 c 1.497,81.59294 1.497,81.59294 1.497,81.59294"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89804143;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.8951025;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 619.27648,660.70351 c 1.5015,77.90321 1.5015,77.90321 1.5015,77.90321"
+         id="path4339"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:connector-curvature="0"
+         id="path4341"
+         d="m 616.66142,662.75907 c 1.50248,74.91813 1.50248,74.91813 1.50248,74.91813"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89575088;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89448285;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 678.96445,663.73154 c -51.6244,0.7708 -51.6244,0.7708 -51.6244,0.7708"
+         id="path4343"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:connector-curvature="0"
+         id="path4345"
+         d="m 679.39097,675.88211 c -51.78513,0.76794 -51.78513,0.76794 -51.78513,0.76794"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89748561;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89999998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 679.98348,685.38665 c -52.63531,1.30312 -52.63531,1.30312 -52.63531,1.30312"
+         id="path4347"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:connector-curvature="0"
+         id="path4349"
+         d="m 680.2493,695.29469 c -52.76413,1.82364 -52.76413,1.82364 -52.76413,1.82364"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89560568;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:connector-curvature="0"
+         id="path4353"
+         d="m 680.51826,704.8046 c -53.02192,2.34808 -53.02192,2.34808 -53.02192,2.34808"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89737582;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89999998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 681.01562,715.22327 c -53.37901,2.63968 -53.37901,2.63968 -53.37901,2.63968"
+         id="path4355"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:connector-curvature="0"
+         id="path4357"
+         d="m 681.52754,725.6235 c -53.34641,3.23226 -53.34641,3.23226 -53.34641,3.23226"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89999998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89999998;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 628.58137,728.83948 C 615.6276,725.9039 615.6276,725.9039 615.6276,725.9039"
+         id="path4359"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:transform-center-y="1.7402259"
+         inkscape:transform-center-x="-0.12392473"
+         inkscape:connector-curvature="0"
+         id="path4361"
+         d="m 628.09473,717.90283 c -12.46067,-1.66298 -12.46067,-1.66298 -12.46067,-1.66298"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.87779582;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.88961875;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="M 628.04632,707.16667 C 615.325,706.60735 615.325,706.60735 615.325,706.60735"
+         id="path4363"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:connector-curvature="0"
+         id="path4365"
+         d="m 628.08667,696.89935 c -12.63131,-0.0651 -12.63131,-0.0651 -12.63131,-0.0651"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89746481;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:transform-center-y="-1.8172158"
+         inkscape:transform-center-x="0.43685967"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.89179564;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 627.39577,686.56327 c -12.16754,2.20207 -12.16754,2.20207 -12.16754,2.20207"
+         id="path4367"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:transform-center-y="-1.858629"
+         inkscape:transform-center-x="0.1219428"
+         inkscape:connector-curvature="0"
+         id="path4369"
+         d="m 627.05588,676.5831 c -11.81294,3.59174 -11.81294,3.59174 -11.81294,3.59174"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.88512391;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <path
+         inkscape:export-ydpi="147.24007"
+         inkscape:export-xdpi="147.24007"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DailyRace\app\svg\Store.Resources\Decor.png"
+         inkscape:transform-center-y="-1.848782"
+         inkscape:transform-center-x="-0.1320555"
+         style="fill:none;fill-rule:evenodd;stroke:#006d76;stroke-width:0.90000004;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 626.73426,664.65417 c -11.68191,6.32066 -11.68191,6.32066 -11.68191,6.32066"
+         id="path4371"
+         inkscape:connector-curvature="0" />
+    </g>
   </g>
 </svg>
