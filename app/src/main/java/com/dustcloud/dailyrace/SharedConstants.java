@@ -5,6 +5,7 @@ public class SharedConstants {
 
     static public final String FilesWorkingSpace = "DailyRace.Files";
     static public final String FilesSignature = ".DailyDB";
+    static public final int NbMaxLoadedPoints = 100000; //
 
     static public final short SleepLocked =10;
     static public final short SleepUnLocked =11;
