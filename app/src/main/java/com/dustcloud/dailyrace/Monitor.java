@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+//ToDo: Add Animation on the value rule ...
 public class Monitor extends ImageView {
 
     private RectF Frame;

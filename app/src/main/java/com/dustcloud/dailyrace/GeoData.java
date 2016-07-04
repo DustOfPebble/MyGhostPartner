@@ -5,7 +5,7 @@ import android.location.Location;
 import android.util.Log;
 
 import org.json.JSONObject;
-
+//TODO : Find a new name for GeoData Class
 public class GeoData {
     private PointF Cartesian;
 
