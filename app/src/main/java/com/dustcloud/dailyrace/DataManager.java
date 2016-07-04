@@ -19,7 +19,7 @@ public class DataManager extends Application implements LocationListener {
     private PointF DisplayedSelectionSize = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
 
     private Handler TimeoutGPS = new Handler();
-    private Runnable task = new Runnable() { public void run() { queryGPG();} };
+    private Runnable task = new Runnable() { public void run() { queryGPS();} };
     private int TimoutDelay = 2000;
 
     private GeoData LastUpdate;
@@ -225,7 +225,7 @@ public class DataManager extends Application implements LocationListener {
         System.exit(0);
     }
 
-    private void queryGPG() {
+    private void queryGPS() {
         Location LastKnownGPS = SourceGPS.getLastKnownLocation(LOCATION_SERVICE);
         if (LastKnownGPS == null) return;
         GeoData LastGPS = new GeoData();
