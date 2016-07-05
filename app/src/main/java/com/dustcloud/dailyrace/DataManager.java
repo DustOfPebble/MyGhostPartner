@@ -12,15 +12,17 @@ import android.os.Handler;
 import android.util.Log;
 
 import java.util.ArrayList;
+//ToDo: Reload DB periodically with a smaller SearchableZone to reduce memory footprint
+//ToDo: Limits numbers of loaded points to NbFiles/NbPoints
 
 public class DataManager extends Application implements LocationListener {
     private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
     private PointF StatisticsSelectionSize = new PointF(20f,20f); // Values in meters
-    private PointF DisplayedSelectionSize = new PointF(200f,200f); // Values in meters (subject to change vs  speed)
+    private PointF DisplayedSelectionSize = new PointF(200f,200f); // Values in meters
 
     private Handler TimeoutGPS = new Handler();
     private Runnable task = new Runnable() { public void run() { queryGPS();} };
-    private int TimoutDelay = 2000;
+    private int TimeoutDelayGPS = 2000;
 
     private GeoData LastUpdate;
     private int LastHeartBeat = -1;
@@ -87,7 +89,7 @@ public class DataManager extends Application implements LocationListener {
             EventsSimulatedGPS.stop();
             SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                     MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES,this );
-            TimeoutGPS.postDelayed(task,TimoutDelay);
+            TimeoutGPS.postDelayed(task, TimeoutDelayGPS);
         }
     }
 
@@ -115,7 +117,7 @@ public class DataManager extends Application implements LocationListener {
     public void setActivityMode(int mode) {
         ActivityMode = mode;
         if (ActivityMode == SharedConstants.SwitchBackground) TimeoutGPS.removeCallbacks(task);
-        if (ActivityMode == SharedConstants.SwitchForeground) TimeoutGPS.postDelayed(task,TimoutDelay);
+        if (ActivityMode == SharedConstants.SwitchForeground) TimeoutGPS.postDelayed(task, TimeoutDelayGPS);
     }
 
     // Called from activity to retrieved last position on WakeUp
