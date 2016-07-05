@@ -12,6 +12,8 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+//ToDo: Use animation on Map rotation before moving MAP
+//ToDo: add a scrolling feature 
 public class MapManager extends ImageView implements EventsProcessGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure

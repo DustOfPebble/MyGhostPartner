@@ -11,7 +11,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
+// ToDo: inflate XML Widget from explicit call instead of embedding into Activity XML
 public class Docking extends Activity implements EventsProcessGPS {
 
     private Handler EventTrigger = new Handler();
