@@ -24,7 +24,7 @@ public class DataManager extends Application implements LocationListener {
     private Runnable task = new Runnable() { public void run() { queryGPS();} };
     private int TimeoutDelayGPS = 2000;
 
-    private SurveyLoader LastUpdate;
+    private SurveyLoader SurveyGPS;
     private int LastHeartBeat = -1;
 
     private int ActivityMode = SharedConstants.SwitchForeground;
@@ -79,7 +79,7 @@ public class DataManager extends Application implements LocationListener {
             if (!EventsSimulatedGPS.load(1000).isEmpty())   {
                 SourceGPS.removeUpdates(this);
                 TimeoutGPS.removeCallbacks(task);
-                LastUpdate = null;
+                SurveyGPS = null;
                 originSet=false; // Re-enter the Init function...
                 EventsSimulatedGPS.simulate();
             }
@@ -105,7 +105,7 @@ public class DataManager extends Application implements LocationListener {
     public short getModeSleep() {return ModeScreen;}
     public void storeModeSleep(short mode) {ModeScreen = mode;}
 
-    // Managing backlight intensity for screen --> Not implemented
+    // Managing back light intensity for screen --> Not implemented
     public short getModeLight() {return ModeLight;}
     public void storeModeLight(short mode) {ModeLight = mode;}
 
@@ -121,7 +121,7 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Called from activity to retrieved last position on WakeUp
-    public SurveyLoader getLastUpdate(){ return LastUpdate; }
+    public LiveSurvey getLastUpdate(){ return SurveyGPS.getSnapshot(); }
 
     // Return Application in order to setup callback from client
     static public Context getBackend(){
@@ -139,18 +139,18 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Return all Point from a geographic area (in cartesian/meters)
-    public ArrayList<SurveyLoader> extract(RectF searchZone){ return SearchableStorage.search(searchZone); }
+    public ArrayList<LiveSurvey> extract(RectF searchZone){ return SearchableStorage.search(searchZone); }
 
     // Convert angle from [0,360°] to [-180°,180°]
     private float signed(float Angle) { return  ((Angle > 180)? (180 - Angle) : Angle); }
 
     // Filter and return Point that match a Bearing Range
-    public ArrayList<SurveyLoader> filter(ArrayList<SurveyLoader> Collected){
-        ArrayList<SurveyLoader> Filtered = new ArrayList<SurveyLoader>();
+    public ArrayList<LiveSurvey> filter(ArrayList<LiveSurvey> Collected){
+        ArrayList<LiveSurvey> Filtered = new ArrayList<LiveSurvey>();
 
-        float Heading = signed(LastUpdate.getBearing());
+        float Heading = signed(SurveyGPS.getBearing());
         float ExtractedHeading;
-        for (SurveyLoader Extracted : Collected) {
+        for (LiveSurvey Extracted : Collected) {
             ExtractedHeading = signed(Extracted.getBearing());
             if (Math.abs(ExtractedHeading - Heading) > SharedConstants.BearingMatchingGap) continue;
             Filtered.add(Extracted);
@@ -172,6 +172,7 @@ public class DataManager extends Application implements LocationListener {
     {
         super.onCreate();
         Backend = this;
+        SurveyGPS = new SurveyLoader();
 
         // Starting HeartBeat if HeartBeat Sensor is available
         if (BluetoothConstants.isLowEnergy) {
@@ -226,48 +227,42 @@ public class DataManager extends Application implements LocationListener {
     private void queryGPS() {
         Location LastKnownGPS = SourceGPS.getLastKnownLocation(LOCATION_SERVICE);
         if (LastKnownGPS == null) return;
-        SurveyLoader LastGPS = new SurveyLoader();
-        LastGPS.setGPS(LastKnownGPS);
-        LastGPS.setSimulated();
-        processLocationChanged(LastGPS);
+        SurveyGPS.setLive(false);
+        SurveyGPS.setGPS(LastKnownGPS);
+        processLocationChanged();
     }
 
     @Override
-    public void onLocationChanged(Location update) {
-        if (update == null) return;
-        SurveyLoader geoInfo = new SurveyLoader();
-        geoInfo.setGPS(update);
-        processLocationChanged(geoInfo);
+    public void onLocationChanged(Location LastKnownGPS) {
+        if (LastKnownGPS == null) return;
+        SurveyGPS.setLive(true);
+        SurveyGPS.setGPS(LastKnownGPS);
+        processLocationChanged();
     }
 
-    public void processLocationChanged(SurveyLoader update) {
-        if (update == null) return;
+    public void processLocationChanged() {
 
-        Log.d("DataManager", "GPS [" + update.getLongitude() + "°E," + update.getLatitude() + "°N]");
+        Log.d("DataManager", "GPS [" + SurveyGPS.getLongitude() + "°E," + SurveyGPS.getLatitude() + "°N]");
 
-        if ( !originSet ) { init(update); originSet = true; }
+        if ( !originSet ) { init(SurveyGPS); originSet = true; }
 
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
-        PointF Displacement = new PointF(dX(update.getLongitude()),dY(update.getLatitude()));
-        LiveSurvey Sample = update.getSnapshot();
+        PointF Displacement = new PointF(dX(SurveyGPS.getLongitude()),dY(SurveyGPS.getLatitude()));
+        LiveSurvey Sample = SurveyGPS.getSnapshot();
         Sample.setCoordinate(Displacement);
 
         // Updating with Last HeartBeat
-        if (update.isLive()) update.setHeartbeat((short)LastHeartBeat);
+        if (SurveyGPS.isLive()) SurveyGPS.setHeartbeat((short)LastHeartBeat);
 
-        if (null == LastUpdate) LastUpdate = update;
-
-        if (update.isLive()) {
+        if (SurveyGPS.isLive()) {
             SearchableStorage.store(Sample);
-            WriteToFile.writeSurvey(update);
+            WriteToFile.writeSurvey(SurveyGPS);
         }
         // Loop over registered clients callback ...
         if (ActivityMode == SharedConstants.SwitchForeground) {
             TimeoutGPS.removeCallbacks(task);
-            for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(update);}
+            for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(Sample);}
         }
-        // Avoid processing last Update as record and Live
-        LastUpdate = update;
     }
 
     public void onLoaded(SurveyLoader Loaded) {

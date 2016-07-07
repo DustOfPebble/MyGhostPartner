@@ -13,6 +13,7 @@ public class SurveyLoader {
     private float Bearing = 0.0f;
     private short Heartbeat = -1;
 
+    private boolean Live = true; // by default data are Live values
     private int ElapsedDays = 0;
 
     public SurveyLoader() { }
@@ -34,6 +35,10 @@ public class SurveyLoader {
     public void setBearing(float value) {Bearing = value;}
     public void setHeartbeat(short value) { Heartbeat = value;}
     public void setElapsedDays(int value) { ElapsedDays = value;}
+
+    public boolean isLive() {return Live;}
+    public void setLive(boolean mode) { Live = mode;}
+
 
     public void setGPS(Location GPS) {
         Longitude = GPS.getLongitude();

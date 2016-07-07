@@ -16,7 +16,6 @@ public class LiveSurvey {
     private short Heartbeat = -1;
 
     private int ElapsedDays = 0;
-    private boolean Live = true; // by default data are Live values
 
     public LiveSurvey() { }
 
@@ -37,9 +36,6 @@ public class LiveSurvey {
 
     public int getElapsedDays() {return ElapsedDays;}
     public void setElapsedDays(int value) { ElapsedDays = value;}
-
-    public boolean isLive() {return Live;}
-    public void setSimulated() { Live = false;}
 
     public PointF getCoordinate() {return Cartesian;}
     public void setCoordinate(PointF Coordinate) { Cartesian = Coordinate;}
