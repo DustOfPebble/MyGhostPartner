@@ -8,13 +8,13 @@ public class QuadTree {
     private boolean isStorage=false;
     private PointF SubZone = null;
     private RectF Zone = null;
-    private ArrayList<GeoData> Storage = null;
+    private ArrayList<LiveSurvey> Storage = null;
     private QuadTree TopLeft = null;
     private QuadTree TopRight = null;
     private QuadTree BottomLeft = null;
     private QuadTree BottomRight = null;
     private PointF SizeCell = new PointF(2f,2f); // (2m x 2m) minimum size
-    private  ArrayList<GeoData> Collected = new ArrayList<GeoData>();
+    private  ArrayList<LiveSurvey> Collected = new ArrayList<LiveSurvey>();
 
 
     public QuadTree(RectF zone) {
@@ -25,11 +25,11 @@ public class QuadTree {
             isStorage = false;
         } else {
             isStorage = true;
-            Storage = new ArrayList<GeoData>();
+            Storage = new ArrayList<LiveSurvey>();
         }
     }
 
-    public ArrayList<GeoData> search(RectF SearchArea) {
+    public ArrayList<LiveSurvey> search(RectF SearchArea) {
         if (isStorage) { return Storage; }
 
         Collected.clear();
@@ -47,11 +47,11 @@ public class QuadTree {
         return Collected;
     }
 
-    public void store(GeoData geoData) {
+    public void store(LiveSurvey Survey) {
         // Should we store this new point ?
-        PointF Cartesian = geoData.getCoordinate();
+        PointF Cartesian = Survey.getCoordinate();
         if (isStorage) {
-            Storage.add(geoData);
+            Storage.add(Survey);
 //            Log.d("QuadTree","Stored cartesian["+ Cartesian.x+","+Cartesian.y+"]");
             return;
         }
@@ -76,7 +76,7 @@ public class QuadTree {
                         );
             }
 //            Log.d("QuadTree","TopLeft ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
-            TopLeft.store(geoData);
+            TopLeft.store(Survey);
         }
 
         if ((Cartesian.x> Zone.centerX()) && (Cartesian.y< Zone.centerY())) {
@@ -89,7 +89,7 @@ public class QuadTree {
                             );
             }
 //            Log.d("QuadTree","TopRight ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
-            TopRight.store(geoData);
+            TopRight.store(Survey);
         }
 
         if ((Cartesian.x< Zone.centerX()) && (Cartesian.y > Zone.centerY())) {
@@ -102,7 +102,7 @@ public class QuadTree {
                             );
             }
 //            Log.d("QuadTree","BottomLeft ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
-            BottomLeft.store(geoData);
+            BottomLeft.store(Survey);
         }
 
         if ((Cartesian.x> Zone.centerX()) && (Cartesian.y > Zone.centerY())) {
@@ -115,7 +115,7 @@ public class QuadTree {
                             );
             }
 //            Log.d("QuadTree","BottomRight ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
-            BottomRight.store(geoData);
+            BottomRight.store(Survey);
         }
     }
 

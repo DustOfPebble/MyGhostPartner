@@ -24,7 +24,7 @@ public class DataManager extends Application implements LocationListener {
     private Runnable task = new Runnable() { public void run() { queryGPS();} };
     private int TimeoutDelayGPS = 2000;
 
-    private GeoData LastUpdate;
+    private SurveyLoader LastUpdate;
     private int LastHeartBeat = -1;
 
     private int ActivityMode = SharedConstants.SwitchForeground;
@@ -81,7 +81,7 @@ public class DataManager extends Application implements LocationListener {
                 TimeoutGPS.removeCallbacks(task);
                 LastUpdate = null;
                 originSet=false; // Re-enter the Init function...
-                EventsSimulatedGPS.sendGPS();
+                EventsSimulatedGPS.simulate();
             }
 
         }
@@ -121,7 +121,7 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Called from activity to retrieved last position on WakeUp
-    public GeoData getLastUpdate(){ return LastUpdate; }
+    public SurveyLoader getLastUpdate(){ return LastUpdate; }
 
     // Return Application in order to setup callback from client
     static public Context getBackend(){
@@ -139,22 +139,18 @@ public class DataManager extends Application implements LocationListener {
     }
 
     // Return all Point from a geographic area (in cartesian/meters)
-    public ArrayList<GeoData> extract(RectF searchZone){ return SearchableStorage.search(searchZone); }
+    public ArrayList<SurveyLoader> extract(RectF searchZone){ return SearchableStorage.search(searchZone); }
 
     // Convert angle from [0,360°] to [-180°,180°]
     private float signed(float Angle) { return  ((Angle > 180)? (180 - Angle) : Angle); }
 
-    // Filter and return Point that match a Speed Range and Bearing Range --> Not Used
-    public ArrayList<GeoData> filter(ArrayList<GeoData> Collected){
-        ArrayList<GeoData> Filtered = new ArrayList<GeoData>();
-        float SpeedRange = SharedConstants.SpeedMatchingFactor * LastUpdate.getSpeed() * 3.6f;
-        if (SpeedRange < 2) SpeedRange = 2;
-        if (SpeedRange >10) SpeedRange = 10;
+    // Filter and return Point that match a Bearing Range
+    public ArrayList<SurveyLoader> filter(ArrayList<SurveyLoader> Collected){
+        ArrayList<SurveyLoader> Filtered = new ArrayList<SurveyLoader>();
 
         float Heading = signed(LastUpdate.getBearing());
         float ExtractedHeading;
-        for (GeoData Extracted : Collected) {
-            if (Math.abs(Extracted.getSpeed() - LastUpdate.getSpeed()) > SpeedRange) continue;
+        for (SurveyLoader Extracted : Collected) {
             ExtractedHeading = signed(Extracted.getBearing());
             if (Math.abs(ExtractedHeading - Heading) > SharedConstants.BearingMatchingGap) continue;
             Filtered.add(Extracted);
@@ -206,7 +202,7 @@ public class DataManager extends Application implements LocationListener {
         LastHeartBeat = Frequency;
     }
 
-    private void init(GeoData update) {
+    private void init(SurveyLoader update) {
         originLatitude = update.getLatitude();
         originLongitude = update.getLongitude();
         earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
@@ -230,7 +226,7 @@ public class DataManager extends Application implements LocationListener {
     private void queryGPS() {
         Location LastKnownGPS = SourceGPS.getLastKnownLocation(LOCATION_SERVICE);
         if (LastKnownGPS == null) return;
-        GeoData LastGPS = new GeoData();
+        SurveyLoader LastGPS = new SurveyLoader();
         LastGPS.setGPS(LastKnownGPS);
         LastGPS.setSimulated();
         processLocationChanged(LastGPS);
@@ -239,12 +235,12 @@ public class DataManager extends Application implements LocationListener {
     @Override
     public void onLocationChanged(Location update) {
         if (update == null) return;
-        GeoData geoInfo = new GeoData();
+        SurveyLoader geoInfo = new SurveyLoader();
         geoInfo.setGPS(update);
         processLocationChanged(geoInfo);
     }
 
-    public void processLocationChanged(GeoData update) {
+    public void processLocationChanged(SurveyLoader update) {
         if (update == null) return;
 
         Log.d("DataManager", "GPS [" + update.getLongitude() + "°E," + update.getLatitude() + "°N]");
@@ -252,17 +248,18 @@ public class DataManager extends Application implements LocationListener {
         if ( !originSet ) { init(update); originSet = true; }
 
         // Converting Longitude & Latitude to 2D cartesian distance from an origin
-        PointF Displacement =new PointF(dX(update.getLongitude()),dY(update.getLatitude()));
-        update.setCoordinate(Displacement);
+        PointF Displacement = new PointF(dX(update.getLongitude()),dY(update.getLatitude()));
+        LiveSurvey Sample = update.getSnapshot();
+        Sample.setCoordinate(Displacement);
 
         // Updating with Last HeartBeat
-        if (update.isLive()) update.setHeartbeat(LastHeartBeat);
+        if (update.isLive()) update.setHeartbeat((short)LastHeartBeat);
 
         if (null == LastUpdate) LastUpdate = update;
 
         if (update.isLive()) {
-            SearchableStorage.store(update);
-            WriteToFile.writeGeoData(update);
+            SearchableStorage.store(Sample);
+            WriteToFile.writeSurvey(update);
         }
         // Loop over registered clients callback ...
         if (ActivityMode == SharedConstants.SwitchForeground) {
@@ -273,10 +270,11 @@ public class DataManager extends Application implements LocationListener {
         LastUpdate = update;
     }
 
-    public void onLoaded(GeoData Loaded) {
+    public void onLoaded(SurveyLoader Loaded) {
         if (Loaded == null) return;
-        Loaded.setCoordinate(new PointF(dX(Loaded.getLongitude()),dY(Loaded.getLatitude())));
-        SearchableStorage.store(Loaded);
+        LiveSurvey Sample = Loaded.getSnapshot();
+        Sample.setCoordinate(new PointF(dX(Loaded.getLongitude()),dY(Loaded.getLatitude())));
+        SearchableStorage.store(Sample);
     }
 
     // Managing Toast from Backend ...

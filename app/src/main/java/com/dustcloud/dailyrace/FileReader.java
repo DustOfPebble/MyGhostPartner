@@ -37,18 +37,18 @@ public class FileReader implements Runnable {
         int NbDays = ElapsedDays.getDaysAgoFromJSON(TimeString);
         if (NbDays==-1) return; // We do no process the file ...
 
+        Converter Transform = new Converter();
         int NbGeoData = 0;
-        String GeoString = Storage.readLine();
-        GeoData geoInfo;
-          while (GeoString != null) {
-            geoInfo = new GeoData();
-            if (geoInfo.fromJSON(GeoString)) {
-                geoInfo.setElapsedDays(NbDays);
-                Notify.onLoaded(geoInfo);
-                NbGeoData++;
-            }
-            //Log.d("FileReader", "Loaded GeoData -> [Long:" + geoInfo.getLongitude() + "°E,Lat:" + geoInfo.getLatitude() + "°N]");
-            GeoString = Storage.readLine();
+        String StringJSON = Storage.readLine();
+        SurveyLoader Survey;
+          while (StringJSON != null) {
+            Survey = Transform.fromJSON(StringJSON);
+            if (Survey == null) continue;
+            Survey.setElapsedDays(NbDays);
+            Notify.onLoaded(Survey);
+            NbGeoData++;
+            //Log.d("FileReader", "Loaded SurveyLoader -> [Long:" + Survey.getLongitude() + "°E,Lat:" + Survey.getLatitude() + "°N]");
+            StringJSON = Storage.readLine();
         }
         Log.d("FileReader", NbGeoData +" Blocks Loaded ...");
     }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 //ToDo: check about number of record on exit if we need to write file (Avoid empty files).
 public class FileWriter {
     FileManager FilesHandler = null;
-    private ArrayList<GeoData> geoDataBuffer = null;
+    private ArrayList<SurveyLoader> SurveyBuffer = null;
     private int WriteLoopWait = 5 * 60000; // Write every 5 minutes
     static FileOutputStream Stream = null;
     static BufferedWriter Storage =null;
@@ -23,13 +23,13 @@ public class FileWriter {
 
     public FileWriter(FileManager FilesHandler) throws IOException{
         this.FilesHandler = FilesHandler;
-        geoDataBuffer = new ArrayList();
+        SurveyBuffer = new ArrayList();
         isHeaderWritten = false;
         trigger.postDelayed(task, WriteLoopWait);
         Log.d("FileWriter", "Initializing next write in "+WriteLoopWait/1000+"s");
     }
 
-    public void writeGeoData(GeoData geoInfo) { geoDataBuffer.add(geoInfo); }
+    public void writeSurvey(SurveyLoader geoInfo) { SurveyBuffer.add(geoInfo); }
 
     public void shutdown() {
         triggeredWrite();
@@ -37,7 +37,7 @@ public class FileWriter {
     }
 
     public void triggeredWrite() {
-        if (geoDataBuffer.size() == 0) return;
+        if (SurveyBuffer.size() == 0) return;
         try { flushBuffer(); }
         catch (Exception BufferWriteFailed) {Log.d("FileWriter", "Failed to write GPS datas");}
         trigger.postDelayed(task, WriteLoopWait);
@@ -46,7 +46,7 @@ public class FileWriter {
 
     public void flushBuffer() throws IOException {
         Stream = FilesHandler.getWriteStream();
-        Log.d("FileWriter","Writing "+geoDataBuffer.size()+" GeoData elements of buffer." );
+        Log.d("FileWriter","Writing "+ SurveyBuffer.size()+" SurveyLoader elements of buffer." );
         Storage = new  BufferedWriter(new OutputStreamWriter(Stream, "UTF-8"));
 
         if (!isHeaderWritten) {
@@ -56,13 +56,14 @@ public class FileWriter {
             isHeaderWritten =true;
         }
 
-        for (GeoData geoInfo : geoDataBuffer) {
-            Storage.write(geoInfo.toJSON());
+        Converter Transform = new Converter();
+        for (SurveyLoader geoInfo : SurveyBuffer) {
+            Storage.write(Transform.toJSON(geoInfo));
             Storage.newLine();
         }
         Storage.flush();
         Storage.close();
-        geoDataBuffer.clear();
+        SurveyBuffer.clear();
     }
 }
 

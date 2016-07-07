@@ -211,7 +211,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         SleepLocker.setMode(BackendService.getModeSleep());
 
         // Force a refreshed display
-        GeoData LastGPS = BackendService.getLastUpdate();
+        SurveyLoader LastGPS = BackendService.getLastUpdate();
         if (null == LastGPS) {
             // Registering Timeout triggers
             EventTrigger.postDelayed(task,EventsDelay);
@@ -224,7 +224,7 @@ public class Docking extends Activity implements EventsProcessGPS {
     }
 
     @Override
-    public void processLocationChanged(GeoData geoInfo){
+    public void processLocationChanged(SurveyLoader geoInfo){
         if (BackendService == null) return;
 
         // Remove all registered Timeout triggers
@@ -237,7 +237,7 @@ public class Docking extends Activity implements EventsProcessGPS {
                        ViewCenter.x + SizeSelection.x / 2, ViewCenter.y + SizeSelection.y / 2  );
 
         // Collecting data from backend
-        ArrayList<GeoData> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
+        ArrayList<SurveyLoader> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
 
         // Registering Timeout triggers
         EventTrigger.postDelayed(task,EventsDelay);
@@ -246,7 +246,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
         if (geoInfo.isLive()) Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
-        for (GeoData item: CollectedStatistics) {
+        for (SurveyLoader item: CollectedStatistics) {
             Speeds.add(Float.valueOf(item.getSpeed()*3.6f));
         }
         if (Speeds.isEmpty()) Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
@@ -257,7 +257,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
         if (geoInfo.isLive()) HeartBeats.add(Float.valueOf(geoInfo.getHeartbeat()));
-        for (GeoData item: CollectedStatistics) {
+        for (SurveyLoader item: CollectedStatistics) {
             if (item.getHeartbeat() == -1) continue;
             HeartBeats.add(Float.valueOf(item.getHeartbeat()));
         }

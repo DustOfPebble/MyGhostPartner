@@ -10,14 +10,14 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class SimulateGPS implements Runnable {
-    private ArrayList<GeoData> RecordsCollection;
+    private ArrayList<SurveyLoader> RecordsCollection;
     ArrayList<File> FilesCollection = null;
 
     private int Index=0;
     private int FileIndex=0;
     private DataManager Notify;
     private Handler EventTrigger = new Handler();
-    private Runnable task = new Runnable() { public void run() { sendGPS();} };
+    private Runnable task = new Runnable() { public void run() { simulate();} };
     private int EventsDelay = 1000;
     private Thread Loading =null;
     private FileInputStream ReadStream = null;
@@ -27,7 +27,7 @@ public class SimulateGPS implements Runnable {
     {
         SourcesManager = SourceGPS;
         Notify = Manager;
-        RecordsCollection = new ArrayList<GeoData>();
+        RecordsCollection = new ArrayList<SurveyLoader>();
 
         // Check access to Directory storage
         File Directory = SourcesManager.getDirectory();
@@ -64,7 +64,7 @@ public class SimulateGPS implements Runnable {
         return SelectedFile;
     }
 
-    public void sendGPS() {
+    public void simulate() {
 //        Log.d("SimulateGPS", "Simulating new GPS position ...");
         EventTrigger.postDelayed(task, EventsDelay);
         if (RecordsCollection.size() == 0) return;
@@ -105,11 +105,11 @@ public class SimulateGPS implements Runnable {
 
         int NbGeoData = 0;
         String GeoString;
-        GeoData geoInfo;
+        SurveyLoader geoInfo;
         try {
             while (true) {
                 GeoString = Storage.readLine();
-                geoInfo = new GeoData();
+                geoInfo = new SurveyLoader();
                 if (!geoInfo.fromJSON(GeoString)) break;
                 geoInfo.setElapsedDays(NbDays);
                 geoInfo.setSimulated();
