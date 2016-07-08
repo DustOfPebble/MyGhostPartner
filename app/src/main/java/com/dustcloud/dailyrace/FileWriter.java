@@ -20,7 +20,6 @@ public class FileWriter {
     private Handler trigger = new Handler();
     private Runnable task = new Runnable() { public void run() { triggeredWrite();} };
 
-
     public FileWriter(FileManager FilesHandler) throws IOException{
         this.FilesHandler = FilesHandler;
         BufferJSON = new ArrayList();
@@ -48,9 +47,7 @@ public class FileWriter {
         Log.d("FileWriter", "Writing " + BufferJSON.size() + "JSON elements of buffer.");
         try {
             Storage = new BufferedWriter(new OutputStreamWriter(Stream, "UTF-8"));
-        } catch (Exception BufferError) {
-            return;
-        }
+        } catch (Exception BufferError) {return;}
 
         try {
             if (!isHeaderWritten) {
@@ -59,9 +56,7 @@ public class FileWriter {
                 Storage.newLine();
                 isHeaderWritten = true;
             }
-        } catch (Exception HeaderError) {
-            return;
-        }
+        } catch (Exception HeaderError) {return;}
 
         try {
             for (String StringJSON : BufferJSON) {
@@ -71,9 +66,7 @@ public class FileWriter {
             Storage.flush();
             Storage.close();
             BufferJSON.clear();
-        } catch (Exception FlushBufferError) {
-            return;
-        }
+        } catch (Exception FlushBufferError) {return;}
     }
 }
 

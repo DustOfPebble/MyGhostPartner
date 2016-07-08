@@ -61,7 +61,7 @@ public class SimulateGPS implements Runnable {
         Loading = new Thread(this);
         Loading.start();
 
-        String SelectedFile =FilesCollection.get(FileIndex).getName();
+        String SelectedFile = FilesCollection.get(FileIndex).getName();
 
         FileIndex++;
         if (FileIndex == FilesCollection.size()) FileIndex = 0;

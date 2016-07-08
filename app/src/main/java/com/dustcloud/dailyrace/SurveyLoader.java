@@ -81,22 +81,9 @@ public class SurveyLoader {
 
     public double getLongitude() {return Longitude;}
     public double getLatitude() {return Latitude;}
-    public float getAltitude() {return Altitude;}
-    public float getAccuracy() {return Accuracy;}
-    public float getSpeed() {return Speed;}
-    public float getBearing() {return Bearing;}
-    public int getHeartbeat() {return Heartbeat;}
-    public int getDays() {return Days;}
 
-    public void setLongitude(double value) {Longitude = value;}
-    public void setLatitude(double value) {Latitude = value;}
-    public void setAltitude(float value) {Altitude = value;}
-    public void setAccuracy(float value) {Accuracy = value;}
-    public void setSpeed(float value) {Speed = value;}
-    public void setBearing(float value) {Bearing = value;}
     public void setHeartbeat(short value) { Heartbeat = value;}
     public void setDays(int value) { Days = value;}
-
 
     public void updateFromGPS(Location GPS) {
         Longitude = GPS.getLongitude();
