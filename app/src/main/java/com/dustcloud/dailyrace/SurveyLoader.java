@@ -107,12 +107,7 @@ public class SurveyLoader {
         Accuracy = GPS.getAccuracy();
 
         Log.d("DataManager", "GPS [" + Longitude + "°E," + Latitude + "°N]");
-
-        if (!hasOrigin) {
-            originLatitude = Longitude;
-            originLongitude = Latitude;
-            initOrigin();
-        }
+        if (!hasOrigin) useOrigin();
     }
 
     public Snapshot getSnapshot() {
@@ -133,25 +128,24 @@ public class SurveyLoader {
     private double originLongitude = 0f;
     private double originLatitude = 0f;
 
+    public void clearOrigin() {hasOrigin = false;}
+
     public void setOrigin(double Longitude, double Latitude) {
         this.originLatitude = Latitude;
         this.originLongitude = Longitude;
-        initOrigin();
-    }
-    public void clearOrigin() {hasOrigin = false;}
-
-    private void initOrigin(){
+        earthRadiusCorrected = correctedRadius();
         hasOrigin = true;
-        earthRadiusCorrected = earthRadius *(float)Math.cos( Math.toRadians(originLatitude));
     }
 
-    private float dX(double longitude) {
-        return earthRadiusCorrected * (float) Math.toRadians(longitude-originLongitude);
+    private void useOrigin(){
+        this.originLatitude = Latitude;
+        this.originLongitude = Longitude;
+        earthRadiusCorrected = correctedRadius();
+        hasOrigin = true;
     }
 
-    private float dY(double latitude) {
-        return  earthRadius * (float) Math.toRadians(latitude-originLatitude);
-    }
-
+    private float correctedRadius() { return earthRadius *(float)Math.cos( Math.toRadians(originLatitude)); }
+    private float dX(double longitude) { return earthRadiusCorrected * (float) Math.toRadians(longitude-originLongitude); }
+    private float dY(double latitude) { return  earthRadius * (float) Math.toRadians(latitude-originLatitude); }
 
 }

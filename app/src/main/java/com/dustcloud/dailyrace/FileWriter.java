@@ -11,7 +11,7 @@ import java.util.ArrayList;
 //ToDo: check about number of record on exit if we need to write file (Avoid empty files).
 public class FileWriter {
     FileManager FilesHandler = null;
-    private ArrayList<SurveyLoader> SurveyBuffer = null;
+    private ArrayList<String> BufferJSON = null;
     private int WriteLoopWait = 5 * 60000; // Write every 5 minutes
     static FileOutputStream Stream = null;
     static BufferedWriter Storage =null;
@@ -23,47 +23,57 @@ public class FileWriter {
 
     public FileWriter(FileManager FilesHandler) throws IOException{
         this.FilesHandler = FilesHandler;
-        SurveyBuffer = new ArrayList();
+        BufferJSON = new ArrayList();
         isHeaderWritten = false;
         trigger.postDelayed(task, WriteLoopWait);
         Log.d("FileWriter", "Initializing next write in "+WriteLoopWait/1000+"s");
     }
 
-    public void writeSurvey(SurveyLoader geoInfo) { SurveyBuffer.add(geoInfo); }
+    public void appendJSON(String StringJSON) { BufferJSON.add(StringJSON); }
 
     public void shutdown() {
-        triggeredWrite();
         trigger.removeCallbacks(task);
+        flushBuffer();
     }
 
     public void triggeredWrite() {
-        if (SurveyBuffer.size() == 0) return;
-        try { flushBuffer(); }
-        catch (Exception BufferWriteFailed) {Log.d("FileWriter", "Failed to write GPS datas");}
+        flushBuffer();
         trigger.postDelayed(task, WriteLoopWait);
         Log.d("FileWriter", "Triggering next write in "+WriteLoopWait/1000+"s");
     }
 
-    public void flushBuffer() throws IOException {
+    public void flushBuffer() {
+        if (BufferJSON.size() == 0) return;
         Stream = FilesHandler.getWriteStream();
-        Log.d("FileWriter","Writing "+ SurveyBuffer.size()+" SurveyLoader elements of buffer." );
-        Storage = new  BufferedWriter(new OutputStreamWriter(Stream, "UTF-8"));
-
-        if (!isHeaderWritten) {
-            TimeStamps Now = new TimeStamps();
-            Storage.write(Now.getNowToJSON());
-            Storage.newLine();
-            isHeaderWritten =true;
+        Log.d("FileWriter", "Writing " + BufferJSON.size() + "JSON elements of buffer.");
+        try {
+            Storage = new BufferedWriter(new OutputStreamWriter(Stream, "UTF-8"));
+        } catch (Exception BufferError) {
+            return;
         }
 
-        Converter Transform = new Converter();
-        for (SurveyLoader geoInfo : SurveyBuffer) {
-            Storage.write(Transform.toJSON(geoInfo));
-            Storage.newLine();
+        try {
+            if (!isHeaderWritten) {
+                TimeStamps Now = new TimeStamps();
+                Storage.write(Now.getNowToJSON());
+                Storage.newLine();
+                isHeaderWritten = true;
+            }
+        } catch (Exception HeaderError) {
+            return;
         }
-        Storage.flush();
-        Storage.close();
-        SurveyBuffer.clear();
+
+        try {
+            for (String StringJSON : BufferJSON) {
+                Storage.write(StringJSON);
+                Storage.newLine();
+            }
+            Storage.flush();
+            Storage.close();
+            BufferJSON.clear();
+        } catch (Exception FlushBufferError) {
+            return;
+        }
     }
 }
 

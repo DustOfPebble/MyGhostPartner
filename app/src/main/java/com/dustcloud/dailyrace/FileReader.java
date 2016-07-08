@@ -10,11 +10,15 @@ import java.io.InputStreamReader;
 public class FileReader implements Runnable {
     DataManager Notify = null;
     FileManager FilesHandler= null;
+    SurveyLoader Survey;
 
     public FileReader(FileManager handler, DataManager Client ) {
        Notify = Client;
        FilesHandler =  handler;
+       Survey = new SurveyLoader();
     }
+
+    public void setOrigin(double Longitude, double Latitude) { Survey.setOrigin(Longitude,Latitude); }
 
     @Override
     public void run() {
@@ -24,32 +28,34 @@ public class FileReader implements Runnable {
         while (true) {
             FileInputStream Stream = FilesHandler.getNextStream();
             if (Stream == null)  break; // All streams have been processed
-
-            try { ProcessStream(Stream); }
-            catch ( Exception ObjectInput ) { Log.d("FileReader","Failed to process input stream ..."); }
+            ProcessStream(Stream);
         }
     }
 
-    private void ProcessStream(FileInputStream Stream) throws IOException {
-        BufferedReader Storage = new BufferedReader(new InputStreamReader(Stream, "UTF-8"));
-        String TimeString = Storage.readLine();
+    private void ProcessStream(FileInputStream Stream) {
+        BufferedReader Storage;
+        try{ Storage = new BufferedReader(new InputStreamReader(Stream, "UTF-8"));}
+        catch (Exception StreamError) { return; }
+
+        String TimeString;
+        try{ TimeString = Storage.readLine(); }
+        catch (Exception ReadError) {return;}
         TimeStamps ElapsedDays = new TimeStamps();
         int NbDays = ElapsedDays.getDaysAgoFromJSON(TimeString);
-        if (NbDays==-1) return; // We do no process the file ...
+        if (NbDays==-1) return;
 
-        Converter Transform = new Converter();
-        int NbGeoData = 0;
-        String StringJSON = Storage.readLine();
-        SurveyLoader Survey;
-          while (StringJSON != null) {
-            Survey = Transform.fromJSON(StringJSON);
-            if (Survey == null) continue;
-            Survey.setDays(NbDays);
-            Notify.onSnapshotLoaded(Survey);
-            NbGeoData++;
-            //Log.d("FileReader", "Loaded SurveyLoader -> [Long:" + Survey.getLongitude() + "°E,Lat:" + Survey.getLatitude() + "°N]");
-            StringJSON = Storage.readLine();
+        Survey.setDays(NbDays);
+
+        int NbSamples = 0;
+        String StringJSON;
+        try {
+            while (true) {
+                StringJSON = Storage.readLine();
+                Survey.fromJSON(StringJSON);
+                Notify.onSnapshotLoaded(Survey.getSnapshot());
+                NbSamples++;
+            }
         }
-        Log.d("FileReader", NbGeoData +" Blocks Loaded ...");
+        catch (Exception EOF) { Log.d("FileReader", NbSamples +" Blocks Loaded ...");}
     }
 }

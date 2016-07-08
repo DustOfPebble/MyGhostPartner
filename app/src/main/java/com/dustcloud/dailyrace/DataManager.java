@@ -20,7 +20,6 @@ public class DataManager extends Application implements LocationListener {
     private PointF StatisticsSelectionSize = new PointF(20f,20f); // Values in meters
     private PointF DisplayedSelectionSize = new PointF(200f,200f); // Values in meters
 
-
     private SurveyLoader SurveyGPS; // Handle GPS position (Physical or Simulated)
 
     private int LastHeartBeat;
@@ -112,7 +111,7 @@ public class DataManager extends Application implements LocationListener {
 
         Snapshot Sample = SurveyGPS.getSnapshot();
         SearchableStorage.store(Sample);
-        WriteToFile.writeSurvey(SurveyGPS);
+        WriteToFile.appendJSON(SurveyGPS.toJSON());
 
         // Loop over registered clients callback ...
         if (ActivityMode == SharedConstants.SwitchForeground) {
@@ -144,7 +143,6 @@ public class DataManager extends Application implements LocationListener {
         if (ModeGPS == SharedConstants.ReplayedGPS)  {
             if (!EventsSimulatedGPS.load(1000).isEmpty())   {
                 SourceGPS.removeUpdates(this);
-                TimeoutGPS.removeCallbacks(task);
                 SurveyGPS = null;
                 EventsSimulatedGPS.simulate();
             }
@@ -153,7 +151,6 @@ public class DataManager extends Application implements LocationListener {
         if (ModeGPS == SharedConstants.LiveGPS)  {
             EventsSimulatedGPS.stop();
             SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, TimeUpdateGPS, DistanceUpdateGPS,this);
-            TimeoutGPS.postDelayed(task, TimeoutDelayGPS);
         }
     }
 
@@ -196,11 +193,7 @@ public class DataManager extends Application implements LocationListener {
     public void storeModeBattery(short mode) {ModeBattery = mode;}
 
     // Called on Sleep/Wakeup of activity
-    public void setActivityMode(int mode) {
-        ActivityMode = mode;
-        if (ActivityMode == SharedConstants.SwitchBackground) TimeoutGPS.removeCallbacks(task);
-        if (ActivityMode == SharedConstants.SwitchForeground) TimeoutGPS.postDelayed(task, TimeoutDelayGPS);
-    }
+    public void setActivityMode(int mode) { ActivityMode = mode; }
 
     // Return Application in order to setup callback from client
     static public Context getBackend(){ return Backend; }
@@ -221,7 +214,7 @@ public class DataManager extends Application implements LocationListener {
     public ArrayList<Snapshot> filter(ArrayList<Snapshot> Collected){
         ArrayList<Snapshot> Filtered = new ArrayList<Snapshot>();
 
-        float Heading = signed(SurveyGPS.getBearing());
+        float Heading = signed(SurveyGPS.getSnapshot().getBearing());
         float ExtractedHeading;
         for (Snapshot Extracted : Collected) {
             ExtractedHeading = signed(Extracted.getBearing());
@@ -230,7 +223,6 @@ public class DataManager extends Application implements LocationListener {
         }
         return Filtered;
     }
-
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) { }
