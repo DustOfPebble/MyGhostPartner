@@ -211,7 +211,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         SleepLocker.setMode(BackendService.getModeSleep());
 
         // Force a refreshed display
-        LiveSurvey LastGPS = BackendService.getLastUpdate();
+        Snapshot LastGPS = BackendService.getLastSnapshot();
         if (null == LastGPS) {
             // Registering Timeout triggers
             EventTrigger.postDelayed(task,EventsDelay);
@@ -224,7 +224,7 @@ public class Docking extends Activity implements EventsProcessGPS {
     }
 
     @Override
-    public void processLocationChanged(LiveSurvey geoInfo){
+    public void processLocationChanged(Snapshot geoInfo){
         if (BackendService == null) return;
 
         // Remove all registered Timeout triggers
@@ -232,12 +232,12 @@ public class Docking extends Activity implements EventsProcessGPS {
 
         // Setting collection area
         PointF SizeSelection = BackendService.getExtractStatisticsSize();
-        PointF ViewCenter = geoInfo.getCoordinate();
+        PointF ViewCenter = geoInfo.getCoordinates();
         searchZone.set(ViewCenter.x - SizeSelection.x / 2, ViewCenter.y - SizeSelection.y / 2,
                        ViewCenter.x + SizeSelection.x / 2, ViewCenter.y + SizeSelection.y / 2  );
 
         // Collecting data from backend
-        ArrayList<LiveSurvey> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
+        ArrayList<Snapshot> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
 
         // Registering Timeout triggers
         EventTrigger.postDelayed(task,EventsDelay);
@@ -246,7 +246,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
         Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
-        for (LiveSurvey item: CollectedStatistics) {
+        for (Snapshot item: CollectedStatistics) {
             Speeds.add(Float.valueOf(item.getSpeed()*3.6f));
         }
         if (Speeds.isEmpty()) Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
@@ -257,7 +257,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
         HeartBeats.add(Float.valueOf(geoInfo.getHeartbeat()));
-        for (LiveSurvey item: CollectedStatistics) {
+        for (Snapshot item: CollectedStatistics) {
             if (item.getHeartbeat() == -1) continue;
             HeartBeats.add(Float.valueOf(item.getHeartbeat()));
         }

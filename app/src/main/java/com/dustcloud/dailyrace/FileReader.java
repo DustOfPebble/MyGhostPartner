@@ -44,8 +44,8 @@ public class FileReader implements Runnable {
           while (StringJSON != null) {
             Survey = Transform.fromJSON(StringJSON);
             if (Survey == null) continue;
-            Survey.setElapsedDays(NbDays);
-            Notify.onLoaded(Survey);
+            Survey.setDays(NbDays);
+            Notify.onSnapshotLoaded(Survey);
             NbGeoData++;
             //Log.d("FileReader", "Loaded SurveyLoader -> [Long:" + Survey.getLongitude() + "°E,Lat:" + Survey.getLatitude() + "°N]");
             StringJSON = Storage.readLine();

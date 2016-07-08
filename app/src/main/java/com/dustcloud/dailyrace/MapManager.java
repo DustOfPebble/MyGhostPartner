@@ -18,13 +18,13 @@ public class MapManager extends ImageView implements EventsProcessGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
     private DataManager BackendService =null;
-    private ArrayList<LiveSurvey> CollectedDisplayed =null;
-    private ArrayList<LiveSurvey> CollectedStatistics =null;
+    private ArrayList<Snapshot> CollectedDisplayed =null;
+    private ArrayList<Snapshot> CollectedStatistics =null;
     private PointF ViewCenter;
     private PointF GraphicCenter = new PointF(0f,0f) ;
     private Paint LineMode;
     private Paint FillMode;
-    private LiveSurvey InUseGeo = null;
+    private Snapshot InUseGeo = null;
     private RectF searchZone = new RectF();
 
 
@@ -36,8 +36,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         LineMode.setStyle(Paint.Style.STROKE);
         FillMode = new Paint();
 
-        CollectedDisplayed = new ArrayList<LiveSurvey>();
-        CollectedStatistics = new ArrayList<LiveSurvey>();
+        CollectedDisplayed = new ArrayList<Snapshot>();
+        CollectedStatistics = new ArrayList<Snapshot>();
     }
 
     public void setBackend(DataManager backend) {
@@ -46,13 +46,13 @@ public class MapManager extends ImageView implements EventsProcessGPS {
     }
 
     @Override
-    public void processLocationChanged(LiveSurvey geoInfo) {
+    public void processLocationChanged(Snapshot geoInfo) {
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
         if (BackendService == null) return;
 
         InUseGeo = geoInfo;
-        ViewCenter = geoInfo.getCoordinate();
+        ViewCenter = geoInfo.getCoordinates();
         PointF Size;
 
         // Extracting active point around first because we will make a List copy ...
@@ -107,8 +107,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         LineMode.setStrokeWidth(GraphicsConstants.ExtractedLineThickness);
         FillMode.setColor(GraphicsConstants.ExtractedColor);
         FillMode.setAlpha(GraphicsConstants.ExtractedFillTransparency);
-        for (LiveSurvey Marker : CollectedDisplayed) {
-            Coords = Marker.getCoordinate();
+        for (Snapshot Marker : CollectedDisplayed) {
+            Coords = Marker.getCoordinates();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
                     (Coords.x - ViewCenter.x)* MeterToPixelFactor + GraphicCenter.x ,
@@ -126,8 +126,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         LineMode.setStrokeWidth(GraphicsConstants.FilteredLineThickness);
         FillMode.setColor(GraphicsConstants.FilteredColor);
         FillMode.setAlpha(GraphicsConstants.FilteredFillTransparency);
-        for (LiveSurvey Marker : CollectedStatistics) {
-            Coords = Marker.getCoordinate();
+        for (Snapshot Marker : CollectedStatistics) {
+            Coords = Marker.getCoordinates();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
                     (Coords.x - ViewCenter.x)* MeterToPixelFactor + GraphicCenter.x ,
