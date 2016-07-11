@@ -2,7 +2,6 @@ package com.dustcloud.dailyrace;
 
 import android.app.Activity;
 import android.graphics.BitmapFactory;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
@@ -74,7 +73,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider.registerManager(this);
         GPSProvider.setMode(BackendService.getModeGPS());
 
-        if (BluetoothConstants.isLowEnergy) {
+        if (BluetoothConstants.hasLowEnergyCapabilities) {
             HeartBeatSensor = (ControlSwitch) findViewById(R.id.heartbeat_provider);
             HeartBeatSensor.registerModes(SharedConstants.ConnectedHeartBeat, SharedConstants.DisconnectedHeartBeat);
             HeartBeatSensor.registerManager(this);
@@ -211,7 +210,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         SleepLocker.setMode(BackendService.getModeSleep());
 
         // Force a refreshed display
-        Snapshot LastGPS = BackendService.getLastSnapshot();
+        SurveySnapshot LastGPS = BackendService.getLastSnapshot();
         if (null == LastGPS) {
             // Registering Timeout triggers
             EventTrigger.postDelayed(task,EventsDelay);
@@ -224,20 +223,20 @@ public class Docking extends Activity implements EventsProcessGPS {
     }
 
     @Override
-    public void processLocationChanged(Snapshot geoInfo){
+    public void processLocationChanged(SurveySnapshot geoInfo){
         if (BackendService == null) return;
 
         // Remove all registered Timeout triggers
         EventTrigger.removeCallbacks(task);
 
         // Setting collection area
-        PointF SizeSelection = BackendService.getExtractStatisticsSize();
-        PointF ViewCenter = geoInfo.getCoordinates();
+        Vector SizeSelection = BackendService.getExtractStatisticsSize();
+        Vector ViewCenter = geoInfo.copy();
         searchZone.set(ViewCenter.x - SizeSelection.x / 2, ViewCenter.y - SizeSelection.y / 2,
                        ViewCenter.x + SizeSelection.x / 2, ViewCenter.y + SizeSelection.y / 2  );
 
         // Collecting data from backend
-        ArrayList<Snapshot> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
+        ArrayList<SurveySnapshot> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
 
         // Registering Timeout triggers
         EventTrigger.postDelayed(task,EventsDelay);
@@ -246,7 +245,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
         Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
-        for (Snapshot item: CollectedStatistics) {
+        for (SurveySnapshot item: CollectedStatistics) {
             Speeds.add(Float.valueOf(item.getSpeed()*3.6f));
         }
         if (Speeds.isEmpty()) Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
@@ -257,7 +256,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
         HeartBeats.add(Float.valueOf(geoInfo.getHeartbeat()));
-        for (Snapshot item: CollectedStatistics) {
+        for (SurveySnapshot item: CollectedStatistics) {
             if (item.getHeartbeat() == -1) continue;
             HeartBeats.add(Float.valueOf(item.getHeartbeat()));
         }

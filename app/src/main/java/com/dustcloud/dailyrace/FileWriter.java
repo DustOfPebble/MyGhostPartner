@@ -20,7 +20,7 @@ public class FileWriter {
     private Handler trigger = new Handler();
     private Runnable task = new Runnable() { public void run() { triggeredWrite();} };
 
-    public FileWriter(FileManager FilesHandler) throws IOException{
+    public FileWriter(FileManager FilesHandler) {
         this.FilesHandler = FilesHandler;
         BufferJSON = new ArrayList();
         isHeaderWritten = false;

@@ -1,8 +1,6 @@
 package com.dustcloud.dailyrace;
 
-import android.graphics.PointF;
-
-public class Snapshot {
+public class SurveySnapshot {
 
     public float x;
     public float y;
@@ -16,7 +14,7 @@ public class Snapshot {
 
     private int Days;
 
-    public Snapshot() {
+    public SurveySnapshot() {
         x = 0f;
         y = 0f;
 
@@ -47,8 +45,8 @@ public class Snapshot {
     public int getDays() {return Days;}
     public void setDays(int value) { Days = value;}
 
-    public PointF getCoordinates() {return new PointF(this.x, this.y);}
-    public void setCoordinates(float x, float y) { this.x = x; this.y = y;}
-    public void setCoordinates(PointF Dot) { this.x = Dot.x; this.y = Dot.y;}
+    public Vector copy() {return new Vector(this.x, this.y);}
+    public void set(float x, float y) { this.x = x; this.y = y;}
+    public void set(Vector Dot) { this.x = Dot.x; this.y = Dot.y;}
 
 }

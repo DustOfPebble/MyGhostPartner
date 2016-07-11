@@ -2,14 +2,11 @@ package com.dustcloud.dailyrace;
 
 import android.app.Application;
 import android.content.Context;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 
 import java.util.ArrayList;
 //ToDo: Reload DB periodically with a smaller SearchableZone to reduce memory footprint
@@ -17,13 +14,17 @@ import java.util.ArrayList;
 
 public class DataManager extends Application implements LocationListener {
     private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
-    private PointF StatisticsSelectionSize = new PointF(20f,20f); // Values in meters
-    private PointF DisplayedSelectionSize = new PointF(200f,200f); // Values in meters
+    private Vector StatisticsSelectionSize = new Vector(20f,20f); // Values in meters
+    private Vector DisplayedSelectionSize = new Vector(200f,200f); // Values in meters
 
-    private SurveyLoader SurveyGPS; // Handle GPS position (Physical or Simulated)
+    private SurveyLoader SurveyLiveGPS; // processing for Live real GPS
+    private SurveyLoader SurveySimulatedGPS; // processing for Simulated GPS
+    private SurveyLoader SurveyFilesGPS; // processing for Files loading GPS
+    private Coordinates UsedOrigin;
+
 
     private int LastHeartBeat;
-    private int ActivityMode;
+    private int ActivityMode; // Is Activity is currently in Foreground or Background
     static private String BackendMessage;
 
     private static final long DistanceUpdateGPS = 5; // Value in meters
@@ -59,13 +60,13 @@ public class DataManager extends Application implements LocationListener {
     {
         super.onCreate();
         Backend = this;
-        SurveyGPS = new SurveyLoader();
+        SurveyLiveGPS = new SurveyLoader();
         LastHeartBeat = -1;
         ActivityMode = SharedConstants.SwitchForeground;
         BackendMessage="";
 
         // Starting HearBeatService if HeartBeat Sensor is available
-        if (BluetoothConstants.isLowEnergy) {
+        if (BluetoothConstants.hasLowEnergyCapabilities) {
             HearBeatService = new HeartBeatProvider(this);
             HearBeatService.searchSensor();
         }
@@ -76,21 +77,11 @@ public class DataManager extends Application implements LocationListener {
 
         // Starting File Management
         FilesHandler = new FileManager(this);
-        ReadFromFile = new FileReader(FilesHandler, this);
-
-        try{ WriteToFile = new FileWriter(FilesHandler);}
-        catch (Exception ErrorDB) {Log.d("DataManager", "Couldn't create a new DB...");}
+        ReadFromFile = new FileReader(FilesHandler, this, SurveyFilesGPS);
+        WriteToFile = new FileWriter(FilesHandler);
 
         // Initialize GPS simulator ...
-        EventsSimulatedGPS = new SimulateGPS(this, FilesHandler);
-    }
-
-    private void init() {
-        SearchableStorage = new QuadTree(SearchableZone); // Create QuadTree storage area
-        if (LoadingFiles!= null) LoadingFiles.interrupt();
-        FilesHandler.resetStreams(); // Forcing to reload all files
-        LoadingFiles = new Thread(ReadFromFile);
-        LoadingFiles.start();
+        EventsSimulatedGPS = new SimulateGPS(this, FilesHandler, SurveySimulatedGPS);
     }
 
     public void shutdown() {
@@ -102,39 +93,63 @@ public class DataManager extends Application implements LocationListener {
         System.exit(0);
     }
 
+    private void restartLoadingFiles() {
+        SearchableStorage = new QuadTree(SearchableZone); // Create QuadTree storage area
+        if (LoadingFiles!= null) LoadingFiles.interrupt();
+        FilesHandler.resetStreams(); // Forcing to reload all files
+        LoadingFiles = new Thread(ReadFromFile);
+        LoadingFiles.start();
+    }
+
     // Called Only when real GPS is Updated
     @Override
     public void onLocationChanged(Location LastKnownGPS) {
         if (LastKnownGPS == null) return;
-        SurveyGPS.updateFromGPS(LastKnownGPS);
-        SurveyGPS.setHeartbeat((short)LastHeartBeat);
+        SurveyLiveGPS.updateFromGPS(LastKnownGPS);
+        SurveyLiveGPS.setHeartbeat((short)LastHeartBeat);
+        if (!SurveyLiveGPS.hasOriginCoordinates()) {
+            Coordinates Origin = SurveyLiveGPS.getCoordinates();
+            SurveyLiveGPS.setOriginCoordinates(Origin);
+            SurveyFilesGPS.setOriginCoordinates(Origin);
+            restartLoadingFiles();
+        }
 
-        Snapshot Sample = SurveyGPS.getSnapshot();
+        SurveySnapshot Sample = SurveyLiveGPS.getSnapshot();
         SearchableStorage.store(Sample);
-        WriteToFile.appendJSON(SurveyGPS.toJSON());
+        WriteToFile.appendJSON(SurveyLiveGPS.toJSON());
 
         // Loop over registered clients callback ...
         if (ActivityMode == SharedConstants.SwitchForeground) {
-            for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(Sample);}
+            for (EventsProcessGPS Client :Clients) Client.processLocationChanged(Sample);
         }
     }
 
     // Called Only when simulated GPS is Provided
-    public void onSimulatedChanged(Snapshot Sample) {
+    public void onSimulatedChanged(Coordinates SimulatedCoordinate) {
+        if (!SurveySimulatedGPS.hasOriginCoordinates()) {
+            SurveySimulatedGPS.setOriginCoordinates(SimulatedCoordinate);
+            SurveyFilesGPS.setOriginCoordinates(SimulatedCoordinate);
+            restartLoadingFiles();
+        }
+
+        SurveySnapshot Sample = SurveySimulatedGPS.getSnapshot();
         // Loop over registered clients callback ...
         if (ActivityMode == SharedConstants.SwitchForeground) {
-            for (EventsProcessGPS Client :Clients) { Client.processLocationChanged(Sample);}
+            for (EventsProcessGPS Client :Clients) Client.processLocationChanged(Sample);
         }
     }
 
     // Called Only when a new Sample has been loaded from file
-    public void onSnapshotLoaded(Snapshot Sample) {
+    public void onSnapshotLoaded(SurveySnapshot Sample) {
         if (Sample == null) return;
         SearchableStorage.store(Sample);
     }
 
     // Called from activity to retrieved last position on WakeUp
-    public Snapshot getLastSnapshot(){ return SurveyGPS.getSnapshot(); }
+    public SurveySnapshot getLastSnapshot(){
+        if (ModeGPS == SharedConstants.ReplayedGPS)  return SurveySimulatedGPS.getSnapshot();
+        else return SurveyLiveGPS.getSnapshot();
+    }
 
     // Managing state for GPS
     public short getModeGPS() {return ModeGPS;}
@@ -143,13 +158,14 @@ public class DataManager extends Application implements LocationListener {
         if (ModeGPS == SharedConstants.ReplayedGPS)  {
             if (!EventsSimulatedGPS.load(1000).isEmpty())   {
                 SourceGPS.removeUpdates(this);
-                SurveyGPS = null;
+                SurveySimulatedGPS.clearOriginCoordinates();
                 EventsSimulatedGPS.simulate();
             }
 
         }
         if (ModeGPS == SharedConstants.LiveGPS)  {
             EventsSimulatedGPS.stop();
+            SurveyLiveGPS.clearOriginCoordinates();
             SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, TimeUpdateGPS, DistanceUpdateGPS,this);
         }
     }
@@ -176,7 +192,7 @@ public class DataManager extends Application implements LocationListener {
     public short getModeHeartBeat() {return ModeHeartBeat;}
     public void storeModeHeartBeat(short mode) {
         ModeHeartBeat = mode;
-        if (!BluetoothConstants.isLowEnergy) return;
+        if (!BluetoothConstants.hasLowEnergyCapabilities) return;
         if (ModeHeartBeat == SharedConstants.SearchHeartBeat) HearBeatService.searchSensor();
     }
 
@@ -199,24 +215,24 @@ public class DataManager extends Application implements LocationListener {
     static public Context getBackend(){ return Backend; }
 
     // Return area size selection for statistics
-    public PointF getExtractStatisticsSize(){ return StatisticsSelectionSize; }
+    public Vector getExtractStatisticsSize(){ return StatisticsSelectionSize; }
 
     // Return area size selection for statistics
-    public PointF getExtractDisplayedSize(){ return DisplayedSelectionSize; }
+    public Vector getExtractDisplayedSize(){ return DisplayedSelectionSize; }
 
     // Return all Point from a geographic area (in cartesian/meters)
-    public ArrayList<Snapshot> extract(RectF searchZone){ return SearchableStorage.search(searchZone); }
+    public ArrayList<SurveySnapshot> extract(RectF searchZone){ return SearchableStorage.search(searchZone); }
 
     // Convert angle from [0,360°] to [-180°,180°]
     private float signed(float Angle) { return  ((Angle > 180)? (180 - Angle) : Angle); }
 
     // Filter and return Point that match a Bearing Range
-    public ArrayList<Snapshot> filter(ArrayList<Snapshot> Collected){
-        ArrayList<Snapshot> Filtered = new ArrayList<Snapshot>();
+    public ArrayList<SurveySnapshot> filter(ArrayList<SurveySnapshot> Collected){
+        ArrayList<SurveySnapshot> Filtered = new ArrayList<SurveySnapshot>();
 
-        float Heading = signed(SurveyGPS.getSnapshot().getBearing());
+        float Heading = signed(SurveyLiveGPS.getSnapshot().getBearing());
         float ExtractedHeading;
-        for (Snapshot Extracted : Collected) {
+        for (SurveySnapshot Extracted : Collected) {
             ExtractedHeading = signed(Extracted.getBearing());
             if (Math.abs(ExtractedHeading - Heading) > SharedConstants.BearingMatchingGap) continue;
             Filtered.add(Extracted);

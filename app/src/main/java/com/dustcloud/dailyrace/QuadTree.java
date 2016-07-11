@@ -8,13 +8,13 @@ public class QuadTree {
     private boolean isStorage=false;
     private PointF SubZone = null;
     private RectF Zone = null;
-    private ArrayList<Snapshot> Storage = null;
+    private ArrayList<SurveySnapshot> Storage = null;
     private QuadTree TopLeft = null;
     private QuadTree TopRight = null;
     private QuadTree BottomLeft = null;
     private QuadTree BottomRight = null;
     private PointF SizeCell = new PointF(2f,2f); // (2m x 2m) minimum size
-    private  ArrayList<Snapshot> Collected = new ArrayList<Snapshot>();
+    private  ArrayList<SurveySnapshot> Collected = new ArrayList<SurveySnapshot>();
 
 
     public QuadTree(RectF zone) {
@@ -25,11 +25,11 @@ public class QuadTree {
             isStorage = false;
         } else {
             isStorage = true;
-            Storage = new ArrayList<Snapshot>();
+            Storage = new ArrayList<SurveySnapshot>();
         }
     }
 
-    public ArrayList<Snapshot> search(RectF SearchArea) {
+    public ArrayList<SurveySnapshot> search(RectF SearchArea) {
         if (isStorage) { return Storage; }
 
         Collected.clear();
@@ -47,9 +47,9 @@ public class QuadTree {
         return Collected;
     }
 
-    public void store(Snapshot Survey) {
+    public void store(SurveySnapshot Survey) {
         // Should we store this new point ?
-        PointF Cartesian = Survey.getCoordinates();
+        Vector Cartesian = Survey.copy();
         if (isStorage) {
             Storage.add(Survey);
 //            Log.d("QuadTree","Stored cartesian["+ Cartesian.x+","+Cartesian.y+"]");

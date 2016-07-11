@@ -24,10 +24,12 @@ public class SimulateGPS implements Runnable {
     private FileManager SourcesManager;
     private SurveyLoader Loader;
 
-    public SimulateGPS(DataManager Manager, FileManager SourceGPS)
+    public SimulateGPS(DataManager Manager, FileManager SourceGPS, SurveyLoader SimulatedGPS)
     {
         SourcesManager = SourceGPS;
         Notify = Manager;
+        Loader = SimulatedGPS;
+
         CollectionJSON = new ArrayList<String>();
 
         Index = -1;
@@ -73,8 +75,9 @@ public class SimulateGPS implements Runnable {
         EventTrigger.postDelayed(task, EventsDelay);
         if (CollectionJSON.size() == 0) return;
         if (Index >= CollectionJSON.size()) Index=0;
+
         Loader.fromJSON(CollectionJSON.get(Index));
-        Notify.onSimulatedChanged(Loader.getSnapshot());
+        Notify.onSimulatedChanged(Loader.getCoordinates());
         Index++;
     }
 

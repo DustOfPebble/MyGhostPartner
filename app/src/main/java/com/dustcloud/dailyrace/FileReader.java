@@ -12,13 +12,11 @@ public class FileReader implements Runnable {
     FileManager FilesHandler= null;
     SurveyLoader Survey;
 
-    public FileReader(FileManager handler, DataManager Client ) {
+    public FileReader(FileManager handler, DataManager Client, SurveyLoader FilesSurvey) {
        Notify = Client;
        FilesHandler =  handler;
-       Survey = new SurveyLoader();
+       Survey = FilesSurvey;
     }
-
-    public void setOrigin(double Longitude, double Latitude) { Survey.setOrigin(Longitude,Latitude); }
 
     @Override
     public void run() {
