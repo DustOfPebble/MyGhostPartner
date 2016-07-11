@@ -48,36 +48,37 @@ public class SimulateGPS implements Runnable {
 
     public String load(int Delay)  {
         if (FilesCollection.size() == 0) return "";
+
+        // Check if we are already loading a file ...
+        if (Loading != null) Loading.interrupt();
+
         EventsDelay = Delay;
         CollectionJSON.clear();
 
-        try { ReadStream = new FileInputStream(FilesCollection.get(FileIndex)); }
-            catch (Exception StreamError) {
-                FileIndex++;
-                if (FileIndex == FilesCollection.size()) FileIndex = 0;
-                return "";
-            }
+        FileIndex++;
+        if (FileIndex == FilesCollection.size()) FileIndex = 0;
 
-        // Check if we have a previously loading thread still running
-        if (Loading != null) Loading.interrupt();
+        // Try to Open selected stream ...
+        try { ReadStream = new FileInputStream(FilesCollection.get(FileIndex)); }
+        catch (Exception StreamError) { return ""; }
+
+        // Pre-loading JSON structure to memory  ...
         Loading = new Thread(this);
         Loading.start();
 
+        // Returning selected filename
         String SelectedFile = FilesCollection.get(FileIndex).getName();
-
-        FileIndex++;
-        if (FileIndex == FilesCollection.size()) FileIndex = 0;
         return SelectedFile;
     }
 
     public void simulate() {
-        Log.d("SimulateGPS", "Simulating new GPS position ...");
         EventTrigger.postDelayed(task, EventsDelay);
         if (CollectionJSON.size() == 0) return;
-        if (Index >= CollectionJSON.size()) Index=0;
-
+        if (Index >= CollectionJSON.size()) Index = 0;
         Loader.fromJSON(CollectionJSON.get(Index));
-        Notify.onSimulatedChanged(Loader.getCoordinates());
+        Coordinates GPS = Loader.getCoordinates();
+        Log.d("SimulateGPS", "Simulating ["+GPS.longitude+"°E,"+GPS.latitude+"°N]");
+        Notify.onSimulatedChanged(GPS);
         Index++;
     }
 
@@ -101,7 +102,6 @@ public class SimulateGPS implements Runnable {
             return ;
         }
 
-        Loader = new SurveyLoader();
         Index = 0;
         int NbDays = 0;
         String TimeString;
@@ -112,16 +112,16 @@ public class SimulateGPS implements Runnable {
         } catch (Exception TimeStampsError) { Log.d("SimulateGPS", "TimeStamps is missing...");}
         Loader.setDays(NbDays);
 
-        int NbGeoData = 0;
-        String StringJSON;
+        int NbJSON = 0;
+        String StringJSON = "Loading";
         try {
-            while (true) {
+            while (!StringJSON.isEmpty()) {
                 StringJSON = Storage.readLine();
                 CollectionJSON.add(StringJSON);
-                NbGeoData++;
+                NbJSON++;
             }
         }
         catch(Exception FileError) {}
-        Log.d("SimulateGPS", NbGeoData +" Records loaded ...");
+        Log.d("SimulateGPS", NbJSON +" Records loaded ...");
     }
 }

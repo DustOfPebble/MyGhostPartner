@@ -45,9 +45,9 @@ public class FileReader implements Runnable {
         Survey.setDays(NbDays);
 
         int NbSamples = 0;
-        String StringJSON;
+        String StringJSON ="Loading";
         try {
-            while (true) {
+            while (!StringJSON.isEmpty()) {
                 StringJSON = Storage.readLine();
                 Survey.fromJSON(StringJSON);
                 Notify.onSnapshotLoaded(Survey.getSnapshot());

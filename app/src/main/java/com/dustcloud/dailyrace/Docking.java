@@ -81,7 +81,6 @@ public class Docking extends Activity implements EventsProcessGPS {
             HeartBeatSensor.setVisibility(View.VISIBLE);
         }
 
-
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
         LeftMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
@@ -223,7 +222,7 @@ public class Docking extends Activity implements EventsProcessGPS {
     }
 
     @Override
-    public void processLocationChanged(SurveySnapshot geoInfo){
+    public void processLocationChanged(SurveySnapshot Snapshot){
         if (BackendService == null) return;
 
         // Remove all registered Timeout triggers
@@ -231,12 +230,12 @@ public class Docking extends Activity implements EventsProcessGPS {
 
         // Setting collection area
         Vector SizeSelection = BackendService.getExtractStatisticsSize();
-        Vector ViewCenter = geoInfo.copy();
+        Vector ViewCenter = Snapshot.copy();
         searchZone.set(ViewCenter.x - SizeSelection.x / 2, ViewCenter.y - SizeSelection.y / 2,
                        ViewCenter.x + SizeSelection.x / 2, ViewCenter.y + SizeSelection.y / 2  );
 
         // Collecting data from backend
-        ArrayList<SurveySnapshot> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
+        ArrayList<SurveySnapshot> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone),Snapshot);
 
         // Registering Timeout triggers
         EventTrigger.postDelayed(task,EventsDelay);
@@ -244,23 +243,23 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Updating Speeds Statistics
         LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
-        Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
+        Speeds.add(Float.valueOf(Snapshot.getSpeed()*3.6f));
         for (SurveySnapshot item: CollectedStatistics) {
             Speeds.add(Float.valueOf(item.getSpeed()*3.6f));
         }
-        if (Speeds.isEmpty()) Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
+        if (Speeds.isEmpty()) Speeds.add(Float.valueOf(Snapshot.getSpeed()*3.6f));
         LeftMonitor.updateStatistics(Speeds);
 
         // Updating HeartBeats Statistics
-        if (geoInfo.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
+        if (Snapshot.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
         RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
-        HeartBeats.add(Float.valueOf(geoInfo.getHeartbeat()));
+        HeartBeats.add(Float.valueOf(Snapshot.getHeartbeat()));
         for (SurveySnapshot item: CollectedStatistics) {
             if (item.getHeartbeat() == -1) continue;
             HeartBeats.add(Float.valueOf(item.getHeartbeat()));
         }
-        if (HeartBeats.isEmpty()) HeartBeats.add(Float.valueOf(geoInfo.getHeartbeat()));
+        if (HeartBeats.isEmpty()) HeartBeats.add(Float.valueOf(Snapshot.getHeartbeat()));
         RightMonitor.updateStatistics(HeartBeats);
     }
 }

@@ -20,7 +20,6 @@ public class DataManager extends Application implements LocationListener {
     private SurveyLoader SurveyLiveGPS; // processing for Live real GPS
     private SurveyLoader SurveySimulatedGPS; // processing for Simulated GPS
     private SurveyLoader SurveyFilesGPS; // processing for Files loading GPS
-    private Coordinates UsedOrigin;
 
 
     private int LastHeartBeat;
@@ -61,6 +60,9 @@ public class DataManager extends Application implements LocationListener {
         super.onCreate();
         Backend = this;
         SurveyLiveGPS = new SurveyLoader();
+        SurveySimulatedGPS = new SurveyLoader();
+        SurveyFilesGPS = new SurveyLoader();
+
         LastHeartBeat = -1;
         ActivityMode = SharedConstants.SwitchForeground;
         BackendMessage="";
@@ -227,10 +229,10 @@ public class DataManager extends Application implements LocationListener {
     private float signed(float Angle) { return  ((Angle > 180)? (180 - Angle) : Angle); }
 
     // Filter and return Point that match a Bearing Range
-    public ArrayList<SurveySnapshot> filter(ArrayList<SurveySnapshot> Collected){
+    public ArrayList<SurveySnapshot> filter(ArrayList<SurveySnapshot> Collected, SurveySnapshot Snapshot){
         ArrayList<SurveySnapshot> Filtered = new ArrayList<SurveySnapshot>();
 
-        float Heading = signed(SurveyLiveGPS.getSnapshot().getBearing());
+        float Heading = signed(Snapshot.getBearing());
         float ExtractedHeading;
         for (SurveySnapshot Extracted : Collected) {
             ExtractedHeading = signed(Extracted.getBearing());

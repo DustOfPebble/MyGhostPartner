@@ -18,7 +18,7 @@ public class SurveyLoader {
 
     private boolean hasOrigin;
     private int Days;
-
+    private JSONObject SurveyJSON;
     // Constructor ...
     public SurveyLoader() {
         hasOrigin = false;
@@ -44,7 +44,7 @@ public class SurveyLoader {
 
     // JSON Converters
     public String toJSON() {
-        JSONObject SurveyJSON = new JSONObject();
+        SurveyJSON =  new JSONObject();
         try {
             SurveyJSON.put(LongitudeID, Math.floor(Longitude * 1e7) / 1e7);// Cut at 7 digit to save space
             SurveyJSON.put(LatitudeID, Math.floor(Latitude * 1e7) / 1e7);// Cut at 7 digit to save space
@@ -59,7 +59,7 @@ public class SurveyLoader {
 
     public boolean fromJSON(String StringJSON) {
         if (StringJSON == null) return false;
-        JSONObject SurveyJSON;
+
         try { SurveyJSON = new JSONObject(StringJSON); }
         catch (Exception JSONBuilder)
         { Log.d("SurveyLoader", "SurveyLoader from JSon => Failed to parse ["+StringJSON+"]"); return false;}
@@ -94,6 +94,7 @@ public class SurveyLoader {
     }
 
     public SurveySnapshot getSnapshot() {
+        if (!hasOrigin) return null;
         SurveySnapshot Snapshot = new SurveySnapshot();
         Snapshot.setSpeed(Speed);
         Snapshot.setAccuracy(Accuracy);
