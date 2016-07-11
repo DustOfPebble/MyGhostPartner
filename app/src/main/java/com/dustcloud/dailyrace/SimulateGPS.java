@@ -10,24 +10,30 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class SimulateGPS implements Runnable {
-    private ArrayList<GeoData> RecordsCollection;
+    private ArrayList<String> CollectionJSON;
     ArrayList<File> FilesCollection = null;
 
-    private int Index=0;
-    private int FileIndex=0;
+    private int Index;
+    private int FileIndex;
     private DataManager Notify;
     private Handler EventTrigger = new Handler();
-    private Runnable task = new Runnable() { public void run() { sendGPS();} };
+    private Runnable task = new Runnable() { public void run() { simulate();} };
     private int EventsDelay = 1000;
     private Thread Loading =null;
     private FileInputStream ReadStream = null;
     private FileManager SourcesManager;
+    private SurveyLoader Loader;
 
-    public SimulateGPS(DataManager Manager, FileManager SourceGPS)
+    public SimulateGPS(DataManager Manager, FileManager SourceGPS, SurveyLoader SimulatedGPS)
     {
         SourcesManager = SourceGPS;
         Notify = Manager;
-        RecordsCollection = new ArrayList<GeoData>();
+        Loader = SimulatedGPS;
+
+        CollectionJSON = new ArrayList<String>();
+
+        Index = -1;
+        FileIndex = -1;
 
         // Check access to Directory storage
         File Directory = SourcesManager.getDirectory();
@@ -42,34 +48,37 @@ public class SimulateGPS implements Runnable {
 
     public String load(int Delay)  {
         if (FilesCollection.size() == 0) return "";
-        EventsDelay = Delay;
-        RecordsCollection.clear();
 
-        try { ReadStream = new FileInputStream(FilesCollection.get(FileIndex)); }
-            catch (Exception StreamError) {
-                FileIndex++;
-                if (FileIndex == FilesCollection.size()) FileIndex = 0;
-                return "";
-            }
-
-        // Check if we have a previously loading thread still running
+        // Check if we are already loading a file ...
         if (Loading != null) Loading.interrupt();
-        Loading = new Thread(this);
-        Loading.start();
 
-        String SelectedFile =FilesCollection.get(FileIndex).getName();
+        EventsDelay = Delay;
+        CollectionJSON.clear();
 
         FileIndex++;
         if (FileIndex == FilesCollection.size()) FileIndex = 0;
+
+        // Try to Open selected stream ...
+        try { ReadStream = new FileInputStream(FilesCollection.get(FileIndex)); }
+        catch (Exception StreamError) { return ""; }
+
+        // Pre-loading JSON structure to memory  ...
+        Loading = new Thread(this);
+        Loading.start();
+
+        // Returning selected filename
+        String SelectedFile = FilesCollection.get(FileIndex).getName();
         return SelectedFile;
     }
 
-    public void sendGPS() {
-//        Log.d("SimulateGPS", "Simulating new GPS position ...");
+    public void simulate() {
         EventTrigger.postDelayed(task, EventsDelay);
-        if (RecordsCollection.size() == 0) return;
-        if (Index >= RecordsCollection.size()) Index=0;
-        Notify.processLocationChanged(RecordsCollection.get(Index));
+        if (CollectionJSON.size() == 0) return;
+        if (Index >= CollectionJSON.size()) Index = 0;
+        Loader.fromJSON(CollectionJSON.get(Index));
+        Coordinates GPS = Loader.getCoordinates();
+        Log.d("SimulateGPS", "Simulating ["+GPS.longitude+"°E,"+GPS.latitude+"°N]");
+        Notify.onSimulatedChanged(GPS);
         Index++;
     }
 
@@ -94,30 +103,25 @@ public class SimulateGPS implements Runnable {
         }
 
         Index = 0;
-
-        String TimeString;
         int NbDays = 0;
+        String TimeString;
         try {
             TimeString = Storage.readLine();
             TimeStamps ElapsedDays = new TimeStamps();
             NbDays = ElapsedDays.getDaysAgoFromJSON(TimeString);
         } catch (Exception TimeStampsError) { Log.d("SimulateGPS", "TimeStamps is missing...");}
+        Loader.setDays(NbDays);
 
-        int NbGeoData = 0;
-        String GeoString;
-        GeoData geoInfo;
+        int NbJSON = 0;
+        String StringJSON = "Loading";
         try {
-            while (true) {
-                GeoString = Storage.readLine();
-                geoInfo = new GeoData();
-                if (!geoInfo.fromJSON(GeoString)) break;
-                geoInfo.setElapsedDays(NbDays);
-                geoInfo.setSimulated();
-                NbGeoData++;
-                RecordsCollection.add(geoInfo);
+            while (!StringJSON.isEmpty()) {
+                StringJSON = Storage.readLine();
+                CollectionJSON.add(StringJSON);
+                NbJSON++;
             }
         }
         catch(Exception FileError) {}
-        Log.d("SimulateGPS", NbGeoData +" Records loaded ...");
+        Log.d("SimulateGPS", NbJSON +" Records loaded ...");
     }
 }

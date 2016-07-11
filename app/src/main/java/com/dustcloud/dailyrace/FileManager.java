@@ -46,7 +46,7 @@ public class FileManager {
 
     public File getDirectory() { return Directory; }
 
-    public void resetStreams() {LastFileIndex =0;}
+    public void resetStreams() {LastFileIndex = 0;}
 
     public FileOutputStream getWriteStream() {
         FileOutputStream WriteStream = null;

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+//ToDo: Add Animation on the value rule ...
 public class Monitor extends ImageView {
 
     private RectF Frame;
@@ -99,13 +100,10 @@ public class Monitor extends ImageView {
         Collected = values;
         LiveValue = Collected.get(0);
 
-        long StartRender = SystemClock.elapsedRealtime();
+        Log.d("Monitor","Update requested by Stats ["+Unit+"]");
 
-        if (isVuMeterFits()) buildVuMeter();
+        if (!isVuMeterFits()) buildVuMeter();
         buildHistory();
-
-        long EndRender = SystemClock.elapsedRealtime();
-        Log.d("Monitor", "Bitmaps construction was "+ (EndRender - StartRender)+ " ms.");
 
         // Requesting a View redraw
         invalidate();
@@ -170,7 +168,6 @@ public class Monitor extends ImageView {
 
         // Drawing VuMeter ...
         float VueMeterPixelShift = (Width/2) - (PhysicToPixels *(LiveValue - (int)VuMeterStartValue));
-        if (isVuMeterFits()) buildVuMeter();
         canvas.drawBitmap(VuMeter, VueMeterPixelShift, VuMeterOffset, null);
 
         // Drawing Marker
@@ -221,6 +218,8 @@ public class Monitor extends ImageView {
         float ShortTicksBeginY = VuMeterStrokeWidth/2;
         float ShortTicksEndY = VuMeterShortTicks + ShortTicksBeginY ;
 
+        long StartRender = SystemClock.elapsedRealtime();
+
         while (TicksPhysic <= VuMeterStopValue)
         {
             if ((TicksPhysic >= PhysicMin) && (TicksPhysic <= PhysicMax)) {
@@ -237,13 +236,14 @@ public class Monitor extends ImageView {
             TicksPhysic += TicksStep;
             NbTicksCount++;
         }
+        long EndRender = SystemClock.elapsedRealtime();
+        Log.d("Monitor", "VueMeter rebuild was "+ (EndRender - StartRender)+ " ms.");
     }
 
     private void buildHistory()  {
         HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryHeight), Bitmap.Config.ARGB_8888);
         Canvas DrawHistoryStats = new Canvas(HistoryStats);
 
-//        Log.d("Monitor", "Unit["+Unit+"]->Live:"+LiveValue );
         int[] Classes = new int[NbTicksDisplayed];
         int MaxClasse = 0;
         int ClasseIndex;
@@ -255,7 +255,6 @@ public class Monitor extends ImageView {
             if (ClasseIndex >= NbTicksDisplayed) continue;
             Classes[ClasseIndex]++;
             if (Classes[ClasseIndex] > MaxClasse) MaxClasse = Classes[ClasseIndex];
- //           Log.d("Monitor", "Unit["+Unit+"]->Stats:"+Stats+" Classe["+ClasseIndex+"]="+Classes[ClasseIndex]);
         }
 
         float X = HistoryStrokeWidth/2;
@@ -270,8 +269,5 @@ public class Monitor extends ImageView {
             DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
             X += TicksGraphic;
         }
-
-
     }
-
 }

@@ -12,20 +12,20 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
+//ToDo: Use animation on Map rotation before moving MAP
+//ToDo: add a scrolling feature
 public class MapManager extends ImageView implements EventsProcessGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
     private DataManager BackendService =null;
-    private ArrayList<GeoData> CollectedDisplayed =null;
-    private ArrayList<GeoData> CollectedStatistics =null;
-    private PointF ViewCenter;
-    private PointF GraphicCenter = new PointF(0f,0f) ;
+    private ArrayList<SurveySnapshot> CollectedDisplayed =null;
+    private ArrayList<SurveySnapshot> CollectedStatistics =null;
+    private Vector ViewCenter;
+    private Vector GraphicCenter = new Vector(0f,0f) ;
     private Paint LineMode;
     private Paint FillMode;
-    private GeoData InUseGeo = null;
+    private SurveySnapshot LastSnapshot = null;
     private RectF searchZone = new RectF();
-
-
 
     public MapManager(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,8 +34,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         LineMode.setStyle(Paint.Style.STROKE);
         FillMode = new Paint();
 
-        CollectedDisplayed = new ArrayList<GeoData>();
-        CollectedStatistics = new ArrayList<GeoData>();
+        CollectedDisplayed = new ArrayList<SurveySnapshot>();
+        CollectedStatistics = new ArrayList<SurveySnapshot>();
     }
 
     public void setBackend(DataManager backend) {
@@ -44,26 +44,26 @@ public class MapManager extends ImageView implements EventsProcessGPS {
     }
 
     @Override
-    public void processLocationChanged(GeoData geoInfo) {
+    public void processLocationChanged(SurveySnapshot Snapshot) {
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
         if (BackendService == null) return;
 
-        InUseGeo = geoInfo;
-        ViewCenter = geoInfo.getCoordinate();
-        PointF Size;
+        LastSnapshot = Snapshot;
+        ViewCenter = Snapshot.copy();
+        Vector Size;
 
         // Extracting active point around first because we will make a List copy ...
         Size = BackendService.getExtractStatisticsSize();
         searchZone.set(this.ViewCenter.x - Size.x / 2, this.ViewCenter.y - Size.y / 2,
                        this.ViewCenter.x + Size.x / 2, this.ViewCenter.y + Size.y / 2  );
-        CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
+        CollectedStatistics = BackendService.filter(BackendService.extract(searchZone),Snapshot);
 
         // Extracting Map background at least to avoid list copy...
         Size = BackendService.getExtractDisplayedSize();
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
         MetersToPixels.set((float)MinSize / Size.x,(float)MinSize / Size.y);
-        Size = new PointF(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
+        Size = new Vector(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
         float Extract = Math.max(Size.x, Size.y);
         searchZone.set(this.ViewCenter.x - Extract/2,this.ViewCenter.y - Extract/2,
                        this.ViewCenter.x + Extract/2, this.ViewCenter.y + Extract/2);
@@ -82,20 +82,20 @@ public class MapManager extends ImageView implements EventsProcessGPS {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        PointF Pixel = new PointF(0f,0f); // Allocate because it reused directly
+        Vector Pixel = new Vector(0f,0f); // Allocate because it reused directly
         Float MeterToPixelFactor = Math.max(MetersToPixels.x, MetersToPixels.y) ;
-        PointF Coords;
+        Vector Coords;
         Float Radius;
 
         // Avoid crash during first initialisation
-        if (null == InUseGeo ) {super.onDraw(canvas);return;}
+        if (null == LastSnapshot) {super.onDraw(canvas);return;}
 
         long StartRender = SystemClock.elapsedRealtime();
 
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
-        canvas.rotate(-InUseGeo.getBearing(),GraphicCenter.x,GraphicCenter.y);
-        Log.d("MapManager","Rotation is "+InUseGeo.getBearing()+"°");
+        canvas.rotate(-LastSnapshot.getBearing(),GraphicCenter.x,GraphicCenter.y);
+        Log.d("MapManager","Rotation is "+ LastSnapshot.getBearing()+"°");
 
         // Do the drawing
         Log.d("MapManager", "Drawing "+ CollectedDisplayed.size()+ " extracted points");
@@ -105,8 +105,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         LineMode.setStrokeWidth(GraphicsConstants.ExtractedLineThickness);
         FillMode.setColor(GraphicsConstants.ExtractedColor);
         FillMode.setAlpha(GraphicsConstants.ExtractedFillTransparency);
-        for (GeoData Marker : CollectedDisplayed) {
-            Coords = Marker.getCoordinate();
+        for (SurveySnapshot Marker : CollectedDisplayed) {
+            Coords = Marker.copy();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
                     (Coords.x - ViewCenter.x)* MeterToPixelFactor + GraphicCenter.x ,
@@ -124,8 +124,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         LineMode.setStrokeWidth(GraphicsConstants.FilteredLineThickness);
         FillMode.setColor(GraphicsConstants.FilteredColor);
         FillMode.setAlpha(GraphicsConstants.FilteredFillTransparency);
-        for (GeoData Marker : CollectedStatistics) {
-            Coords = Marker.getCoordinate();
+        for (SurveySnapshot Marker : CollectedStatistics) {
+            Coords = Marker.copy();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
                     (Coords.x - ViewCenter.x)* MeterToPixelFactor + GraphicCenter.x ,
@@ -141,7 +141,7 @@ public class MapManager extends ImageView implements EventsProcessGPS {
             LineMode.setColor(GraphicsConstants.MarkerColor);
             FillMode.setColor(GraphicsConstants.MarkerColor);
             LineMode.setStrokeWidth(GraphicsConstants.MarkerLineThickness);
-            Radius = MeterToPixelFactor * InUseGeo.getAccuracy();
+            Radius = MeterToPixelFactor * LastSnapshot.getAccuracy();
             Float MinRadius = (Radius/10 < 10)? 10:Radius/10;
             Pixel.set(GraphicCenter.x,GraphicCenter.y);
             canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);

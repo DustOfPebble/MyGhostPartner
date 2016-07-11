@@ -2,7 +2,6 @@ package com.dustcloud.dailyrace;
 
 import android.app.Activity;
 import android.graphics.BitmapFactory;
-import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +10,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-
+// ToDo: inflate XML Widget from explicit call instead of embedding into Activity XML
 public class Docking extends Activity implements EventsProcessGPS {
 
     private Handler EventTrigger = new Handler();
@@ -74,14 +73,13 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider.registerManager(this);
         GPSProvider.setMode(BackendService.getModeGPS());
 
-        if (BluetoothConstants.isLowEnergy) {
+        if (BluetoothConstants.hasLowEnergyCapabilities) {
             HeartBeatSensor = (ControlSwitch) findViewById(R.id.heartbeat_provider);
             HeartBeatSensor.registerModes(SharedConstants.ConnectedHeartBeat, SharedConstants.DisconnectedHeartBeat);
             HeartBeatSensor.registerManager(this);
             HeartBeatSensor.setMode(BackendService.getModeHeartBeat());
             HeartBeatSensor.setVisibility(View.VISIBLE);
         }
-
 
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
@@ -106,9 +104,6 @@ public class Docking extends Activity implements EventsProcessGPS {
         Speeds = new ArrayList<Float>();
         HeartBeats = new ArrayList<Float>();
 
-        EventTrigger=new Handler();
-        // Registering Timeout triggers
-        EventTrigger.postDelayed(task,EventsDelay);
     }
 
     @Override
@@ -121,9 +116,6 @@ public class Docking extends Activity implements EventsProcessGPS {
         if (BackendService.getModeGPS() == SharedConstants.ReplayedGPS) {
             Toast.makeText(this,getResources().getString(R.string.GPS_replay_background), Toast.LENGTH_SHORT).show();
         }
-
-        // Remove all registered Timeout triggers
-        EventTrigger.removeCallbacks(task);
     }
 
     @Override
@@ -211,12 +203,8 @@ public class Docking extends Activity implements EventsProcessGPS {
         SleepLocker.setMode(BackendService.getModeSleep());
 
         // Force a refreshed display
-        GeoData LastGPS = BackendService.getLastUpdate();
-        if (null == LastGPS) {
-            // Registering Timeout triggers
-            EventTrigger.postDelayed(task,EventsDelay);
-            return;
-        }
+        SurveySnapshot LastGPS = BackendService.getLastSnapshot();
+        if (null == LastGPS) { return; }
         // Refreshing Statistics
         processLocationChanged(LastGPS);
         // Refreshing Map Display
@@ -224,44 +212,38 @@ public class Docking extends Activity implements EventsProcessGPS {
     }
 
     @Override
-    public void processLocationChanged(GeoData geoInfo){
+    public void processLocationChanged(SurveySnapshot Snapshot){
         if (BackendService == null) return;
 
-        // Remove all registered Timeout triggers
-        EventTrigger.removeCallbacks(task);
-
         // Setting collection area
-        PointF SizeSelection = BackendService.getExtractStatisticsSize();
-        PointF ViewCenter = geoInfo.getCoordinate();
+        Vector SizeSelection = BackendService.getExtractStatisticsSize();
+        Vector ViewCenter = Snapshot.copy();
         searchZone.set(ViewCenter.x - SizeSelection.x / 2, ViewCenter.y - SizeSelection.y / 2,
                        ViewCenter.x + SizeSelection.x / 2, ViewCenter.y + SizeSelection.y / 2  );
 
         // Collecting data from backend
-        ArrayList<GeoData> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone));
-
-        // Registering Timeout triggers
-        EventTrigger.postDelayed(task,EventsDelay);
+        ArrayList<SurveySnapshot> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone),Snapshot);
 
         // Updating Speeds Statistics
-        LeftMonitor.setVisibility(View.VISIBLE);
+        if (LeftMonitor.getVisibility() == View.INVISIBLE) LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
-        if (geoInfo.isLive()) Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
-        for (GeoData item: CollectedStatistics) {
+        Speeds.add(Float.valueOf(Snapshot.getSpeed()*3.6f));
+        for (SurveySnapshot item: CollectedStatistics) {
             Speeds.add(Float.valueOf(item.getSpeed()*3.6f));
         }
-        if (Speeds.isEmpty()) Speeds.add(Float.valueOf(geoInfo.getSpeed()*3.6f));
+        if (Speeds.isEmpty()) Speeds.add(Float.valueOf(Snapshot.getSpeed()*3.6f));
         LeftMonitor.updateStatistics(Speeds);
 
         // Updating HeartBeats Statistics
-        if (geoInfo.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
-        RightMonitor.setVisibility(View.VISIBLE);
+        if (Snapshot.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
+        if (RightMonitor.getVisibility() == View.INVISIBLE) RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
-        if (geoInfo.isLive()) HeartBeats.add(Float.valueOf(geoInfo.getHeartbeat()));
-        for (GeoData item: CollectedStatistics) {
+        HeartBeats.add(Float.valueOf(Snapshot.getHeartbeat()));
+        for (SurveySnapshot item: CollectedStatistics) {
             if (item.getHeartbeat() == -1) continue;
             HeartBeats.add(Float.valueOf(item.getHeartbeat()));
         }
-        if (HeartBeats.isEmpty()) HeartBeats.add(Float.valueOf(geoInfo.getHeartbeat()));
+        if (HeartBeats.isEmpty()) HeartBeats.add(Float.valueOf(Snapshot.getHeartbeat()));
         RightMonitor.updateStatistics(HeartBeats);
     }
 }

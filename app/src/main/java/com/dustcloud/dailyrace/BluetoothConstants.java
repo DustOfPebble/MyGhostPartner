@@ -5,10 +5,10 @@ import android.os.Build;
 public class BluetoothConstants {
 
     // Bluetooth Low Energy Enabled
-    public static final boolean isLowEnergy =(android.os.Build.VERSION.SDK_INT >=  Build.VERSION_CODES.JELLY_BEAN_MR2);
+    public static final boolean hasLowEnergyCapabilities =(android.os.Build.VERSION.SDK_INT >=  Build.VERSION_CODES.JELLY_BEAN_MR2);
 
     // Searching Timeout
-    public static int SCAN_TIMEOUT = 10000; // 60 seconds
+    public static int SCAN_TIMEOUT = 60000; // 60 seconds
 
     // Used During Scanning
     public  static final int TYPE_UUID16 = 0x3; // UUID id Expected Format

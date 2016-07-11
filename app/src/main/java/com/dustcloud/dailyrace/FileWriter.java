@@ -8,10 +8,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
-
+//ToDo: check about number of record on exit if we need to write file (Avoid empty files).
 public class FileWriter {
     FileManager FilesHandler = null;
-    private ArrayList<GeoData> geoDataBuffer = null;
+    private ArrayList<String> BufferJSON = null;
     private int WriteLoopWait = 5 * 60000; // Write every 5 minutes
     static FileOutputStream Stream = null;
     static BufferedWriter Storage =null;
@@ -20,49 +20,53 @@ public class FileWriter {
     private Handler trigger = new Handler();
     private Runnable task = new Runnable() { public void run() { triggeredWrite();} };
 
-
-    public FileWriter(FileManager FilesHandler) throws IOException{
+    public FileWriter(FileManager FilesHandler) {
         this.FilesHandler = FilesHandler;
-        geoDataBuffer = new ArrayList();
+        BufferJSON = new ArrayList();
         isHeaderWritten = false;
         trigger.postDelayed(task, WriteLoopWait);
         Log.d("FileWriter", "Initializing next write in "+WriteLoopWait/1000+"s");
     }
 
-    public void writeGeoData(GeoData geoInfo) { geoDataBuffer.add(geoInfo); }
+    public void appendJSON(String StringJSON) { BufferJSON.add(StringJSON); }
 
     public void shutdown() {
-        triggeredWrite();
         trigger.removeCallbacks(task);
+        flushBuffer();
     }
 
     public void triggeredWrite() {
-        if (geoDataBuffer.size() == 0) return;
-        try { flushBuffer(); }
-        catch (Exception BufferWriteFailed) {Log.d("FileWriter", "Failed to write GPS datas");}
+        flushBuffer();
         trigger.postDelayed(task, WriteLoopWait);
         Log.d("FileWriter", "Triggering next write in "+WriteLoopWait/1000+"s");
     }
 
-    public void flushBuffer() throws IOException {
+    public void flushBuffer() {
+        if (BufferJSON.size() == 0) return;
         Stream = FilesHandler.getWriteStream();
-        Log.d("FileWriter","Writing "+geoDataBuffer.size()+" GeoData elements of buffer." );
-        Storage = new  BufferedWriter(new OutputStreamWriter(Stream, "UTF-8"));
+        Log.d("FileWriter", "Writing " + BufferJSON.size() + "JSON elements of buffer.");
+        try {
+            Storage = new BufferedWriter(new OutputStreamWriter(Stream, "UTF-8"));
+        } catch (Exception BufferError) {return;}
 
-        if (!isHeaderWritten) {
-            TimeStamps Now = new TimeStamps();
-            Storage.write(Now.getNowToJSON());
-            Storage.newLine();
-            isHeaderWritten =true;
-        }
+        try {
+            if (!isHeaderWritten) {
+                TimeStamps Now = new TimeStamps();
+                Storage.write(Now.getNowToJSON());
+                Storage.newLine();
+                isHeaderWritten = true;
+            }
+        } catch (Exception HeaderError) {return;}
 
-        for (GeoData geoInfo : geoDataBuffer) {
-            Storage.write(geoInfo.toJSON());
-            Storage.newLine();
-        }
-        Storage.flush();
-        Storage.close();
-        geoDataBuffer.clear();
+        try {
+            for (String StringJSON : BufferJSON) {
+                Storage.write(StringJSON);
+                Storage.newLine();
+            }
+            Storage.flush();
+            Storage.close();
+            BufferJSON.clear();
+        } catch (Exception FlushBufferError) {return;}
     }
 }
 
