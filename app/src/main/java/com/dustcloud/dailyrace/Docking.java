@@ -104,9 +104,6 @@ public class Docking extends Activity implements EventsProcessGPS {
         Speeds = new ArrayList<Float>();
         HeartBeats = new ArrayList<Float>();
 
-        EventTrigger=new Handler();
-        // Registering Timeout triggers
-        EventTrigger.postDelayed(task,EventsDelay);
     }
 
     @Override
@@ -119,9 +116,6 @@ public class Docking extends Activity implements EventsProcessGPS {
         if (BackendService.getModeGPS() == SharedConstants.ReplayedGPS) {
             Toast.makeText(this,getResources().getString(R.string.GPS_replay_background), Toast.LENGTH_SHORT).show();
         }
-
-        // Remove all registered Timeout triggers
-        EventTrigger.removeCallbacks(task);
     }
 
     @Override
@@ -210,11 +204,7 @@ public class Docking extends Activity implements EventsProcessGPS {
 
         // Force a refreshed display
         SurveySnapshot LastGPS = BackendService.getLastSnapshot();
-        if (null == LastGPS) {
-            // Registering Timeout triggers
-            EventTrigger.postDelayed(task,EventsDelay);
-            return;
-        }
+        if (null == LastGPS) { return; }
         // Refreshing Statistics
         processLocationChanged(LastGPS);
         // Refreshing Map Display
@@ -225,9 +215,6 @@ public class Docking extends Activity implements EventsProcessGPS {
     public void processLocationChanged(SurveySnapshot Snapshot){
         if (BackendService == null) return;
 
-        // Remove all registered Timeout triggers
-        EventTrigger.removeCallbacks(task);
-
         // Setting collection area
         Vector SizeSelection = BackendService.getExtractStatisticsSize();
         Vector ViewCenter = Snapshot.copy();
@@ -237,11 +224,8 @@ public class Docking extends Activity implements EventsProcessGPS {
         // Collecting data from backend
         ArrayList<SurveySnapshot> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone),Snapshot);
 
-        // Registering Timeout triggers
-        EventTrigger.postDelayed(task,EventsDelay);
-
         // Updating Speeds Statistics
-        LeftMonitor.setVisibility(View.VISIBLE);
+        if (LeftMonitor.getVisibility() == View.INVISIBLE) LeftMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
         Speeds.add(Float.valueOf(Snapshot.getSpeed()*3.6f));
         for (SurveySnapshot item: CollectedStatistics) {
@@ -252,7 +236,7 @@ public class Docking extends Activity implements EventsProcessGPS {
 
         // Updating HeartBeats Statistics
         if (Snapshot.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
-        RightMonitor.setVisibility(View.VISIBLE);
+        if (RightMonitor.getVisibility() == View.INVISIBLE) RightMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
         HeartBeats.add(Float.valueOf(Snapshot.getHeartbeat()));
         for (SurveySnapshot item: CollectedStatistics) {
