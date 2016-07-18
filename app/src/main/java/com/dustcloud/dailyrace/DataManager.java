@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 
 import java.util.ArrayList;
 //ToDo: Reload DB periodically with a smaller SearchableZone to reduce memory footprint
@@ -21,8 +22,11 @@ public class DataManager extends Application implements LocationListener {
     private SurveyLoader SurveySimulatedGPS; // processing for Simulated GPS
     private SurveyLoader SurveyFilesGPS; // processing for Files loading GPS
 
-
     private int LastHeartBeat;
+    private Handler HeartBeatWatchdog = new Handler();
+    private Runnable HeartBeatTimeout = new Runnable() { public void run() { LostHeartBeatSensor();} };
+    private int HeartBeatWatchdogDelay = 5000;
+
     private int ActivityMode; // Is Activity is currently in Foreground or Background
     static private String BackendMessage;
 
@@ -187,6 +191,9 @@ public class DataManager extends Application implements LocationListener {
 
     // Called from HeartbeatService when heartbeat is updated
     public void processHeartBeatChanged(int Frequency)  {
+        HeartBeatWatchdog.removeCallbacks(HeartBeatTimeout);
+        HeartBeatWatchdog.postDelayed(HeartBeatTimeout,HeartBeatWatchdogDelay);
+
         if (ModeGPS == SharedConstants.ReplayedGPS) return;
         LastHeartBeat = Frequency;
     }
@@ -240,6 +247,10 @@ public class DataManager extends Application implements LocationListener {
             Filtered.add(Extracted);
         }
         return Filtered;
+    }
+
+    private void LostHeartBeatSensor() {
+        ModeHeartBeat = SharedConstants.DisconnectedHeartBeat;
     }
 
     @Override

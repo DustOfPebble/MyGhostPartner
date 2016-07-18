@@ -215,6 +215,9 @@ public class Docking extends Activity implements EventsProcessGPS {
     public void processLocationChanged(SurveySnapshot Snapshot){
         if (BackendService == null) return;
 
+        // Refresh HeartBeat button state ...
+        HeartBeatSensor.setMode(BackendService.getModeHeartBeat());
+
         // Setting collection area
         Vector SizeSelection = BackendService.getExtractStatisticsSize();
         Vector ViewCenter = Snapshot.copy();

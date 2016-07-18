@@ -45,6 +45,7 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
     }
 
     public void setMode(short modeEvent) {
+        if (modeEvent == Status) return;
         Status = modeEvent;
         if (Status == highStatus)  this.setImageDrawable(highIcon);
         if (Status == lowStatus)  this.setImageDrawable(lowIcon);
