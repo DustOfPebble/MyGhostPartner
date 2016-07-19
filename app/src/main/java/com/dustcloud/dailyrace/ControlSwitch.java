@@ -5,10 +5,11 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Vibrator;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-public class ControlSwitch extends ImageView implements View.OnClickListener {
+public class ControlSwitch extends ImageView implements View.OnTouchListener {
 
     private Drawable highIcon = null;
     private Drawable lowIcon = null;
@@ -34,7 +35,7 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
         }
         finally { attributes.recycle();}
 
-         this.setOnClickListener(this);
+         this.setOnTouchListener(this);
          HapticFeedback = (Vibrator)  context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
@@ -60,8 +61,18 @@ public class ControlSwitch extends ImageView implements View.OnClickListener {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    public void onClick(View V) {
-        Controler.onStatusChanged( ((Status == highStatus) ? lowStatus : highStatus) );
-        HapticFeedback.vibrate(50);
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            HapticFeedback.vibrate(100);
+            return  true;
+        }
+
+        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            Controler.onStatusChanged(((Status == highStatus) ? lowStatus : highStatus));
+            return true;
+        }
+
+        return false;
     }
 }
