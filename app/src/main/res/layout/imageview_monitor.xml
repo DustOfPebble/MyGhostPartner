@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.dustcloud.dailyrace.Monitor xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/monitor"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:layout_width="160dp"
+    android:layout_height="120dp"
     android:background="@drawable/monitor_frame"
     android:visibility="invisible"
     />

@@ -118,6 +118,9 @@ public class Monitor extends ImageView {
         this.setMeasuredDimension(Width, Height);
         if ((Width == 0) || (Height == 0)) return;
 
+        if (null == LoadedIcon) return;
+        if (null == LoadedMarker) return;
+
         Padding = Math.min(Width/20, Height/20);
 
         int IconSize = Math.max( Height/5, Width/5);
