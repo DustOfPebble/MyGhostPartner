@@ -3,20 +3,17 @@ package com.dustcloud.dailyrace;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-// ToDo: inflate XML Widget from explicit call instead of embedding into Activity XML
 public class Docking extends Activity implements EventsProcessGPS {
 
     private Handler EventTrigger = new Handler();
@@ -91,16 +88,22 @@ public class Docking extends Activity implements EventsProcessGPS {
         RelativeLayout DockingManager = (RelativeLayout) findViewById(R.id.manage_docking);
         LayoutInflater fromXML = LayoutInflater.from(this);
 
+        Point ScreenSize = new Point();
+        getWindowManager().getDefaultDisplay().getSize(ScreenSize);
+        int Bounds = Math.min(ScreenSize.x,ScreenSize.y);
+        int SecondaryWidgetWidth = (int)(Bounds * 0.45);
+        int PrimaryWidgetWidth = (int)(Bounds * 0.70);
+
         // Hardcoded settings for Speed in left Monitor
         LeftMonitor = (Monitor) fromXML.inflate(R.layout.imageview_monitor, null);
 
-        RelativeLayout.LayoutParams LeftMonitorConfig = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        RelativeLayout.LayoutParams LeftMonitorConfig = new RelativeLayout.LayoutParams();
-       LeftMonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-       LeftMonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        RelativeLayout.LayoutParams LeftMonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int)(SecondaryWidgetWidth * SharedConstants.WidthToHeightFactor));
+
+        LeftMonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        LeftMonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+ //      LeftMonitorConfig.addRule(RelativeLayout.BELOW, GPSProvider.getId());
         LeftMonitor.setLayoutParams(LeftMonitorConfig);
 
-//        LeftMonitor = (Monitor) findViewById(R.id.left_monitor);
         LeftMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
         LeftMonitor.setNbTicksDisplayed(18);
         LeftMonitor.setNbTicksLabel(5);
@@ -108,9 +111,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         LeftMonitor.setPhysicRange(0f,80f);
         LeftMonitor.setUnit("km/h");
         LeftMonitor.setVisibility(View.INVISIBLE);
-//        WindowManager.addView(LeftMonitor,LeftMonitorConfig);
-//        DockingManager.addView(LeftMonitor);
-        this.addContentView(LeftMonitor,LeftMonitorConfig);
+        DockingManager.addView(LeftMonitor,LeftMonitorConfig);
 
         // Hardcoded settings for Heartbeat in right Monitor
         RightMonitor = (Monitor) findViewById(R.id.right_monitor);

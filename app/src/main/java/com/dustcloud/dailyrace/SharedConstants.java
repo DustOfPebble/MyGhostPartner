@@ -26,6 +26,7 @@ public class SharedConstants {
     static public final short SwitchForeground=100;
     static public final short SwitchBackground=101;
 
-    static public final float SpeedMatchingFactor = 0.1f; // 10%
     static public final float BearingMatchingGap = 60f; // 60°
+
+    static public final float WidthToHeightFactor = 3f/4f;
 }

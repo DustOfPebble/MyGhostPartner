@@ -9,12 +9,13 @@ import android.graphics.RectF;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 
 //ToDo: Add Animation on the value rule ...
-public class Monitor extends ImageView {
+public class Monitor extends ImageView implements View.OnClickListener {
 
     private RectF Frame;
     private Paint FramePainter;
@@ -83,6 +84,8 @@ public class Monitor extends ImageView {
         FramePainter = new Paint();
         FramePainter.setStyle(Paint.Style.STROKE);
         FramePainter.setColor(GraphicsConstants.BorderColor);
+
+        setOnClickListener(this);
     }
 
     public void setNbTicksDisplayed(int NbTicksDisplayed) { this.NbTicksDisplayed = NbTicksDisplayed; }
@@ -272,5 +275,12 @@ public class Monitor extends ImageView {
             DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
             X += TicksGraphic;
         }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view == null) return;
+        if (view != this) return;
+        
     }
 }
