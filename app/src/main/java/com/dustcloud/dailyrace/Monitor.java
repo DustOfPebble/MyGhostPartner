@@ -7,15 +7,21 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 
 //ToDo: Add Animation on the value rule ...
-public class Monitor extends ImageView implements View.OnClickListener {
+public class Monitor extends ImageView implements View.OnTouchListener {
+
+    private Docking Controler = null;
+    private short ID =-1;
+    private Vibrator HapticFeedback;
 
     private RectF Frame;
     private Paint FramePainter;
@@ -85,8 +91,12 @@ public class Monitor extends ImageView implements View.OnClickListener {
         FramePainter.setStyle(Paint.Style.STROKE);
         FramePainter.setColor(GraphicsConstants.BorderColor);
 
-        setOnClickListener(this);
+        HapticFeedback = (Vibrator)  context.getSystemService(Context.VIBRATOR_SERVICE);
+
+        this.setOnTouchListener(this);
     }
+    public  void registerManager(Docking controler) { this.Controler = controler;}
+    public  void setID(short ID) {this.ID= ID;}
 
     public void setNbTicksDisplayed(int NbTicksDisplayed) { this.NbTicksDisplayed = NbTicksDisplayed; }
     public void setNbTicksLabel(int NbTicksLabel) { this.NbTicksLabel = NbTicksLabel; }
@@ -106,7 +116,7 @@ public class Monitor extends ImageView implements View.OnClickListener {
         Log.d("Monitor","Update requested by Stats ["+Unit+"]");
 
         if (!isVuMeterFits()) buildVuMeter();
-        buildHistory();
+        buildStatistics();
 
         // Requesting a View redraw
         invalidate();
@@ -157,6 +167,11 @@ public class Monitor extends ImageView implements View.OnClickListener {
         FramePainter.setStrokeWidth(StrokeWidth);
         Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
         Radius = GraphicsConstants.FrameRadius * FramePixelsFactor;
+
+        if (VuMeterStartValue == VuMeterStopValue) return; // Can't build a VueMeter
+        buildVuMeter();
+        if (Collected.isEmpty()) return; // Can't build Statistics
+        buildStatistics();
     }
 
     @Override
@@ -246,7 +261,7 @@ public class Monitor extends ImageView implements View.OnClickListener {
         Log.d("Monitor", "VueMeter rebuild was "+ (EndRender - StartRender)+ " ms.");
     }
 
-    private void buildHistory()  {
+    private void buildStatistics()  {
         HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryHeight), Bitmap.Config.ARGB_8888);
         Canvas DrawHistoryStats = new Canvas(HistoryStats);
 
@@ -278,9 +293,20 @@ public class Monitor extends ImageView implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view) {
-        if (view == null) return;
-        if (view != this) return;
-        
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (view != this) return false;
+
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+            HapticFeedback.vibrate(100);
+            return  true;
+        }
+
+        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+            Controler.moveWidget(this.ID);
+            return true;
+        }
+
+        return false;
     }
+
 }

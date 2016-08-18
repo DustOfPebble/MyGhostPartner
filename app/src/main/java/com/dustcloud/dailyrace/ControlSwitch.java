@@ -63,13 +63,15 @@ public class ControlSwitch extends ImageView implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (view != this) return false;
+
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             HapticFeedback.vibrate(100);
             return  true;
         }
 
         if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            Controler.onStatusChanged(((Status == highStatus) ? lowStatus : highStatus));
+            Controler.onButtonStatusChanged(((Status == highStatus) ? lowStatus : highStatus));
             return true;
         }
 

@@ -1,7 +1,6 @@
 package com.dustcloud.dailyrace;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.RectF;
@@ -26,8 +25,10 @@ public class Docking extends Activity implements EventsProcessGPS {
     private ControlSwitch GPSProvider = null;
     private ControlSwitch HeartBeatSensor = null;
 
-    private Monitor LeftMonitor = null;
-    private Monitor RightMonitor = null;
+    private Monitor SpeedMonitor = null;
+    private short SpeedWidgetMode = -1;
+    private Monitor HeartbeatMonitor = null;
+    private short HeartbeatWidgetMode = -1;
 
     private MapManager MapView = null;
 
@@ -84,47 +85,80 @@ public class Docking extends Activity implements EventsProcessGPS {
             HeartBeatSensor.setVisibility(View.VISIBLE);
         }
 
-        // Add dynamically monitors views
-        RelativeLayout DockingManager = (RelativeLayout) findViewById(R.id.manage_docking);
         LayoutInflater fromXML = LayoutInflater.from(this);
 
+        // Hardcoded settings for Speed in left Monitor
+        SpeedMonitor = (Monitor) fromXML.inflate(R.layout.widget_monitor, null);
+        SpeedMonitor.registerManager(this);
+        SpeedMonitor.setID(SharedConstants.SpeedStatsID);
+        SpeedWidgetMode = SharedConstants.LeftBottomWidget;
+        SpeedMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
+        SpeedMonitor.setNbTicksDisplayed(18);
+        SpeedMonitor.setNbTicksLabel(5);
+        SpeedMonitor.setTicksStep(1f);
+        SpeedMonitor.setPhysicRange(0f,80f);
+        SpeedMonitor.setUnit("km/h");
+        SpeedMonitor.setVisibility(View.INVISIBLE);
+
+        // Hardcoded settings for Heartbeat in right Monitor
+        HeartbeatMonitor = (Monitor) fromXML.inflate(R.layout.widget_monitor, null);
+        HeartbeatMonitor.registerManager(this);
+        HeartbeatMonitor.setID(SharedConstants.HeatbeatStatsID);
+        HeartbeatWidgetMode = SharedConstants.RightBottomWidget;
+        HeartbeatMonitor.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb));
+        HeartbeatMonitor.setNbTicksDisplayed(22);
+        HeartbeatMonitor.setNbTicksLabel(10);
+        HeartbeatMonitor.setTicksStep(1f);
+        HeartbeatMonitor.setPhysicRange(20f,220f);
+        HeartbeatMonitor.setUnit("bpm");
+        HeartbeatMonitor.setVisibility(View.INVISIBLE);
+
+        Speeds = new ArrayList<Float>();
+        HeartBeats = new ArrayList<Float>();
+
+        applyWidgetsLayout();
+    }
+
+    private void applyWidgetsLayout(){
+        RelativeLayout DockingManager = (RelativeLayout) findViewById(R.id.manage_docking);
         Point ScreenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(ScreenSize);
         int Bounds = Math.min(ScreenSize.x,ScreenSize.y);
         int SecondaryWidgetWidth = (int)(Bounds * 0.45);
-        int PrimaryWidgetWidth = (int)(Bounds * 0.70);
+        int PrimaryWidgetWidth = (int)(Bounds * 0.65);
+        RelativeLayout.LayoutParams MonitorConfig;
 
-        // Hardcoded settings for Speed in left Monitor
-        LeftMonitor = (Monitor) fromXML.inflate(R.layout.imageview_monitor, null);
+        // Managing SpeedMonitor Widget
+        if (SpeedWidgetMode == SharedConstants.LeftBottomWidget) {
+            MonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * SharedConstants.WidthToHeightFactor));
+            MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+            MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        }
+        else {
+            MonitorConfig = new RelativeLayout.LayoutParams(PrimaryWidgetWidth, (int) (PrimaryWidgetWidth * SharedConstants.WidthToHeightFactor));
+            MonitorConfig.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+         }
 
-        RelativeLayout.LayoutParams LeftMonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int)(SecondaryWidgetWidth * SharedConstants.WidthToHeightFactor));
+        SpeedMonitor.setLayoutParams(MonitorConfig);
+        DockingManager.removeView(SpeedMonitor);
+        DockingManager.addView(SpeedMonitor,MonitorConfig);
 
-        LeftMonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        LeftMonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
- //      LeftMonitorConfig.addRule(RelativeLayout.BELOW, GPSProvider.getId());
-        LeftMonitor.setLayoutParams(LeftMonitorConfig);
+        // Managing HeartbeatMonitor Widget
+        if (HeartbeatWidgetMode == SharedConstants.RightBottomWidget) {
+            MonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * SharedConstants.WidthToHeightFactor));
+            MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+            MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        }
+        else {
+            MonitorConfig = new RelativeLayout.LayoutParams(PrimaryWidgetWidth, (int) (PrimaryWidgetWidth * SharedConstants.WidthToHeightFactor));
+            MonitorConfig.addRule(RelativeLayout.CENTER_HORIZONTAL);
+            MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        }
 
-        LeftMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
-        LeftMonitor.setNbTicksDisplayed(18);
-        LeftMonitor.setNbTicksLabel(5);
-        LeftMonitor.setTicksStep(1f);
-        LeftMonitor.setPhysicRange(0f,80f);
-        LeftMonitor.setUnit("km/h");
-        LeftMonitor.setVisibility(View.INVISIBLE);
-        DockingManager.addView(LeftMonitor,LeftMonitorConfig);
-
-        // Hardcoded settings for Heartbeat in right Monitor
-        RightMonitor = (Monitor) findViewById(R.id.right_monitor);
-        RightMonitor.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb));
-        RightMonitor.setNbTicksDisplayed(22);
-        RightMonitor.setNbTicksLabel(10);
-        RightMonitor.setTicksStep(1f);
-        RightMonitor.setPhysicRange(20f,220f);
-        RightMonitor.setUnit("bpm");
-        RightMonitor.setVisibility(View.INVISIBLE);
-
-        Speeds = new ArrayList<Float>();
-        HeartBeats = new ArrayList<Float>();
+        HeartbeatMonitor.setLayoutParams(MonitorConfig);
+        DockingManager.removeView(HeartbeatMonitor);
+        DockingManager.addView(HeartbeatMonitor,MonitorConfig);
 
     }
 
@@ -152,7 +186,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         loadStatus();
     }
 
-    public void onStatusChanged(short Status) {
+    public void onButtonStatusChanged(short Status) {
         if (Status == SharedConstants.SleepLocked) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             BackendService.storeModeSleep(Status);
@@ -197,6 +231,26 @@ public class Docking extends Activity implements EventsProcessGPS {
         if (Status == SharedConstants.DisconnectedHeartBeat) {
             BackendService.storeModeHeartBeat(Status);
         }
+    }
+
+    public void moveWidget(short ID){
+        if (ID == SharedConstants.SpeedStatsID){
+            if (SpeedWidgetMode == SharedConstants.LeftBottomWidget) {
+                SpeedWidgetMode = SharedConstants.CenterTopWidget;
+                HeartbeatWidgetMode = SharedConstants.RightBottomWidget;
+            }
+            else SpeedWidgetMode = SharedConstants.LeftBottomWidget;
+        }
+
+        if (ID == SharedConstants.HeatbeatStatsID) {
+            if (HeartbeatWidgetMode == SharedConstants.RightBottomWidget) {
+                HeartbeatWidgetMode = SharedConstants.CenterTopWidget;
+                SpeedWidgetMode = SharedConstants.LeftBottomWidget;
+            }
+            else HeartbeatWidgetMode = SharedConstants.RightBottomWidget;
+        }
+
+        applyWidgetsLayout();
     }
 
     @Override
@@ -250,18 +304,18 @@ public class Docking extends Activity implements EventsProcessGPS {
         ArrayList<SurveySnapshot> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone),Snapshot);
 
         // Updating Speeds Statistics
-        if (LeftMonitor.getVisibility() == View.INVISIBLE) LeftMonitor.setVisibility(View.VISIBLE);
+        if (SpeedMonitor.getVisibility() == View.INVISIBLE) SpeedMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
         Speeds.add(Float.valueOf(Snapshot.getSpeed()*3.6f));
         for (SurveySnapshot item: CollectedStatistics) {
             Speeds.add(Float.valueOf(item.getSpeed()*3.6f));
         }
         if (Speeds.isEmpty()) Speeds.add(Float.valueOf(Snapshot.getSpeed()*3.6f));
-        LeftMonitor.updateStatistics(Speeds);
+        SpeedMonitor.updateStatistics(Speeds);
 
         // Updating HeartBeats Statistics
-        if (Snapshot.getHeartbeat() == -1) { RightMonitor.setVisibility(View.INVISIBLE); return; }
-        if (RightMonitor.getVisibility() == View.INVISIBLE) RightMonitor.setVisibility(View.VISIBLE);
+        if (Snapshot.getHeartbeat() == -1) { HeartbeatMonitor.setVisibility(View.INVISIBLE); return; }
+        if (HeartbeatMonitor.getVisibility() == View.INVISIBLE) HeartbeatMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
         HeartBeats.add(Float.valueOf(Snapshot.getHeartbeat()));
         for (SurveySnapshot item: CollectedStatistics) {
@@ -269,6 +323,6 @@ public class Docking extends Activity implements EventsProcessGPS {
             HeartBeats.add(Float.valueOf(item.getHeartbeat()));
         }
         if (HeartBeats.isEmpty()) HeartBeats.add(Float.valueOf(Snapshot.getHeartbeat()));
-        RightMonitor.updateStatistics(HeartBeats);
+        HeartbeatMonitor.updateStatistics(HeartBeats);
     }
 }
