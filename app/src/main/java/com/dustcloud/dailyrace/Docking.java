@@ -19,6 +19,8 @@ public class Docking extends Activity implements EventsProcessGPS {
     private Runnable task = new Runnable() { public void run() { loadStatus();} };
     private int EventsDelay = 2000;
 
+    private RelativeLayout DockingManager = null;
+
     private ControlSwitch SleepLocker = null;
     private ControlSwitch BatterySaver = null;
     private ControlSwitch LightEnhancer = null;
@@ -44,6 +46,8 @@ public class Docking extends Activity implements EventsProcessGPS {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docking);
+
+        DockingManager = (RelativeLayout) findViewById(R.id.manage_docking);
 
         BackendService = (DataManager) getApplication();
         BackendService.setUpdateCallback(this);
@@ -120,7 +124,6 @@ public class Docking extends Activity implements EventsProcessGPS {
     }
 
     private void applyWidgetsLayout(){
-        RelativeLayout DockingManager = (RelativeLayout) findViewById(R.id.manage_docking);
         Point ScreenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(ScreenSize);
         int Bounds = Math.min(ScreenSize.x,ScreenSize.y);
@@ -160,6 +163,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         DockingManager.removeView(HeartbeatMonitor);
         DockingManager.addView(HeartbeatMonitor,MonitorConfig);
 
+        DockingManager.invalidate();
     }
 
     @Override
