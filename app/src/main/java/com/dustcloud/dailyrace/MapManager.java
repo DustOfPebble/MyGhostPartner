@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-//ToDo: Use animation on Map rotation before moving MAP
+//ToDo: Use Compas data to get Map direction
 //ToDo: add a scrolling feature
 public class MapManager extends ImageView implements EventsProcessGPS {
 

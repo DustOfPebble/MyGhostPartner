@@ -27,6 +27,7 @@ public class SharedConstants {
     static public final short SwitchBackground=101;
 
     static public final float BearingMatchingGap = 60f; // 60°
+    static public final float AccuracyNotLoaded= 25f; // 25 Meters ...
 
     static public final float WidthToHeightFactor = 3f/4f;
     static public final short HeatbeatStatsID = 200;

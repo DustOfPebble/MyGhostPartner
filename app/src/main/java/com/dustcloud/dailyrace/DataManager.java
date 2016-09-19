@@ -67,7 +67,11 @@ public class DataManager extends Application implements LocationListener {
         SurveySimulatedGPS = new SurveyLoader();
         SurveyFilesGPS = new SurveyLoader();
 
+        SurveyLiveGPS.setTrack((short)0);
+        SurveySimulatedGPS.setTrack((short)0);
+
         LastHeartBeat = -1;
+
         ActivityMode = SharedConstants.SwitchForeground;
         BackendMessage="";
 

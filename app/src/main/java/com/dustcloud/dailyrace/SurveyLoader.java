@@ -18,11 +18,13 @@ public class SurveyLoader {
 
     private boolean hasOrigin;
     private int Days;
+    private short Track;
     private JSONObject SurveyJSON;
     // Constructor ...
     public SurveyLoader() {
         hasOrigin = false;
         Days = 0;
+        Track= -1;
 
         Longitude = 0.0;
         Latitude = 0.0;
@@ -81,6 +83,7 @@ public class SurveyLoader {
 
     public void setHeartbeat(short value) { Heartbeat = value;}
     public void setDays(int value) { Days = value;}
+    public void setTrack(short value) { Track = value;}
 
     public void updateFromGPS(Location GPS) {
         Longitude = GPS.getLongitude();

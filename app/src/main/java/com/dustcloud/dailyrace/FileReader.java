@@ -11,11 +11,13 @@ public class FileReader implements Runnable {
     DataManager Notify = null;
     FileManager FilesHandler= null;
     SurveyLoader Survey;
+    private short TrackCounter;
 
     public FileReader(FileManager handler, DataManager Client, SurveyLoader FilesSurvey) {
        Notify = Client;
        FilesHandler =  handler;
        Survey = FilesSurvey;
+       TrackCounter = 1;
     }
 
     @Override
@@ -27,6 +29,7 @@ public class FileReader implements Runnable {
             FileInputStream Stream = FilesHandler.getNextStream();
             if (Stream == null)  break; // All streams have been processed
             ProcessStream(Stream);
+            TrackCounter++;
         }
     }
 
@@ -43,6 +46,7 @@ public class FileReader implements Runnable {
         if (NbDays==-1) return;
 
         Survey.setDays(NbDays);
+        Survey.setTrack(TrackCounter);
 
         int NbSamples = 0;
         String StringJSON ="Loading";
