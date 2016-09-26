@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
-
+//ToDo: Add a animation for searching/transient state
 public class ControlSwitch extends ImageView implements View.OnTouchListener {
 
     private Drawable highIcon = null;
