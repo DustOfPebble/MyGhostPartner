@@ -8,7 +8,7 @@ import android.util.Log;
 import java.util.Arrays;
 
 @SuppressLint("NewApi")
-public class SensorFinder implements BluetoothAdapter.LeScanCallback, Runnable {
+public class ExternalSensor implements BluetoothAdapter.LeScanCallback, Runnable {
 
     private BluetoothAdapter Bluetooth;
     private HeartBeatProvider Listener;
@@ -17,19 +17,19 @@ public class SensorFinder implements BluetoothAdapter.LeScanCallback, Runnable {
 
     @Override
     public void run() {
-        Log.d("SensorFinder", "Timeout reached...");
+        Log.d("ExternalSensor", "Timeout reached...");
         Bluetooth.stopLeScan(this);
         isScanning = false;
     }
 
-    public SensorFinder(HeartBeatProvider Client) {
+    public ExternalSensor(HeartBeatProvider Client) {
         Listener = Client;
         EventTrigger = new Handler();
         isScanning = false;
         Bluetooth = BluetoothAdapter.getDefaultAdapter();
     }
 
-    public void findSensor(int Timeout){
+    public void search(int Timeout){
         if (isScanning) return;
         Bluetooth.startLeScan(this);
         isScanning = true;
@@ -54,9 +54,10 @@ public class SensorFinder implements BluetoothAdapter.LeScanCallback, Runnable {
                 String UUID = Integer.toHexString(uuid);
                 if (BluetoothConstants.UUID_HEART_RATE.equals(UUID)) {
                     Listener.setDevice(DeviceFound);
-                    Log.d("SensorFinder", "HeartBeat sensor found...");
+                    Log.d("ExternalSensor", "HeartBeat sensor found...");
                     Bluetooth.stopLeScan(this);
                     EventTrigger.removeCallbacks(this);
+                    isScanning = false;
                     break;
                 }
             }

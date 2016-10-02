@@ -11,15 +11,15 @@ import android.widget.ImageView;
 //ToDo: Add a animation for searching/transient state
 public class ControlSwitch extends ImageView implements View.OnTouchListener {
 
-    private Drawable highIcon = null;
-    private Drawable lowIcon = null;
+    protected Drawable highIcon = null;
+    protected Drawable lowIcon = null;
     private Docking Controler = null;
 
     private short highStatus = -1;
     private short lowStatus = -1;
 
     private short Status =-1;
-    private Vibrator HapticFeedback;
+    protected Vibrator HapticFeedback;
 
      public ControlSwitch(Context context, AttributeSet attrs) {
         super(context, attrs);
