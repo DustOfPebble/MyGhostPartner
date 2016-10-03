@@ -9,7 +9,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class SimulateGPS implements Runnable {
+public class LoaderGPS implements Runnable {
     private ArrayList<String> CollectionJSON;
     ArrayList<File> FilesCollection = null;
 
@@ -19,7 +19,7 @@ public class SimulateGPS implements Runnable {
     private FileInputStream ReadStream = null;
     private FileManager SourcesManager;
 
-    public SimulateGPS(FileManager SourceGPS)
+    public LoaderGPS(FileManager SourceGPS)
     {
         SourcesManager = SourceGPS;
 
@@ -69,7 +69,7 @@ public class SimulateGPS implements Runnable {
         if (Index >= CollectionJSON.size()) Index = 0;
         Loader.fromJSON(CollectionJSON.get(Index));
         Coordinates GPS = Loader.getCoordinates();
-        Log.d("SimulateGPS", "Simulating ["+GPS.longitude+"°E,"+GPS.latitude+"°N]");
+        Log.d("LoaderGPS", "Simulating ["+GPS.longitude+"°E,"+GPS.latitude+"°N]");
         Notify.onSimulatedChanged(GPS);
         Index++;
     }
@@ -80,11 +80,11 @@ public class SimulateGPS implements Runnable {
         // Moves the current Thread into the background
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-        Log.d("SimulateGPS", "Using "+FilesCollection.get(FileIndex).getName()+" as simulation");
+        Log.d("LoaderGPS", "Using "+FilesCollection.get(FileIndex).getName()+" as simulation");
         BufferedReader Storage;
         try { Storage = new BufferedReader(new InputStreamReader(ReadStream, "UTF-8"));}
         catch (Exception FileError) {
-            Log.d("SimulateGPS", "Failed to Open data stream...");
+            Log.d("LoaderGPS", "Failed to Open data stream...");
             return ;
         }
 
@@ -95,7 +95,7 @@ public class SimulateGPS implements Runnable {
             TimeString = Storage.readLine();
             TimeStamps ElapsedDays = new TimeStamps();
             NbDays = ElapsedDays.getDaysAgoFromJSON(TimeString);
-        } catch (Exception TimeStampsError) { Log.d("SimulateGPS", "TimeStamps is missing...");}
+        } catch (Exception TimeStampsError) { Log.d("LoaderGPS", "TimeStamps is missing...");}
         Loader.setDays(NbDays);
 
         int NbJSON = 0;
@@ -108,6 +108,6 @@ public class SimulateGPS implements Runnable {
             }
         }
         catch(Exception FileError) {}
-        Log.d("SimulateGPS", NbJSON +" Records loaded ...");
+        Log.d("LoaderGPS", NbJSON +" Records loaded ...");
     }
 }

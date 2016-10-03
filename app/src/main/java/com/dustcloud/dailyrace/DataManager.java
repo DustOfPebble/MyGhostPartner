@@ -27,7 +27,7 @@ public class DataManager extends Application implements Runnable {
     static private String BackendMessage;
 
 
-    private SimulateGPS EventsSimulatedGPS = null;
+    private LoaderGPS CollectedGPS = null;
     private QuadTree SearchableStorage = null;
 
     // File Management
@@ -85,13 +85,13 @@ public class DataManager extends Application implements Runnable {
         ReadFromFile = new FileReader(FilesHandler, this, SurveyFilesGPS);
         WriteToFile = new FileWriter(FilesHandler);
 
-        // Initialize GPS simulator ...
-        EventsSimulatedGPS = new SimulateGPS(this, FilesHandler, SurveySimulatedGPS);
+        // Initialize GPS simulator ...Events
+        CollectedGPS = new LoaderGPS(FilesHandler);
     }
 
     public void shutdown() {
         if (LoadingFiles!= null) LoadingFiles.interrupt();
-        EventsSimulatedGPS.stop();
+        UpdateTrigger.removeCallbacks(this);
         WriteToFile.shutdown();
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);
@@ -108,6 +108,20 @@ public class DataManager extends Application implements Runnable {
     // Called for cyclic Update
     @Override
     public void run() {
+
+        if (ModeGPS == SharedConstants.ReplayedGPS)  {
+            if (!EventsSimulatedGPS.load(1000).isEmpty())   {
+                SourceGPS.removeUpdates(this);
+                SurveySimulatedGPS.clearOriginCoordinates();
+                EventsSimulatedGPS.simulate();
+            }
+
+        }
+        if (ModeGPS == SharedConstants.LiveGPS)  {
+            EventsSimulatedGPS.stop();
+            SurveyLiveGPS.clearOriginCoordinates();
+        }
+
         SurveyLiveGPS.updateFromGPS(SourceGPS.getLastKnownLocation(LOCATION_SERVICE));
         SurveyLiveGPS.setHeartbeat((short)LastHeartBeat);
 
