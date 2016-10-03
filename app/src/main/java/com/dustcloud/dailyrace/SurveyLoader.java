@@ -16,13 +16,13 @@ public class SurveyLoader {
     private float Altitude;
     private short Heartbeat;
 
-    private boolean hasOrigin;
+    private Coordinates BaseGPS = null;
     private int Days;
     private short Track;
     private JSONObject SurveyJSON;
+
     // Constructor ...
     public SurveyLoader() {
-        hasOrigin = false;
         Days = 0;
         Track= -1;
 
@@ -86,6 +86,7 @@ public class SurveyLoader {
     public void setTrack(short value) { Track = value;}
 
     public void updateFromGPS(Location GPS) {
+        if (GPS == null) return;
         Longitude = GPS.getLongitude();
         Latitude = GPS.getLatitude();
         Altitude = (float)GPS.getAltitude();
@@ -94,10 +95,14 @@ public class SurveyLoader {
         Accuracy = GPS.getAccuracy();
 
         Log.d("DataManager", "GPS [" + Longitude + "°E," + Latitude + "°N]");
+
+        if (BaseGPS != null) return;
+
+
     }
 
     public SurveySnapshot getSnapshot() {
-        if (!hasOrigin) return null;
+        if (BaseGPS == null ) return null;
         SurveySnapshot Snapshot = new SurveySnapshot();
         Snapshot.setSpeed(Speed);
         Snapshot.setAccuracy(Accuracy);
@@ -116,15 +121,14 @@ public class SurveyLoader {
     private double originLatitude = 0f;
 
     public Coordinates getCoordinates() {return new Coordinates(Longitude,Latitude);}
+    public Coordinates getBase() {return BaseGPS;}
 
-    public void setOriginCoordinates(Coordinates Origin){
-        this.originLatitude =  Origin.latitude;
-        this.originLongitude = Origin.longitude;
+    public void setBase(Coordinates Offset){
+        if (Offset == null) return;
+        BaseGPS = new Coordinates(Offset.longitude,Offset.latitude);
         earthRadiusCorrected = correctedRadius();
-        hasOrigin = true;
     }
-    public void clearOriginCoordinates() {hasOrigin = false;}
-    public boolean hasOriginCoordinates() {return hasOrigin;}
+    public void clearOriginCoordinates() {BaseGPS = null;}
 
     private float correctedRadius() { return earthRadius *(float)Math.cos( Math.toRadians(originLatitude)); }
     private float dX(double longitude) { return earthRadiusCorrected * (float) Math.toRadians(longitude-originLongitude); }

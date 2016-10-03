@@ -36,4 +36,7 @@ public class SharedConstants {
     static public final short CenterTopWidget = 220;
     static public final short LeftBottomWidget = 221;
     static public final short RightBottomWidget = 222;
+
+    static public final long TimeUpdateGPS = 1000; // value in ms
+
 }

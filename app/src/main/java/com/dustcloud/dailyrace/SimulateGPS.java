@@ -15,20 +15,13 @@ public class SimulateGPS implements Runnable {
 
     private int Index;
     private int FileIndex;
-    private DataManager Notify;
-    private Handler EventTrigger = new Handler();
-    private Runnable task = new Runnable() { public void run() { simulate();} };
-    private int EventsDelay = 1000;
     private Thread Loading =null;
     private FileInputStream ReadStream = null;
     private FileManager SourcesManager;
-    private SurveyLoader Loader;
 
-    public SimulateGPS(DataManager Manager, FileManager SourceGPS, SurveyLoader SimulatedGPS)
+    public SimulateGPS(FileManager SourceGPS)
     {
         SourcesManager = SourceGPS;
-        Notify = Manager;
-        Loader = SimulatedGPS;
 
         CollectionJSON = new ArrayList<String>();
 
@@ -52,7 +45,6 @@ public class SimulateGPS implements Runnable {
         // Check if we are already loading a file ...
         if (Loading != null) Loading.interrupt();
 
-        EventsDelay = Delay;
         CollectionJSON.clear();
 
         FileIndex++;
@@ -80,12 +72,6 @@ public class SimulateGPS implements Runnable {
         Log.d("SimulateGPS", "Simulating ["+GPS.longitude+"°E,"+GPS.latitude+"°N]");
         Notify.onSimulatedChanged(GPS);
         Index++;
-    }
-
-    public void stop()
-    {
-        Log.d("SimulateGPS", "Stopping GPS simulation ...");
-        EventTrigger.removeCallbacks(task);
     }
 
     // Loading file asynchronous process ...

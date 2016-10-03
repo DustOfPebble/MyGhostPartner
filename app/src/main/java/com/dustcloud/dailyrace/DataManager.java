@@ -3,17 +3,14 @@ package com.dustcloud.dailyrace;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.RectF;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Bundle;
 import android.os.Handler;
 
 import java.util.ArrayList;
 //ToDo: Reload DB periodically with a smaller SearchableZone to reduce memory footprint
 //ToDo: Limits numbers of loaded points to NbFiles/NbPoints
 
-public class DataManager extends Application implements LocationListener {
+public class DataManager extends Application implements Runnable {
     private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
     private Vector StatisticsSelectionSize = new Vector(20f,20f); // Values in meters
     private Vector DisplayedSelectionSize = new Vector(200f,200f); // Values in meters
@@ -23,15 +20,12 @@ public class DataManager extends Application implements LocationListener {
     private SurveyLoader SurveyFilesGPS; // processing for Files loading GPS
 
     private int LastHeartBeat;
-    private Handler HeartBeatWatchdog = new Handler();
-    private Runnable HeartBeatTimeout = new Runnable() { public void run() { LostHeartBeatSensor();} };
-    private int HeartBeatWatchdogDelay = 5000;
+
+    private Handler UpdateTrigger = new Handler();
 
     private int ActivityMode; // Is Activity is currently in Foreground or Background
     static private String BackendMessage;
 
-    private static final long DistanceUpdateGPS = 5; // Value in meters
-    private static final long TimeUpdateGPS = 1000; // value in ms
 
     private SimulateGPS EventsSimulatedGPS = null;
     private QuadTree SearchableStorage = null;
@@ -83,7 +77,8 @@ public class DataManager extends Application implements LocationListener {
 
         // Startup mode is always GPS Live mode
         SourceGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
-        SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, TimeUpdateGPS, DistanceUpdateGPS, this);
+        // Arm trigger for a GPS update ...
+        UpdateTrigger.postDelayed(this, SharedConstants.TimeUpdateGPS);
 
         // Starting File Management
         FilesHandler = new FileManager(this);
@@ -98,7 +93,6 @@ public class DataManager extends Application implements LocationListener {
         if (LoadingFiles!= null) LoadingFiles.interrupt();
         EventsSimulatedGPS.stop();
         WriteToFile.shutdown();
-        SourceGPS.removeUpdates(this);
         android.os.Process.killProcess(android.os.Process.myPid());
         System.exit(0);
     }
@@ -111,16 +105,16 @@ public class DataManager extends Application implements LocationListener {
         LoadingFiles.start();
     }
 
-    // Called Only when real GPS is Updated
+    // Called for cyclic Update
     @Override
-    public void onLocationChanged(Location LastKnownGPS) {
-        if (LastKnownGPS == null) return;
-        SurveyLiveGPS.updateFromGPS(LastKnownGPS);
+    public void run() {
+        SurveyLiveGPS.updateFromGPS(SourceGPS.getLastKnownLocation(LOCATION_SERVICE));
         SurveyLiveGPS.setHeartbeat((short)LastHeartBeat);
-        if (!SurveyLiveGPS.hasOriginCoordinates()) {
+
+        if (SurveyLiveGPS.getBase() == null) {
             Coordinates Origin = SurveyLiveGPS.getCoordinates();
-            SurveyLiveGPS.setOriginCoordinates(Origin);
-            SurveyFilesGPS.setOriginCoordinates(Origin);
+            SurveyLiveGPS.setBase(Origin);
+            SurveyFilesGPS.setBase(Origin);
             restartLoadingFiles();
         }
 
@@ -132,13 +126,16 @@ public class DataManager extends Application implements LocationListener {
         if (ActivityMode == SharedConstants.SwitchForeground) {
             for (EventsProcessGPS Client :Clients) Client.processLocationChanged(Sample);
         }
+
+        // Setup next Update ...
+        UpdateTrigger.postDelayed(this, SharedConstants.TimeUpdateGPS);
     }
 
     // Called Only when simulated GPS is Provided
     public void onSimulatedChanged(Coordinates SimulatedCoordinate) {
-        if (!SurveySimulatedGPS.hasOriginCoordinates()) {
-            SurveySimulatedGPS.setOriginCoordinates(SimulatedCoordinate);
-            SurveyFilesGPS.setOriginCoordinates(SimulatedCoordinate);
+        if (SurveySimulatedGPS.getBase() == null) {
+            SurveySimulatedGPS.setBase(SimulatedCoordinate);
+            SurveyFilesGPS.setBase(SimulatedCoordinate);
             restartLoadingFiles();
         }
 
@@ -176,7 +173,6 @@ public class DataManager extends Application implements LocationListener {
         if (ModeGPS == SharedConstants.LiveGPS)  {
             EventsSimulatedGPS.stop();
             SurveyLiveGPS.clearOriginCoordinates();
-            SourceGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, TimeUpdateGPS, DistanceUpdateGPS,this);
         }
     }
 
@@ -195,8 +191,8 @@ public class DataManager extends Application implements LocationListener {
 
     // Called from HeartbeatService when heartbeat is updated
     public void processHeartBeatChanged(int Frequency)  {
-        HeartBeatWatchdog.removeCallbacks(HeartBeatTimeout);
-        HeartBeatWatchdog.postDelayed(HeartBeatTimeout,HeartBeatWatchdogDelay);
+        UpdateTrigger.removeCallbacks(HeartBeatTimeout);
+        UpdateTrigger.postDelayed(HeartBeatTimeout,UpdateDelay);
 
         if (ModeGPS == SharedConstants.ReplayedGPS) return;
         LastHeartBeat = Frequency;
@@ -257,12 +253,5 @@ public class DataManager extends Application implements LocationListener {
         ModeHeartBeat = SharedConstants.DisconnectedHeartBeat;
     }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) { }
 
-    @Override
-    public void onProviderDisabled(String provider) { }
-
-    @Override
-    public void onProviderEnabled(String provider) { }
 }
