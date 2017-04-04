@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     >
 
-    <com.dustcloud.dailyrace.MapManager
+    <dummy.core.dailyrace.MapManager
         android:id="@+id/map_manager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
 
-    <com.dustcloud.dailyrace.ControlSwitch
+    <dummy.core.dailyrace.ControlSwitch
         android:id="@+id/switch_sleep_locker"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -25,7 +25,7 @@
         app:HighMode="@drawable/sleep_locked"
         app:LowMode="@drawable/sleep_unlocked"
         />
-    <com.dustcloud.dailyrace.ControlSwitch
+    <dummy.core.dailyrace.ControlSwitch
         android:id="@+id/switch_light_enhancer"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -37,7 +37,7 @@
         app:HighMode="@drawable/light_max"
         app:LowMode="@drawable/light_low"
         />
-    <com.dustcloud.dailyrace.ControlSwitch
+    <dummy.core.dailyrace.ControlSwitch
         android:id="@+id/switch_battery_saver"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -50,7 +50,7 @@
         app:LowMode="@drawable/battery_save"
         />
 
-    <com.dustcloud.dailyrace.ControlSwitch
+    <dummy.core.dailyrace.ControlSwitch
         android:id="@+id/gps_provider"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -63,7 +63,7 @@
         app:LowMode="@drawable/gps_replay"
         />
 
-    <com.dustcloud.dailyrace.ControlSwitch
+    <dummy.core.dailyrace.ControlSwitch
         android:id="@+id/heartbeat_provider"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -77,7 +77,7 @@
         app:LowMode="@drawable/heartbeat_disconnected"
         />
 
-    <com.dustcloud.dailyrace.Monitor
+    <dummy.core.dailyrace.Monitor
         android:id="@+id/left_monitor"
         android:layout_margin="2dp"
         android:layout_width="160dp"
@@ -88,7 +88,7 @@
         android:visibility="invisible"
         />
 
-    <com.dustcloud.dailyrace.Monitor
+    <dummy.core.dailyrace.Monitor
         android:id="@+id/right_monitor"
         android:layout_margin="2dp"
         android:layout_width="160dp"
