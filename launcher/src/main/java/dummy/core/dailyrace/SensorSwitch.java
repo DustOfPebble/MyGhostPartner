@@ -1,15 +1,11 @@
-package com.dustcloud.dailyrace;
+package dummy.core.dailyrace;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
 
 //ToDo: Add a animation for searching/transient state
 public class SensorSwitch extends ControlSwitch implements ValueAnimator.AnimatorUpdateListener {

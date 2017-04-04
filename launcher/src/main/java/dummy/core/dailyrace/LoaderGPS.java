@@ -1,6 +1,5 @@
-package com.dustcloud.dailyrace;
+package dummy.core.dailyrace;
 
-import android.os.Handler;
 import android.util.Log;
 
 import java.io.BufferedReader;
