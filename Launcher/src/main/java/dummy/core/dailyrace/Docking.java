@@ -81,7 +81,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         GPSProvider.registerManager(this);
         GPSProvider.setMode(BackendService.getModeGPS());
 
-        if (BluetoothConstants.hasLowEnergyCapabilities) {
+        if (SensorState.hasLowEnergyCapabilities) {
             HeartBeatSensor = (ControlSwitch) findViewById(R.id.heartbeat_provider);
             HeartBeatSensor.registerModes(SharedConstants.ConnectedHeartBeat, SharedConstants.DisconnectedHeartBeat);
             HeartBeatSensor.registerManager(this);
@@ -230,7 +230,7 @@ public class Docking extends Activity implements EventsProcessGPS {
         }
         if (Status == SharedConstants.ConnectedHeartBeat) {
             BackendService.storeModeHeartBeat(SharedConstants.SearchHeartBeat);
-            EventTrigger.postDelayed(task, BluetoothConstants.SCAN_TIMEOUT + EventsDelay);
+            EventTrigger.postDelayed(task, SensorState.SCAN_TIMEOUT + EventsDelay);
         }
         if (Status == SharedConstants.DisconnectedHeartBeat) {
             BackendService.storeModeHeartBeat(Status);

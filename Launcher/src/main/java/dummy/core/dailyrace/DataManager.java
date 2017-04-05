@@ -19,8 +19,6 @@ public class DataManager extends Application implements Runnable {
     private SurveyLoader SurveySimulatedGPS; // processing for Simulated GPS
     private SurveyLoader SurveyFilesGPS; // processing for Files loading GPS
 
-    private int LastHeartBeat;
-
     private Handler UpdateTrigger = new Handler();
 
     private int ActivityMode; // Is Activity is currently in Foreground or Background
@@ -37,7 +35,7 @@ public class DataManager extends Application implements Runnable {
     private Thread LoadingFiles=null;
 
     // HeartBeat Provider
-    private static HeartBeatProvider HearBeatService = null;
+    private static SensorProvider HeartBeatService = null;
 
     // Holding Persistent state/default for HMI Switch
     private short ModeGPS = SharedConstants.LiveGPS;
@@ -69,10 +67,10 @@ public class DataManager extends Application implements Runnable {
         ActivityMode = SharedConstants.SwitchForeground;
         BackendMessage="";
 
-        // Starting HearBeatService if HeartBeat Sensor is available
-        if (BluetoothConstants.hasLowEnergyCapabilities) {
-            HearBeatService = new HeartBeatProvider(this);
-            HearBeatService.searchSensor();
+        // Starting HeartBeatService if HeartBeat Sensor is available
+        if (SensorState.hasLowEnergyCapabilities) {
+            HeartBeatService = new HeartBeatProvider(this);
+            HeartBeatService.searchSensor();
         }
 
         // Startup mode is always GPS Live mode
@@ -215,8 +213,8 @@ public class DataManager extends Application implements Runnable {
     public short getModeHeartBeat() {return ModeHeartBeat;}
     public void storeModeHeartBeat(short mode) {
         ModeHeartBeat = mode;
-        if (!BluetoothConstants.hasLowEnergyCapabilities) return;
-        if (ModeHeartBeat == SharedConstants.SearchHeartBeat) HearBeatService.searchSensor();
+        if (!SensorState.hasLowEnergyCapabilities) return;
+        if (ModeHeartBeat == SharedConstants.SearchHeartBeat) HeartBeatService.searchSensor();
     }
 
     // Managing sleep state for HMI
