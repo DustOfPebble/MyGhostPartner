@@ -3,7 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DailyRace.iml" filepath="$PROJECT_DIR$/DailyRace.iml" />
-      <module fileurl="file://$PROJECT_DIR$/launcher/launcher.iml" filepath="$PROJECT_DIR$/launcher/launcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Launcher/Launcher.iml" filepath="$PROJECT_DIR$/Launcher/Launcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PebbleLib/PebbleLib.iml" filepath="$PROJECT_DIR$/PebbleLib/PebbleLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sensor/Sensor.iml" filepath="$PROJECT_DIR$/Sensor/Sensor.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SensorEvents/SensorEvents.iml" filepath="$PROJECT_DIR$/SensorEvents/SensorEvents.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Smartwatch/Smartwatch.iml" filepath="$PROJECT_DIR$/Smartwatch/Smartwatch.iml" />
     </modules>
   </component>
 </project>

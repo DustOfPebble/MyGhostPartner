@@ -4,9 +4,9 @@ android {
     compileSdkVersion 23
     buildToolsVersion '25.0.0'
     defaultConfig {
-        applicationId 'com.dustcloud.dailyrace'
-        minSdkVersion 14
-        targetSdkVersion 14
+        applicationId 'dummy.dailyrace'
+        minSdkVersion 23
+        targetSdkVersion 23
         versionCode 2
         versionName "1.1"
     }
@@ -21,5 +21,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':SensorEvents')
+    compile project(':PebbleLib')
+    compile project(':Smartwatch')
+    compile project(':Sensor')
 }
