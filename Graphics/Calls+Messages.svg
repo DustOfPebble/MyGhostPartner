@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="800"
+   height="800"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="Calls+Messages.svg"
+   inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/Calls+Messages.png"
+   inkscape:export-xdpi="153"
+   inkscape:export-ydpi="153">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.8803192"
+     inkscape:cx="408.29644"
+     inkscape:cy="408.20636"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1680"
+     inkscape:window-height="1006"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-138.46875,65.375)">
+    <rect
+       inkscape:export-ydpi="153"
+       inkscape:export-xdpi="153"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/Calls.png"
+       ry="29.053329"
+       y="426.84692"
+       x="456.59998"
+       height="257.73141"
+       width="257.73141"
+       id="rect3088"
+       style="fill:#d2c69e;fill-opacity:1;stroke:#695a5a;stroke-width:3.40711355;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    <path
+       style="fill:#f56a4f;fill-opacity:1;stroke:#8f1e1e;stroke-width:8.60000038;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 563.69785,623.84789 c -14.1732,3.91839 -22.37508,9.50937 -50.03327,9.65058 -5.47895,-13.55693 -6.42498,-29.66306 -2.54086,-48.48553 43.48311,-21.35355 89.55832,-34.45446 141.96937,-27.3835 10.02666,14.60745 12.04546,30.7595 13.919,46.93954 -15.70674,6.18171 -31.59357,8.66404 -47.59193,8.85537 -3.77951,-7.00543 -6.50676,-15.56603 -8.9508,-24.54523 -14.339,5.32238 -28.86261,8.30787 -46.59348,8.98708 0.97755,11.35402 0.63491,19.27872 -0.17803,25.98169 z"
+       id="path3901-7-2"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccc"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/Calls.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153" />
+    <rect
+       style="fill:#d2c69e;fill-opacity:1;stroke:#695a5a;stroke-width:5.94149256;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3069"
+       width="449.44476"
+       height="449.44476"
+       x="166.43323"
+       y="-55.156555"
+       ry="86.321358"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/MissedEvents.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#e0a652;fill-opacity:1;stroke:#ea5809;stroke-width:12.0258112;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="path3897"
+       sodipodi:cx="307.61435"
+       sodipodi:cy="606.02863"
+       sodipodi:rx="22.068966"
+       sodipodi:ry="23.870514"
+       d="m 329.59204,603.85981 a 22.068966,23.870514 0 1 1 -0.0202,-0.22734"
+       sodipodi:start="6.1922025"
+       sodipodi:end="12.46582"
+       sodipodi:open="true"
+       transform="matrix(1.3530259,0,0,1.2907621,-166.08851,-505.37425)"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/MissedEvents.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153" />
+    <path
+       style="fill:#f56a4f;fill-opacity:1;stroke:#8f1e1e;stroke-width:8.60000038;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 437.35355,281.63088 c -14.41177,-2.92135 -24.25603,-1.6484 -48.98258,-14.04168 1.25086,-14.56861 7.69756,-29.35855 19.6808,-44.38432 48.43907,0.64134 95.45403,9.8148 138.98803,39.84324 2.32876,17.56383 -3.18212,32.8803 -8.83523,48.15598 -16.80366,-1.5973 -32.09344,-6.57483 -46.44568,-13.64571 -0.19924,-7.95745 1.24376,-16.82535 3.12877,-25.93831 -15.19512,-1.74447 -29.49708,-5.65628 -45.61502,-13.07632 -4.2676,10.56678 -8.16016,17.47809 -11.91909,23.08712 z"
+       id="path3901"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccc"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/MissedEvents.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153" />
+    <g
+       id="g3911"
+       transform="matrix(0.96693761,-0.25501305,0.25501305,0.96693761,58.413024,-389.23723)"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/MissedEvents.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153">
+      <rect
+         ry="4.2785864"
+         y="457.2941"
+         x="171.81183"
+         height="134.08395"
+         width="173.57443"
+         id="rect3899"
+         style="fill:#ffe2b7;fill-opacity:1;stroke:#8d8d8d;stroke-width:9.63199997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         sodipodi:nodetypes="ccc"
+         inkscape:connector-curvature="0"
+         id="path3909"
+         d="m 171.58981,588.76494 85.98736,-77.7071 85.98738,78.98099"
+         style="fill:#ffe2b7;fill-opacity:1;stroke:#8d8d8d;stroke-width:9.63199997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         sodipodi:nodetypes="ccc"
+         inkscape:connector-curvature="0"
+         id="path3907"
+         d="m 170.95287,468.38263 85.35042,70.06378 87.8982,-68.15295"
+         style="fill:#ffe2b7;fill-opacity:1;stroke:#8d8d8d;stroke-width:9.63199997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+    <path
+       style="fill:#e06752;fill-opacity:1;stroke:#8b0d0d;stroke-width:4.18581152;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 446.5108,179.14118 c 5.4562,21.4968 20.46125,33.35224 42.02396,33.8999 21.56271,0.54766 32.81104,-16.60348 32.81104,-16.60348 l 8.87754,9.2119 -0.86554,-30.45564 -27.36886,1.66387 9.36873,8.80153 c 0,0 -8.1173,9.77545 -19.66242,9.77558 -11.54512,1.3e-4 -22.26523,-11.09149 -22.3328,-30.39655 l -9.19028,16.82382 z"
+       id="path3916"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="czccccczccc"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/MissedEvents.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153" />
+    <path
+       style="fill:#e0a652;fill-opacity:1;stroke:#ea5809;stroke-width:15.89243793;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 216.49761,116.48654 c -7.29466,-138.652824 77.13151,-138.213654 68.94194,0 -8.18956,138.21365 -61.64727,138.65281 -68.94194,0 z"
+       id="path3895"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="zzz"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/MissedEvents.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153" />
+    <rect
+       style="fill:#d2c69e;fill-opacity:1;stroke:#695a5a;stroke-width:3.40711355;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect3069-3"
+       width="257.73141"
+       height="257.73141"
+       x="162.38852"
+       y="429.11884"
+       ry="29.053329"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/Messages.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153" />
+    <g
+       id="g3911-5"
+       transform="matrix(0.9979716,-0.06366076,0.06366076,0.9979716,-2.002552,46.452892)"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/Messages.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153">
+      <rect
+         ry="4.2785864"
+         y="457.2941"
+         x="171.81183"
+         height="134.08395"
+         width="173.57443"
+         id="rect3899-3"
+         style="fill:#ffe2b7;fill-opacity:1;stroke:#8d8d8d;stroke-width:9.63199997;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         sodipodi:nodetypes="ccc"
+         inkscape:connector-curvature="0"
+         id="path3909-5"
+         d="m 171.58981,588.76494 85.98736,-77.7071 85.98738,78.98099"
+         style="fill:#ffe2b7;fill-opacity:1;stroke:#8d8d8d;stroke-width:9.63199997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         sodipodi:nodetypes="ccc"
+         inkscape:connector-curvature="0"
+         id="path3907-6"
+         d="m 170.95287,468.38263 85.35042,70.06378 87.8982,-68.15295"
+         style="fill:#ffe2b7;fill-opacity:1;stroke:#8d8d8d;stroke-width:9.63199997;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+    <path
+       style="fill:#e06752;fill-opacity:1;stroke:#8b0d0d;stroke-width:4.18581152;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 546.6522,516.48613 c 13.6333,17.49331 32.13721,22.32117 52.10306,14.15936 19.96585,-8.16181 23.37552,-28.38706 23.37552,-28.38706 l 11.83061,4.86894 -13.02888,-27.54167 -24.39423,12.51975 12.11553,4.2958 c 0,0 -3.50582,12.21308 -14.07808,16.85172 -10.57227,4.63864 -24.84541,-1.21134 -32.66354,-18.86259 l -1.65654,19.09864 z"
+       id="path3916-2-6"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="czccccczccc"
+       inkscape:export-filename="/home/xavier/Android.Projects/MissedEventsSpy/Graphics/Calls.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153" />
+  </g>
+</svg>

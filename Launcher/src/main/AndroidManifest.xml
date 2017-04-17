@@ -1,33 +1,47 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest  package="com.dustcloud.dailyrace"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:installLocation="auto">
-
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="core.launcher.dailyrace">
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
-    <application
-        android:name="com.dustcloud.dailyrace.dummy.dustcloud.dailyrace.DataManager"
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
+    <application android:label="@string/app_name"
         android:allowBackup="true"
-        android:icon="@mipmap/launcher"
-        android:label="@string/app_name"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-         <activity
-            android:name="com.dustcloud.dailyrace.dummy.dustcloud.dailyrace.Docking"
-            android:label="@string/title_activity_docking"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:launchMode="singleTask">
+        android:icon="@mipmap/heartspy"
+        android:theme="@style/AppTheme"
+        >
+        <activity
+            android:name="core.launcher.dailyrace.Docking"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:launchMode="singleInstance"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:description="@string/HeartSensor"
+            android:label="@string/HeartSensor_Name"
+            android:name="services.HeartSensor.SensorsProvider"
+            android:exported="true"
+            android:icon="@mipmap/heartspy"
+            />
+        <service
+            android:description="@string/GPS"
+            android:label="@string/GPS_Name"
+            android:name="services.HeartSensor.SensorsProvider"
+            android:exported="true"
+            android:icon="@mipmap/heartspy"
+            />
+        <service
+            android:description="@string/History"
+            android:label="@string/History_Name"
+            android:name="services.HeartSensor.SensorsProvider"
+            android:exported="true"
+            android:icon="@mipmap/heartspy"
+            />
     </application>
-
 </manifest>

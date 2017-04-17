@@ -6,4 +6,13 @@
     <string name="GPS_replay_background">GPS replay will continue in background...</string>
     <string name="GPS_record_background">GPS recording will continue in background...</string>
     <string name="restore_display">Restoring display...</string>
+
+    <string name="GPS_Name">GPS Recording Service</string>
+    <string name="GPS">Record GPS positions along the track.</string>
+    <string name="HeartSensor_Name">Heart Beat Recording Service</string>
+    <string name="HeartSensor">Record Heart Beat within GPS positions.</string>
+    <string name="History_Name">Historic GPS based Service</string>
+    <string name="History">Fast access to past records near provided GPS position.</string>
+
+
 </resources>

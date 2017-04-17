@@ -11,8 +11,6 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/Launcher" />
             <option value="$PROJECT_DIR$/PebbleLib" />
-            <option value="$PROJECT_DIR$/Sensor" />
-            <option value="$PROJECT_DIR$/SensorEvents" />
             <option value="$PROJECT_DIR$/Smartwatch" />
           </set>
         </option>
