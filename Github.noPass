@@ -1,0 +1,4 @@
+#!/bin/bash
+
+git remote remove origin
+git remote add origin https://DustOfPebble:Pass4Pebble@github.com/DustOfPebble/MyGhostPartner.git
