@@ -1,4 +1,4 @@
-package core.launcher.dailyrace;
+package core.launcher.application;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

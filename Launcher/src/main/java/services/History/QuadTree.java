@@ -4,7 +4,7 @@ import android.graphics.RectF;
 
 import java.util.ArrayList;
 
-import core.launcher.dailyrace.Vector;
+import core.launcher.application.Vector;
 
 public class QuadTree {
     private boolean isStorage=false;

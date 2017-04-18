@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name" translatable="false">DailyRace</string>
-    <string name="title_activity_docking" translatable="false">DailyRace</string>
+    <string name="StorePublicName" translatable="false">My Ghost Partner</string>
+    <string name="ActivityNameDocker" translatable="false">My Ghost Partner</string>
     <string name="message_back_key_pressed">Press twice to exit !</string>
     <string name="heartbeat_sensor_found">Heartbeat sensor connected.</string>
     <string name="GPS_replay_background">GPS replay will continue in background...</string>

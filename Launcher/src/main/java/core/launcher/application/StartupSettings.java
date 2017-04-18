@@ -1,4 +1,4 @@
-package core.launcher.dailyrace;
+package core.launcher.application;
 
 import android.app.Activity;
 import android.content.ComponentName;

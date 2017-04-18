@@ -1,4 +1,4 @@
-package core.launcher.dailyrace;
+package core.launcher.application;
 
 /********************************************************************
  * Constants used to create dictionnary for sending to Smartwatch

@@ -1,6 +1,6 @@
 package services.History;
 
-import core.launcher.dailyrace.Vector;
+import core.launcher.application.Vector;
 
 public class SurveySnapshot {
 
