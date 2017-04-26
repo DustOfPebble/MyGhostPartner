@@ -1,13 +1,13 @@
-package core.launcher.application;
+package core.launcher.helpers;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 
-public class Resizer {
+public class BitmapLib {
 
-    static public Bitmap getScaledBitmap(int Width, int Height, Resources EmbeddedDatas, int Id) {
+    static public Bitmap getScaled(int Width, int Height, Resources EmbeddedDatas, int Id) {
 
         BitmapFactory.Options DecodingOptions = new BitmapFactory.Options();
         DecodingOptions.inJustDecodeBounds = true;

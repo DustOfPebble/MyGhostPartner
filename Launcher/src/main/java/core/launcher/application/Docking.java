@@ -16,7 +16,8 @@ import java.util.ArrayList;
 
 import services.GPS.EventsProcessGPS;
 import services.HeartSensor.SensorState;
-import services.History.SurveySnapshot;
+import services.Base.SurveySnapshot;
+import services.Tracks.Node;
 
 public class Docking extends Activity implements EventsProcessGPS {
 
@@ -304,8 +305,8 @@ public class Docking extends Activity implements EventsProcessGPS {
         HeartBeatSensor.setMode(BackendService.getModeHeartBeat());
 
         // Setting collection area
-        Vector SizeSelection = BackendService.getExtractStatisticsSize();
-        Vector ViewCenter = Snapshot.copy();
+        Node SizeSelection = BackendService.getExtractStatisticsSize();
+        Node ViewCenter = Snapshot.copy();
         searchZone.set(ViewCenter.x - SizeSelection.x / 2, ViewCenter.y - SizeSelection.y / 2,
                        ViewCenter.x + SizeSelection.x / 2, ViewCenter.y + SizeSelection.y / 2  );
 

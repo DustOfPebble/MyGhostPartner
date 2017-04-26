@@ -13,7 +13,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import services.GPS.EventsProcessGPS;
-import services.History.SurveySnapshot;
+import services.Base.SurveySnapshot;
+import services.Tracks.Node;
 
 //ToDo: Use Compas data to get Map direction
 //ToDo: add a scrolling feature
@@ -23,8 +24,8 @@ public class MapManager extends ImageView implements EventsProcessGPS {
     private DataManager BackendService =null;
     private ArrayList<SurveySnapshot> CollectedDisplayed =null;
     private ArrayList<SurveySnapshot> CollectedStatistics =null;
-    private Vector ViewCenter;
-    private Vector GraphicCenter = new Vector(0f,0f) ;
+    private Node ViewCenter;
+    private Node GraphicCenter = new Node(0f,0f) ;
     private Paint LineMode;
     private Paint FillMode;
     private SurveySnapshot LastSnapshot = null;
@@ -54,7 +55,7 @@ public class MapManager extends ImageView implements EventsProcessGPS {
 
         LastSnapshot = Snapshot;
         ViewCenter = Snapshot.copy();
-        Vector Size;
+        Node Size;
 
         // Extracting active point around first because we will make a List copy ...
         Size = BackendService.getExtractStatisticsSize();
@@ -66,7 +67,7 @@ public class MapManager extends ImageView implements EventsProcessGPS {
         Size = BackendService.getExtractDisplayedSize();
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
         MetersToPixels.set((float)MinSize / Size.x,(float)MinSize / Size.y);
-        Size = new Vector(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
+        Size = new Node(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
         float Extract = Math.max(Size.x, Size.y);
         searchZone.set(this.ViewCenter.x - Extract/2,this.ViewCenter.y - Extract/2,
                        this.ViewCenter.x + Extract/2, this.ViewCenter.y + Extract/2);
@@ -85,9 +86,9 @@ public class MapManager extends ImageView implements EventsProcessGPS {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Vector Pixel = new Vector(0f,0f); // Allocate because it reused directly
+        Node Pixel = new Node(0f,0f); // Allocate because it reused directly
         Float MeterToPixelFactor = Math.max(MetersToPixels.x, MetersToPixels.y) ;
-        Vector Coords;
+        Node Coords;
         Float Radius;
 
         // Avoid crash during first initialisation

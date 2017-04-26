@@ -5,7 +5,7 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
-import services.History.SurveySnapshot;
+import services.Base.SurveySnapshot;
 
 public class SurveyLoader {
 

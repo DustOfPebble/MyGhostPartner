@@ -1,10 +1,10 @@
-package services.History;
+package services.Base;
 import android.graphics.PointF;
 import android.graphics.RectF;
 
 import java.util.ArrayList;
 
-import core.launcher.application.Vector;
+import services.Tracks.Node;
 
 public class QuadTree {
     private boolean isStorage=false;
@@ -51,7 +51,7 @@ public class QuadTree {
 
     public void store(SurveySnapshot Survey) {
         // Should we store this new point ?
-        Vector Cartesian = Survey.copy();
+        Node Cartesian = Survey.copy();
         if (isStorage) {
             Storage.add(Survey);
 //            Log.d("QuadTree","Stored cartesian["+ Cartesian.x+","+Cartesian.y+"]");

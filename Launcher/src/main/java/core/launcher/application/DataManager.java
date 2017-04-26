@@ -12,13 +12,14 @@ import services.GPS.EventsProcessGPS;
 import services.GPS.SensorProvider;
 import services.HeartSensor.SensorEvents;
 import services.HeartSensor.SensorState;
-import services.History.QuadTree;
-import services.History.SurveySnapshot;
+import services.Base.QuadTree;
+import services.Base.SurveySnapshot;
+import services.Tracks.Node;
 
 public class DataManager extends Application implements Runnable, SensorEvents {
     private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
-    private Vector StatisticsSelectionSize = new Vector(20f,20f); // Values in meters
-    private Vector DisplayedSelectionSize = new Vector(200f,200f); // Values in meters
+    private Node StatisticsSelectionSize = new Node(20f,20f); // Values in meters
+    private Node DisplayedSelectionSize = new Node(200f,200f); // Values in meters
 
     private SurveyLoader SurveyLiveGPS; // processing for Live real GPS
     private SurveyLoader SurveySimulatedGPS; // processing for Simulated GPS
@@ -241,10 +242,10 @@ public class DataManager extends Application implements Runnable, SensorEvents {
     static public Context getBackend(){ return Backend; }
 
     // Return area size selection for statistics
-    public Vector getExtractStatisticsSize(){ return StatisticsSelectionSize; }
+    public Node getExtractStatisticsSize(){ return StatisticsSelectionSize; }
 
     // Return area size selection for statistics
-    public Vector getExtractDisplayedSize(){ return DisplayedSelectionSize; }
+    public Node getExtractDisplayedSize(){ return DisplayedSelectionSize; }
 
     // Return all Point from a geographic area (in cartesian/meters)
     public ArrayList<SurveySnapshot> extract(RectF searchZone){ return SearchableStorage.search(searchZone); }

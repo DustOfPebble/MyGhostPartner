@@ -1,40 +1,68 @@
 package core.launcher.application;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
-import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import lib.service.ServiceAccess;
-import lib.service.UpdateEvents;
-import services.HeartSensor.SensorsProvider;
+import core.launcher.helpers.PermissionLoader;
+import core.services.PhoneEvents.PhoneEventsAccess;
+import core.services.PhoneEvents.PhoneEventsKeys;
+import core.services.PhoneEvents.PhoneEventsProvider;
+import core.services.PhoneEvents.PhoneEventsUpdates;
+import core.services.Weather.WeatherAccess;
+import core.services.Weather.WeatherCode;
+import core.services.Weather.WeatherKeys;
+import core.services.Weather.WeatherProvider;
+import core.services.Weather.WeatherUpdates;
 
-public class StartupSettings extends Activity implements  View.OnClickListener,UpdateEvents,ServiceConnection {
+public class StartupSettings extends Activity implements PhoneEventsUpdates, WeatherUpdates,ServiceConnection, Runnable {
 
     private String LogTag = this.getClass().getSimpleName();
 
-    private BeatIndicator VisualIndicator = null;
-    private ServiceAccess SensorService = null;
-    private PermissionCollection Permissions = new PermissionCollection();
+    private TextView CallsCounter = null;
+    private TextView MessagesCounter = null;
+    private ImageView WeatherIcon = null;
+    private TextView Temperature = null;
 
-    private int ServiceMode = lib.service.States.Waiting;
+    private Handler ViewUpdate = new Handler(Looper.getMainLooper());
+    private Bundle UpdateContent = null;
+
+    private PhoneEventsAccess PhoneEventsService = null;
+    private WeatherAccess WeatherService = null;
+
+    private PermissionLoader Permissions = new PermissionLoader();
+    private boolean PermissionsChecked = false;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Get Instance of used HMI objects
-        setContentView(R.layout.startup_settings);
-        VisualIndicator = (BeatIndicator) findViewById(R.id.beat_indicator);
-        VisualIndicator.setMode(ServiceMode);
-        VisualIndicator.setHeartRate(0);
-        VisualIndicator.setOnClickListener(this);
+        setContentView(R.layout.services_states);
+        CallsCounter = (TextView) findViewById(R.id.CallsCount);
+        MessagesCounter = (TextView) findViewById(R.id.MessagesCount);
+        WeatherIcon = (ImageView) findViewById(R.id.icon_weather);
+        Temperature = (TextView) findViewById(R.id.TempValue);
 
         // Checking permissions
+        Permissions.Append(Manifest.permission.RECEIVE_SMS);
+        Permissions.Append(Manifest.permission.READ_PHONE_STATE);
+        Permissions.Append(Manifest.permission.INTERNET);
+        Permissions.Append(Manifest.permission.ACCESS_NETWORK_STATE);
+        Permissions.Append(Manifest.permission.ACCESS_FINE_LOCATION);
+        Permissions.Append(Manifest.permission.ACCESS_COARSE_LOCATION);
+        Permissions.Append(Manifest.permission.WAKE_LOCK);
+
+
         String Requested = Permissions.Selected();
         while (Requested != null) {
             if (CheckPermission(Permissions.Selected())) Permissions.setGranted();
@@ -43,65 +71,62 @@ public class StartupSettings extends Activity implements  View.OnClickListener,U
         }
         String[] NotGrantedPermissions = Permissions.NotGranted();
         if (NotGrantedPermissions.length > 0) requestPermissions(NotGrantedPermissions,0);
-        else StartComponents();
+        else PermissionsChecked = true;
     }
 
-    private void StartComponents(){
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StartServices();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (PhoneEventsService == null) return;
+        if (WeatherService == null) return;
+        unbindService(this);
+        Log.d(LogTag, "Closing connection with Services ...");
+    }
+
+    private void StartServices(){
+        if (!PermissionsChecked) return;
+
+        Intent ServiceStarter;
         // Start Service
-        Log.d(LogTag, "Requesting Service to start...");
-        Intent ServiceStarter = new Intent(this, SensorsProvider.class);
+        ServiceStarter = new Intent(this, PhoneEventsProvider.class);
+        Log.d(LogTag, "Requesting Service ["+ PhoneEventsProvider.class.getSimpleName() +"] to start...");
+        startService(ServiceStarter);
+        bindService(ServiceStarter, this, 0);
+
+        ServiceStarter = new Intent(this, WeatherProvider.class);
+        Log.d(LogTag, "Requesting Service ["+ WeatherProvider.class.getSimpleName() +"] to start...");
         startService(ServiceStarter);
         bindService(ServiceStarter, this, 0);
     }
 
-    /************************************************************************
-     * Handler Callback to manage Click from HMI
-     * **********************************************************************/
-    @Override
-    public void onClick(View Widget) {
-        if (Widget == null) return;
-        if (Widget.getId() != VisualIndicator.getId()) return;
-        Log.d(LogTag, "Managing Click request...");
-
-        if (SensorService == null) return;
-        if (ServiceMode == lib.service.States.Waiting) SensorService.SearchSensor();
-        else SensorService.Stop();
-    }
-
-    /************************************************************************
-     * Handler Callback implementation to manage update from Sensor service
-     * **********************************************************************/
-    @Override
-    public void Update(int Value) {
-        VisualIndicator.setHeartRate(Value);
-    }
-
-    @Override
-    public void StateChanged(int State) {
-        ServiceMode = State;
-        VisualIndicator.setMode(ServiceMode);
-    }
-    /************************************************************************
+     /************************************************************************
      * Managing requested permissions at runtime
      * **********************************************************************/
     private boolean CheckPermission(String RequestedPermission) {
-        if (this.checkSelfPermission(RequestedPermission) != PackageManager.PERMISSION_GRANTED)  return false;
-        return true;
+        return this.checkSelfPermission(RequestedPermission) == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        if (grantResults == null) { Log.d(LogTag, "Granted Permissions is undefined"); return;}
-        if (grantResults.length == 0) { Log.d(LogTag, "Granted Permissions is empty"); return;}
-
         Log.d(LogTag, "Collecting Permissions results...");
-        Boolean PermissionsGranted = true;
+
+        boolean PermissionsGranted = true;
         for(int i = 0; i < grantResults.length; i++) {
-            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) PermissionsGranted = false;
+            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                PermissionsGranted = false;
+                Log.d(LogTag, "Permission:"+permissions[i]+" is not granted !");
+            }
         }
 
-        if (PermissionsGranted) StartComponents();
-        else finish();
+        if (!PermissionsGranted) finish();
+        PermissionsChecked = true;
+        StartServices();
     }
 
     /************************************************************************
@@ -109,19 +134,72 @@ public class StartupSettings extends Activity implements  View.OnClickListener,U
      * **********************************************************************/
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-        SensorService = (ServiceAccess)service;
-        Log.d(LogTag, "Connected to SensorProvider");
-        SensorService.RegisterListener(this);
-        SensorService.Query();
+        Log.d(LogTag, "Connected to " + name.getClassName() + " Service");
+
+        // Connection from push Service
+        if (PhoneEventsProvider.class.getName().equals(name.getClassName())) {
+            PhoneEventsService = (PhoneEventsAccess) service;
+            PhoneEventsService.RegisterListener(this);
+            PhoneEventsService.query();
+        }
+
+        // Connection from push Service
+        if (WeatherProvider.class.getName().equals(name.getClassName())) {
+            WeatherService = (WeatherAccess) service;
+            WeatherService.RegisterListener(this);
+            WeatherService.query();
+        }
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        SensorService = null;
-        Log.d(LogTag, "Disconnected from SensorProvider");
-        ServiceMode = lib.service.States.Waiting;
-        VisualIndicator.setMode(ServiceMode);
+        Log.d(LogTag, "Disconnected from " + name.getClassName()  + " Service");
+
+        // Disconnection from push Service
+        if (PhoneEventsProvider.class.getName().equals(name.getClassName())) {
+            PhoneEventsService = null;
+        }
+
+        // Disconnection from push Service
+        if (WeatherProvider.class.getName().equals(name.getClassName())) {
+            WeatherService = null;
+        }
     }
 
+    /************************************************************************
+     * Callback implementation to manage update from push Services
+     * **********************************************************************/
+    @Override
+    public void push(Bundle UpdateSnapshot) {
+        UpdateContent =  UpdateSnapshot;
+        ViewUpdate.post(this);
+    }
+
+    /************************************************************************
+     * CallED by HMI main thread
+     * **********************************************************************/
+    @Override
+    public void run() {
+        for (String key : UpdateContent.keySet()) {
+
+            // Managing data from push Service
+            if (key.equals(PhoneEventsKeys.CallsID)) CallsCounter.setText(String.valueOf(UpdateContent.getInt(key)));
+            if (key.equals(PhoneEventsKeys.MessagesID)) MessagesCounter.setText(String.valueOf(UpdateContent.getInt(key)));
+
+
+            // Managing data from Weather Service
+            if (key.equals(WeatherKeys.WeatherID)) {
+                int WeatherID = UpdateContent.getInt(key);
+                if (WeatherID == WeatherCode.SunnyID)  WeatherIcon.setImageResource(R.drawable.sunny);
+                if (WeatherID == WeatherCode.CloudyID)  WeatherIcon.setImageResource(R.drawable.cloudy);
+                if (WeatherID == WeatherCode.RainyID)  WeatherIcon.setImageResource(R.drawable.rainy);
+                if (WeatherID == WeatherCode.SunnyRainyID)  WeatherIcon.setImageResource(R.drawable.sunny_rainy);
+                if (WeatherID == WeatherCode.SunnyCloudyID)  WeatherIcon.setImageResource(R.drawable.sunny_cloudy);
+                if (WeatherID == WeatherCode.StormyID)  WeatherIcon.setImageResource(R.drawable.stormy);
+                if (WeatherID == WeatherCode.SnowyID)  WeatherIcon.setImageResource(R.drawable.snowy);
+            }
+            if (key.equals(WeatherKeys.TemperatureID)) Temperature.setText(String.valueOf(UpdateContent.getInt(key))+"°c");
+        }
+    }
 }
 

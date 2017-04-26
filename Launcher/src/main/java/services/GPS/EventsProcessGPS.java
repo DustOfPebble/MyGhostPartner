@@ -1,7 +1,7 @@
 package services.GPS;
 
 
-import services.History.SurveySnapshot;
+import services.Base.SurveySnapshot;
 
 public interface EventsProcessGPS {
     void processLocationChanged(SurveySnapshot Sample);

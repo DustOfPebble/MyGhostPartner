@@ -1,6 +1,6 @@
-package services.History;
+package services.Base;
 
-import core.launcher.application.Vector;
+import services.Tracks.Node;
 
 public class SurveySnapshot {
 
@@ -47,8 +47,8 @@ public class SurveySnapshot {
     public int getDays() {return Days;}
     public void setDays(int value) { Days = value;}
 
-    public Vector copy() {return new Vector(this.x, this.y);}
+    public Node copy() {return new Node(this.x, this.y);}
     public void set(float x, float y) { this.x = x; this.y = y;}
-    public void set(Vector Dot) { this.x = Dot.x; this.y = Dot.y;}
+    public void set(Node Dot) { this.x = Dot.x; this.y = Dot.y;}
 
 }

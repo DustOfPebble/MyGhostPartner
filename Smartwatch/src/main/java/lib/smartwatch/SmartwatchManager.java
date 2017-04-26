@@ -15,14 +15,10 @@ public class SmartwatchManager extends BroadcastReceiver {
 
     private String LogTag = this.getClass().getSimpleName();
 
-    boolean isConnected = false;
-
     private UUID Identifier;
     private Context SavedContext;
-
     private PebbleKit.PebbleDataReceiver DataReceiver;
-
-    SmartwatchEvents Listener;
+    private SmartwatchEvents Listener;
 
     public SmartwatchManager(Context ProvidedContext, SmartwatchEvents Caller, String SmartwatchUUID ) {
         Listener = Caller;
@@ -37,6 +33,7 @@ public class SmartwatchManager extends BroadcastReceiver {
                 PebbleKit.sendAckToPebble(context, Id);
                 Long Data = DataBlock.getInteger(0);
                 if (Data != null) Log.d(LogTag, "Received value["+Data.intValue()+"]");
+                Listener.requestUpdate();
             }
         };
         PebbleKit.registerReceivedDataHandler(SavedContext, DataReceiver);
@@ -48,7 +45,7 @@ public class SmartwatchManager extends BroadcastReceiver {
 
     public void send(SmartwatchBundle DataSet) {
         if (!isConnected()) return;
-        Log.d (LogTag, "Sending "+DataSet.size()+" block to Smartwatch...");
+        Log.d (LogTag, "Sending "+DataSet.size()+" keys to Smartwatch...");
         PebbleKit.sendDataToPebble(SavedContext, Identifier, DataSet);
     }
 
@@ -58,17 +55,8 @@ public class SmartwatchManager extends BroadcastReceiver {
         if (intent == null) return;
         String Event = intent.getAction();
         // Connections Management
-        if (Event.equals(Constants.INTENT_PEBBLE_CONNECTED))
-        {
-            isConnected = true;
-            Listener.ConnectedStateChanged(isConnected);
-        }
-
-        if (Event.equals(Constants.INTENT_PEBBLE_DISCONNECTED))
-        {
-            isConnected = false;
-            Listener.ConnectedStateChanged(isConnected);
-        }
+        if (Event.equals(Constants.INTENT_PEBBLE_CONNECTED)) Listener.ConnectedStateChanged();
+        if (Event.equals(Constants.INTENT_PEBBLE_DISCONNECTED)) Listener.ConnectedStateChanged();
     }
 }
 

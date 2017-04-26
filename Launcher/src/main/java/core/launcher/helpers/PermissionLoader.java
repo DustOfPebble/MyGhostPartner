@@ -1,20 +1,21 @@
-package core.launcher.application;
+package core.launcher.helpers;
 
-import android.Manifest;
 import java.util.ArrayList;
 
-public class PermissionCollection {
+public class PermissionLoader {
     private ArrayList<String> Permissions;
     public final String Granted = "Granted";
     int Selected;
 
-    public PermissionCollection() {
+    public PermissionLoader() {
         Permissions = new ArrayList<>();
-        Permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-        Permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        Permissions.add(Manifest.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
         Selected = 0;
     }
+
+    public void Append(String Permission) {
+        Permissions.add(Permission);
+    }
+
     public void Next() {
         if (Selected == Permissions.size()) return;
         Selected++;
