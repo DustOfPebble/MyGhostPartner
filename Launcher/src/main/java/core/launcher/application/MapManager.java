@@ -12,13 +12,13 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import services.GPS.EventsProcessGPS;
+import services.GPS.EventsGPS;
 import services.Base.SurveySnapshot;
-import services.Tracks.Node;
+import services.Track.Node;
 
 //ToDo: Use Compas data to get Map direction
 //ToDo: add a scrolling feature
-public class MapManager extends ImageView implements EventsProcessGPS {
+public class MapManager extends ImageView implements EventsGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
     private DataManager BackendService =null;

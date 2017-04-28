@@ -1,6 +1,6 @@
 package lib.smartwatch;
 
-public interface SmartwatchEvents {
+public interface WatchEvents {
         void ConnectedStateChanged();
         void requestUpdate();
 }

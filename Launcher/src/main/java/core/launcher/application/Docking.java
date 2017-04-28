@@ -14,12 +14,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import services.GPS.EventsProcessGPS;
+import services.GPS.EventsGPS;
 import services.HeartSensor.SensorState;
 import services.Base.SurveySnapshot;
-import services.Tracks.Node;
+import services.Track.Node;
 
-public class Docking extends Activity implements EventsProcessGPS {
+public class Docking extends Activity implements EventsGPS {
 
     private Handler EventTrigger = new Handler();
     private Runnable task = new Runnable() { public void run() { loadStatus();} };

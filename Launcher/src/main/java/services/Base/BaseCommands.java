@@ -1,5 +1,5 @@
 package core.service.PhoneEvents;
 
-public interface PhoneEventsQueries {
+public interface BaseCommands {
     void Query();
 }

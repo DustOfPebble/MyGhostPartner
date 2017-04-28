@@ -1,6 +1,6 @@
 package services.Base;
 
-import services.Tracks.Node;
+import services.Track.Node;
 
 public class SurveySnapshot {
 

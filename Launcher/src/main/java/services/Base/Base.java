@@ -4,22 +4,22 @@ import android.graphics.RectF;
 
 import java.util.ArrayList;
 
-import services.Tracks.Node;
+import services.Track.Node;
 
-public class QuadTree {
+public class Base {
     private boolean isStorage=false;
     private PointF SubZone = null;
     private RectF Zone = null;
     private ArrayList<SurveySnapshot> Storage = null;
-    private QuadTree TopLeft = null;
-    private QuadTree TopRight = null;
-    private QuadTree BottomLeft = null;
-    private QuadTree BottomRight = null;
+    private Base TopLeft = null;
+    private Base TopRight = null;
+    private Base BottomLeft = null;
+    private Base BottomRight = null;
     private PointF SizeCell = new PointF(2f,2f); // (2m x 2m) minimum size
     private  ArrayList<SurveySnapshot> Collected = new ArrayList<SurveySnapshot>();
 
 
-    public QuadTree(RectF zone) {
+    public Base(RectF zone) {
         Zone = zone;
 //        Log.d("QuadTree","New Quadtree ["+Zone.width()+" x "+Zone.height()+"]");
         if ((Zone.width() > SizeCell.x) && (Zone.height() > SizeCell.y)) {
@@ -69,7 +69,7 @@ public class QuadTree {
 
         if ((Cartesian.x< Zone.centerX()) && (Cartesian.y< Zone.centerY())) {
             if (TopLeft == null) {
-                TopLeft = new QuadTree(
+                TopLeft = new Base(
                         new RectF(  Zone.centerX() - SubZone.x,
                                 Zone.centerY() - SubZone.y,
                                 Zone.centerX(),
@@ -83,7 +83,7 @@ public class QuadTree {
 
         if ((Cartesian.x> Zone.centerX()) && (Cartesian.y< Zone.centerY())) {
             if (TopRight == null) {
-                TopRight = new QuadTree(
+                TopRight = new Base(
                         new RectF(  Zone.centerX(),
                                 Zone.centerY() - SubZone.x,
                                 Zone.centerX() + SubZone.y,
@@ -96,7 +96,7 @@ public class QuadTree {
 
         if ((Cartesian.x< Zone.centerX()) && (Cartesian.y > Zone.centerY())) {
             if (BottomLeft == null) {
-                BottomLeft = new QuadTree(
+                BottomLeft = new Base(
                         new RectF(  Zone.centerX() - SubZone.x,
                                 Zone.centerY(),
                                 Zone.centerX(),
@@ -109,7 +109,7 @@ public class QuadTree {
 
         if ((Cartesian.x> Zone.centerX()) && (Cartesian.y > Zone.centerY())) {
             if (BottomRight == null) {
-                BottomRight = new QuadTree(
+                BottomRight = new Base(
                         new RectF(  Zone.centerX(),
                                 Zone.centerY(),
                                 Zone.centerX() + SubZone.x,

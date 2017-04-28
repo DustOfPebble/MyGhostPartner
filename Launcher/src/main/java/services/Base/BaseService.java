@@ -1,4 +1,4 @@
-package services.Tracks;
+package core.service.PhoneEvents;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,9 +12,9 @@ import core.launcher.application.R;
 import core.launcher.application.ServicesKeys;
 import core.launcher.application.SmartWatchExtension;
 import core.launcher.application.WatchState;
-import lib.smartwatch.SmartwatchEvents;
+import lib.smartwatch.WatchEvents;
 
-public class PhoneEventsProvider extends Service implements PhoneEventsQueries, SmartwatchEvents {
+public class BaseService extends Service implements PhoneEventsQueries, WatchEvents {
 
     private String LogTag = this.getClass().getSimpleName();
 
@@ -33,7 +33,7 @@ public class PhoneEventsProvider extends Service implements PhoneEventsQueries, 
 
     private Bundle EventSnapshot = null;
 
-    public PhoneEventsProvider(){
+    public BaseService(){
         EventSnapshot = new Bundle();
         Connector = new PhoneEventsAccess();
     }

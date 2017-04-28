@@ -5,7 +5,7 @@ package core.launcher.application;
  ********************************************************************/
 
 public class SmartwatchConstants {
-    static final String WatchUUID ="e603e869-8eff-40c3-9957-6c6f6087fd57";
+    static public final String WatchUUID ="e603e869-8eff-40c3-9957-6c6f6087fd57";
 
 
     // Information about Phone events

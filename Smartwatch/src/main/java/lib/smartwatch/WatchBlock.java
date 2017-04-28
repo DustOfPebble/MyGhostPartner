@@ -2,7 +2,7 @@ package lib.smartwatch;
 
 import com.getpebble.android.kit.util.PebbleDictionary;
 
-public class SmartwatchBundle extends PebbleDictionary {
+public class WatchBlock extends PebbleDictionary {
 
     public void update(int key, int Value, Boolean Signed){
         if (this.contains(key)) this.remove(key);

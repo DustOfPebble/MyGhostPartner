@@ -8,13 +8,13 @@ import android.os.Handler;
 
 import java.util.ArrayList;
 
-import services.GPS.EventsProcessGPS;
+import services.GPS.EventsGPS;
 import services.GPS.SensorProvider;
 import services.HeartSensor.SensorEvents;
 import services.HeartSensor.SensorState;
-import services.Base.QuadTree;
+import services.Base.Base;
 import services.Base.SurveySnapshot;
-import services.Tracks.Node;
+import services.Track.Node;
 
 public class DataManager extends Application implements Runnable, SensorEvents {
     private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
@@ -32,7 +32,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
 
 
     private LoaderGPS CollectedGPS = null;
-    private QuadTree SearchableStorage = null;
+    private Base SearchableStorage = null;
 
     // File Management
     private FileManager FilesHandler=null;
@@ -53,7 +53,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
     // Returning instance of this to Activity ...
     static Context Backend = null;
 
-    static ArrayList<EventsProcessGPS> Clients = new ArrayList<EventsProcessGPS>();
+    static ArrayList<EventsGPS> Clients = new ArrayList<EventsGPS>();
     private static LocationManager SourceGPS;
 
     @Override
@@ -102,7 +102,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
     }
 
     private void restartLoadingFiles() {
-        SearchableStorage = new QuadTree(SearchableZone); // Create QuadTree storage area
+        SearchableStorage = new Base(SearchableZone); // Create QuadTree storage area
         if (LoadingFiles!= null) LoadingFiles.interrupt();
         FilesHandler.resetStreams(); // Forcing to reload all files
         LoadingFiles = new Thread(ReadFromFile);
@@ -142,7 +142,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
 
         // Loop over registered clients callback ...
         if (ActivityMode == Constants.SwitchForeground) {
-            for (EventsProcessGPS Client :Clients) Client.processLocationChanged(Sample);
+            for (EventsGPS Client :Clients) Client.processLocationChanged(Sample);
         }
 
         // Setup next Update ...
@@ -160,7 +160,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
         SurveySnapshot Sample = SurveySimulatedGPS.getSnapshot();
         // Loop over registered clients callback ...
         if (ActivityMode == Constants.SwitchForeground) {
-            for (EventsProcessGPS Client :Clients) Client.processLocationChanged(Sample);
+            for (EventsGPS Client :Clients) Client.processLocationChanged(Sample);
         }
     }
 
@@ -203,7 +203,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
     }
 
     // Storing callbacks instance from client View
-    public void setUpdateCallback(EventsProcessGPS updateClient){
+    public void setUpdateCallback(EventsGPS updateClient){
         Clients.add(updateClient);
     }
 
