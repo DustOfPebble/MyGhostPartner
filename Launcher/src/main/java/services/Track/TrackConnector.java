@@ -1,17 +1,16 @@
 package services.Track;
 
 import android.os.Binder;
-import android.util.Log;
 
 public class TrackConnector extends Binder {
 
     private String LogTag = this.getClass().getSimpleName();
 
     private TrackCommands Service = null;
-    private TrackUpdates Listener = null;
+    private TrackEvents Listener = null;
 
     public void RegisterService(TrackCommands Service) { this.Service = Service; }
-    public void RegisterListener(TrackUpdates Listener) { this.Listener = Listener; }
+    public void RegisterListener(TrackEvents Listener) { this.Listener = Listener; }
 
     /******************************************************************
      * Events implementations
@@ -20,7 +19,7 @@ public class TrackConnector extends Binder {
     void Tracking(int TrackingEvent) { Listener.Tracking(TrackingEvent);}
 
     /******************************************************************
-     * Commands implementations
+     * SensorCommands implementations
      ******************************************************************/
     void LoadGPX(String Filename) {Service.LoadGPX(Filename);}
     void SetClearance(double Clearance){Service.SetClearance(Clearance);}

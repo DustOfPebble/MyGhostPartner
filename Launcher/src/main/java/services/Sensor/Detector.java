@@ -1,4 +1,4 @@
-package services.HeartSensor;
+package services.Sensor;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -10,9 +10,8 @@ import android.os.Handler;
 import android.util.Log;
 import java.util.List;
 
-import lib.events.SensorEvents;
 
-public class SensorDetector extends ScanCallback implements Runnable {
+public class Detector extends ScanCallback implements Runnable {
 
     private String LogTag = this.getClass().getSimpleName();
 
@@ -22,7 +21,7 @@ public class SensorDetector extends ScanCallback implements Runnable {
     private BluetoothLeScanner DeviceScanner;
     private Boolean isScanning = false;
 
-    public SensorDetector(SensorEvents Callback, int  TimeOut) {
+    public Detector(SensorEvents Callback, int  TimeOut) {
         SensorHandler = Callback;
         TriggerEvent = new Handler();
         if (TimeOut > 1000) this.TimeOut = TimeOut;

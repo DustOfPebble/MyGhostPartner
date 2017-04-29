@@ -1,6 +1,6 @@
-package core.service.PhoneEvents;
+package services.Base;
 
-public interface BaseUpdates {
+public interface BaseEvents {
     void CallsCount(int Count);
     void MessagesCount(int Count);
 }

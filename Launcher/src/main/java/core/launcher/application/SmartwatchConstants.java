@@ -1,7 +1,7 @@
 package core.launcher.application;
 
 /********************************************************************
- * Constants used to create dictionnary for sending to Smartwatch
+ * UUIDs used to create dictionnary for sending to Smartwatch
  ********************************************************************/
 
 public class SmartwatchConstants {

@@ -2,6 +2,8 @@ package services.Track;
 
 import java.util.ArrayList;
 
+import core.Structures.Node;
+
 public class Track implements Runnable {
     ArrayList<Segment> Segments;
     int Index = -1;

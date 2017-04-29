@@ -1,124 +1,95 @@
 package services.Base;
-import android.graphics.PointF;
-import android.graphics.RectF;
 
 import java.util.ArrayList;
 
-import services.Track.Node;
+import core.Structures.Extension;
+import core.Structures.Frame;
+import core.Structures.Statistic;
 
 public class Base {
-    private boolean isStorage=false;
-    private PointF SubZone = null;
-    private RectF Zone = null;
-    private ArrayList<SurveySnapshot> Storage = null;
+
+    static public ArrayList<Statistic> Collected = null;
+    static final Extension Limit = new Extension(2f,2f); // in meters
+
+    private boolean isStorage = false;
+    private Frame Zone = null;
+
     private Base TopLeft = null;
     private Base TopRight = null;
     private Base BottomLeft = null;
     private Base BottomRight = null;
-    private PointF SizeCell = new PointF(2f,2f); // (2m x 2m) minimum size
-    private  ArrayList<SurveySnapshot> Collected = new ArrayList<SurveySnapshot>();
 
+    private ArrayList<Statistic> Statistics = null;
 
-    public Base(RectF zone) {
+    public Base(Frame zone) {
+        isStorage = false;
         Zone = zone;
-//        Log.d("QuadTree","New Quadtree ["+Zone.width()+" x "+Zone.height()+"]");
-        if ((Zone.width() > SizeCell.x) && (Zone.height() > SizeCell.y)) {
-            SubZone= new PointF(Zone.width() /2, Zone.height() / 2);
-            isStorage = false;
-        } else {
-            isStorage = true;
-            Storage = new ArrayList<SurveySnapshot>();
-        }
+        if ((Zone.Size().w <= Limit.w) || (Zone.Size().h <= Limit.h)) isStorage = true;
     }
 
-    public ArrayList<SurveySnapshot> search(RectF SearchArea) {
-        if (isStorage) { return Storage; }
-
+    public void clear() {
+        if (Collected == null) Collected = new ArrayList<>();
         Collected.clear();
-
-        if (SearchArea.bottom < Zone.top ) return Collected;
-        if (SearchArea.top > Zone.bottom ) return Collected;
-        if (SearchArea.left > Zone.right ) return Collected;
-        if (SearchArea.right < Zone.left ) return Collected;
-
-        if (TopLeft != null) Collected.addAll(TopLeft.search(SearchArea));
-        if (TopRight != null) Collected.addAll(TopRight.search(SearchArea));
-        if (BottomLeft != null) Collected.addAll(BottomLeft.search(SearchArea));
-        if (BottomRight != null) Collected.addAll(BottomRight.search(SearchArea));
-
-        return Collected;
     }
 
-    public void store(SurveySnapshot Survey) {
-        // Should we store this new point ?
-        Node Cartesian = Survey.copy();
+    public void reset() {
+        if (isStorage && (Statistics != null) {
+            Statistics.clear();
+            Statistics = null;
+            return;
+        }
+        if (TopLeft != null) { TopLeft.reset(); TopLeft = null; }
+        if (TopRight != null) { TopRight.reset(); TopRight = null; }
+        if (BottomLeft != null) { BottomLeft.reset(); BottomLeft = null; }
+        if (BottomRight != null) { BottomRight.reset(); BottomRight = null; }
+    }
+
+    public void collect(Frame zone) {
         if (isStorage) {
-            Storage.add(Survey);
-//            Log.d("QuadTree","Stored cartesian["+ Cartesian.x+","+Cartesian.y+"]");
+            Collected.addAll(Statistics);
             return;
         }
 
-/*       Log.d("QuadTree","Trying to catch["+ Cartesian.x+","+Cartesian.y+"] " +
-                "in [("+(Zone.centerX() - SubZone.x)+","+(Zone.centerY() - SubZone.y)+")-"+
-                "("+(Zone.centerX() + SubZone.x)+","+(Zone.centerY() + SubZone.y)+")]");
-*/
-        if (Cartesian.x < (Zone.centerX() - SubZone.x) ) return;
-        if (Cartesian.x > (Zone.centerX() + SubZone.x) ) return;
-        if (Cartesian.y < (Zone.centerY() - SubZone.y) ) return;
-        if (Cartesian.y > (Zone.centerY() + SubZone.y) ) return;
+        if (zone.Bottom() < Zone.Top() ) return ;
+        if (zone.Top() > Zone.Bottom() ) return ;
+        if (zone.Left() > Zone.Right() ) return ;
+        if (zone.Right() < Zone.Left() ) return ;
 
-        if ((Cartesian.x< Zone.centerX()) && (Cartesian.y< Zone.centerY())) {
-            if (TopLeft == null) {
-                TopLeft = new Base(
-                        new RectF(  Zone.centerX() - SubZone.x,
-                                Zone.centerY() - SubZone.y,
-                                Zone.centerX(),
-                                Zone.centerY()
-                            )
-                        );
-            }
-//            Log.d("QuadTree","TopLeft ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
-            TopLeft.store(Survey);
-        }
-
-        if ((Cartesian.x> Zone.centerX()) && (Cartesian.y< Zone.centerY())) {
-            if (TopRight == null) {
-                TopRight = new Base(
-                        new RectF(  Zone.centerX(),
-                                Zone.centerY() - SubZone.x,
-                                Zone.centerX() + SubZone.y,
-                                Zone.centerY() )
-                            );
-            }
-//            Log.d("QuadTree","TopRight ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
-            TopRight.store(Survey);
-        }
-
-        if ((Cartesian.x< Zone.centerX()) && (Cartesian.y > Zone.centerY())) {
-            if (BottomLeft == null) {
-                BottomLeft = new Base(
-                        new RectF(  Zone.centerX() - SubZone.x,
-                                Zone.centerY(),
-                                Zone.centerX(),
-                                Zone.centerY() + SubZone.y )
-                            );
-            }
-//            Log.d("QuadTree","BottomLeft ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
-            BottomLeft.store(Survey);
-        }
-
-        if ((Cartesian.x> Zone.centerX()) && (Cartesian.y > Zone.centerY())) {
-            if (BottomRight == null) {
-                BottomRight = new Base(
-                        new RectF(  Zone.centerX(),
-                                Zone.centerY(),
-                                Zone.centerX() + SubZone.x,
-                                Zone.centerY() + SubZone.y )
-                            );
-            }
-//            Log.d("QuadTree","BottomRight ["+ Zone.centerX()+","+Zone.centerY()+"] has catched the point");
-            BottomRight.store(Survey);
-        }
+        if (TopLeft != null) TopLeft.collect(zone);
+        if (TopRight != null) TopRight.collect(zone);
+        if (BottomLeft != null) BottomLeft.collect(zone);
+        if (BottomRight != null) BottomRight.collect(zone);
     }
 
+    public void store(Statistic set) {
+        if (isStorage) {
+            Statistics.add(set);
+            return;
+        }
+
+        if (set.node().x < Zone.Left()) return;
+        if (set.node().x > Zone.Right()) return;
+        if (set.node().y < Zone.Top()) return;
+        if (set.node().y > Zone.Bottom()) return;
+
+        if ((set.node().x < Zone.Center().x) && (set.node().y < Zone.Center().y)) {
+            if (TopLeft == null) TopLeft = new Base(new Frame(Zone.TopLeft(), Zone.Center()));
+            TopLeft.store(set);
+        }
+
+        if ((set.node().x > Zone.Center().x) && (set.node().y < Zone.Center().y)) {
+            if (TopRight == null) TopRight = new Base(new Frame( Zone.TopRight(), Zone.Center()));
+            TopRight.store(set);
+        }
+
+        if ((set.node().x < Zone.Center().x) && (set.node().y > Zone.Center().y)) {
+            if (BottomLeft == null) BottomLeft = new Base(new Frame( Zone.BottomLeft(),Zone.Center()));
+            BottomLeft.store(set);
+        }
+
+        if ((set.node().x> Zone.Center().x) && (set.node().y > Zone.Center().y)) {
+            if (BottomRight == null) BottomRight = new Base(new Frame( Zone.BottomRight(), Zone.Center()));
+            BottomRight.store(set);
+        }
+    }
 }

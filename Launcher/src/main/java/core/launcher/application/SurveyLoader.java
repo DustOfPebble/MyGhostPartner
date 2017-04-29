@@ -5,7 +5,8 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
-import services.Base.SurveySnapshot;
+import core.Structures.Coordinates;
+import core.Structures.Statistics;
 
 public class SurveyLoader {
 
@@ -103,9 +104,9 @@ public class SurveyLoader {
 
     }
 
-    public SurveySnapshot getSnapshot() {
+    public Statistics getSnapshot() {
         if (BaseGPS == null ) return null;
-        SurveySnapshot Snapshot = new SurveySnapshot();
+        Statistics Snapshot = new Statistics();
         Snapshot.setSpeed(Speed);
         Snapshot.setAccuracy(Accuracy);
         Snapshot.setBearing(Bearing);

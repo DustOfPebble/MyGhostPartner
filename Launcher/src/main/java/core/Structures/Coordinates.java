@@ -1,4 +1,4 @@
-package core.launcher.application;
+package core.Structures;
 
 public class Coordinates {
     public double longitude;

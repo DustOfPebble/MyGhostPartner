@@ -1,4 +1,4 @@
-package services.HeartSensor;
+package services.Sensor;
 
 import android.bluetooth.BluetoothDevice;
 

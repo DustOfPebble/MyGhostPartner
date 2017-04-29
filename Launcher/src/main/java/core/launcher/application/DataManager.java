@@ -8,13 +8,14 @@ import android.os.Handler;
 
 import java.util.ArrayList;
 
+import core.Structures.Coordinates;
 import services.GPS.EventsGPS;
 import services.GPS.SensorProvider;
-import services.HeartSensor.SensorEvents;
-import services.HeartSensor.SensorState;
+import services.Sensor.SensorEvents;
+import services.Sensor.SensorState;
 import services.Base.Base;
-import services.Base.SurveySnapshot;
-import services.Track.Node;
+import core.Structures.Statistics;
+import core.Structures.Node;
 
 public class DataManager extends Application implements Runnable, SensorEvents {
     private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
@@ -136,7 +137,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
             restartLoadingFiles();
         }
 
-        SurveySnapshot Sample = SurveyLiveGPS.getSnapshot();
+        Statistics Sample = SurveyLiveGPS.getSnapshot();
         SearchableStorage.store(Sample);
         WriteToFile.appendJSON(SurveyLiveGPS.toJSON());
 
@@ -157,7 +158,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
             restartLoadingFiles();
         }
 
-        SurveySnapshot Sample = SurveySimulatedGPS.getSnapshot();
+        Statistics Sample = SurveySimulatedGPS.getSnapshot();
         // Loop over registered clients callback ...
         if (ActivityMode == Constants.SwitchForeground) {
             for (EventsGPS Client :Clients) Client.processLocationChanged(Sample);
@@ -165,13 +166,13 @@ public class DataManager extends Application implements Runnable, SensorEvents {
     }
 
     // Called Only when a new Sample has been loaded from file
-    public void onSnapshotLoaded(SurveySnapshot Sample) {
+    public void onSnapshotLoaded(Statistics Sample) {
         if (Sample == null) return;
         SearchableStorage.store(Sample);
     }
 
     // Called from activity to retrieved last position on WakeUp
-    public SurveySnapshot getLastSnapshot(){
+    public Statistics getLastSnapshot(){
         if (ModeGPS == Constants.ReplayedGPS)  return SurveySimulatedGPS.getSnapshot();
         else return SurveyLiveGPS.getSnapshot();
     }
@@ -248,18 +249,18 @@ public class DataManager extends Application implements Runnable, SensorEvents {
     public Node getExtractDisplayedSize(){ return DisplayedSelectionSize; }
 
     // Return all Point from a geographic area (in cartesian/meters)
-    public ArrayList<SurveySnapshot> extract(RectF searchZone){ return SearchableStorage.search(searchZone); }
+    public ArrayList<Statistics> extract(RectF searchZone){ return SearchableStorage.collect(searchZone); }
 
     // Convert angle from [0,360°] to [-180°,180°]
     private float signed(float Angle) { return  ((Angle > 180)? (180 - Angle) : Angle); }
 
     // Filter and return Point that match a Bearing Range
-    public ArrayList<SurveySnapshot> filter(ArrayList<SurveySnapshot> Collected, SurveySnapshot Snapshot){
-        ArrayList<SurveySnapshot> Filtered = new ArrayList<SurveySnapshot>();
+    public ArrayList<Statistics> filter(ArrayList<Statistics> Collected, Statistics Snapshot){
+        ArrayList<Statistics> Filtered = new ArrayList<Statistics>();
 
         float Heading = signed(Snapshot.getBearing());
         float ExtractedHeading;
-        for (SurveySnapshot Extracted : Collected) {
+        for (Statistics Extracted : Collected) {
             ExtractedHeading = signed(Extracted.getBearing());
             if (Math.abs(ExtractedHeading - Heading) > Constants.BearingMatchingGap) continue;
             Filtered.add(Extracted);

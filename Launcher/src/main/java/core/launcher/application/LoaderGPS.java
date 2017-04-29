@@ -8,6 +8,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import core.Structures.Coordinates;
+
 public class LoaderGPS implements Runnable {
     private ArrayList<String> CollectionJSON;
     ArrayList<File> FilesCollection = null;

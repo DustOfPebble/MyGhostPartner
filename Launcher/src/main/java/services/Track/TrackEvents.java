@@ -1,6 +1,6 @@
 package services.Track;
 
-public interface TrackUpdates {
+public interface TrackEvents {
     void LoadedGPX(boolean Status);
     void Tracking(int TrackingEvent);
 }

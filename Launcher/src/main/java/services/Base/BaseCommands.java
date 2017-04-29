@@ -1,5 +1,5 @@
-package core.service.PhoneEvents;
+package services.Base;
 
 public interface BaseCommands {
-    void Query();
+    void getStatitics(Frame Size);
 }

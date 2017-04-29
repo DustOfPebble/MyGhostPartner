@@ -25,19 +25,19 @@
         <service
             android:description="@string/HeartSensor"
             android:label="@string/HeartSensor_Name"
-            android:name="services.HeartSensor.SensorsProvider"
+            android:name="services.Sensor.SensorService"
             android:exported="true"
             />
         <service
             android:description="@string/GPS"
             android:label="@string/GPS_Name"
-            android:name="services.HeartSensor.SensorsProvider"
+            android:name="services.Sensor.SensorService"
             android:exported="true"
             />
         <service
             android:description="@string/History"
             android:label="@string/History_Name"
-            android:name="services.HeartSensor.SensorsProvider"
+            android:name="services.Sensor.SensorService"
             android:exported="true"
             />
     </application>

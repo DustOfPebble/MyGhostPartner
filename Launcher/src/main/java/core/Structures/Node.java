@@ -1,4 +1,4 @@
-package services.Track;
+package core.Structures;
 
 public class Node {
     public float x;

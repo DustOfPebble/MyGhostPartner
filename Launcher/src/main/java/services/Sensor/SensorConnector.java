@@ -1,16 +1,16 @@
-package services.HeartSensor;
+package services.Sensor;
 
 import android.os.Binder;
 import android.util.Log;
 
-public class ServiceAccess extends Binder {
+public class SensorConnector extends Binder {
 
     private String LogTag = this.getClass().getSimpleName();
 
-    private Commands Service = null;
+    private SensorCommands Service = null;
     private UpdateEvents Updater = null;
 
-    public void RegisterProvider(Commands Provider) { Service = Provider; }
+    public void RegisterService(SensorCommands Service) { this.Service = Service; }
     public void RegisterListener(UpdateEvents Listener) { Updater = Listener; }
 
     public void SearchSensor() { Service.SearchSensor(); }

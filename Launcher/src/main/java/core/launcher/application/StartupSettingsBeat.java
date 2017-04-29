@@ -13,7 +13,6 @@ import android.view.View;
 import core.launcher.application.helpers.PermissionCollection;
 import lib.service.ServiceAccess;
 import lib.service.UpdateEvents;
-import services.HeartSensor.SensorsProvider;
 
 public class StartupSettingsBeat extends Activity implements  View.OnClickListener,UpdateEvents,ServiceConnection {
 
@@ -50,7 +49,7 @@ public class StartupSettingsBeat extends Activity implements  View.OnClickListen
     private void StartComponents(){
         // Start Service
         Log.d(LogTag, "Requesting Service to start...");
-        Intent ServiceStarter = new Intent(this, SensorsProvider.class);
+        Intent ServiceStarter = new Intent(this, services.Sensor.SensorService.class);
         startService(ServiceStarter);
         bindService(ServiceStarter, this, 0);
     }

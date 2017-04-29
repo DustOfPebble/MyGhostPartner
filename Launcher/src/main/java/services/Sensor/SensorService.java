@@ -1,7 +1,5 @@
-package services.HeartSensor;
+package services.Sensor;
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -9,35 +7,22 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-public class SensorsProvider extends Service implements SensorEvents, Commands {
+public class SensorService extends Service implements SensorEvents, SensorCommands {
 
     private String LogTag = this.getClass().getSimpleName();
 
-    private NotificationManager InfoProvider;
-    private Notification.Builder InfoCreator;
-
-    private SensorManager SensorListener = null;
-    private SensorDetector SensorFinder = null;
+    private Manager SensorListener = null;
+    private Detector SensorFinder = null;
     private int SensorSearchTimeOut = 60000; // in ms TimeOut
 
-    private ServiceAccess Connector=null;
+    private SensorConnector Connector=null;
 
     private int ServiceStatus = States.Waiting;
     private Bundle SensorSnapshot = null;
 
-    public SensorsProvider(){
+    public SensorService(){
         SensorSnapshot = new Bundle();
-        Connector = new ServiceAccess();
-    }
-
-    private void PushSystemNotification() {
-        int  Info = -1;
-        if (ServiceStatus == States.Waiting) Info = R.string.WaitingMode;
-        if (ServiceStatus == States.Running) Info = R.string.RunningMode;
-        if (ServiceStatus == States.Searching) Info = R.string.SearchingMode;
-
-        InfoCreator.setContentText(getText(Info));
-        InfoProvider.notify(R.string.ID,InfoCreator.build());
+        Connector = new SensorConnector();
     }
 
     /**************************************************************
@@ -64,7 +49,6 @@ public class SensorsProvider extends Service implements SensorEvents, Commands {
         SensorFinder.stopSearch();
 
         ServiceStatus = States.Running;
-        PushSystemNotification();
 
         Connector.StateChanged(ServiceStatus);
 
@@ -75,7 +59,6 @@ public class SensorsProvider extends Service implements SensorEvents, Commands {
     @Override
     public void Failed(){
         ServiceStatus = States.Waiting;
-        PushSystemNotification();
 
         Connector.StateChanged(ServiceStatus);
 
@@ -86,7 +69,6 @@ public class SensorsProvider extends Service implements SensorEvents, Commands {
     @Override
     public void Removed(){
         ServiceStatus = States.Waiting;
-        PushSystemNotification();
 
         Connector.StateChanged(ServiceStatus);
 
@@ -100,16 +82,10 @@ public class SensorsProvider extends Service implements SensorEvents, Commands {
     @Override
     public void onCreate(){
         super.onCreate();
-        InfoProvider = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        InfoCreator = new Notification.Builder(this);
-        InfoCreator.setSmallIcon(R.drawable.icon_heartspy);
-        InfoCreator.setContentTitle(getText(R.string.ServiceName));
 
-        PushSystemNotification();
-
-        SensorListener = new SensorManager(this, getBaseContext());
-        SensorFinder = new SensorDetector(this, SensorSearchTimeOut);
-        Connector.RegisterProvider(this);
+        SensorListener = new Manager(this, getBaseContext());
+        SensorFinder = new Detector(this, SensorSearchTimeOut);
+        Connector.RegisterService(this);
     }
 
     @Override
@@ -128,7 +104,6 @@ public class SensorsProvider extends Service implements SensorEvents, Commands {
     @Override
     public void onDestroy() {
         Log.d(LogTag, "Service is about to quit !");
-        InfoProvider.cancel(R.string.ID);
         super.onDestroy();
     }
 
@@ -140,7 +115,6 @@ public class SensorsProvider extends Service implements SensorEvents, Commands {
         if (ServiceStatus == States.Searching) return;
         SensorFinder.startSearch();
         ServiceStatus = States.Searching;
-        PushSystemNotification();
 
         Connector.StateChanged(ServiceStatus);
     }
@@ -150,7 +124,6 @@ public class SensorsProvider extends Service implements SensorEvents, Commands {
         if (ServiceStatus == States.Searching) {
             SensorFinder.stopSearch();
             ServiceStatus = States.Waiting;
-            PushSystemNotification();
             Connector.StateChanged(ServiceStatus);
         }
         if (ServiceStatus == States.Running) {
@@ -162,7 +135,5 @@ public class SensorsProvider extends Service implements SensorEvents, Commands {
     public void Query() {
         Connector.StateChanged(ServiceStatus);
     }
-
-
 
 }

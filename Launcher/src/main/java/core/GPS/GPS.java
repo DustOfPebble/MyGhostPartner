@@ -1,4 +1,4 @@
-package core.helpers.GPS;
+package core.GPS;
 
 
 import android.content.Context;

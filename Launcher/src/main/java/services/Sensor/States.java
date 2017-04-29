@@ -1,4 +1,4 @@
-package services.HeartSensor;
+package services.Sensor;
 /**************************************************************************************
  *  Known state for the service while using a sensor
  **************************************************************************************/

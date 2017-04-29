@@ -1,4 +1,4 @@
-package services.HeartSensor;
+package services.Sensor;
 
 public interface UpdateEvents {
     void Update(int Value);

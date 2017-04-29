@@ -15,9 +15,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import services.GPS.EventsGPS;
-import services.HeartSensor.SensorState;
-import services.Base.SurveySnapshot;
-import services.Track.Node;
+import services.Sensor.SensorState;
+import core.Structures.Statistics;
+import core.Structures.Node;
 
 public class Docking extends Activity implements EventsGPS {
 
@@ -289,7 +289,7 @@ public class Docking extends Activity implements EventsGPS {
         SleepLocker.setMode(BackendService.getModeSleep());
 
         // Force a refreshed display
-        SurveySnapshot LastGPS = BackendService.getLastSnapshot();
+        Statistics LastGPS = BackendService.getLastSnapshot();
         if (null == LastGPS) { return; }
         // Refreshing Statistics
         processLocationChanged(LastGPS);
@@ -298,7 +298,7 @@ public class Docking extends Activity implements EventsGPS {
     }
 
     @Override
-    public void processLocationChanged(SurveySnapshot Snapshot){
+    public void processLocationChanged(Statistics Snapshot){
         if (BackendService == null) return;
 
         // Refresh HeartBeat button state ...
@@ -311,13 +311,13 @@ public class Docking extends Activity implements EventsGPS {
                        ViewCenter.x + SizeSelection.x / 2, ViewCenter.y + SizeSelection.y / 2  );
 
         // Collecting data from backend
-        ArrayList<SurveySnapshot> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone),Snapshot);
+        ArrayList<Statistics> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone),Snapshot);
 
         // Updating Speeds Statistics
         if (SpeedMonitor.getVisibility() == View.INVISIBLE) SpeedMonitor.setVisibility(View.VISIBLE);
         Speeds.clear();
         Speeds.add(Float.valueOf(Snapshot.getSpeed()*3.6f));
-        for (SurveySnapshot item: CollectedStatistics) {
+        for (Statistics item: CollectedStatistics) {
             Speeds.add(Float.valueOf(item.getSpeed()*3.6f));
         }
         if (Speeds.isEmpty()) Speeds.add(Float.valueOf(Snapshot.getSpeed()*3.6f));
@@ -328,7 +328,7 @@ public class Docking extends Activity implements EventsGPS {
         if (HeartbeatMonitor.getVisibility() == View.INVISIBLE) HeartbeatMonitor.setVisibility(View.VISIBLE);
         HeartBeats.clear();
         HeartBeats.add(Float.valueOf(Snapshot.getHeartbeat()));
-        for (SurveySnapshot item: CollectedStatistics) {
+        for (Statistics item: CollectedStatistics) {
             if (item.getHeartbeat() == -1) continue;
             HeartBeats.add(Float.valueOf(item.getHeartbeat()));
         }

@@ -13,8 +13,8 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 import services.GPS.EventsGPS;
-import services.Base.SurveySnapshot;
-import services.Track.Node;
+import core.Structures.Statistics;
+import core.Structures.Node;
 
 //ToDo: Use Compas data to get Map direction
 //ToDo: add a scrolling feature
@@ -22,13 +22,13 @@ public class MapManager extends ImageView implements EventsGPS {
 
     private PointF MetersToPixels = new PointF(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
     private DataManager BackendService =null;
-    private ArrayList<SurveySnapshot> CollectedDisplayed =null;
-    private ArrayList<SurveySnapshot> CollectedStatistics =null;
+    private ArrayList<Statistics> CollectedDisplayed =null;
+    private ArrayList<Statistics> CollectedStatistics =null;
     private Node ViewCenter;
     private Node GraphicCenter = new Node(0f,0f) ;
     private Paint LineMode;
     private Paint FillMode;
-    private SurveySnapshot LastSnapshot = null;
+    private Statistics LastSnapshot = null;
     private RectF searchZone = new RectF();
 
     public MapManager(Context context, AttributeSet attrs) {
@@ -38,8 +38,8 @@ public class MapManager extends ImageView implements EventsGPS {
         LineMode.setStyle(Paint.Style.STROKE);
         FillMode = new Paint();
 
-        CollectedDisplayed = new ArrayList<SurveySnapshot>();
-        CollectedStatistics = new ArrayList<SurveySnapshot>();
+        CollectedDisplayed = new ArrayList<Statistics>();
+        CollectedStatistics = new ArrayList<Statistics>();
     }
 
     public void setBackend(DataManager backend) {
@@ -48,7 +48,7 @@ public class MapManager extends ImageView implements EventsGPS {
     }
 
     @Override
-    public void processLocationChanged(SurveySnapshot Snapshot) {
+    public void processLocationChanged(Statistics Snapshot) {
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
         if (BackendService == null) return;
@@ -109,7 +109,7 @@ public class MapManager extends ImageView implements EventsGPS {
         LineMode.setStrokeWidth(GraphicsConstants.ExtractedLineThickness);
         FillMode.setColor(GraphicsConstants.ExtractedColor);
         FillMode.setAlpha(GraphicsConstants.ExtractedFillTransparency);
-        for (SurveySnapshot Marker : CollectedDisplayed) {
+        for (Statistics Marker : CollectedDisplayed) {
             Coords = Marker.copy();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
@@ -128,7 +128,7 @@ public class MapManager extends ImageView implements EventsGPS {
         LineMode.setStrokeWidth(GraphicsConstants.FilteredLineThickness);
         FillMode.setColor(GraphicsConstants.FilteredColor);
         FillMode.setAlpha(GraphicsConstants.FilteredFillTransparency);
-        for (SurveySnapshot Marker : CollectedStatistics) {
+        for (Statistics Marker : CollectedStatistics) {
             Coords = Marker.copy();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(

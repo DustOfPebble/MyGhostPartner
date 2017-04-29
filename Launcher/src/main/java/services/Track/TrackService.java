@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import core.helpers.GPS.EventsGPS;
-import core.helpers.GPS.GPS;
+import core.GPS.EventsGPS;
+import core.GPS.GPS;
+import core.Structures.Node;
 import core.launcher.application.SmartwatchConstants;
 import lib.smartwatch.WatchLink;
 
@@ -79,6 +80,7 @@ public class TrackService extends Service implements TrackCommands, EventsGPS {
 
     @Override
     public void EnableTracking(boolean Enabled) { isTracking = Enabled;}
+
     /**************************************************************
      *  Callbacks implementation for GPS Events
      ***************************************************************/

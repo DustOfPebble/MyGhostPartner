@@ -1,4 +1,4 @@
-package services.HeartSensor;
+package services.Sensor;
 
 /*******************************************************************************
  *  Bundle Keys for encoding/decoding datas when using SmartwatchExtension

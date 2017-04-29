@@ -1,4 +1,4 @@
-package services.HeartSensor;
+package services.Sensor;
 
 public class SensorState {
     // State for HMI Used During Scanning

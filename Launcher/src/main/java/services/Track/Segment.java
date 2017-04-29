@@ -1,5 +1,7 @@
 package services.Track;
 
+import core.Structures.Node;
+
 import static java.lang.Math.cos;
 import static java.lang.Math.sqrt;
 

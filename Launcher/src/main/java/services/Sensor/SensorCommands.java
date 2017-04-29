@@ -1,6 +1,6 @@
-package services.HeartSensor;
+package services.Sensor;
 
-public interface Commands {
+public interface SensorCommands {
     void SearchSensor();
     void Stop();
     void Query();
