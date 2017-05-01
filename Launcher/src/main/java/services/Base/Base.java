@@ -33,7 +33,7 @@ public class Base {
     }
 
     public void reset() {
-        if (isStorage && (Statistics != null) {
+        if (isStorage && (Statistics != null)) {
             Statistics.clear();
             Statistics = null;
             return;
