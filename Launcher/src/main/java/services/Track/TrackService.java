@@ -6,8 +6,8 @@ import android.location.Location;
 import android.os.IBinder;
 import android.util.Log;
 
+import core.GPS.CoreGPS;
 import core.GPS.EventsGPS;
-import core.GPS.GPS;
 import core.Structures.Node;
 import core.launcher.application.SmartwatchConstants;
 import lib.smartwatch.WatchLink;
@@ -21,7 +21,7 @@ public class TrackService extends Service implements TrackCommands, EventsGPS {
 
     private TrackConnector Connector = null;
     private Track TrackFinder = null;
-    private GPS Position = null;
+    private CoreGPS Position = null;
     private boolean isTracking = false;
 
     private double Clearance = 0.0;
@@ -39,7 +39,7 @@ public class TrackService extends Service implements TrackCommands, EventsGPS {
 
         Connector.RegisterService(this);
         Watch = new WatchLink(getBaseContext(), SmartwatchConstants.WatchUUID);
-        Position = new GPS(getBaseContext(), this);
+        Position = new CoreGPS(getBaseContext(), this);
     }
 
     @Override
@@ -84,7 +84,7 @@ public class TrackService extends Service implements TrackCommands, EventsGPS {
     public void EnableTracking(boolean Enabled) { isTracking = Enabled;}
 
     /**************************************************************
-     *  Callbacks implementation for GPS Events
+     *  Callbacks implementation for CoreGPS Events
      ***************************************************************/
     @Override
     public void UpdateGPS(Location location){

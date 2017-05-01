@@ -7,13 +7,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
-public class GPS implements LocationListener {
+public class CoreGPS implements LocationListener {
 
     private LocationManager SensorGPS = null;
     private Context Owner = null;
     private EventsGPS Listener = null;
 
-    public GPS(Context Owner, EventsGPS Listener) {
+    public CoreGPS(Context Owner, EventsGPS Listener) {
         this.Listener = Listener;
         this.Owner =  Owner;
     }

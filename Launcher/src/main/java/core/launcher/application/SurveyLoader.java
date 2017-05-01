@@ -97,7 +97,7 @@ public class SurveyLoader {
         Speed = GPS.getSpeed();
         Accuracy = GPS.getAccuracy();
 
-        Log.d("DataManager", "GPS [" + Longitude + "°E," + Latitude + "°N]");
+        Log.d("DataManager", "CoreGPS [" + Longitude + "°E," + Latitude + "°N]");
 
         if (BaseGPS != null) return;
 

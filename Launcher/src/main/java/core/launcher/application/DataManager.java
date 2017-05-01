@@ -22,9 +22,9 @@ public class DataManager extends Application implements Runnable, SensorEvents {
     private Node StatisticsSelectionSize = new Node(20f,20f); // Values in meters
     private Node DisplayedSelectionSize = new Node(200f,200f); // Values in meters
 
-    private SurveyLoader SurveyLiveGPS; // processing for Live real GPS
-    private SurveyLoader SurveySimulatedGPS; // processing for Simulated GPS
-    private SurveyLoader SurveyFilesGPS; // processing for Files loading GPS
+    private SurveyLoader SurveyLiveGPS; // processing for Live real CoreGPS
+    private SurveyLoader SurveySimulatedGPS; // processing for Simulated CoreGPS
+    private SurveyLoader SurveyFilesGPS; // processing for Files loading CoreGPS
 
     private Handler UpdateTrigger = new Handler();
 
@@ -80,9 +80,9 @@ public class DataManager extends Application implements Runnable, SensorEvents {
             HeartBeatService.searchSensor();
         }
 
-        // Startup mode is always GPS Live mode
+        // Startup mode is always CoreGPS Live mode
         SourceGPS = (LocationManager) getSystemService(LOCATION_SERVICE);
-        // Arm trigger for a GPS update ...
+        // Arm trigger for a CoreGPS update ...
         UpdateTrigger.postDelayed(this, Constants.TimeUpdateGPS);
 
         // Starting File Management
@@ -90,7 +90,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
         ReadFromFile = new FileReader(FilesHandler, this, SurveyFilesGPS);
         WriteToFile = new FileWriter(FilesHandler);
 
-        // Initialize GPS simulator ...Events
+        // Initialize CoreGPS simulator ...Events
         CollectedGPS = new LoaderGPS(FilesHandler);
     }
 
@@ -150,7 +150,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
         UpdateTrigger.postDelayed(this, Constants.TimeUpdateGPS);
     }
 
-    // Called Only when simulated GPS is Provided
+    // Called Only when simulated CoreGPS is Provided
     public void onSimulatedChanged(Coordinates SimulatedCoordinate) {
         if (SurveySimulatedGPS.getBase() == null) {
             SurveySimulatedGPS.setBase(SimulatedCoordinate);
@@ -177,7 +177,7 @@ public class DataManager extends Application implements Runnable, SensorEvents {
         else return SurveyLiveGPS.getSnapshot();
     }
 
-    // Managing state for GPS
+    // Managing state for CoreGPS
     public short getModeGPS() {return ModeGPS;}
     public void storeModeGPS(short mode) {
         ModeGPS = mode;

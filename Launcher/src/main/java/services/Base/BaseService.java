@@ -3,15 +3,13 @@ package services.Base;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Bundle;
 import android.os.IBinder;
-import android.util.ArrayMap;
 import android.util.Log;
 
 import java.util.ArrayList;
 
 import core.GPS.EventsGPS;
-import core.GPS.GPS;
+import core.GPS.CoreGPS;
 import core.Structures.Frame;
 import core.Structures.Statistic;
 
@@ -19,7 +17,7 @@ public class BaseService extends Service implements BaseCommands, EventsGPS {
 
     private String LogTag = this.getClass().getSimpleName();
 
-    private GPS Position = null;
+    private CoreGPS Position = null;
     private BaseConnector Connector=null;
 
     private Base DB = null;
@@ -72,7 +70,7 @@ public class BaseService extends Service implements BaseCommands, EventsGPS {
     }
 
     /**************************************************************
-     *  Callbacks implementation for GPS Events
+     *  Callbacks implementation for CoreGPS Events
      ***************************************************************/
     @Override
     public void UpdateGPS(Location location){
