@@ -2,6 +2,8 @@ package services.Track;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import java.io.IOException;
+
 public class LoaderGPX implements Runnable  {
 
     private Track Listener = null;
@@ -12,7 +14,7 @@ public class LoaderGPX implements Runnable  {
 
     }
 
-    public void start() {
+    public void start() throws IOException {
         this.run();
     }
 

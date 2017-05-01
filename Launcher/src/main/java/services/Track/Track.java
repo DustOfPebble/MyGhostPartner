@@ -30,7 +30,8 @@ public class Track implements Runnable {
     public void Load(){
         Locked = true;
         Segments.clear();
-        Loader.start();
+        try { Loader.start(); }
+        catch (Exception Failed) { Loaded(); }
     }
 
     public void Loaded(){

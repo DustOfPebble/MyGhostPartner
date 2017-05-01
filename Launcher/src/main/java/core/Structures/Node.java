@@ -1,12 +1,12 @@
 package core.Structures;
 
 public class Node {
-    public float x;
-    public float y;
+    public float dx;
+    public float dy;
 
-    public Node(double x, double y) { this.x =(float) x; this.y = (float) y;}
-    public void set(double x, double y) { this.x = (float) x; this.y = (float) y;}
-    public Node(float x, float y) { this.x = x; this.y = y;}
-    public void set(float x, float y) { this.x = x; this.y = y;}
+    public Node(double x, double y) { this.dx =(float) x; this.dy = (float) y;}
+    public void set(double x, double y) { this.dx = (float) x; this.dy = (float) y;}
+    public Node(float x, float y) { this.dx = x; this.dy = y;}
+    public void set(float x, float y) { this.dx = x; this.dy = y;}
 }
 

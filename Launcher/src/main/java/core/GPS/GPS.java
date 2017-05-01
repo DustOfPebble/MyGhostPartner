@@ -29,7 +29,7 @@ public class GPS implements LocationListener {
 
      @Override
     public void onLocationChanged(Location location) {
-         Listener.UpdateGPS(location.getLongitude(), location.getLatitude());
+         Listener.UpdateGPS(location);
      }
 
     @Override

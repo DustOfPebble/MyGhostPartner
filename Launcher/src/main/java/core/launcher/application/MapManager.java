@@ -59,18 +59,18 @@ public class MapManager extends ImageView implements EventsGPS {
 
         // Extracting active point around first because we will make a List copy ...
         Size = BackendService.getExtractStatisticsSize();
-        searchZone.set(this.ViewCenter.x - Size.x / 2, this.ViewCenter.y - Size.y / 2,
-                       this.ViewCenter.x + Size.x / 2, this.ViewCenter.y + Size.y / 2  );
+        searchZone.set(this.ViewCenter.dx - Size.dx / 2, this.ViewCenter.dy - Size.dy / 2,
+                       this.ViewCenter.dx + Size.dx / 2, this.ViewCenter.dy + Size.dy / 2  );
         CollectedStatistics = BackendService.filter(BackendService.extract(searchZone),Snapshot);
 
         // Extracting Map background at least to avoid list copy...
         Size = BackendService.getExtractDisplayedSize();
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
-        MetersToPixels.set((float)MinSize / Size.x,(float)MinSize / Size.y);
+        MetersToPixels.set((float)MinSize / Size.dx,(float)MinSize / Size.dy);
         Size = new Node(this.getWidth() / MetersToPixels.x,this.getHeight() / MetersToPixels.y );
-        float Extract = Math.max(Size.x, Size.y);
-        searchZone.set(this.ViewCenter.x - Extract/2,this.ViewCenter.y - Extract/2,
-                       this.ViewCenter.x + Extract/2, this.ViewCenter.y + Extract/2);
+        float Extract = Math.max(Size.dx, Size.dy);
+        searchZone.set(this.ViewCenter.dx - Extract/2,this.ViewCenter.dy - Extract/2,
+                       this.ViewCenter.dx + Extract/2, this.ViewCenter.dy + Extract/2);
         CollectedDisplayed = BackendService.extract(searchZone);
 
         invalidate();
@@ -98,7 +98,7 @@ public class MapManager extends ImageView implements EventsGPS {
 
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
-        canvas.rotate(-LastSnapshot.getBearing(),GraphicCenter.x,GraphicCenter.y);
+        canvas.rotate(-LastSnapshot.getBearing(),GraphicCenter.dx,GraphicCenter.dy);
         Log.d("MapManager","Rotation is "+ LastSnapshot.getBearing()+"°");
 
         // Do the drawing
@@ -113,12 +113,12 @@ public class MapManager extends ImageView implements EventsGPS {
             Coords = Marker.copy();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
-                    (Coords.x - ViewCenter.x)* MeterToPixelFactor + GraphicCenter.x ,
-                    (ViewCenter.y - Coords.y)* MeterToPixelFactor + GraphicCenter.y
+                    (Coords.dx - ViewCenter.dx)* MeterToPixelFactor + GraphicCenter.dx,
+                    (ViewCenter.dy - Coords.dy)* MeterToPixelFactor + GraphicCenter.dy
             );
 
-            canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
-            canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
+            canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,LineMode);
+            canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,FillMode);
         }
 
         Log.d("MapManager", "Drawing "+ CollectedStatistics.size()+ " computed points");
@@ -132,26 +132,26 @@ public class MapManager extends ImageView implements EventsGPS {
             Coords = Marker.copy();
             Radius = MeterToPixelFactor * Marker.getAccuracy();
             Pixel.set(
-                    (Coords.x - ViewCenter.x)* MeterToPixelFactor + GraphicCenter.x ,
-                    (ViewCenter.y - Coords.y)* MeterToPixelFactor + GraphicCenter.y
+                    (Coords.dx - ViewCenter.dx)* MeterToPixelFactor + GraphicCenter.dx,
+                    (ViewCenter.dy - Coords.dy)* MeterToPixelFactor + GraphicCenter.dy
             );
-            canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
-            canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
+            canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,LineMode);
+            canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,FillMode);
         }
 
 
         if (ViewCenter !=null) {
-            Log.d("MapManager", "Offset is ["+ ViewCenter.x+","+ ViewCenter.y+"]");
+            Log.d("MapManager", "Offset is ["+ ViewCenter.dx +","+ ViewCenter.dy +"]");
             LineMode.setColor(GraphicsConstants.MarkerColor);
             FillMode.setColor(GraphicsConstants.MarkerColor);
             LineMode.setStrokeWidth(GraphicsConstants.MarkerLineThickness);
             Radius = MeterToPixelFactor * LastSnapshot.getAccuracy();
             Float MinRadius = (Radius/10 < 10)? 10:Radius/10;
-            Pixel.set(GraphicCenter.x,GraphicCenter.y);
-            canvas.drawCircle(Pixel.x, Pixel.y, Radius,LineMode);
-            canvas.drawCircle(Pixel.x, Pixel.y,MinRadius ,FillMode);
+            Pixel.set(GraphicCenter.dx,GraphicCenter.dy);
+            canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,LineMode);
+            canvas.drawCircle(Pixel.dx, Pixel.dy,MinRadius ,FillMode);
             FillMode.setAlpha(GraphicsConstants.MarkerTransparency);
-            canvas.drawCircle(Pixel.x, Pixel.y, Radius,FillMode);
+            canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,FillMode);
         }
 
         long EndRender = SystemClock.elapsedRealtime();

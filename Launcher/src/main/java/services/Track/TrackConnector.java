@@ -24,5 +24,6 @@ public class TrackConnector extends Binder {
     void LoadGPX(String Filename) {Service.LoadGPX(Filename);}
     void SetClearance(double Clearance){Service.SetClearance(Clearance);}
     void EnableTracking(boolean Enabled) {Service.EnableTracking(Enabled); }
+    void EnableGPS(boolean Enabled) {Service.EnableGPS(Enabled); }
 
 }

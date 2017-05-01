@@ -2,6 +2,7 @@ package services.Track;
 
 import android.app.Service;
 import android.content.Intent;
+import android.location.Location;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -17,6 +18,7 @@ public class TrackService extends Service implements TrackCommands, EventsGPS {
     private String LogTag = this.getClass().getSimpleName();
 
     private WatchLink Watch = null;
+
     private TrackConnector Connector = null;
     private Track TrackFinder = null;
     private GPS Position = null;
@@ -85,9 +87,9 @@ public class TrackService extends Service implements TrackCommands, EventsGPS {
      *  Callbacks implementation for GPS Events
      ***************************************************************/
     @Override
-    public void UpdateGPS(double Longitude, double Latitude){
+    public void UpdateGPS(Location location){
         if (!isTracking) return;
-        TrackFinder.search(new Node(Longitude,Latitude),Clearance);
+        TrackFinder.search(new Node(location.getLongitude(), location.getLatitude()),Clearance);
     }
     /**************************************************************
      *  Direct Calls from Track Events

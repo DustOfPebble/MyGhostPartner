@@ -1,5 +1,7 @@
 package core.GPS;
 
+import android.location.Location;
+
 public interface EventsGPS {
-    void UpdateGPS(double Longitude, double Latitude);
+    void UpdateGPS(Location location);
 }

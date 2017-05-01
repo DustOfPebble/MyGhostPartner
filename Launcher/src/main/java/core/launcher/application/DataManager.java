@@ -18,7 +18,7 @@ import core.Structures.Statistics;
 import core.Structures.Node;
 
 public class DataManager extends Application implements Runnable, SensorEvents {
-    private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 x 100)
+    private RectF SearchableZone = new RectF(-20000f,-20000f,20000f,20000f); // Values in meters (Power of 2 dx 100)
     private Node StatisticsSelectionSize = new Node(20f,20f); // Values in meters
     private Node DisplayedSelectionSize = new Node(200f,200f); // Values in meters
 

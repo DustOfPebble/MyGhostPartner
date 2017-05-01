@@ -90,22 +90,22 @@ public class SensorService extends Service implements SensorEvents, SensorComman
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(LogTag, "Starting service ...");
-
+        Log.d(LogTag, "Executing Start command");
         return START_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(LogTag, "Binding service ...");
+        Log.d(LogTag, "Binding service");
         return Connector;
     }
 
     @Override
     public void onDestroy() {
-        Log.d(LogTag, "Service is about to quit !");
+        Log.d(LogTag, "Service is exiting !");
         super.onDestroy();
     }
+
 
     /**************************************************************
      *  Callbacks implementation for incoming messages

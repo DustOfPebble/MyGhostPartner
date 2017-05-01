@@ -307,8 +307,8 @@ public class Docking extends Activity implements EventsGPS {
         // Setting collection area
         Node SizeSelection = BackendService.getExtractStatisticsSize();
         Node ViewCenter = Snapshot.copy();
-        searchZone.set(ViewCenter.x - SizeSelection.x / 2, ViewCenter.y - SizeSelection.y / 2,
-                       ViewCenter.x + SizeSelection.x / 2, ViewCenter.y + SizeSelection.y / 2  );
+        searchZone.set(ViewCenter.dx - SizeSelection.dx / 2, ViewCenter.dy - SizeSelection.dy / 2,
+                       ViewCenter.dx + SizeSelection.dx / 2, ViewCenter.dy + SizeSelection.dy / 2  );
 
         // Collecting data from backend
         ArrayList<Statistics> CollectedStatistics = BackendService.filter(BackendService.extract(searchZone),Snapshot);

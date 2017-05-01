@@ -61,33 +61,38 @@ public class Base {
         if (BottomRight != null) BottomRight.collect(zone);
     }
 
+    public boolean belongs(Statistic set) {
+        if (set.node().dx < Zone.Left()) return false;
+        if (set.node().dx > Zone.Right()) return false;
+        if (set.node().dy < Zone.Top()) return false;
+        if (set.node().dy > Zone.Bottom()) return false;
+        return true;
+    }
+
     public void store(Statistic set) {
         if (isStorage) {
             Statistics.add(set);
             return;
         }
 
-        if (set.node().x < Zone.Left()) return;
-        if (set.node().x > Zone.Right()) return;
-        if (set.node().y < Zone.Top()) return;
-        if (set.node().y > Zone.Bottom()) return;
+        if (!belongs(set)) return;
 
-        if ((set.node().x < Zone.Center().x) && (set.node().y < Zone.Center().y)) {
+        if ((set.node().dx < Zone.Center().dx) && (set.node().dy < Zone.Center().dy)) {
             if (TopLeft == null) TopLeft = new Base(new Frame(Zone.TopLeft(), Zone.Center()));
             TopLeft.store(set);
         }
 
-        if ((set.node().x > Zone.Center().x) && (set.node().y < Zone.Center().y)) {
+        if ((set.node().dx > Zone.Center().dx) && (set.node().dy < Zone.Center().dy)) {
             if (TopRight == null) TopRight = new Base(new Frame( Zone.TopRight(), Zone.Center()));
             TopRight.store(set);
         }
 
-        if ((set.node().x < Zone.Center().x) && (set.node().y > Zone.Center().y)) {
+        if ((set.node().dx < Zone.Center().dx) && (set.node().dy > Zone.Center().dy)) {
             if (BottomLeft == null) BottomLeft = new Base(new Frame( Zone.BottomLeft(),Zone.Center()));
             BottomLeft.store(set);
         }
 
-        if ((set.node().x> Zone.Center().x) && (set.node().y > Zone.Center().y)) {
+        if ((set.node().dx > Zone.Center().dx) && (set.node().dy > Zone.Center().dy)) {
             if (BottomRight == null) BottomRight = new Base(new Frame( Zone.BottomRight(), Zone.Center()));
             BottomRight.store(set);
         }
