@@ -21,13 +21,16 @@ import core.Structures.Node;
 import services.Junction;
 
 class MapManager extends ImageView {
+    private static String LogTag = MapManager.class.getSimpleName();
 
     private Extension MetersToPixels = new Extension(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
     private Junction BackendService = null;
     private ArrayList<Node> CollectedDisplayed =null;
     private ArrayList<Node> CollectedStatistics =null;
     private Coords2D ViewCenter;
-    private Coords2D GraphicCenter;
+    private Coords2D GraphicCenter = new Coords2D(0f,0f);
+    private Coords2D Pixel = new Coords2D(0f,0f);
+
     private Paint LineMode;
     private Paint FillMode;
     private Statistic NowStats = null;
@@ -49,6 +52,8 @@ class MapManager extends ImageView {
     }
 
     public void setGPS(CoreGPS GPS) {
+        Log.d(LogTag,"Receiving GPS update");
+
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
         if (BackendService == null) return;
@@ -83,7 +88,6 @@ class MapManager extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Coords2D Pixel = new Coords2D(0f,0f); // Allocate because it reused directly
         Float MeterToPixelFactor = Math.max(MetersToPixels.w, MetersToPixels.h) ;
         Coords2D Coords;
         Float Radius;
@@ -96,10 +100,10 @@ class MapManager extends ImageView {
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
         canvas.rotate(-NowStats.Bearing,GraphicCenter.dx,GraphicCenter.dy);
-        Log.d("MapManager","Rotation is "+ NowStats.Bearing+"°");
+        Log.d(LogTag,"Rotation is "+ NowStats.Bearing+"°");
 
         // Do the drawing
-        Log.d("MapManager", "Drawing "+ CollectedDisplayed.size()+ " extracted points");
+        Log.d(LogTag, "Drawing "+ CollectedDisplayed.size()+ " extracted points");
         // Drawing all points from Storage
         LineMode.setColor(Styles.ExtractedColor);
         LineMode.setAlpha(Styles.ExtractedLineTransparency);
@@ -118,7 +122,7 @@ class MapManager extends ImageView {
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,FillMode);
         }
 
-        Log.d("MapManager", "Drawing "+ CollectedStatistics.size()+ " computed points");
+        Log.d(LogTag, "Drawing "+ CollectedStatistics.size()+ " computed points");
         // Drawing all points from Storage
         LineMode.setColor(Styles.FilteredColor);
         LineMode.setAlpha(Styles.FilteredLineTransparency);
@@ -136,9 +140,8 @@ class MapManager extends ImageView {
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,FillMode);
         }
 
-
         if (ViewCenter !=null) {
-            Log.d("MapManager", "Offset is ["+ ViewCenter.dx +","+ ViewCenter.dy +"]");
+            Log.d(LogTag, "Offset is ["+ ViewCenter.dx +","+ ViewCenter.dy +"]");
             LineMode.setColor(Styles.MarkerColor);
             FillMode.setColor(Styles.MarkerColor);
             LineMode.setStrokeWidth(Styles.MarkerLineThickness);
@@ -152,7 +155,7 @@ class MapManager extends ImageView {
         }
 
         long EndRender = SystemClock.elapsedRealtime();
-        Log.d("MapManager", "Rendering was "+ (EndRender - StartRender)+ " ms.");
+        Log.d(LogTag, "Rendering was "+ (EndRender - StartRender)+ " ms.");
 
         super.onDraw(canvas);
     }

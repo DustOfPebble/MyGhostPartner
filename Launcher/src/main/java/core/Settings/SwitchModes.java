@@ -10,7 +10,7 @@ public class SwitchModes {
     static public final short BatterySaveMode=20;
     static public final short BatteryDrainMode=21;
 
-    static public final short ReplayedGPS=30;
+    static public final short NoGPS =30;
     static public final short LiveGPS=31;
 
     static public final short ConnectedHeartBeat=40;

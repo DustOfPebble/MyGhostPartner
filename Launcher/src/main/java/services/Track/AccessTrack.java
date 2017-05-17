@@ -8,7 +8,7 @@ import core.Files.Loader;
 import core.Files.LoaderEvents;
 import core.Files.LoaderGPX;
 import core.Files.LoaderJSON;
-import core.Files.FileDefs;
+import core.Files.PreSets;
 import core.GPS.CoordsGPS;
 import core.GPS.CoreGPS;
 import core.GPS.EventsGPS;
@@ -41,11 +41,11 @@ public class AccessTrack implements EventsGPS, LoaderEvents {
     public void Load(File Source, int Mode) {
         TrackFinder = new Track();
 
-        if (Mode == FileDefs.JSON) {
+        if (Mode == PreSets.JSON) {
             Parser = new LoaderJSON(Source, this);
         }
 
-        if (Mode == FileDefs.GPX) {
+        if (Mode == PreSets.GPX) {
             Parser = new LoaderGPX(Source, this);
         }
     }
@@ -59,6 +59,8 @@ public class AccessTrack implements EventsGPS, LoaderEvents {
      ***************************************************************/
     @Override
     public void UpdatedGPS(CoreGPS Provider){
+        if (Parser == null) return;
+
         if (Origin != Provider.Origin()) {
             Origin = Provider.Origin();
         }

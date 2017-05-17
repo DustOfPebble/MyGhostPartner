@@ -99,7 +99,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         BatterySaver.setVisibility(View.INVISIBLE);
 
         GPSProvider = (ControlSwitch) findViewById(R.id.gps_provider);
-        GPSProvider.registerModes(SwitchModes.LiveGPS, SwitchModes.ReplayedGPS);
+        GPSProvider.registerModes(SwitchModes.LiveGPS, SwitchModes.NoGPS);
         GPSProvider.registerManager(this);
         GPSProvider.setMode(SavedStates.getModeGPS());
 
@@ -149,7 +149,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         Permissions.Append(Manifest.permission.ACCESS_FINE_LOCATION);
         Permissions.Append(Manifest.permission.ACCESS_COARSE_LOCATION);
         Permissions.Append(Manifest.permission.VIBRATE);
-        
+
         String Requested = Permissions.Selected();
         while (Requested != null) {
             if (CheckPermission(Permissions.Selected())) Permissions.setGranted();
@@ -239,10 +239,14 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (Status == SwitchModes.LiveGPS) {
             SavedStates.storeModeGPS(Status);
             GPSProvider.setMode(Status);
+            if (BackendService == null) return;
+            BackendService.GPS(true);
         }
-        if (Status == SwitchModes.ReplayedGPS) {
+        if (Status == SwitchModes.NoGPS) {
             SavedStates.storeModeGPS(Status);
             GPSProvider.setMode(Status);
+            if (BackendService == null) return;
+            BackendService.GPS(false);
         }
 
         if (Status == SwitchModes.LightEnhanced) {
@@ -317,17 +321,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SleepLocker.setMode(SavedStates.getModeSleep());
     }
 
-    private void StartServices(){
-        if (!PermissionsChecked) return;
-
-        Intent ServiceStarter;
-        // Start Service
-        ServiceStarter = new Intent(this, Hub.class);
-        Log.d(LogTag, "Requesting Service ["+ Hub.class.getSimpleName() +"] to start...");
-        startService(ServiceStarter);
-        bindService(ServiceStarter, this, 0);
-    }
-
     /************************************************************************
      * Managing requested permissions at runtime
      * **********************************************************************/
@@ -352,16 +345,25 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         StartServices();
     }
 
-
     /************************************************************************
      * Managing connection to Service
      * **********************************************************************/
+    private void StartServices(){
+        if (!PermissionsChecked) return;
+
+        Intent ServiceStarter;
+        // Start Service
+        ServiceStarter = new Intent(this, Hub.class);
+        Log.d(LogTag, "Requesting Service ["+ Hub.class.getSimpleName() +"] to start...");
+        startService(ServiceStarter);
+        bindService(ServiceStarter, this, 0);
+    }
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
         Log.d(LogTag, "Connected to " + name.getClassName() + " Service");
 
         // Connection from push Service
-        if (Junction.class.getName().equals(name.getClassName())) {
+        if (Hub.class.getName().equals(name.getClassName())) {
             BackendService = (Junction) service;
             BackendService.RegisterListener(this);
             MapView.setBackend(BackendService);
@@ -373,7 +375,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         Log.d(LogTag, "Disconnected from " + name.getClassName()  + " Service");
 
         // Disconnection from push Service
-        if (Junction.class.getName().equals(name.getClassName())) {
+        if (Hub.class.getName().equals(name.getClassName())) {
             BackendService = null;
             MapView.setBackend(null);
         }
@@ -406,7 +408,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         HeartBeatSensor.setMode(SavedStates.getModeSensor());
 
         // Setting collection area
-        Extension SizeSelection = SavedStates.getExtractStatisticsSize();
+        Extension SizeSelection = Parameters.StatisticsSelectionSize;
         Coords2D ViewCenter = InfoGPS.Moved();
         searchZone = new Frame(ViewCenter, SizeSelection);
 

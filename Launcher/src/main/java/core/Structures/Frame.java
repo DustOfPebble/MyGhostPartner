@@ -13,11 +13,8 @@ public class Frame {
     }
 
     public Frame (Coords2D A, Coords2D B) {
-        this.Center.dx = ( A.dx + B.dx)/2;
-        this.Center.dy = ( A.dy + B.dy)/2;
-
-        this.Size.w = abs( A.dx - B.dx);
-        this.Size.h = abs( A.dy - B.dy);
+        Center = new Coords2D( (A.dx + B.dx)/2, (A.dy + B.dy)/2 );
+        Size = new Extension( abs(A.dx - B.dx), abs(A.dy - B.dy));
     }
 
     public Coords2D TopLeft() { return new Coords2D(Center.dx - Size.w/2, Center.dy - Size.h/2); }

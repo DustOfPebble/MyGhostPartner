@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import core.GPS.CoreGPS;
+import core.GPS.EventsGPS;
 import core.Settings.Parameters;
 import core.Structures.Frame;
 import core.Structures.Node;
@@ -18,7 +19,7 @@ import services.Sensor.AccessSensor;
 import services.Sensor.SensorState;
 import services.Track.AccessTrack;
 
-public class Hub extends Service implements Queries {
+public class Hub extends Service implements Queries, EventsGPS {
 
     private static String LogTag = Hub.class.getSimpleName();
 
@@ -53,6 +54,7 @@ public class Hub extends Service implements Queries {
         Position.addListener(Recorder);
         Position.addListener(Database);
         Position.addListener(Tracker);
+        Position.addListener(this);
     }
 
     @Override
@@ -113,5 +115,10 @@ public class Hub extends Service implements Queries {
      *  Callbacks From AccessDB
      **************************************************************/
     public void OutOfRange() { Connector.OutOfRange(); }
+    /**************************************************************
+     *  Callbacks implementation for CoreGPS Events
+     ***************************************************************/
+    @Override
+    public void UpdatedGPS(CoreGPS Provider) { Connector.UpdateGPS(Provider);}
 
 }

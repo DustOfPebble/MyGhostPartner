@@ -4,7 +4,7 @@ import android.util.Log;
 
 import java.io.File;
 import core.Files.FilesUtils;
-import core.Files.FileDefs;
+import core.Files.PreSets;
 import core.GPS.CoreGPS;
 import core.GPS.EventsGPS;
 import core.Settings.Parameters;
@@ -29,7 +29,7 @@ public class AccessLogs implements EventsGPS {
     }
 
     private void CreateLog() {
-        String LogFile = Repository.Now(FileDefs.Signature);
+        String LogFile = Repository.Now(PreSets.Signature);
         Sink = Repository.CreateFile(LogFile);
         Logger = new LogsWriter();
     }
@@ -52,11 +52,18 @@ public class AccessLogs implements EventsGPS {
      ***************************************************************/
     @Override
     public void UpdatedGPS(CoreGPS Provider){
-        if (LastMove == null) LastMove = Provider.Moved();
-        if (Coords2D.distance(LastMove, Provider.Moved()) < Clearance) return;
+        if (Logger == null) return;
+
         Sample Fields = Provider.ToSample();
         if (Fields.Accuracy > Parameters.LowAccuracyGPS) return;
         Log.d(LogTag, "Logging Sample with Accuracy["+Fields.Accuracy+"]");
+
+        if (LastMove == null) {
+            LastMove = Provider.Moved();
+            Logger.append(Fields);
+        }
+
+        if (Coords2D.distance(LastMove, Provider.Moved()) < Clearance) return;
         Logger.append(Fields);
     }
 }

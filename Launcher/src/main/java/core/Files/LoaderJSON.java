@@ -62,7 +62,7 @@ public class LoaderJSON  extends Loader implements Runnable {
             NbDays = (Calendar.getInstance().getTimeInMillis() - FileCreation.getTimeInMillis()) / InDays;
 
         Bundle Headers = new Bundle();
-        Headers.putInt(FileDefs.Days, (int) NbDays);
+        Headers.putInt(PreSets.Days, (int) NbDays);
         return Headers;
     }
 

@@ -6,6 +6,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -13,12 +14,14 @@ import core.Settings.Parameters;
 import core.Structures.Coords2D;
 import core.Structures.Sample;
 import core.Structures.Statistic;
+import core.launcher.partner.Docking;
 import services.Sensor.SensorState;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.toRadians;
 
 public class CoreGPS implements LocationListener {
+    private String LogTag = CoreGPS.class.getSimpleName();
 
     private static final float earthRadius = 6400000f; // Earth Radius is 6400 kms
 
@@ -49,17 +52,21 @@ public class CoreGPS implements LocationListener {
      ******************************************************************/
     @SuppressWarnings({"MissingPermission"})
     public void start() {
+        Log.d(LogTag, "Starting GPS Listener");
         if (SensorGPS == null) SensorGPS = (LocationManager) Owner.getSystemService(Context.LOCATION_SERVICE);
         SensorGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, UpdateDelay , 0, this);
     }
 
     public void stop() {
+        Log.d(LogTag, "Stoping GPS !");
         SensorGPS.removeUpdates(this);
     }
 
     public void reset() { Origin = null; }
 
-    public void addListener(EventsGPS Listener) { Listeners.add(Listener); }
+    public void addListener(EventsGPS Listener) {
+        Log.d(LogTag, "Registering "+Listener.getClass().getSimpleName()+" as GPS Listener.");
+        Listeners.add(Listener); }
 
     /******************************************************************
      * Content retrieval
@@ -108,6 +115,7 @@ public class CoreGPS implements LocationListener {
         Basics.Heartbeat = (byte) SensorBPM;
 
         for (EventsGPS Listener:Listeners) { Listener.UpdatedGPS(this); }
+//        Log.d(LogTag, "GPS Moved [x ->"+Math.floor((Shift.dx*10)/10)+" m | y ->"+Math.floor((Shift.dy*10)/10)+" m]");
     }
 
     @Override

@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import core.Structures.Extension;
 import core.Structures.Frame;
 import core.Structures.Node;
+import core.Structures.Statistic;
 
 public class StorageDB {
 
-    static public ArrayList<Node> Collected = null;
+    static public ArrayList<Node> Collected = new ArrayList<>();
     static final Extension Limit = new Extension(2f,2f); // in meters
 
     private boolean isStorage = false;
@@ -71,6 +72,7 @@ public class StorageDB {
 
     public void store(Node set) {
         if (isStorage) {
+            if (Statistics == null) Statistics = new ArrayList<>();
             Statistics.add(set);
             return;
         }
