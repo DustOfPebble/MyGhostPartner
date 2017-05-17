@@ -17,11 +17,11 @@ public class Detector extends ScanCallback implements Runnable {
 
     private int TimeOut = 1000; // default TimeOut in ms ...
     private Handler TriggerEvent;
-    private SensorEvents SensorHandler;
+    private AccessSensor SensorHandler;
     private BluetoothLeScanner DeviceScanner;
     private Boolean isScanning = false;
 
-    public Detector(SensorEvents Callback, int  TimeOut) {
+    public Detector(AccessSensor Callback, int  TimeOut) {
         SensorHandler = Callback;
         TriggerEvent = new Handler();
         if (TimeOut > 1000) this.TimeOut = TimeOut;

@@ -4,15 +4,15 @@ import static java.lang.Math.abs;
 
 public class Frame {
 
-    private Node Center;
+    private Coords2D Center;
     private Extension Size;
 
-    public Frame(Node Center, Extension Size ) {
+    public Frame(Coords2D Center, Extension Size ) {
         this.Center = Center;
         this.Size = Size;
     }
 
-    public Frame (Node A, Node B) {
+    public Frame (Coords2D A, Coords2D B) {
         this.Center.dx = ( A.dx + B.dx)/2;
         this.Center.dy = ( A.dy + B.dy)/2;
 
@@ -20,17 +20,17 @@ public class Frame {
         this.Size.h = abs( A.dy - B.dy);
     }
 
-    public Node TopLeft() { return new Node(Center.dx - Size.w/2, Center.dy - Size.h/2); }
-    public Node BottomLeft() { return new Node(Center.dx - Size.w/2, Center.dy + Size.h/2); }
-    public Node TopRight() { return new Node(Center.dx + Size.w/2, Center.dy - Size.h/2); }
-    public Node BottomRight() { return new Node(Center.dx + Size.w/2, Center.dy + Size.h/2); }
+    public Coords2D TopLeft() { return new Coords2D(Center.dx - Size.w/2, Center.dy - Size.h/2); }
+    public Coords2D BottomLeft() { return new Coords2D(Center.dx - Size.w/2, Center.dy + Size.h/2); }
+    public Coords2D TopRight() { return new Coords2D(Center.dx + Size.w/2, Center.dy - Size.h/2); }
+    public Coords2D BottomRight() { return new Coords2D(Center.dx + Size.w/2, Center.dy + Size.h/2); }
 
     public float Top() { return Center.dy - Size.h/2; }
     public float Bottom() { return Center.dy + Size.h/2; }
     public float Right() { return Center.dx + Size.w/2; }
     public float Left() { return Center.dx - Size.w/2; }
 
-    public Node Center() {return Center;}
+    public Coords2D Center() {return Center;}
     public Extension Size() {return  Size;}
 
 }

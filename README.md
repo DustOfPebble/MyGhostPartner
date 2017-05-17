@@ -1,6 +1,6 @@
-# DayToDayRace
+# My Ghost Partner
 
-This is a application in early devloppement phase
+This is a application is an on going work. This GIT repository is storing the current development stage of the application.
 - It collect data from GPS and Heartbeat sensor along a way (done)
 - It stores collected data into a file for futur reuse (done)
 - It store GPS into a quadtree structure in order to provide fast lookup for geospatial search (done)

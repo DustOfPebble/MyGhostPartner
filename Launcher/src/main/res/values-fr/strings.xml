@@ -5,10 +5,6 @@
     <string name="GPS_record_background">Enregistrement GPS en tâche de fond...</string>
     <string name="restore_display">Mise à jour de l\'affichage</string>
 
-    <string name="GPS_Name">Service GPS</string>
-    <string name="GPS">Publie les positions GPS.</string>
-    <string name="HeartSensor_Name">Service de capteur Cardiaque</string>
-    <string name="HeartSensor">Publie les valeurs du rythmes cardiaques.</string>
-    <string name="History_Name">Service d\'historique GPS</string>
-    <string name="History">Accès rapide aux enregistrements passés près d\'une position GPS donnée.</string>
+    <string name="ServiceName">MyGhostPartner Services</string>
+    <string name="Service">Service d\'enregistrement en arrière plan.</string>
 </resources>

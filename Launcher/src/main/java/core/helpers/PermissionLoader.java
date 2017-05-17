@@ -1,4 +1,4 @@
-package core.launcher.helpers;
+package core.helpers;
 
 import java.util.ArrayList;
 

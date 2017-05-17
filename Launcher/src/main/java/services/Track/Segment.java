@@ -1,27 +1,22 @@
 package services.Track;
 
-import core.Structures.Node;
+import core.Structures.Coords2D;
+import static core.Structures.Coords2D.distance;
 
-import static java.lang.Math.cos;
-import static java.lang.Math.sqrt;
 
 public class Segment {
 
-    Node Start, End;
+    private Coords2D Start, End;
 
-    public Segment(Node A, Node B){
+    public Segment(Coords2D A, Coords2D B){
         Start = A;
         End = B;
     }
     public double length() { return distance(Start, End);}
 
-    double distance(Node A, Node B) {
-        return sqrt(power(meters(A.dx - B.dx) * correction(A,B)) + power(meters(A.dy - B.dy) ) );
-    }
-
-    public boolean intercept(Node Coordinate, double Clearance)
+    public boolean intercept(Coords2D Coordinate, double Clearance)
     {
-        Node P,A,B,C;
+        Coords2D P,A,B,C;
         P = Coordinate;
         A = Start;
         B = End;
@@ -33,9 +28,9 @@ public class Segment {
         return true;
     }
 
-    public double fromStart(Node Coordinate)
+    public double fromStart(Coords2D Coordinate)
     {
-        Node P,A,B,C;
+        Coords2D P,A,B,C;
         P = Coordinate;
         A = Start;
         B = End;
@@ -47,9 +42,9 @@ public class Segment {
         return CA;
     }
 
-    public double toEnd(Node Coordinate)
+    public double toEnd(Coords2D Coordinate)
     {
-        Node P,A,B,C;
+        Coords2D P,A,B,C;
         P = Coordinate;
         A = Start;
         B = End;
@@ -61,8 +56,8 @@ public class Segment {
         return CB;
     }
 
-    private Node projected(Node P, Node A, Node B) {
-        Node C = A; // C is the projected Point
+    private Coords2D projected(Coords2D P, Coords2D A, Coords2D B) {
+        Coords2D C = A; // C is the projected Point
 
         // Case A and B is identical ...
         if ( A == B) return C;
@@ -87,12 +82,4 @@ public class Segment {
         C.dy = ((Mpc * P.dx) + Kpc);
         return C;
     }
-
-    /************************************************************************
-     * Helpers functions...
-     ************************************************************************/
-    private double power(double A) {return A*A;}
-    private double radians(double degres) { return (degres * (3.141592 / 180.0)); }
-    private double meters(double degres) { return (degres * 111132.0); } // 1° Latitude => 111.132 km at Lat:45°N
-    private double correction(Node A, Node B)  { return (cos( radians( 0.5*( A.dy + B.dy) )));}
 }

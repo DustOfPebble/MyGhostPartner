@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     >
 
-    <dummy.core.dailyrace.MapManager
+    <core.launcher.partner.MapManager
         android:id="@+id/map_manager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
 
-    <dummy.core.dailyrace.ControlSwitch
+    <core.launcher.partner.ControlSwitch
         android:id="@+id/switch_sleep_locker"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -25,7 +25,7 @@
         app:HighMode="@drawable/sleep_locked"
         app:LowMode="@drawable/sleep_unlocked"
         />
-    <dummy.core.dailyrace.ControlSwitch
+    <core.launcher.partner.ControlSwitch
         android:id="@+id/switch_light_enhancer"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -37,7 +37,7 @@
         app:HighMode="@drawable/light_max"
         app:LowMode="@drawable/light_low"
         />
-    <dummy.core.dailyrace.ControlSwitch
+    <core.launcher.partner.ControlSwitch
         android:id="@+id/switch_battery_saver"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -50,7 +50,7 @@
         app:LowMode="@drawable/battery_save"
         />
 
-    <dummy.core.dailyrace.ControlSwitch
+    <core.launcher.partner.ControlSwitch
         android:id="@+id/gps_provider"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -63,7 +63,7 @@
         app:LowMode="@drawable/gps_replay"
         />
 
-    <dummy.core.dailyrace.ControlSwitch
+    <core.launcher.partner.ControlSwitch
         android:id="@+id/heartbeat_provider"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -77,7 +77,7 @@
         app:LowMode="@drawable/heartbeat_disconnected"
         />
 
-    <dummy.core.dailyrace.Monitor
+    <core.launcher.partner.Monitor
         android:id="@+id/left_monitor"
         android:layout_margin="2dp"
         android:layout_width="160dp"
@@ -88,7 +88,7 @@
         android:visibility="invisible"
         />
 
-    <dummy.core.dailyrace.Monitor
+    <core.launcher.partner.Monitor
         android:id="@+id/right_monitor"
         android:layout_margin="2dp"
         android:layout_width="160dp"

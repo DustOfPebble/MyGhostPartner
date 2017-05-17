@@ -1,19 +1,21 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="core.launcher.application">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="core.launcher.partner">
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 
     <application android:label="@string/StorePublicName"
         android:allowBackup="true"
-        android:icon="@mipmap"
+        android:icon="@mipmap/launcher"
         android:theme="@style/AppTheme"
+        android:name="core.launcher.partner.ViewStates"
         >
         <activity
-            android:name="core.launcher.application.Docking"
+            android:name="core.launcher.partner.Docking"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleInstance"
             >
@@ -23,21 +25,9 @@
             </intent-filter>
         </activity>
         <service
-            android:description="@string/HeartSensor"
-            android:label="@string/HeartSensor_Name"
-            android:name="services.Sensor.SensorService"
-            android:exported="true"
-            />
-        <service
-            android:description="@string/GPS"
-            android:label="@string/GPS_Name"
-            android:name="services.Sensor.SensorService"
-            android:exported="true"
-            />
-        <service
-            android:description="@string/History"
-            android:label="@string/History_Name"
-            android:name="services.Sensor.SensorService"
+            android:description="@string/Service"
+            android:label="@string/ServiceName"
+            android:name="services.Hub"
             android:exported="true"
             />
     </application>

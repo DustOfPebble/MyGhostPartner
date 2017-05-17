@@ -7,30 +7,108 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
+import core.Settings.Parameters;
+import core.Structures.Coords2D;
+import core.Structures.Sample;
+import core.Structures.Statistic;
+import services.Sensor.SensorState;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.toRadians;
+
 public class CoreGPS implements LocationListener {
+
+    private static final float earthRadius = 6400000f; // Earth Radius is 6400 kms
+
+    private static float earthRadiusCorrected(CoordsGPS Coords) { return earthRadius *(float)cos(toRadians(Coords.latitude)); }
+    private static CoordsGPS Origin = null;
+
+    private CoordsGPS Coords = null;
+    private Coords2D Shift = null;
+    private Statistic Snapshot = null;
+    private Sample Basics = null;
 
     private LocationManager SensorGPS = null;
     private Context Owner = null;
-    private EventsGPS Listener = null;
+    private ArrayList<EventsGPS> Listeners = null;
+    private int SensorBPM = 0;
+    private static long UpdateDelay;
 
-    public CoreGPS(Context Owner, EventsGPS Listener) {
-        this.Listener = Listener;
+    public CoreGPS(Context Owner, long Delay) {
         this.Owner =  Owner;
+        Listeners = new ArrayList<>();
+        UpdateDelay =  Delay;
     }
+
+    public void setBPM(int BPM) { SensorBPM = BPM; }
+
+    /******************************************************************
+     * Behavior management
+     ******************************************************************/
     @SuppressWarnings({"MissingPermission"})
     public void start() {
         if (SensorGPS == null) SensorGPS = (LocationManager) Owner.getSystemService(Context.LOCATION_SERVICE);
-        SensorGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+        SensorGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, UpdateDelay , 0, this);
     }
 
     public void stop() {
         SensorGPS.removeUpdates(this);
     }
 
-     @Override
-    public void onLocationChanged(Location location) {
-         Listener.UpdateGPS(location);
-     }
+    public void reset() { Origin = null; }
+
+    public void addListener(EventsGPS Listener) { Listeners.add(Listener); }
+
+    /******************************************************************
+     * Content retrieval
+     ******************************************************************/
+    public CoordsGPS Origin() { return Origin; }
+
+    public Coords2D Moved() {
+        if (Origin == null) return null;
+        return Shift;
+    }
+
+    public Sample ToSample() { return Basics; }
+
+    public Statistic Statistic(int NbDays) {
+        if (Origin == null) return null;
+        Snapshot.Days = (short)NbDays;
+        return Snapshot;
+    }
+
+    /******************************************************************
+     * Events implementations
+     ******************************************************************/
+    @Override
+    public void onLocationChanged(Location GPS) {
+        if (Origin == null) Origin = new CoordsGPS(GPS.getLongitude(), GPS.getLatitude());
+
+        Coords = new CoordsGPS(GPS.getLongitude(), GPS.getLatitude());
+
+        Shift = new Coords2D( earthRadiusCorrected(Coords) * (float) toRadians(Coords.longitude - Origin.longitude),
+                              earthRadius * (float) toRadians(Coords.latitude - Origin.latitude));
+
+        Snapshot = new Statistic();
+        Snapshot.Accuracy = GPS.getAccuracy();
+        Snapshot.Bearing = GPS.getBearing();
+        Snapshot.Speed = GPS.getSpeed();
+        Snapshot.Altitude = (float)GPS.getAltitude();
+        Snapshot.Heartbeat = (byte) SensorBPM;
+
+        Basics =  new Sample();
+        Basics.Longitude = GPS.getLongitude();
+        Basics.Latitude = GPS.getLatitude();
+        Basics.Altitude = GPS.getAltitude();
+        Basics.Accuracy = GPS.getAccuracy();
+        Basics.Speed = GPS.getSpeed();
+        Basics.Bearing = GPS.getBearing();
+        Basics.Heartbeat = (byte) SensorBPM;
+
+        for (EventsGPS Listener:Listeners) { Listener.UpdatedGPS(this); }
+    }
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) { }
