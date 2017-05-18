@@ -153,7 +153,7 @@ class MapManager extends ImageView {
         }
 
         long EndRender = SystemClock.elapsedRealtime();
-//        Log.d(LogTag, "Rendering was "+ (EndRender - StartRender)+ " ms.");
+        Log.d(LogTag, "Rendering takes "+ (EndRender - StartRender)+ " ms.");
 
         super.onDraw(canvas);
     }
