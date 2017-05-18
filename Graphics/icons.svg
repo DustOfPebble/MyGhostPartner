@@ -122,12 +122,12 @@
      id="base"
      pagecolor="#c9c9c9"
      bordercolor="#666666"
-     borderopacity="0"
-     inkscape:pageopacity="1"
+     borderopacity="1"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.1230166"
      inkscape:cx="337.02175"
-     inkscape:cy="290.42329"
+     inkscape:cy="120.85325"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -140,7 +140,8 @@
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
-     fit-margin-bottom="0" />
+     fit-margin-bottom="0"
+     showborder="true" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -161,7 +162,7 @@
     <g
        id="g3138"
        transform="translate(-1.9587283,3.5509643)"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ScreenUnlocked.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/screen_unlocked.png"
        inkscape:export-xdpi="153"
        inkscape:export-ydpi="153">
       <circle
@@ -606,7 +607,7 @@
     </g>
     <g
        id="g4089"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/listening_gps.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/gps_listening.png"
        inkscape:export-xdpi="153"
        inkscape:export-ydpi="153">
       <path
@@ -669,61 +670,67 @@
          d="M 129.81992,61.7697 C 127.3298,43.37816 116.4266,35.83545 99.957118,35.47056 l 0,0 0,0 0,0"
          style="fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     </g>
-    <circle
-       r="28.449638"
-       cy="260.00732"
-       cx="181.54587"
-       inkscape:export-ydpi="90"
-       inkscape:export-xdpi="90"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_replay.png"
-       style="fill:none;stroke:none"
-       id="circle4034"
-       sodipodi:cx="181.54587"
-       sodipodi:cy="260.00732"
-       sodipodi:rx="28.449638"
-       sodipodi:ry="28.449638"
-       transform="translate(-74.813578,-325.0092)"
-       d="m 209.99551,260.00732 c 0,15.71231 -12.73734,28.44964 -28.44964,28.44964 -15.7123,0 -28.44964,-12.73733 -28.44964,-28.44964 0,-15.7123 12.73734,-28.44963 28.44964,-28.44963 15.7123,0 28.44964,12.73733 28.44964,28.44963 z" />
-    <ellipse
-       sodipodi:ry="3.0357141"
-       sodipodi:rx="2.8571429"
-       sodipodi:cy="315.93362"
-       sodipodi:cx="148.39285"
-       d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z"
-       ry="3.0357141"
-       rx="2.8571429"
-       cy="315.93362"
-       cx="148.39285"
-       style="fill:#84e9f4;fill-opacity:1;stroke:#ffffff;stroke-width:1.74711955000000008;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       id="path6196"
-       transform="matrix(2.3599448,0,0,2.2211246,-254.58608,-766.75947)"
-       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <ellipse
-       sodipodi:ry="3.0357141"
-       sodipodi:rx="2.8571429"
-       sodipodi:cy="315.93362"
-       sodipodi:cx="148.39285"
-       d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z"
-       ry="3.0357141"
-       rx="2.8571429"
-       cy="315.93362"
-       cx="148.39285"
-       transform="matrix(2.3599448,0,0,2.2211246,-232.34718,-766.75947)"
-       id="path6198"
-       style="fill:#84e9f4;fill-opacity:1;stroke:#ffffff;stroke-width:1.74711955000000008;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 95.780238,-58.280664 22.577272,0"
-       id="path6200"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
+    <g
+       id="g4119"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/logging_trace.png"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153">
+      <circle
+         d="m 209.99551,260.00732 c 0,15.71231 -12.73734,28.44964 -28.44964,28.44964 -15.7123,0 -28.44964,-12.73733 -28.44964,-28.44964 0,-15.7123 12.73734,-28.44963 28.44964,-28.44963 15.7123,0 28.44964,12.73733 28.44964,28.44963 z"
+         transform="translate(-74.813578,-325.0092)"
+         sodipodi:ry="28.449638"
+         sodipodi:rx="28.449638"
+         sodipodi:cy="260.00732"
+         sodipodi:cx="181.54587"
+         id="circle4034"
+         style="fill:none;stroke:none"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_replay.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         cx="181.54587"
+         cy="260.00732"
+         r="28.449638" />
+      <ellipse
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
+         transform="matrix(2.3599448,0,0,2.2211246,-254.58608,-766.75947)"
+         id="path6196"
+         style="fill:#84e9f4;fill-opacity:1;stroke:#ffffff;stroke-width:1.74711955000000008;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         cx="148.39285"
+         cy="315.93362"
+         rx="2.8571429"
+         ry="3.0357141"
+         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z"
+         sodipodi:cx="148.39285"
+         sodipodi:cy="315.93362"
+         sodipodi:rx="2.8571429"
+         sodipodi:ry="3.0357141" />
+      <ellipse
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
+         style="fill:#84e9f4;fill-opacity:1;stroke:#ffffff;stroke-width:1.74711955000000008;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="path6198"
+         transform="matrix(2.3599448,0,0,2.2211246,-232.34718,-766.75947)"
+         cx="148.39285"
+         cy="315.93362"
+         rx="2.8571429"
+         ry="3.0357141"
+         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z"
+         sodipodi:cx="148.39285"
+         sodipodi:cy="315.93362"
+         sodipodi:rx="2.8571429"
+         sodipodi:ry="3.0357141" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
+         inkscape:connector-curvature="0"
+         id="path6200"
+         d="m 95.780238,-58.280664 22.577272,0"
+         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
     <g
        id="g3224">
       <rect
@@ -1060,7 +1067,7 @@
     </g>
     <g
        id="g4097"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/no_gps.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/gps_off.png"
        inkscape:export-xdpi="153"
        inkscape:export-ydpi="153">
       <circle
@@ -1107,7 +1114,7 @@
     </g>
     <g
        id="g4083"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/LogsOff.png"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/logging_off.png"
        inkscape:export-xdpi="153"
        inkscape:export-ydpi="153">
       <circle
