@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import java.util.ArrayList;
 
 class Monitor extends ImageView implements View.OnTouchListener {
+    private String LogTag = Monitor.class.getSimpleName();
 
     private Docking Controler = null;
     private short ID =-1;
@@ -112,7 +113,7 @@ class Monitor extends ImageView implements View.OnTouchListener {
         Collected = values;
         LiveValue = Collected.get(0);
 
-        Log.d("Monitor","Update requested by Stats ["+Unit+"]");
+//        Log.d("Monitor","Update requested by Stats ["+Unit+"]");
 
         if (!isVuMeterFits()) buildVuMeter();
         buildStatistics();
@@ -257,7 +258,7 @@ class Monitor extends ImageView implements View.OnTouchListener {
             NbTicksCount++;
         }
         long EndRender = SystemClock.elapsedRealtime();
-        Log.d("Monitor", "VueMeter rebuild was "+ (EndRender - StartRender)+ " ms.");
+//        Log.d(LogTag, "VueMeter rebuild was "+ (EndRender - StartRender)+ " ms.");
     }
 
     private void buildStatistics()  {

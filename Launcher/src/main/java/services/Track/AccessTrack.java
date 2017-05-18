@@ -33,7 +33,10 @@ public class AccessTrack implements EventsGPS, LoaderEvents {
 
     private double Clearance = 0.0;
 
-    public AccessTrack(Hub Service) { this.Service = Service; }
+    public AccessTrack(Hub Service, int Clearance) {
+        this.Service = Service;
+        this.Clearance = (double) Clearance;
+    }
 
      /**************************************************************
      *  Forwarded calls from Service
@@ -50,9 +53,7 @@ public class AccessTrack implements EventsGPS, LoaderEvents {
         }
     }
 
-    public void SetClearance(double Clearance) { this.Clearance = Clearance;}
-
-    public void EnableTracking(boolean Enabled) { isTracking = Enabled;}
+     public void EnableTracking(boolean Enabled) { isTracking = Enabled;}
 
     /**************************************************************
      *  Callbacks implementation for CoreGPS Events

@@ -10,13 +10,14 @@ public class AccessSensor {
 
     private SensorOwner SensorListener = null;
     private Detector SensorFinder = null;
-    private int SensorSearchTimeOut = 60000; // in ms TimeOut
+    private int SensorSearchTimeOut; // in ms TimeOut
     private Hub Service = null;
 
     private int SensorStatus = SensorState.NotConnected;
 
-    public AccessSensor(Hub Service){
+    public AccessSensor(Hub Service, int TimeSearch){
         this.Service = Service;
+        SensorSearchTimeOut = TimeSearch * 1000;
         SensorListener = new SensorOwner(this, this.Service);
         SensorFinder = new Detector(this, SensorSearchTimeOut);
     }

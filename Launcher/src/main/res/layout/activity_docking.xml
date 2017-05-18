@@ -22,11 +22,11 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:background="@drawable/switch_frame"
-        app:HighMode="@drawable/sleep_locked"
-        app:LowMode="@drawable/sleep_unlocked"
+        app:HighMode="@drawable/screen_locked"
+        app:LowMode="@drawable/screen_unlocked"
         />
     <core.launcher.partner.ControlSwitch
-        android:id="@+id/switch_light_enhancer"
+        android:id="@+id/switch_trace_recorder"
         android:clickable="true"
         android:layout_margin="5dp"
         android:layout_width="50dp"
@@ -34,20 +34,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/switch_sleep_locker"
         android:background="@drawable/switch_frame"
-        app:HighMode="@drawable/light_max"
-        app:LowMode="@drawable/light_low"
-        />
-    <core.launcher.partner.ControlSwitch
-        android:id="@+id/switch_battery_saver"
-        android:clickable="true"
-        android:layout_margin="5dp"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/switch_light_enhancer"
-        android:background="@drawable/switch_frame"
-        app:HighMode="@drawable/battery_drain"
-        app:LowMode="@drawable/battery_save"
+        app:HighMode="@drawable/logging_trace"
+        app:LowMode="@drawable/logging_off"
         />
 
     <core.launcher.partner.ControlSwitch
@@ -59,23 +47,22 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/switch_frame"
-        app:HighMode="@drawable/gps_live"
-        app:LowMode="@drawable/gps_replay"
+        app:HighMode="@drawable/gps_listening"
+        app:LowMode="@drawable/gps_off"
         />
 
     <core.launcher.partner.ControlSwitch
-        android:id="@+id/heartbeat_provider"
-        android:clickable="true"
-        android:layout_margin="5dp"
+        android:id="@+id/sensor_provider"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/gps_provider"
+        android:layout_margin="5dp"
         android:background="@drawable/switch_frame"
+        android:clickable="true"
         android:visibility="invisible"
-        app:HighMode="@drawable/heartbeat_connected"
-        app:LowMode="@drawable/heartbeat_disconnected"
-        />
+        app:HighMode="@drawable/sensor_active"
+        app:LowMode="@drawable/sensor_off" />
 
     <core.launcher.partner.Monitor
         android:id="@+id/left_monitor"

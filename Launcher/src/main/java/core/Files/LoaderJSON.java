@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 
 import core.Structures.Sample;
+import services.Hub;
 
 
 public class LoaderJSON  extends Loader implements Runnable {
@@ -48,21 +49,26 @@ public class LoaderJSON  extends Loader implements Runnable {
 
     public int Count() { return Count;}
 
+    private static String Head(BufferedReader Reader) {
+        String Line = null;
+        try { Line = Reader.readLine(); }
+        catch (Exception TimeStampsError) { Log.d(LogTag, "Empty file ==> No headers found"); }
+        return Line;
+    }
+
     public Bundle header() {
         BufferedReader Reader = ReaderOf(Source);
         if (Reader == null) return null;
 
-        String HeaderJSON = null;
-        try { HeaderJSON = Reader.readLine(); }
-        catch (Exception TimeStampsError) { Log.d(LogTag, "Empty file ==> No headers found"); }
+        String HeaderJSON = LoaderJSON.Head(Reader);
+        if (HeaderJSON == null)  return null;
 
         Calendar FileCreation = LibJSON.DateFromJSON(HeaderJSON);
-        long NbDays = -1;
-        if (FileCreation != null)
-            NbDays = (Calendar.getInstance().getTimeInMillis() - FileCreation.getTimeInMillis()) / InDays;
+        if (FileCreation == null) return  null;
+        long NbDays = (Calendar.getInstance().getTimeInMillis() - FileCreation.getTimeInMillis()) / InDays;
 
         Bundle Headers = new Bundle();
-        Headers.putInt(PreSets.Days, (int) NbDays);
+        Headers.putInt(PreSets.Days, (int)NbDays);
         return Headers;
     }
 
@@ -73,6 +79,8 @@ public class LoaderJSON  extends Loader implements Runnable {
 
         BufferedReader Reader = ReaderOf(Source);
         if (Reader == null) return;
+
+        Head(Reader);
 
         Count = 0;
         String StringJSON;

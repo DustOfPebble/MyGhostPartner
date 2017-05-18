@@ -42,7 +42,7 @@ public class LibJSON {
         }
         catch (Exception Missing)
         {
-            Log.d(LogTag, "Sample from JSON => Missing required value");
+            Log.d(LogTag, "Sample from JSON => Missing required value ["+StringJSON+"]");
             return Snapshot;
         }
 

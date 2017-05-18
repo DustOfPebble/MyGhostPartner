@@ -16,7 +16,7 @@ public interface Queries {
     void stopSensor();
 
     void selectTrack(File Source, int Mode);
-    void setTracking(boolean Enabled, double Clearance);
+    void setTracking(boolean Enabled);
 
     ArrayList<Node> getNodes(Frame Zone);
     void reload();

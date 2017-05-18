@@ -52,26 +52,25 @@ class MapManager extends ImageView {
     }
 
     public void setGPS(CoreGPS GPS) {
-        Log.d(LogTag,"Receiving GPS update");
-
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
         if (BackendService == null) return;
 
         NowStats = GPS.Statistic(0);
         ViewCenter = GPS.Moved();
-        Extension Size = Parameters.StatisticsSelectionSize;
+        Extension StatsSize = Parameters.StatisticsSelectionSize;
 
         // Extracting active point around first because we will make a List copy ...
-        searchZone = new Frame(ViewCenter, Size);
+        searchZone = new Frame(ViewCenter, StatsSize);
         CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone),NowStats);
 
         // Extracting Map background at least to avoid list copy...
+        Extension ViewSize = Parameters.DisplayedSelectionSize;
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
-        MetersToPixels = new Extension((float)MinSize / Size.w,(float)MinSize / Size.h);
+        MetersToPixels = new Extension((float)MinSize / ViewSize.w,(float)MinSize / ViewSize.h);
 
-        Size = new Extension(this.getWidth() / MetersToPixels.w,this.getHeight() / MetersToPixels.h );
-        float Extract = Math.max(Size.w, Size.h);
+        ViewSize = new Extension(this.getWidth() / MetersToPixels.w,this.getHeight() / MetersToPixels.h );
+        float Extract = Math.max(ViewSize.w, ViewSize.h);
         searchZone = new Frame(ViewCenter, new Extension(Extract,Extract));
         CollectedDisplayed = BackendService.getNodes(searchZone);
 
@@ -100,10 +99,10 @@ class MapManager extends ImageView {
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
 
         canvas.rotate(-NowStats.Bearing,GraphicCenter.dx,GraphicCenter.dy);
-        Log.d(LogTag,"Rotation is "+ NowStats.Bearing+"°");
+//        Log.d(LogTag,"Rotation is "+ NowStats.Bearing+"°");
 
         // Do the drawing
-        Log.d(LogTag, "Drawing "+ CollectedDisplayed.size()+ " extracted points");
+//        Log.d(LogTag, "Drawing "+ CollectedDisplayed.size()+ " extracted points");
         // Drawing all points from Storage
         LineMode.setColor(Styles.ExtractedColor);
         LineMode.setAlpha(Styles.ExtractedLineTransparency);
@@ -122,7 +121,7 @@ class MapManager extends ImageView {
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,FillMode);
         }
 
-        Log.d(LogTag, "Drawing "+ CollectedStatistics.size()+ " computed points");
+//        Log.d(LogTag, "Drawing "+ CollectedStatistics.size()+ " computed points");
         // Drawing all points from Storage
         LineMode.setColor(Styles.FilteredColor);
         LineMode.setAlpha(Styles.FilteredLineTransparency);
@@ -140,8 +139,7 @@ class MapManager extends ImageView {
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,FillMode);
         }
 
-        if (ViewCenter !=null) {
-            Log.d(LogTag, "Offset is ["+ ViewCenter.dx +","+ ViewCenter.dy +"]");
+        if (ViewCenter !=null) {//           Log.d(LogTag, "Offset is ["+ ViewCenter.dx +","+ ViewCenter.dy +"]");
             LineMode.setColor(Styles.MarkerColor);
             FillMode.setColor(Styles.MarkerColor);
             LineMode.setStrokeWidth(Styles.MarkerLineThickness);
@@ -155,7 +153,7 @@ class MapManager extends ImageView {
         }
 
         long EndRender = SystemClock.elapsedRealtime();
-        Log.d(LogTag, "Rendering was "+ (EndRender - StartRender)+ " ms.");
+//        Log.d(LogTag, "Rendering was "+ (EndRender - StartRender)+ " ms.");
 
         super.onDraw(canvas);
     }

@@ -25,7 +25,7 @@ import services.Hub;
 public class AccessDB implements EventsGPS, LoaderEvents {
     private static final String LogTag = AccessDB.class.getSimpleName();
 
-    private static final int Clearance = 1; // in meters
+    private int Clearance = 1; // in meters
 
     private Hub Owner = null;
 
@@ -42,8 +42,9 @@ public class AccessDB implements EventsGPS, LoaderEvents {
 
     private StorageDB DB = null;
 
-    public AccessDB(Hub Service){
+    public AccessDB(Hub Service, int Clearance){
         Owner = Service;
+        this.Clearance = Clearance;
         DB = new StorageDB(new Frame(new Coords2D(0,0),new Extension(20000,20000)));
         Repository = new FilesUtils(Service);
         Repository.CheckDirectory(PreSets.WorkingSpace);
@@ -53,7 +54,6 @@ public class AccessDB implements EventsGPS, LoaderEvents {
 
     private void StartNewLoader() {
         Loader = new LoaderJSON(Files.get(LoadingCount), this);
-        LastMove = null;
         Bundle Params = Loader.header();
         NbDays = Params.getInt(PreSets.Days);
         Loader.start();
@@ -104,6 +104,7 @@ public class AccessDB implements EventsGPS, LoaderEvents {
      *  Forwarded Calls from Service
      **************************************************************/
     public ArrayList<Node> getNodes(Frame Zone) {
+        DB.clear();
         DB.collect(Zone);
         return StorageDB.Collected;
     }
@@ -138,7 +139,6 @@ public class AccessDB implements EventsGPS, LoaderEvents {
         if (NodeGPS.Stats.Accuracy > Parameters.LowAccuracyGPS) return;
 
         if (Coords2D.distance(LastMove, NodeGPS.Move) < Clearance) return;
-        Log.d(LogTag, "Storing GPS Node !");
         LastMove = NodeGPS.Move;
         DB.store(NodeGPS);
     }
@@ -152,13 +152,12 @@ public class AccessDB implements EventsGPS, LoaderEvents {
         Node Snapshot = new Node();
         Snapshot.Stats = Loaded.Statistic(NbDays);
         Snapshot.Move = Loaded.MovedFrom(Origin);
-        Log.d(LogTag, "Storing Node from files");
         DB.store(Snapshot);
     }
 
     @Override
     public void finished(boolean Success) {
-        if (Success) Log.d(LogTag, "Read "+ Loader.Count()+ " Nodes.");
+        if (Success) Log.d(LogTag, "Loaded "+ Loader.Count()+ " Nodes from {"+Files.get(LoadingCount).getName()+"}");
         else Log.d(LogTag, "Failed on reading ...");
         LoadingCount++;
         Loader = null;

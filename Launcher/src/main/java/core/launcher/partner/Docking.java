@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 import core.GPS.CoreGPS;
 import core.Settings.Parameters;
-import core.Settings.SwitchModes;
+import core.Settings.Switches;
 import core.Structures.Coords2D;
 import core.Structures.Extension;
 import core.Structures.Frame;
@@ -32,6 +32,7 @@ import core.helpers.Processing;
 import core.helpers.PermissionLoader;
 import services.Hub;
 import services.Junction;
+import services.Recorder.Modes;
 import services.Signals;
 
 public class Docking extends Activity implements ServiceConnection, Signals {
@@ -41,15 +42,14 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private RelativeLayout DockingManager = null;
 
     private ControlSwitch SleepLocker = null;
-    private ControlSwitch BatterySaver = null;
-    private ControlSwitch LightEnhancer = null;
+    private ControlSwitch TraceRecorder = null;
     private ControlSwitch GPSProvider = null;
-    private ControlSwitch HeartBeatSensor = null;
+    private ControlSwitch CardioSensor = null;
 
     private Monitor SpeedMonitor = null;
     private short SpeedWidgetMode = -1;
     private Monitor HeartbeatMonitor = null;
-    private short HeartbeatWidgetMode = -1;
+    private short CardioWidgetMode = -1;
 
     private MapManager MapView = null;
 
@@ -78,44 +78,35 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SavedStates = (ViewStates) getApplication();
 
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
-        SleepLocker.registerModes(SwitchModes.SleepLocked, SwitchModes.SleepUnLocked);
+        SleepLocker.registerModes(Switches.SleepLocked, Switches.SleepUnLocked);
         SleepLocker.registerManager(this);
         SleepLocker.setMode(SavedStates.getModeSleep());
-        if (SavedStates.getModeSleep() == SwitchModes.SleepLocked)
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        else
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        ManageLockScreen(SavedStates.getModeSleep());
 
-        LightEnhancer = (ControlSwitch) findViewById(R.id.switch_light_enhancer);
-        LightEnhancer.registerModes(SwitchModes.LightEnhanced, SwitchModes.LightNormal);
-        LightEnhancer.registerManager(this);
-        LightEnhancer.setMode(SavedStates.getModeLight());
-        LightEnhancer.setVisibility(View.INVISIBLE);
-
-        BatterySaver = (ControlSwitch) findViewById(R.id.switch_battery_saver);
-        BatterySaver.registerModes(SwitchModes.BatteryDrainMode, SwitchModes.BatterySaveMode);
-        BatterySaver.registerManager(this);
-        BatterySaver.setMode(SavedStates.getModeBattery());
-        BatterySaver.setVisibility(View.INVISIBLE);
+        TraceRecorder = (ControlSwitch) findViewById(R.id.switch_trace_recorder);
+        TraceRecorder.registerModes(Switches.TraceEnabled, Switches.TraceDisabled);
+        TraceRecorder.registerManager(this);
+        TraceRecorder.setMode(SavedStates.getModeLogger());
+        TraceRecorder.setVisibility(View.VISIBLE);
 
         GPSProvider = (ControlSwitch) findViewById(R.id.gps_provider);
-        GPSProvider.registerModes(SwitchModes.LiveGPS, SwitchModes.NoGPS);
+        GPSProvider.registerModes(Switches.LiveGPS, Switches.NoGPS);
         GPSProvider.registerManager(this);
         GPSProvider.setMode(SavedStates.getModeGPS());
 
-        HeartBeatSensor = (ControlSwitch) findViewById(R.id.heartbeat_provider);
-        HeartBeatSensor.registerModes(SwitchModes.ConnectedHeartBeat, SwitchModes.DisconnectedHeartBeat);
-        HeartBeatSensor.registerManager(this);
-        HeartBeatSensor.setMode(SavedStates.getModeSensor());
-        HeartBeatSensor.setVisibility(View.VISIBLE);
+        CardioSensor = (ControlSwitch) findViewById(R.id.sensor_provider);
+        CardioSensor.registerModes(Switches.SensorConnect, Switches.SensorOFF);
+        CardioSensor.registerManager(this);
+        CardioSensor.setMode(SavedStates.getModeSensor());
+        CardioSensor.setVisibility(View.VISIBLE);
 
         LayoutInflater fromXML = LayoutInflater.from(this);
 
         // Hardcoded settings for Speed in left Monitor
         SpeedMonitor = (Monitor) fromXML.inflate(R.layout.widget_monitor, null);
         SpeedMonitor.registerManager(this);
-        SpeedMonitor.setID(SwitchModes.SpeedStatsID);
-        SpeedWidgetMode = SwitchModes.LeftBottomWidget;
+        SpeedMonitor.setID(Switches.SpeedStatsID);
+        SpeedWidgetMode = Switches.LeftBottomWidget;
         SpeedMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
         SpeedMonitor.setNbTicksDisplayed(18);
         SpeedMonitor.setNbTicksLabel(5);
@@ -127,8 +118,8 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         // Hardcoded settings for Heartbeat in right Monitor
         HeartbeatMonitor = (Monitor) fromXML.inflate(R.layout.widget_monitor, null);
         HeartbeatMonitor.registerManager(this);
-        HeartbeatMonitor.setID(SwitchModes.HeatbeatStatsID);
-        HeartbeatWidgetMode = SwitchModes.RightBottomWidget;
+        HeartbeatMonitor.setID(Switches.SensorStatsID);
+        CardioWidgetMode = Switches.RightBottomWidget;
         HeartbeatMonitor.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb));
         HeartbeatMonitor.setNbTicksDisplayed(22);
         HeartbeatMonitor.setNbTicksLabel(10);
@@ -170,7 +161,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         RelativeLayout.LayoutParams MonitorConfig;
 
         // Managing SpeedMonitor Widget
-        if (SpeedWidgetMode == SwitchModes.LeftBottomWidget) {
+        if (SpeedWidgetMode == Switches.LeftBottomWidget) {
             MonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * Parameters.WidthToHeightFactor));
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -186,7 +177,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         DockingManager.addView(SpeedMonitor,MonitorConfig);
 
         // Managing HeartbeatMonitor Widget
-        if (HeartbeatWidgetMode == SwitchModes.RightBottomWidget) {
+        if (CardioWidgetMode == Switches.RightBottomWidget) {
             MonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * Parameters.WidthToHeightFactor));
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -203,6 +194,27 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         DockingManager.invalidate();
     }
+
+    public void moveWidget(short ID){
+        if (ID == Switches.SpeedStatsID){
+            if (SpeedWidgetMode == Switches.LeftBottomWidget) {
+                SpeedWidgetMode = Switches.CenterTopWidget;
+                CardioWidgetMode = Switches.RightBottomWidget;
+            }
+            else SpeedWidgetMode = Switches.LeftBottomWidget;
+        }
+
+        if (ID == Switches.SensorStatsID) {
+            if (CardioWidgetMode == Switches.RightBottomWidget) {
+                CardioWidgetMode = Switches.CenterTopWidget;
+                SpeedWidgetMode = Switches.LeftBottomWidget;
+            }
+            else CardioWidgetMode = Switches.RightBottomWidget;
+        }
+
+        applyWidgetsLayout();
+    }
+
 
     @Override
     protected void onPause() {
@@ -224,78 +236,62 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     }
 
     public void onButtonStatusChanged(short Status) {
-        if (Status == SwitchModes.SleepLocked) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            SavedStates.storeModeSleep(Status);
-            SleepLocker.setMode(Status);
-        }
-
-        if (Status == SwitchModes.SleepUnLocked) {
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            SavedStates.storeModeSleep(Status);
-            SleepLocker.setMode(Status);
-        }
-
-        if (Status == SwitchModes.LiveGPS) {
-            SavedStates.storeModeGPS(Status);
-            GPSProvider.setMode(Status);
-            if (BackendService == null) return;
-            BackendService.GPS(true);
-        }
-        if (Status == SwitchModes.NoGPS) {
-            SavedStates.storeModeGPS(Status);
-            GPSProvider.setMode(Status);
-            if (BackendService == null) return;
-            BackendService.GPS(false);
-        }
-
-        if (Status == SwitchModes.LightEnhanced) {
-            SavedStates.storeModeLight(Status);
-            LightEnhancer.setMode(Status);
-        }
-        if (Status == SwitchModes.LightNormal) {
-            SavedStates.storeModeLight(Status);
-            LightEnhancer.setMode(Status);
-        }
-
-        if (Status == SwitchModes.BatteryDrainMode) {
-            SavedStates.storeModeBattery(Status);
-            BatterySaver.setMode(Status);
-        }
-        if (Status == SwitchModes.BatterySaveMode) {
-            SavedStates.storeModeBattery(Status);
-            BatterySaver.setMode(Status);
-        }
-        if (Status == SwitchModes.ConnectedHeartBeat) {
-            SavedStates.storeModeSensor(SwitchModes.SearchHeartBeat);
-            if (BackendService == null) return;
-            BackendService.startSensor();
-        }
-        if (Status == SwitchModes.DisconnectedHeartBeat) {
-            SavedStates.storeModeSensor(Status);
-            if (BackendService == null) return;
-            BackendService.stopSensor();
-        }
+        if ((Status == Switches.SleepLocked) || (Status == Switches.SleepUnLocked)) ManageLockScreen(Status);
+        if ((Status == Switches.LiveGPS) || (Status == Switches.NoGPS))  ManageGPS(Status);
+        if ((Status == Switches.TraceEnabled) || (Status == Switches.TraceDisabled)) ManageTraceRecorder(Status);
+        if ((Status == Switches.SensorConnect) || (Status == Switches.SensorOFF)) ManageCardioSensor(Status);
+    }
+    private void ManageLockScreen(short Status) {
+        SavedStates.storeModeSleep(Status);
+        SleepLocker.setMode(Status);
+        if (Status == Switches.SleepLocked) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    public void moveWidget(short ID){
-        if (ID == SwitchModes.SpeedStatsID){
-            if (SpeedWidgetMode == SwitchModes.LeftBottomWidget) {
-                SpeedWidgetMode = SwitchModes.CenterTopWidget;
-                HeartbeatWidgetMode = SwitchModes.RightBottomWidget;
-            }
-            else SpeedWidgetMode = SwitchModes.LeftBottomWidget;
-        }
+    private void ManageGPS(short Status) {
+        SavedStates.storeModeGPS(Status);
+        GPSProvider.setMode(Status);
+        if (Status == Switches.LiveGPS) BackendService.GPS(true);
+        else BackendService.GPS(false);
+    }
 
-        if (ID == SwitchModes.HeatbeatStatsID) {
-            if (HeartbeatWidgetMode == SwitchModes.RightBottomWidget) {
-                HeartbeatWidgetMode = SwitchModes.CenterTopWidget;
-                SpeedWidgetMode = SwitchModes.LeftBottomWidget;
-            }
-            else HeartbeatWidgetMode = SwitchModes.RightBottomWidget;
-        }
+    private void ManageCardioSensor(short Status) {
+        SavedStates.storeModeSensor(Status);
+        if (BackendService == null) return;
+        if (Status == Switches.SensorConnect) BackendService.startSensor();
+        else BackendService.stopSensor();
+    }
 
-        applyWidgetsLayout();
+
+    private void ManageTraceRecorder(short Status) {
+        SavedStates.storeModeLight(Status);
+        TraceRecorder.setMode(Status);
+        if (BackendService == null) return;
+        if (Status == Switches.TraceEnabled) BackendService.setLog(Modes.Create);
+        else BackendService.setLog(Modes.Finish);
+    }
+
+    private void ManageSpeedStats(ArrayList<Node> CollectedStatistics,Statistic Snapshot) {
+        if (SpeedMonitor.getVisibility() == View.INVISIBLE) SpeedMonitor.setVisibility(View.VISIBLE);
+        Speeds.clear();
+        for (Node item: CollectedStatistics) {
+            Speeds.add(Float.valueOf(item.Stats.Speed*3.6f));
+        }
+        if (Speeds.isEmpty()) Speeds.add(Float.valueOf(Snapshot.Speed*3.6f));
+        SpeedMonitor.updateStatistics(Speeds);
+    }
+
+    private void ManageCardioStats(ArrayList<Node> CollectedStatistics,Statistic Snapshot) {
+        // Updating HeartBeats Statistics
+        if (Snapshot.Heartbeat == -1) { HeartbeatMonitor.setVisibility(View.INVISIBLE); return; }
+        if (HeartbeatMonitor.getVisibility() == View.INVISIBLE) HeartbeatMonitor.setVisibility(View.VISIBLE);
+        HeartBeats.clear();
+        for (Node item: CollectedStatistics) {
+            if (item.Stats.Heartbeat == -1) continue;
+            HeartBeats.add(Float.valueOf(item.Stats.Heartbeat));
+        }
+        if (HeartBeats.isEmpty()) HeartBeats.add(Float.valueOf(Snapshot.Heartbeat));
+        HeartbeatMonitor.updateStatistics(HeartBeats);
     }
 
     @Override
@@ -314,10 +310,9 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (SavedStates == null) return;
 
         // updating Buttons status
-        HeartBeatSensor.setMode(SavedStates.getModeSensor());
+        CardioSensor.setMode(SavedStates.getModeSensor());
         GPSProvider.setMode(SavedStates.getModeGPS());
-        LightEnhancer.setMode(SavedStates.getModeLight());
-        BatterySaver.setMode(SavedStates.getModeBattery());
+        TraceRecorder.setMode(SavedStates.getModeLogger());
         SleepLocker.setMode(SavedStates.getModeSleep());
     }
 
@@ -396,8 +391,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     @Override
     public void UpdateBPM(int Value) {
-        if (Value>0) HeartBeatSensor.setMode(SwitchModes.ConnectedHeartBeat);
-        else HeartBeatSensor.setMode(SwitchModes.DisconnectedHeartBeat);
     }
 
     @Override
@@ -405,7 +398,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (SavedStates == null) return;
 
         // Refresh HeartBeat button state ...
-        HeartBeatSensor.setMode(SavedStates.getModeSensor());
+        CardioSensor.setMode(SavedStates.getModeSensor());
 
         // Setting collection area
         Extension SizeSelection = Parameters.StatisticsSelectionSize;
@@ -417,27 +410,8 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         // Collecting data from backend
         ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone), Snapshot);
 
-        // Updating Speeds Statistics
-        if (SpeedMonitor.getVisibility() == View.INVISIBLE) SpeedMonitor.setVisibility(View.VISIBLE);
-        Speeds.clear();
-        Speeds.add(Float.valueOf(Snapshot.Speed*3.6f));
-        for (Node item: CollectedStatistics) {
-            Speeds.add(Float.valueOf(item.Stats.Speed*3.6f));
-        }
-        if (Speeds.isEmpty()) Speeds.add(Float.valueOf(Snapshot.Speed*3.6f));
-        SpeedMonitor.updateStatistics(Speeds);
-
-        // Updating HeartBeats Statistics
-        if (Snapshot.Heartbeat == -1) { HeartbeatMonitor.setVisibility(View.INVISIBLE); return; }
-        if (HeartbeatMonitor.getVisibility() == View.INVISIBLE) HeartbeatMonitor.setVisibility(View.VISIBLE);
-        HeartBeats.clear();
-        HeartBeats.add(Float.valueOf(Snapshot.Heartbeat));
-        for (Node item: CollectedStatistics) {
-            if (item.Stats.Heartbeat == -1) continue;
-            HeartBeats.add(Float.valueOf(item.Stats.Heartbeat));
-        }
-        if (HeartBeats.isEmpty()) HeartBeats.add(Float.valueOf(Snapshot.Heartbeat));
-        HeartbeatMonitor.updateStatistics(HeartBeats);
+        ManageSpeedStats(CollectedStatistics, Snapshot);
+        ManageCardioStats(CollectedStatistics, Snapshot);
 
         // Updating Background View
         MapView.setGPS(InfoGPS);

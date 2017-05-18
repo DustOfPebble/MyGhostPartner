@@ -38,7 +38,7 @@ public class LogsWriter {
         BufferedWriter LogWriter = WriterOf(Storage);
         if (LogWriter == null) return;
 
-        Log.d(LogTag, "Writing " + LogEvents.size() + "JSON elements of buffer.");
+        Log.d(LogTag, "Writing " + LogEvents.size() + " JSON elements from buffer.");
         try {
             LogWriter.write(Header);
             LogWriter.newLine();

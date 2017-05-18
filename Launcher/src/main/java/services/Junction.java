@@ -45,7 +45,7 @@ public class Junction extends Binder {
     public void stopSensor() {Service.stopSensor();}
 
     public void selectTrack(File Source, int Mode) {Service.selectTrack(Source, Mode); }
-    public void setTracking(boolean Enabled, double Clearance) { Service.setTracking(Enabled,Clearance); }
+    public void setTracking(boolean Enabled) { Service.setTracking(Enabled); }
 
     public ArrayList<Node> getNodes(Frame Zone){ return Service.getNodes(Zone); }
     public void reload() { Service.reload();}

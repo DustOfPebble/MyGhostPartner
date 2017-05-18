@@ -2,7 +2,7 @@ package services.Recorder;
 
 
 public class Modes {
-    static final int Continue = 01;
-    static final int New = 02;
+    public static final int Finish = 01;
+    public static final int Create = 02;
 }
 
