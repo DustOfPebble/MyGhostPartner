@@ -23,7 +23,7 @@ public class Junction extends Binder {
     /******************************************************************
      * Forwarding Service Events application
      ******************************************************************/
-    public void TrackLoaded(boolean Success) { Listener.TrackLoaded(Success);}
+    public void TrackLoaded(boolean Success) { Listener.UpdateTracking(Success);}
     public void TrackEvent(int Distance) { Listener.TrackEvent(Distance);}
 
     public void UpdatedSensor(int Value) { Listener.UpdatedSensor(Value);}

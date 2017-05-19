@@ -60,7 +60,6 @@
         android:layout_margin="5dp"
         android:background="@drawable/switch_frame"
         android:clickable="true"
-        android:visibility="invisible"
         app:HighMode="@drawable/sensor_active"
         app:LowMode="@drawable/sensor_off" />
 

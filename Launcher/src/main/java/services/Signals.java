@@ -4,7 +4,7 @@ import core.GPS.CoreGPS;
 
 public interface Signals {
 
-    void TrackLoaded(boolean Success);
+    void UpdateTracking(boolean Success);
     void TrackEvent(int Distance);
 
     void UpdatedSensor(int Value);

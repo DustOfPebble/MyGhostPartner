@@ -2,9 +2,11 @@ package services.Track;
 
 import java.util.ArrayList;
 import core.Structures.Coords2D;
+import core.Structures.Frame;
 
 public class Track implements Runnable {
     private ArrayList<Segment> Segments;
+    private ArrayList<Segment> Collected;
     private int Index = -1;
 
     private Coords2D Coords = null;
@@ -15,14 +17,18 @@ public class Track implements Runnable {
 
     public Track() {
         Segments = new ArrayList<>();
-    }
-
-    public int size()
-    {
-        return Segments.size();
+        Collected = new ArrayList<>();
     }
     public void append(Coords2D A, Coords2D B) { Segments.add(new Segment(A, B)); }
 
+    /************************************************************************
+     * Collect Segments that intercept Zone
+     ************************************************************************/
+    public ArrayList<Segment> collect(Frame Zone) {
+        Collected.clear();
+        for (Segment Line:Segments) { Collected.add(Line); }
+        return Collected;
+    }
     /*************************************************************************
      * Distance calculation about Track
      *************************************************************************/

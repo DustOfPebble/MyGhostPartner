@@ -80,25 +80,22 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
         SleepLocker.registerModes(Switches.SleepLocked, Switches.SleepUnLocked);
         SleepLocker.registerManager(this);
-        SleepLocker.setMode(SavedStates.getModeSleep());
         ManageLockScreen(SavedStates.getModeSleep());
 
         TraceRecorder = (ControlSwitch) findViewById(R.id.switch_trace_recorder);
         TraceRecorder.registerModes(Switches.TraceEnabled, Switches.TraceDisabled);
         TraceRecorder.registerManager(this);
-        TraceRecorder.setMode(SavedStates.getModeLogger());
-        TraceRecorder.setVisibility(View.VISIBLE);
+        ManageTraceRecorder(SavedStates.getModeLogger());
 
         GPSProvider = (ControlSwitch) findViewById(R.id.gps_provider);
         GPSProvider.registerModes(Switches.LiveGPS, Switches.NoGPS);
         GPSProvider.registerManager(this);
-        GPSProvider.setMode(SavedStates.getModeGPS());
+        ManageGPS(SavedStates.getModeGPS());
 
         CardioSensor = (ControlSwitch) findViewById(R.id.sensor_provider);
         CardioSensor.registerModes(Switches.SensorConnected, Switches.NoSensor);
         CardioSensor.registerManager(this);
-        CardioSensor.setMode(SavedStates.getModeSensor());
-        CardioSensor.setVisibility(View.VISIBLE);
+        ManageCardioSensor(SavedStates.getModeSensor());
 
         LayoutInflater fromXML = LayoutInflater.from(this);
 
@@ -113,7 +110,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SpeedMonitor.setTicksStep(1f);
         SpeedMonitor.setPhysicRange(0f,80f);
         SpeedMonitor.setUnit("km/h");
-        SpeedMonitor.setVisibility(View.INVISIBLE);
 
         // Hardcoded settings for Heartbeat in right Monitor
         HeartbeatMonitor = (Monitor) fromXML.inflate(R.layout.widget_monitor, null);
@@ -126,7 +122,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         HeartbeatMonitor.setTicksStep(1f);
         HeartbeatMonitor.setPhysicRange(20f,220f);
         HeartbeatMonitor.setUnit("bpm");
-        HeartbeatMonitor.setVisibility(View.INVISIBLE);
 
         Speeds = new ArrayList<Float>();
         HeartBeats = new ArrayList<Float>();
@@ -413,7 +408,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
      * Implementing Signals interface (callbacks from Service)
      * **********************************************************************/
     @Override
-    public void TrackLoaded(boolean Success) {
+    public void UpdateTracking(boolean Success) {
 
     }
 
@@ -425,7 +420,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     @Override
     public void UpdatedSensor(int Value) {
         // UpdatedBPM CardioSensor button state ...
-        if (Value>=0) ManageCardioSensor(Switches.SensorConnected);
+        ManageCardioSensor((Value>=0)? Switches.SensorConnected:Switches.NoSensor);
     }
 
     @Override
