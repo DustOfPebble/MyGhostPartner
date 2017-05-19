@@ -27,7 +27,7 @@ public class Hub extends Service implements Queries, EventsGPS {
 
     private AccessSensor Sensor = null;
     private AccessLogs Recorder = null;
-    private AccessDB Database =  null;
+    private AccessDB Collector =  null;
     private AccessTrack Tracker = null;
 
     private CoreGPS Position = null;
@@ -48,11 +48,11 @@ public class Hub extends Service implements Queries, EventsGPS {
 
         Sensor = new AccessSensor(this, Parameters.TimeSearchLimit);
         Recorder = new AccessLogs(this, Parameters.LogClearance);
-        Database =  new AccessDB(this, Parameters.LiveClearance);
+        Collector =  new AccessDB(this, Parameters.LiveClearance);
         Tracker = new AccessTrack(this, Parameters.TrackClearance);
 
         Position.addListener(Recorder);
-        Position.addListener(Database);
+        Position.addListener(Collector);
         Position.addListener(Tracker);
         Position.addListener(this);
     }
@@ -98,17 +98,17 @@ public class Hub extends Service implements Queries, EventsGPS {
     public void setTracking(boolean Enabled) { Tracker.EnableTracking(Enabled); }
 
     @Override
-    public ArrayList<Node> getNodes(Frame Zone){ return Database.getNodes(Zone); }
+    public ArrayList<Node> getNodes(Frame Zone){ return Collector.getNodes(Zone); }
 
     @Override
-    public void reload(){ Database.reload(); }
+    public void reload(){ Collector.reload(); }
 
     /**************************************************************
      *  Callbacks From AccessSensor
      **************************************************************/
-    public void Update(int SensorValue) {
+    public void UpdatedBPM(int SensorValue) {
         Position.setBPM(SensorValue);
-        Connector.UpdateBPM(SensorValue);
+        Connector.UpdatedSensor(SensorValue);
     }
 
     /**************************************************************

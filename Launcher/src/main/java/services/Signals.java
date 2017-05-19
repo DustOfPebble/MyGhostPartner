@@ -7,9 +7,9 @@ public interface Signals {
     void TrackLoaded(boolean Success);
     void TrackEvent(int Distance);
 
-    void UpdateBPM(int Value);
+    void UpdatedSensor(int Value);
 
-    void UpdateGPS(CoreGPS Provider);
+    void UpdatedGPS(CoreGPS Provider);
 
     void OutOfRange();
 }

@@ -3,17 +3,21 @@ package core.launcher.partner;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-class ControlSwitch extends ImageView implements View.OnTouchListener {
+class ControlSwitch extends ImageView implements View.OnTouchListener, Runnable {
 
     protected Drawable highIcon = null;
     protected Drawable lowIcon = null;
+
     private Docking Controler = null;
+    private Handler SyncUI = new Handler(Looper.getMainLooper());
 
     private short highStatus = -1;
     private short lowStatus = -1;
@@ -48,9 +52,7 @@ class ControlSwitch extends ImageView implements View.OnTouchListener {
     public void setMode(short modeEvent) {
         if (modeEvent == Status) return;
         Status = modeEvent;
-        if (Status == highStatus)  this.setImageDrawable(highIcon);
-        if (Status == lowStatus)  this.setImageDrawable(lowIcon);
-        invalidate();
+        SyncUI.post(this);
     }
 
     public  void registerManager(Docking controler) { this.Controler = controler;}
@@ -76,5 +78,13 @@ class ControlSwitch extends ImageView implements View.OnTouchListener {
         }
 
         return false;
+    }
+
+
+    @Override
+    public void run() {
+        if (Status == highStatus)  this.setImageDrawable(highIcon);
+        if (Status == lowStatus)  this.setImageDrawable(lowIcon);
+        invalidate();
     }
 }

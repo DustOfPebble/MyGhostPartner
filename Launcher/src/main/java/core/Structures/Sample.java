@@ -12,6 +12,9 @@ public class Sample {
     private static final float earthRadius = 6400000f; // Earth Radius is 6400 kms
     private static float earthRadiusCorrected(double Latitude) { return earthRadius *(float)cos(toRadians(Latitude)); }
 
+    /*********************************
+     * List of managed Fields
+     *********************************/
     public double Longitude = 0.0;
     public double Latitude = 0.0;
     public double Altitude = 0.0;
@@ -21,8 +24,9 @@ public class Sample {
     public float Bearing = 0f;
 
     public byte Heartbeat = -1;
-
-
+    /*********************************
+     * Calls to retrieve Structures
+     *********************************/
     public Coords2D MovedFrom(CoordsGPS Origin) {
         float dx = earthRadiusCorrected(Latitude) * (float) toRadians(Longitude - Origin.longitude);
         float dy = earthRadius * (float) toRadians(Latitude - Origin.latitude);
@@ -40,5 +44,4 @@ public class Sample {
         Snapshot.Days = (short) NbDays;
         return Snapshot;
     }
-
 }

@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.SystemClock;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
@@ -20,8 +19,8 @@ import core.helpers.Processing;
 import core.Structures.Node;
 import services.Junction;
 
-class MapManager extends ImageView {
-    private static String LogTag = MapManager.class.getSimpleName();
+class Map2D extends ImageView {
+    private static String LogTag = Map2D.class.getSimpleName();
 
     private Extension MetersToPixels = new Extension(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure
     private Junction BackendService = null;
@@ -36,7 +35,7 @@ class MapManager extends ImageView {
     private Statistic NowStats = null;
     private Frame searchZone = null;
 
-    public MapManager(Context context, AttributeSet attrs) {
+    public Map2D(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
         LineMode = new Paint();
@@ -58,14 +57,14 @@ class MapManager extends ImageView {
 
         NowStats = GPS.Statistic(0);
         ViewCenter = GPS.Moved();
-        Extension StatsSize = Parameters.StatisticsSelectionSize;
+        Extension StatsSize = Parameters.StatisticsSize;
 
         // Extracting active point around first because we will make a List copy ...
         searchZone = new Frame(ViewCenter, StatsSize);
         CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone),NowStats);
 
         // Extracting Map background at least to avoid list copy...
-        Extension ViewSize = Parameters.DisplayedSelectionSize;
+        Extension ViewSize = Parameters.DisplayedSize;
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
         MetersToPixels = new Extension((float)MinSize / ViewSize.w,(float)MinSize / ViewSize.h);
 
@@ -153,7 +152,7 @@ class MapManager extends ImageView {
         }
 
         long EndRender = SystemClock.elapsedRealtime();
-        Log.d(LogTag, "Rendering takes "+ (EndRender - StartRender)+ " ms.");
+ //       Log.d(LogTag, "Rendering takes "+ (EndRender - StartRender)+ " ms.");
 
         super.onDraw(canvas);
     }

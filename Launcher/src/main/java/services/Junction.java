@@ -6,7 +6,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import core.GPS.CoreGPS;
-import core.GPS.EventsGPS;
 import core.Structures.Frame;
 import core.Structures.Node;
 
@@ -27,12 +26,11 @@ public class Junction extends Binder {
     public void TrackLoaded(boolean Success) { Listener.TrackLoaded(Success);}
     public void TrackEvent(int Distance) { Listener.TrackEvent(Distance);}
 
-    public void UpdateBPM(int Value) { Listener.UpdateBPM(Value);}
+    public void UpdatedSensor(int Value) { Listener.UpdatedSensor(Value);}
 
-    public void UpdateGPS(CoreGPS Provider) { Listener.UpdateGPS(Provider);}
+    public void UpdateGPS(CoreGPS Provider) { Listener.UpdatedGPS(Provider);}
 
     public void OutOfRange() { Listener.OutOfRange();}
-
 
     /******************************************************************
      * Handling Queries to Services

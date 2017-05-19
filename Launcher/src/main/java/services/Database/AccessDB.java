@@ -40,12 +40,12 @@ public class AccessDB implements EventsGPS, LoaderEvents {
     private ArrayList<File> Files = null;
     private int LoadingCount;
 
-    private StorageDB DB = null;
+    private NodesDB DB = null;
 
     public AccessDB(Hub Service, int Clearance){
         Owner = Service;
         this.Clearance = Clearance;
-        DB = new StorageDB(new Frame(new Coords2D(0,0),new Extension(20000,20000)));
+        DB = new NodesDB(new Frame(new Coords2D(0,0), Parameters.StorageSize));
         Repository = new FilesUtils(Service);
         Repository.CheckDirectory(PreSets.WorkingSpace);
         Files = Repository.CollectFiles(PreSets.Signature);
@@ -106,7 +106,7 @@ public class AccessDB implements EventsGPS, LoaderEvents {
     public ArrayList<Node> getNodes(Frame Zone) {
         DB.clear();
         DB.collect(Zone);
-        return StorageDB.Collected;
+        return NodesDB.Collected;
     }
 
     public void reload() {

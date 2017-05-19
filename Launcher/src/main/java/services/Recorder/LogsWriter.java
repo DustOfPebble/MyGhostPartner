@@ -15,7 +15,7 @@ import core.Structures.Sample;
 public class LogsWriter {
     private static String LogTag = AccessLogs.class.getSimpleName();
 
-    private ArrayList<String> LogEvents = null;
+    private ArrayList<Sample> LogEvents = null;
     private String Header = null;
 
     public LogsWriter() {
@@ -31,7 +31,7 @@ public class LogsWriter {
         }
     }
 
-    public void append(Sample Live) { LogEvents.add(LibJSON.toStringJSON(Live)); }
+    public void append(Sample Live) { LogEvents.add(Live); }
 
     public void write(File Storage) {
         if (LogEvents.size() == 0) return;
@@ -42,8 +42,8 @@ public class LogsWriter {
         try {
             LogWriter.write(Header);
             LogWriter.newLine();
-            for (String Event : LogEvents) {
-                LogWriter.write(Event);
+            for (Sample Event : LogEvents) {
+                LogWriter.write(LibJSON.toStringJSON(Event));
                 LogWriter.newLine();
             }
             LogWriter.flush();

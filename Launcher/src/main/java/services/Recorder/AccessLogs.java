@@ -67,6 +67,8 @@ public class AccessLogs implements EventsGPS {
         }
 
         if (Coords2D.distance(LastMove, Provider.Moved()) > Clearance) return;
+
         Logger.append(Fields);
+        LastMove = Provider.Moved();
     }
 }

@@ -5,9 +5,8 @@ import java.util.ArrayList;
 import core.Structures.Extension;
 import core.Structures.Frame;
 import core.Structures.Node;
-import core.Structures.Statistic;
 
-public class StorageDB {
+public class NodesDB {
 
     static public ArrayList<Node> Collected = new ArrayList<>();
     static final Extension Limit = new Extension(2f,2f); // in meters
@@ -15,14 +14,14 @@ public class StorageDB {
     private boolean isStorage = false;
     private Frame Zone = null;
 
-    private StorageDB TopLeft = null;
-    private StorageDB TopRight = null;
-    private StorageDB BottomLeft = null;
-    private StorageDB BottomRight = null;
+    private NodesDB TopLeft = null;
+    private NodesDB TopRight = null;
+    private NodesDB BottomLeft = null;
+    private NodesDB BottomRight = null;
 
     private ArrayList<Node> Statistics = null;
 
-    public StorageDB(Frame zone) {
+    public NodesDB(Frame zone) {
         isStorage = false;
         Zone = zone;
         if ((Zone.Size().w <= Limit.w) || (Zone.Size().h <= Limit.h)) isStorage = true;
@@ -80,22 +79,22 @@ public class StorageDB {
         if (!belongs(set)) return;
 
         if ((set.Move.dx < Zone.Center().dx) && (set.Move.dy < Zone.Center().dy)) {
-            if (TopLeft == null) TopLeft = new StorageDB(new Frame(Zone.TopLeft(), Zone.Center()));
+            if (TopLeft == null) TopLeft = new NodesDB(new Frame(Zone.TopLeft(), Zone.Center()));
             TopLeft.store(set);
         }
 
         if ((set.Move.dx > Zone.Center().dx) && (set.Move.dy < Zone.Center().dy)) {
-            if (TopRight == null) TopRight = new StorageDB(new Frame( Zone.TopRight(), Zone.Center()));
+            if (TopRight == null) TopRight = new NodesDB(new Frame( Zone.TopRight(), Zone.Center()));
             TopRight.store(set);
         }
 
         if ((set.Move.dx < Zone.Center().dx) && (set.Move.dy > Zone.Center().dy)) {
-            if (BottomLeft == null) BottomLeft = new StorageDB(new Frame( Zone.BottomLeft(),Zone.Center()));
+            if (BottomLeft == null) BottomLeft = new NodesDB(new Frame( Zone.BottomLeft(),Zone.Center()));
             BottomLeft.store(set);
         }
 
         if ((set.Move.dx > Zone.Center().dx) && (set.Move.dy > Zone.Center().dy)) {
-            if (BottomRight == null) BottomRight = new StorageDB(new Frame( Zone.BottomRight(), Zone.Center()));
+            if (BottomRight == null) BottomRight = new NodesDB(new Frame( Zone.BottomRight(), Zone.Center()));
             BottomRight.store(set);
         }
     }

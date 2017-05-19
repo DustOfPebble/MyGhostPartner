@@ -109,11 +109,11 @@ class Monitor extends ImageView implements View.OnTouchListener {
     public void setUnit(String Unit) { this.Unit = Unit; }
     public void setIcon(Bitmap ProvidedIcon) { this.LoadedIcon = ProvidedIcon; }
 
-    public  void updateStatistics(ArrayList<Float> values) {
-        Collected = values;
-        LiveValue = Collected.get(0);
+    public void setValues(float Live, ArrayList<Float> History) {
+        Collected = History;
+        LiveValue = Live;
 
-//        Log.d("Monitor","Update requested by Stats ["+Unit+"]");
+//        Log.d("Monitor","UpdatedBPM requested by Stats ["+Unit+"]");
 
         if (!isVuMeterFits()) buildVuMeter();
         buildStatistics();
@@ -121,6 +121,8 @@ class Monitor extends ImageView implements View.OnTouchListener {
         // Requesting a View redraw
         invalidate();
     }
+
+    public void Initialize() { setValues(0f, new ArrayList<Float>());}
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
@@ -180,6 +182,7 @@ class Monitor extends ImageView implements View.OnTouchListener {
         float Height = canvas.getHeight();
         float Width = canvas.getWidth();
         if ((Width == 0) || (Height == 0)) { super.onDraw(canvas);return;}
+//        if (VuMeter == null) { super.onDraw(canvas);return;}
 
         // Drawing Unit
         canvas.drawText(Unit,Width - Padding,UnitFontSize +Padding, UnitPainter);

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     >
 
-    <core.launcher.partner.MapManager
+    <core.launcher.partner.Map2D
         android:id="@+id/map_manager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
