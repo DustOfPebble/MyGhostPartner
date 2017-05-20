@@ -31,14 +31,14 @@ public class FilesUtils {
         Log.d("FileManager", "Selecting workspace : "+ WorkingDirectory.getAbsolutePath() );
     }
 
-    public ArrayList<File> CollectFiles(String Extension) {
+    public ArrayList<SavedObject> CollectFiles(String Extension) {
         File Files[] =  WorkingDirectory.listFiles();
-        ArrayList<File> Collection = new ArrayList();
+        ArrayList<SavedObject> Collection = new ArrayList();
         for (File Item : Files ) {
             if (!Item.getPath().endsWith(Extension)) continue;
             if (!Item.canRead()) continue;
             Log.d("FileManager", "Found file :" + Item.getPath() );
-            Collection.add(Item);
+            Collection.add(new SavedObject(Item));
         }
         return Collection;
     }
@@ -47,23 +47,12 @@ public class FilesUtils {
         return new File(WorkingDirectory.getPath(),Filename);
     }
 
-    public FileOutputStream WriteStream(File Sink) {
-        FileOutputStream WriteStream;
-        try { WriteStream = new FileOutputStream(Sink, true); }
-        catch (Exception StreamError) {
-            Log.d(LogTag,"Can't open stream "+ Sink.getPath()+" for writing...");
-            WriteStream = null;
-        }
-        return WriteStream;
-    }
-
-    static public String Now(String Extension) {
-        Calendar Today = Calendar.getInstance();
-        int Day = Today.get(Calendar.DAY_OF_MONTH);
-        int Month = Today.get(Calendar.MONTH)+1; // Month is from 0 to 11
-        int Year = Today.get(Calendar.YEAR);
-        int Hour = Today.get(Calendar.HOUR_OF_DAY);
-        int Minute = Today.get(Calendar.MINUTE);
+    static public String NameOf(Calendar Date,String Extension) {
+        int Day = Date.get(Calendar.DAY_OF_MONTH);
+        int Month = Date.get(Calendar.MONTH)+1; // Month is from 0 to 11
+        int Year = Date.get(Calendar.YEAR);
+        int Hour = Date.get(Calendar.HOUR_OF_DAY);
+        int Minute = Date.get(Calendar.MINUTE);
 
         return (String.valueOf(Year) +
                 String.format("%2s", String.valueOf(Month)).replace(' ', '0') +

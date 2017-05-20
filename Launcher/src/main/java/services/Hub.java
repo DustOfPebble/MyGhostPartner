@@ -8,6 +8,7 @@ import android.util.Log;
 import java.io.File;
 import java.util.ArrayList;
 
+import core.Files.SavedObject;
 import core.GPS.CoreGPS;
 import core.GPS.EventsGPS;
 import core.Settings.Parameters;
@@ -93,7 +94,7 @@ public class Hub extends Service implements Queries, EventsGPS {
     public void stopSensor() { Sensor.Stop(); }
 
     @Override
-    public void selectTrack(File Source, int Mode) { Tracker.Load(Source, Mode); }
+    public void selectTrack(SavedObject Source, int Mode) { Tracker.Load(Source, Mode); }
     @Override
     public void setTracking(boolean Enabled) { Tracker.EnableTracking(Enabled); }
 

@@ -1,6 +1,5 @@
 package core.Files;
 
-import android.os.Bundle;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -10,7 +9,6 @@ import java.io.InputStreamReader;
 import java.util.Calendar;
 
 import core.Structures.Sample;
-import services.Hub;
 
 
 public class LoaderJSON  extends Loader implements Runnable {
@@ -19,7 +17,7 @@ public class LoaderJSON  extends Loader implements Runnable {
     static final long InDays = 24 * 60 * 60 * 1000;
 
     private LoaderEvents Listener = null;
-    private File Source = null;
+    private SavedObject Source = null;
     private int Count = 0;
     private int State;
 
@@ -33,9 +31,25 @@ public class LoaderJSON  extends Loader implements Runnable {
         }
     }
 
-    public LoaderJSON(File Source, LoaderEvents Listener) {
+    public LoaderJSON(SavedObject Source, LoaderEvents Listener) {
         this.Listener = Listener;
         this.Source = Source;
+        State = Loader.finished;
+        BufferedReader Reader = ReaderOf(Source.Access);
+        if (Reader == null) return ;
+
+        String HeaderJSON = LoaderJSON.Head(Reader);
+        if (HeaderJSON == null)  return ;
+
+        Source.Infos = LibJSON.DescriptorFromJSON(HeaderJSON);
+        if (Source.Infos == null) return  ;
+
+        Calendar Creation = Calendar.getInstance();
+        Creation.set(Calendar.DAY_OF_MONTH,Source.Infos.Day);
+        Creation.set(Calendar.MONTH,Source.Infos.Month-1); // Month is from 0 to 11
+        Creation.set(Calendar.YEAR, Source.Infos.Year);
+
+        Source.Infos.NbDays = (int)((Calendar.getInstance().getTimeInMillis() - Creation.getTimeInMillis()) / InDays);
         State = Loader.waiting;
     }
 
@@ -43,11 +57,13 @@ public class LoaderJSON  extends Loader implements Runnable {
 
     public void start() {
         Count = 0;
+        if (State == Loader.finished) {
+            Listener.finished(false);
+            return;
+        }
         State = Loader.running;
         this.run();
     }
-
-    public int Count() { return Count;}
 
     private static String Head(BufferedReader Reader) {
         String Line = null;
@@ -56,43 +72,27 @@ public class LoaderJSON  extends Loader implements Runnable {
         return Line;
     }
 
-    public Bundle header() {
-        BufferedReader Reader = ReaderOf(Source);
-        if (Reader == null) return null;
-
-        String HeaderJSON = LoaderJSON.Head(Reader);
-        if (HeaderJSON == null)  return null;
-
-        Calendar FileCreation = LibJSON.DateFromJSON(HeaderJSON);
-        if (FileCreation == null) return  null;
-        long NbDays = (Calendar.getInstance().getTimeInMillis() - FileCreation.getTimeInMillis()) / InDays;
-
-        Bundle Headers = new Bundle();
-        Headers.putInt(PreSets.Days, (int)NbDays);
-        return Headers;
-    }
-
     @Override
     public void run() {
         // Run in Background priority mode
         android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_BACKGROUND);
 
-        BufferedReader Reader = ReaderOf(Source);
+        BufferedReader Reader = ReaderOf(Source.Access);
         if (Reader == null) return;
 
         Head(Reader);
 
-        Count = 0;
+        Source.Infos.NbNodes = 0;
         String StringJSON;
         try {
             while ((StringJSON = Reader.readLine()) != null) {
-                Count++;
+                Source.Infos.NbNodes++;
                 Sample Values = LibJSON.fromStringJSON(StringJSON);
                 if (Values == null) continue;
                 Listener.loaded(Values);
             }
         } catch (Exception FileError) {
-            Log.d(LogTag, "Error while loading :" + Source.getName());
+            Log.d(LogTag, "Error while loading :" + Source.Access.getName());
             Listener.finished(false);
         }
         Listener.finished(true);

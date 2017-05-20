@@ -93,8 +93,10 @@ class Monitor extends ImageView implements View.OnTouchListener {
 
         HapticFeedback = (Vibrator)  context.getSystemService(Context.VIBRATOR_SERVICE);
 
-        this.setOnTouchListener(this);
+        setOnTouchListener(this);
+        setVisibility(INVISIBLE);
     }
+
     public  void registerManager(Docking controler) { this.Controler = controler;}
     public  void setID(short ID) {this.ID= ID;}
 
@@ -112,8 +114,6 @@ class Monitor extends ImageView implements View.OnTouchListener {
     public void setValues(float Live, ArrayList<Float> History) {
         Collected = History;
         LiveValue = Live;
-
-//        Log.d("Monitor","UpdatedBPM requested by Stats ["+Unit+"]");
 
         if (!isVuMeterFits()) buildVuMeter();
         buildStatistics();

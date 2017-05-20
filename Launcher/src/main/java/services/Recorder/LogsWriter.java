@@ -9,7 +9,10 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import core.Files.Descriptor;
+import core.Files.FilesUtils;
 import core.Files.LibJSON;
+import core.Files.PreSets;
 import core.Structures.Sample;
 
 public class LogsWriter {
@@ -17,10 +20,18 @@ public class LogsWriter {
 
     private ArrayList<Sample> LogEvents = null;
     private String Header = null;
+    private String TimeStampedName = null;
+    Descriptor Now = new Descriptor();
 
-    public LogsWriter() {
+    LogsWriter(Calendar Date) {
         LogEvents = new ArrayList();
-        Header = LibJSON.DateToJSON(Calendar.getInstance());
+        Now.Day = Date.get(Calendar.DAY_OF_MONTH);
+        Now.Month = Date.get(Calendar.MONTH)+1; // Month is from 0 to 11
+        Now.Year = Date.get(Calendar.YEAR);
+        Header = LibJSON.DescriptorToJSON(Now);
+        TimeStampedName = FilesUtils.NameOf(Date, PreSets.Signature);
+        Now.NbDays = 0;
+        Log.d(LogTag, "Creating Log {"+TimeStampedName+"}");
     }
 
     static private BufferedWriter WriterOf(File Selected) {
@@ -31,11 +42,11 @@ public class LogsWriter {
         }
     }
 
-    public void append(Sample Live) { LogEvents.add(Live); }
+    void append(Sample Live) { LogEvents.add(Live); }
 
-    public void write(File Storage) {
+    void flush(FilesUtils WorkSpace) {
         if (LogEvents.size() == 0) return;
-        BufferedWriter LogWriter = WriterOf(Storage);
+        BufferedWriter LogWriter = WriterOf(WorkSpace.CreateFile(TimeStampedName));
         if (LogWriter == null) return;
 
         Log.d(LogTag, "Writing " + LogEvents.size() + " JSON elements from buffer.");
@@ -45,11 +56,12 @@ public class LogsWriter {
             for (Sample Event : LogEvents) {
                 LogWriter.write(LibJSON.toStringJSON(Event));
                 LogWriter.newLine();
+                Now.NbNodes++;
             }
             LogWriter.flush();
             LogWriter.close();
             LogEvents.clear();
-        } catch (Exception WriteError) { Log.d(LogTag, "Failed while writing file"); }
+        } catch (Exception WriteError) { Log.d(LogTag, "Written only "+Now.NbNodes+" nodes to file"); }
     }
 }
 

@@ -1,22 +1,21 @@
 package services.Database;
 
-import android.os.Bundle;
 import android.util.Log;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import core.Files.FilesUtils;
 
+import core.Files.Loader;
 import core.Files.LoaderJSON;
 import core.Files.LoaderEvents;
 import core.Files.PreSets;
+import core.Files.SavedObject;
 import core.GPS.CoordsGPS;
 import core.GPS.EventsGPS;
 import core.GPS.CoreGPS;
 import core.Settings.Parameters;
 import core.Structures.Coords2D;
-import core.Structures.Extension;
 import core.Structures.Frame;
 import core.Structures.Node;
 import core.Structures.Sample;
@@ -33,11 +32,11 @@ public class AccessDB implements EventsGPS, LoaderEvents {
     private Coords2D LastMove = null;
     private int Status;
 
-    private LoaderJSON Loader = null;
+    private LoaderJSON LoadProcess = null;
     private int NbDays = 0;
 
     private FilesUtils Repository = null;
-    private ArrayList<File> Files = null;
+    private ArrayList<SavedObject> Files = null;
     private int LoadingCount;
 
     private NodesDB DB = null;
@@ -53,10 +52,8 @@ public class AccessDB implements EventsGPS, LoaderEvents {
     }
 
     private void StartNewLoader() {
-        Loader = new LoaderJSON(Files.get(LoadingCount), this);
-        Bundle Params = Loader.header();
-        NbDays = Params.getInt(PreSets.Days);
-        Loader.start();
+        LoadProcess = new LoaderJSON(Files.get(LoadingCount), this);
+        LoadProcess.start();
     }
 
     private void ManageStatus(int Query) {
@@ -122,7 +119,7 @@ public class AccessDB implements EventsGPS, LoaderEvents {
     @Override
     public void UpdatedGPS(CoreGPS Provider){
         // Testing if we are currently free of a Loading process
-        if ((Loader != null) && (Status == State.Waiting)) return; // We are waiting for a Loading process...
+        if ((LoadProcess != null) && (Status == State.Waiting)) return; // We are waiting for a Loading process...
 
         if (Origin == null) {
             Origin = Provider.Origin();
@@ -157,10 +154,11 @@ public class AccessDB implements EventsGPS, LoaderEvents {
 
     @Override
     public void finished(boolean Success) {
-        if (Success) Log.d(LogTag, "Loaded "+ Loader.Count()+ " Nodes from {"+Files.get(LoadingCount).getName()+"}");
+        SavedObject Loaded = Files.get(LoadingCount);
+        if (Success) Log.d(LogTag, "Loaded "+ Loaded.Infos.NbNodes+ " Nodes from {"+Loaded.Access.getName()+"}");
         else Log.d(LogTag, "Failed on reading ...");
         LoadingCount++;
-        Loader = null;
+        LoadProcess = null;
         ManageStatus(State.Idle);
     }
 }

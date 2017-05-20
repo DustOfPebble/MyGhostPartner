@@ -1,11 +1,12 @@
 package services;
 
-import java.io.File;
+
 import java.util.ArrayList;
 
+import core.Files.SavedObject;
 import core.Structures.Frame;
 import core.Structures.Node;
-import services.Track.Segment;
+
 
 public interface Queries {
     void GPS(boolean Enabled);
@@ -15,7 +16,7 @@ public interface Queries {
     void startSensor();
     void stopSensor();
 
-    void selectTrack(File Source, int Mode);
+    void selectTrack(SavedObject Source, int Mode);
     void setTracking(boolean Enabled);
 
     ArrayList<Node> getNodes(Frame Zone);

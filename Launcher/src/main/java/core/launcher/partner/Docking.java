@@ -230,22 +230,46 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         StartServices();
     }
 
-    public void onButtonStatusChanged(short Status) {
+    public void onClicked(short Status) {
         if ((Status == Switches.SleepLocked) || (Status == Switches.SleepUnLocked)) ManageLockScreen(Status);
         if ((Status == Switches.TraceEnabled) || (Status == Switches.TraceDisabled)) ManageTraceRecorder(Status);
 
-        if (Status == Switches.LiveGPS) ManageGPS(Switches.WaitingGPS);
-        if (Status == Switches.NoGPS)  ManageGPS(Status);
+        if (Status == Switches.LiveGPS) ManageGPS(Switches.NoGPS);
+        if (Status == Switches.NoGPS)  ManageGPS(Switches.WaitingGPS);
 
-        if (Status == Switches.SensorConnected) ManageCardioSensor(Switches.WaitingSensor);
-        if (Status == Switches.NoSensor) ManageCardioSensor(Status);
+        if (Status == Switches.SensorConnected) ManageCardioSensor(Switches.NoSensor);
+        if (Status == Switches.NoSensor) ManageCardioSensor(Switches.WaitingSensor);
     }
     private void ManageLockScreen(short Status) {
-        SavedStates.storeModeSleep(Status);
-        SleepLocker.setMode(Status);
-        if (Status == Switches.SleepLocked) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        if (Status == Switches.SleepLocked) {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            SavedStates.storeModeSleep(Switches.SleepUnLocked);
+            SleepLocker.setMode(Switches.SleepUnLocked);
+        }
+        if (Status == Switches.SleepUnLocked) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            SavedStates.storeModeSleep(Switches.SleepLocked);
+            SleepLocker.setMode(Switches.SleepLocked);
+        }
     }
+    private void ManageTraceRecorder(short Status) {
+        if (BackendService == null) {
+            SavedStates.storeModeLight(Switches.TraceDisabled);
+            TraceRecorder.setMode(Switches.TraceDisabled);
+            return;
+        }
+        if (Status == Switches.TraceEnabled) {
+            SavedStates.storeModeLight(Switches.TraceDisabled);
+            TraceRecorder.setMode(Switches.TraceDisabled);
+            BackendService.setLog(Modes.Finish);
+        }
+        if (Status == Switches.TraceDisabled) {
+            SavedStates.storeModeLight(Switches.TraceEnabled);
+            TraceRecorder.setMode(Switches.TraceEnabled);
+            BackendService.setLog(Modes.Create);
+        }
+    }
+
 
     private void ManageGPS(short Status) {
         if (BackendService == null) {
@@ -254,21 +278,27 @@ public class Docking extends Activity implements ServiceConnection, Signals {
             return;
         }
         if (Status == Switches.NoGPS) {
+            if (SavedStates.getModeGPS() == Switches.NoGPS) {
+                SpeedMonitor.Initialize();
+                SpeedMonitor.setVisibility(View.VISIBLE);
+                BackendService.GPS(true);
+                SavedStates.storeModeGPS(Switches.WaitingGPS);
+                return;
+            }
+            if (SavedStates.getModeGPS() == Switches.WaitingGPS) {
+                SpeedMonitor.setVisibility(View.INVISIBLE);
+                BackendService.GPS(false);
+                SavedStates.storeModeGPS(Switches.NoGPS);
+                return;
+            }
+        }
+        if (Status == Switches.LiveGPS) {
             SpeedMonitor.setVisibility(View.INVISIBLE);
-            GPSProvider.setMode(Status);
-            SavedStates.storeModeGPS(Status);
+            GPSProvider.setMode(Switches.NoGPS);
+            SavedStates.storeModeGPS(Switches.NoGPS);
             BackendService.GPS(false);
             return;
         }
-        if (Status == Switches.WaitingGPS) {
-            SpeedMonitor.Initialize();
-            SpeedMonitor.setVisibility(View.VISIBLE);
-            BackendService.GPS(true);
-            return;
-        }
-        Status = Switches.LiveGPS;
-        SavedStates.storeModeGPS(Status);
-        GPSProvider.setMode(Status);
     }
 
     private void ManageCardioSensor(short Status) {
@@ -278,38 +308,37 @@ public class Docking extends Activity implements ServiceConnection, Signals {
             return;
         }
         if (Status == Switches.NoSensor) {
+            if (SavedStates.getModeSensor() == Switches.NoSensor) {
+                SavedStates.storeModeSensor(Switches.WaitingSensor);
+                HeartbeatMonitor.Initialize();
+                HeartbeatMonitor.setVisibility(View.VISIBLE);
+                BackendService.startSensor();
+                return;
+            }
+            if (SavedStates.getModeSensor() == Switches.WaitingSensor) {
+                HeartbeatMonitor.setVisibility(View.INVISIBLE);
+                CardioSensor.setMode(Switches.NoSensor);
+                SavedStates.storeModeSensor(Switches.NoSensor);
+                BackendService.stopSensor();
+                return;
+            }
+        }
+        if (Status == Switches.WaitingSensor) {
             HeartbeatMonitor.setVisibility(View.INVISIBLE);
-            CardioSensor.setMode(Status);
-            SavedStates.storeModeSensor(Status);
+            CardioSensor.setMode(Switches.NoSensor);
+            SavedStates.storeModeSensor(Switches.NoSensor);
             BackendService.stopSensor();
             return;
         }
-        if (Status == Switches.WaitingSensor) {
-            HeartbeatMonitor.Initialize();
-            HeartbeatMonitor.setVisibility(View.VISIBLE);
-            BackendService.startSensor();
-            return;
-        }
-        Status = Switches.SensorConnected;
-        SavedStates.storeModeSensor(Status);
-        CardioSensor.setMode(Status);
     }
 
-    private void ManageTraceRecorder(short Status) {
-        SavedStates.storeModeLight(Status);
-        TraceRecorder.setMode(Status);
-        if (BackendService == null) return;
-        if (Status == Switches.TraceEnabled) BackendService.setLog(Modes.Create);
-        else BackendService.setLog(Modes.Finish);
-    }
 
     private void ManageSpeedStats(ArrayList<Node> CollectedStatistics,Statistic Snapshot) {
         Speeds.clear();
         for (Node item: CollectedStatistics) {
             Speeds.add(Float.valueOf(item.Stats.Speed*3.6f));
         }
-        if (Speeds.isEmpty()) Speeds.add(Float.valueOf(Snapshot.Speed*3.6f));
-        SpeedMonitor.setValues(Snapshot.Speed, Speeds);
+        SpeedMonitor.setValues(Snapshot.Speed*3.6f, Speeds);
     }
 
     private void ManageCardioStats(ArrayList<Node> CollectedStatistics,Statistic Snapshot) {
@@ -318,7 +347,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
             if (item.Stats.Heartbeat == -1) continue;
             HeartBeats.add(Float.valueOf(item.Stats.Heartbeat));
         }
-        if (HeartBeats.isEmpty()) HeartBeats.add(Float.valueOf(Snapshot.Heartbeat));
         HeartbeatMonitor.setValues(Snapshot.Heartbeat,HeartBeats);
     }
 
@@ -420,7 +448,10 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     @Override
     public void UpdatedSensor(int Value) {
         // UpdatedBPM CardioSensor button state ...
-        ManageCardioSensor((Value>=0)? Switches.SensorConnected:Switches.NoSensor);
+        if (SavedStates.getModeSensor() == Switches.WaitingSensor) {
+            GPSProvider.setMode(Switches.SensorConnected);
+            SavedStates.storeModeGPS(Switches.SensorConnected);
+        }
     }
 
     @Override
@@ -431,7 +462,10 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         Statistic Snapshot = InfoGPS.Statistic(0);
 
         // UpdatedBPM GPS button state
-        ManageGPS(Switches.LiveGPS);
+        if (SavedStates.getModeGPS() == Switches.WaitingGPS) {
+            GPSProvider.setMode(Switches.LiveGPS);
+            SavedStates.storeModeGPS(Switches.LiveGPS);
+        }
 
         // Setting collection area
         Extension SizeSelection = Parameters.StatisticsSize;

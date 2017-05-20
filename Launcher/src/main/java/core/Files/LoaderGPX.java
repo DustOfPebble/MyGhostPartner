@@ -11,10 +11,10 @@ public class LoaderGPX extends Loader implements Runnable{
     static private String LogTag = LoaderGPX.class.getSimpleName();
 
     private LoaderEvents Listener = null;
-    private File Source = null;
+    private SavedObject Source = null;
     private int State;
 
-    public LoaderGPX(File Source, LoaderEvents Listener) {
+    public LoaderGPX(SavedObject Source, LoaderEvents Listener) {
         this.Listener = Listener;
         this.Source = Source;
         State = Loader.waiting;

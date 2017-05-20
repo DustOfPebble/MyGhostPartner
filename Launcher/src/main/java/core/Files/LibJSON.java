@@ -3,24 +3,23 @@ package core.Files;
 import android.util.Log;
 import org.json.JSONObject;
 
-import java.util.Calendar;
-
 import core.Structures.Sample;
 
 public class LibJSON {
-    static final String LogTag = LibJSON.class.getSimpleName();
+    static private final String LogTag = LibJSON.class.getSimpleName();
 
-    static final String LongitudeID = "LON";
-    static final String LatitudeID = "LAT";
-    static final String SpeedID = ">>";
-    static final String AccuracyID = "<*>";
-    static final String AltitudeID = "^";
-    static final String BearingID = "+";
-    static final String HeartbeatID = "HB";
+    static private final String LongitudeID = "LON";
+    static private final String LatitudeID = "LAT";
+    static private final String SpeedID = ">>";
+    static private final String AccuracyID = "<*>";
+    static private final String AltitudeID = "^";
+    static private final String BearingID = "+";
+    static private final String HeartbeatID = "HB";
 
-    static final String YearID="Year";
-    static final String MonthID="Month";
-    static final String DayID="Day";
+    static private final String YearID="Year";
+    static private final String MonthID="Month";
+    static private final String DayID="Day";
+    static private final String NameID="Day";
 
     static public Sample fromStringJSON(String StringJSON){
         Sample Snapshot = new Sample();
@@ -68,39 +67,35 @@ public class LibJSON {
         return JSON.toString();
      }
 
-    static public String DateToJSON(Calendar Date) {
+    static public String DescriptorToJSON(Descriptor Details) {
         JSONObject JSON = new JSONObject();
         try {
-            JSON.put(YearID, Date.get(Calendar.YEAR));
-            JSON.put(MonthID, Date.get(Calendar.MONTH)+1);// Month is from 0 to 11
-            JSON.put(DayID, Date.get(Calendar.DAY_OF_MONTH));
+            JSON.put(YearID, Details.Year);
+            JSON.put(MonthID, Details.Month);// Month is from 0 to 11
+            JSON.put(DayID, Details.Day);
+            JSON.put(NameID, Details.Name);
         }
         catch (Exception JSONBuilder)
         {Log.d(LogTag, "Date to JSON => Error in JSON construction.");}
         return JSON.toString();
     }
 
-    static public Calendar DateFromJSON(String StringJSON) {
+    static Descriptor DescriptorFromJSON(String StringJSON) {
         if (StringJSON == null) return null;
+        Descriptor Details = new Descriptor();
         JSONObject JSON;
-        int Year, Month, Day;
-
         try { JSON = new JSONObject(StringJSON); }
         catch (Exception JSONBuilder)
         { Log.d(LogTag, "Date from JSon => Failed to parse"); return null;}
         try {
-            Year = JSON.getInt(YearID);
-            Month = JSON.getInt(MonthID);
-            Day = JSON.getInt(DayID);
+            Details.Year = JSON.getInt(YearID);
+            Details.Month = JSON.getInt(MonthID);
+            Details.Day = JSON.getInt(DayID);
+            Details.Name = JSON.getString(NameID);
         }
         catch (Exception Missing) { Log.d(LogTag, "Date from JSon => Missing fields"); return null;}
 
-        Calendar Date = Calendar.getInstance();
-        Date.set(Calendar.DAY_OF_MONTH,Day);
-        Date.set(Calendar.MONTH,Month-1); // Month is from 0 to 11
-        Date.set(Calendar.YEAR, Year);
-
-        return Date;
+        return Details;
     }
 
 

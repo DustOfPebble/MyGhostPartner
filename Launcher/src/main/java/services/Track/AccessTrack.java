@@ -9,6 +9,7 @@ import core.Files.LoaderEvents;
 import core.Files.LoaderGPX;
 import core.Files.LoaderJSON;
 import core.Files.PreSets;
+import core.Files.SavedObject;
 import core.GPS.CoordsGPS;
 import core.GPS.CoreGPS;
 import core.GPS.EventsGPS;
@@ -41,7 +42,7 @@ public class AccessTrack implements EventsGPS, LoaderEvents {
      /**************************************************************
      *  Forwarded calls from Service
      **************************************************************/
-    public void Load(File Source, int Mode) {
+    public void Load(SavedObject Source, int Mode) {
         TrackFinder = new Track();
 
         if (Mode == PreSets.JSON) {

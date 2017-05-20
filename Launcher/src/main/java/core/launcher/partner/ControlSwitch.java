@@ -73,7 +73,7 @@ class ControlSwitch extends ImageView implements View.OnTouchListener, Runnable 
         }
 
         if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            Controler.onButtonStatusChanged(((Status == highStatus) ? lowStatus : highStatus));
+            Controler.onClicked(Status);
             return true;
         }
 

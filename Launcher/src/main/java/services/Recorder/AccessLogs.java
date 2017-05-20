@@ -1,7 +1,6 @@
 package services.Recorder;
 
-
-import android.util.Log;
+import java.util.Calendar;
 
 import core.Files.FilesUtils;
 import core.Files.PreSets;
@@ -18,7 +17,6 @@ public class AccessLogs implements EventsGPS {
     private int Clearance = 5; // in meters
 
     private FilesUtils Repository = null;
-    private String TimeStampedName = null;
     private LogsWriter Logger = null;
 
     private Coords2D LastMove = null;
@@ -29,11 +27,7 @@ public class AccessLogs implements EventsGPS {
         this.Clearance = Clearance;
     }
 
-    private void CreateLog() {
-        TimeStampedName = FilesUtils.Now(PreSets.Signature);
-        Logger = new LogsWriter();
-        Log.d(LogTag, "Creating Log {"+TimeStampedName+"}");
-    }
+    private void CreateLog() { Logger = new LogsWriter(Calendar.getInstance());  }
 
     /**************************************************************
      *  Forwarded calls from Service
@@ -46,8 +40,7 @@ public class AccessLogs implements EventsGPS {
 
         if (Mode == Modes.Finish)
             if (Logger == null) return;
-            Log.d(LogTag, "Writing Logfile ["+TimeStampedName+"]");
-            Logger.write(Repository.CreateFile(TimeStampedName));
+            Logger.flush(Repository);
             Logger = null;
     }
 
@@ -66,7 +59,7 @@ public class AccessLogs implements EventsGPS {
             Logger.append(Fields);
         }
 
-        if (Coords2D.distance(LastMove, Provider.Moved()) > Clearance) return;
+        if (Coords2D.distance(LastMove, Provider.Moved()) < Clearance) return;
 
         Logger.append(Fields);
         LastMove = Provider.Moved();

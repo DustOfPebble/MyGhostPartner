@@ -5,6 +5,7 @@ import android.os.Binder;
 import java.io.File;
 import java.util.ArrayList;
 
+import core.Files.SavedObject;
 import core.GPS.CoreGPS;
 import core.Structures.Frame;
 import core.Structures.Node;
@@ -42,7 +43,7 @@ public class Junction extends Binder {
     public void startSensor() {Service.startSensor();}
     public void stopSensor() {Service.stopSensor();}
 
-    public void selectTrack(File Source, int Mode) {Service.selectTrack(Source, Mode); }
+    public void selectTrack(SavedObject Source, int Mode) {Service.selectTrack(Source, Mode); }
     public void setTracking(boolean Enabled) { Service.setTracking(Enabled); }
 
     public ArrayList<Node> getNodes(Frame Zone){ return Service.getNodes(Zone); }
