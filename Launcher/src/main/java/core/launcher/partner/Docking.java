@@ -43,7 +43,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     private ControlSwitch SleepLocker = null;
     private ControlSwitch TraceRecorder = null;
-    private ControlSwitch GPSProvider = null;
+    private ControlSwitch ServiceGPS = null;
     private ControlSwitch CardioSensor = null;
 
     private Monitor SpeedMonitor = null;
@@ -80,22 +80,22 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
         SleepLocker.registerModes(Switches.SleepLocked, Switches.SleepUnLocked);
         SleepLocker.registerManager(this);
-        ManageLockScreen(SavedStates.getModeSleep());
+        SleepLocker.setMode(SavedStates.getModeSleep());
 
         TraceRecorder = (ControlSwitch) findViewById(R.id.switch_trace_recorder);
         TraceRecorder.registerModes(Switches.TraceEnabled, Switches.TraceDisabled);
         TraceRecorder.registerManager(this);
-        ManageTraceRecorder(SavedStates.getModeLogger());
+        TraceRecorder.setMode(SavedStates.getModeLogger());
 
-        GPSProvider = (ControlSwitch) findViewById(R.id.gps_provider);
-        GPSProvider.registerModes(Switches.LiveGPS, Switches.NoGPS);
-        GPSProvider.registerManager(this);
-        ManageGPS(SavedStates.getModeGPS());
+        ServiceGPS = (ControlSwitch) findViewById(R.id.gps_provider);
+        ServiceGPS.registerModes(Switches.LiveGPS, Switches.NoGPS);
+        ServiceGPS.registerManager(this);
+        ServiceGPS.setMode(SavedStates.getModeGPS());
 
         CardioSensor = (ControlSwitch) findViewById(R.id.sensor_provider);
         CardioSensor.registerModes(Switches.SensorConnected, Switches.NoSensor);
         CardioSensor.registerManager(this);
-        ManageCardioSensor(SavedStates.getModeSensor());
+        CardioSensor.setMode(SavedStates.getModeSensor());
 
         LayoutInflater fromXML = LayoutInflater.from(this);
 
@@ -233,12 +233,8 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     public void onClicked(short Status) {
         if ((Status == Switches.SleepLocked) || (Status == Switches.SleepUnLocked)) ManageLockScreen(Status);
         if ((Status == Switches.TraceEnabled) || (Status == Switches.TraceDisabled)) ManageTraceRecorder(Status);
-
-        if (Status == Switches.LiveGPS) ManageGPS(Switches.NoGPS);
-        if (Status == Switches.NoGPS)  ManageGPS(Switches.WaitingGPS);
-
-        if (Status == Switches.SensorConnected) ManageCardioSensor(Switches.NoSensor);
-        if (Status == Switches.NoSensor) ManageCardioSensor(Switches.WaitingSensor);
+        if ((Status == Switches.LiveGPS) || (Status == Switches.NoGPS))  ManageGPS(Status);
+        if ((Status == Switches.SensorConnected) || (Status == Switches.NoSensor)) ManageCardioSensor(Status);
     }
     private void ManageLockScreen(short Status) {
         if (Status == Switches.SleepLocked) {
@@ -270,34 +266,32 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         }
     }
 
-
     private void ManageGPS(short Status) {
         if (BackendService == null) {
             SavedStates.storeModeGPS(Switches.NoGPS);
-            GPSProvider.setMode(Switches.NoGPS);
+            ServiceGPS.setMode(Switches.NoGPS);
             return;
         }
         if (Status == Switches.NoGPS) {
             if (SavedStates.getModeGPS() == Switches.NoGPS) {
                 SpeedMonitor.Initialize();
                 SpeedMonitor.setVisibility(View.VISIBLE);
-                BackendService.GPS(true);
                 SavedStates.storeModeGPS(Switches.WaitingGPS);
+                BackendService.GPS(true);
                 return;
             }
             if (SavedStates.getModeGPS() == Switches.WaitingGPS) {
                 SpeedMonitor.setVisibility(View.INVISIBLE);
-                BackendService.GPS(false);
                 SavedStates.storeModeGPS(Switches.NoGPS);
+                BackendService.GPS(false);
                 return;
             }
         }
         if (Status == Switches.LiveGPS) {
             SpeedMonitor.setVisibility(View.INVISIBLE);
-            GPSProvider.setMode(Switches.NoGPS);
+            ServiceGPS.setMode(Switches.NoGPS);
             SavedStates.storeModeGPS(Switches.NoGPS);
             BackendService.GPS(false);
-            return;
         }
     }
 
@@ -328,7 +322,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
             CardioSensor.setMode(Switches.NoSensor);
             SavedStates.storeModeSensor(Switches.NoSensor);
             BackendService.stopSensor();
-            return;
         }
     }
 
@@ -336,7 +329,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private void ManageSpeedStats(ArrayList<Node> CollectedStatistics,Statistic Snapshot) {
         Speeds.clear();
         for (Node item: CollectedStatistics) {
-            Speeds.add(Float.valueOf(item.Stats.Speed*3.6f));
+            Speeds.add(item.Stats.Speed*3.6f);
         }
         SpeedMonitor.setValues(Snapshot.Speed*3.6f, Speeds);
     }
@@ -345,7 +338,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         HeartBeats.clear();
         for (Node item: CollectedStatistics) {
             if (item.Stats.Heartbeat == -1) continue;
-            HeartBeats.add(Float.valueOf(item.Stats.Heartbeat));
+            HeartBeats.add((float)item.Stats.Heartbeat);
         }
         HeartbeatMonitor.setValues(Snapshot.Heartbeat,HeartBeats);
     }
@@ -367,7 +360,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         // updating Buttons status
         CardioSensor.setMode(SavedStates.getModeSensor());
-        GPSProvider.setMode(SavedStates.getModeGPS());
+        ServiceGPS.setMode(SavedStates.getModeGPS());
         TraceRecorder.setMode(SavedStates.getModeLogger());
         SleepLocker.setMode(SavedStates.getModeSleep());
     }
@@ -448,9 +441,15 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     @Override
     public void UpdatedSensor(int Value) {
         // UpdatedBPM CardioSensor button state ...
-        if (SavedStates.getModeSensor() == Switches.WaitingSensor) {
-            GPSProvider.setMode(Switches.SensorConnected);
-            SavedStates.storeModeGPS(Switches.SensorConnected);
+        if (Value >= 0) {
+            if (SavedStates.getModeSensor() == Switches.WaitingSensor) {
+                ServiceGPS.setMode(Switches.SensorConnected);
+                SavedStates.storeModeGPS(Switches.SensorConnected);
+            }
+        }
+        else  {
+            CardioSensor.setMode(Switches.NoSensor);
+            SavedStates.storeModeSensor(Switches.NoSensor);
         }
     }
 
@@ -463,7 +462,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         // UpdatedBPM GPS button state
         if (SavedStates.getModeGPS() == Switches.WaitingGPS) {
-            GPSProvider.setMode(Switches.LiveGPS);
+            ServiceGPS.setMode(Switches.LiveGPS);
             SavedStates.storeModeGPS(Switches.LiveGPS);
         }
 
