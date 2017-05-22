@@ -7,6 +7,5 @@ public class Loader {
 
     public Loader() {}
     public void start() {}
-    public int Count() { return 0;}
     public int Status() { return waiting;}
 }

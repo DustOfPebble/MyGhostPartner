@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import core.Files.FilesUtils;
 
-import core.Files.Loader;
 import core.Files.LoaderJSON;
 import core.Files.LoaderEvents;
 import core.Files.PreSets;
@@ -24,7 +23,7 @@ import services.Hub;
 public class AccessDB implements EventsGPS, LoaderEvents {
     private static final String LogTag = AccessDB.class.getSimpleName();
 
-    private int Clearance = 1; // in meters
+    private int Clearance = 0; // in meters
 
     private Hub Owner = null;
 
@@ -62,14 +61,14 @@ public class AccessDB implements EventsGPS, LoaderEvents {
                 Origin = null;
                 LoadingCount = 0;
                 Status = State.Waiting;
-                Log.d(LogTag, "State DB [Loading] --> [Waiting]");
+                Log.d(LogTag, "State [Loading] --> [Waiting]");
                 return;
             }
             if (Status == State.Idle) {
                 Origin = null;
                 LoadingCount = 0;
                 Status = State.Waiting;
-                Log.d(LogTag, "State DB [Idle] --> [Waiting]");
+                Log.d(LogTag, "State [Idle] --> [Waiting]");
                 return;
             }
         }
@@ -77,7 +76,7 @@ public class AccessDB implements EventsGPS, LoaderEvents {
         if (Query == State.Loading) {
             if (Status == State.Waiting) {
                 if (Origin == null) return;
-                Log.d(LogTag, "State DB [Waiting] --> [Loading]");
+                Log.d(LogTag, "State [Waiting] --> [Loading]");
                 Status = State.Loading;
                 if (Files.size() == 0) Query = State.Idle;
                 else StartNewLoader();
@@ -90,7 +89,7 @@ public class AccessDB implements EventsGPS, LoaderEvents {
                     StartNewLoader();
                  } else {
                     Status = State.Idle;
-                    Log.d(LogTag, "State DB [Loading] --> [Idle]");
+                    Log.d(LogTag, "State [Loading] --> [Idle]");
                     return;
                 }
             }
@@ -132,10 +131,14 @@ public class AccessDB implements EventsGPS, LoaderEvents {
         NodeGPS.Move = Provider.Moved();
         NodeGPS.Stats = Provider.Statistic(0);
 
-        if (!DB.belongs(NodeGPS)) { Owner.OutOfRange(); return; }
-        if (NodeGPS.Stats.Accuracy > Parameters.LowAccuracyGPS) return;
+        if (!DB.belongs(NodeGPS)) {
+            Owner.NotInZone();
+            return;
+        }
 
+        if (NodeGPS.Stats.Accuracy > Parameters.LowAccuracyGPS) return;
         if (Coords2D.distance(LastMove, NodeGPS.Move) < Clearance) return;
+
         LastMove = NodeGPS.Move;
         DB.store(NodeGPS);
     }

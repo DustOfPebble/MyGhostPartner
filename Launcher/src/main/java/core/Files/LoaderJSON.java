@@ -26,9 +26,16 @@ public class LoaderJSON  extends Loader implements Runnable {
         try {
             return new BufferedReader(new InputStreamReader(new FileInputStream(Selected), "UTF-8"));
         } catch (Exception FileError) {
-            Log.d(LogTag, "Failed to create stream from " + Selected.getName());
+            Log.d(LogTag, "Failed to create reading stream from " + Selected.getName());
             return null;
         }
+    }
+
+    private static String Head(BufferedReader Reader) {
+        String Line = null;
+        try { Line = Reader.readLine(); }
+        catch (Exception TimeStampsError) { Log.d(LogTag, "Empty file ==> No headers found"); }
+        return Line;
     }
 
     public LoaderJSON(SavedObject Source, LoaderEvents Listener) {
@@ -40,6 +47,7 @@ public class LoaderJSON  extends Loader implements Runnable {
 
         String HeaderJSON = LoaderJSON.Head(Reader);
         if (HeaderJSON == null)  return ;
+        Log.d(LogTag, "Header ==> "+HeaderJSON);
 
         Source.Infos = LibJSON.DescriptorFromJSON(HeaderJSON);
         if (Source.Infos == null) return  ;
@@ -65,13 +73,6 @@ public class LoaderJSON  extends Loader implements Runnable {
         this.run();
     }
 
-    private static String Head(BufferedReader Reader) {
-        String Line = null;
-        try { Line = Reader.readLine(); }
-        catch (Exception TimeStampsError) { Log.d(LogTag, "Empty file ==> No headers found"); }
-        return Line;
-    }
-
     @Override
     public void run() {
         // Run in Background priority mode
@@ -87,7 +88,7 @@ public class LoaderJSON  extends Loader implements Runnable {
         try {
             while ((StringJSON = Reader.readLine()) != null) {
                 Source.Infos.NbNodes++;
-                Sample Values = LibJSON.fromStringJSON(StringJSON);
+                Sample Values = LibJSON.fromJSON(StringJSON);
                 if (Values == null) continue;
                 Listener.loaded(Values);
             }

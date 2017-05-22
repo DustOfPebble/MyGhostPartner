@@ -7,7 +7,7 @@ public class ViewStates extends Application  {
 
     private short ModeGPS = Switches.NoGPS;
     private short ModeSensor = Switches.NoSensor;
-    private short ModeLogger = Switches.TraceDisabled;
+    private short ModeLogger = Switches.LoggerOFF;
     private short ModeScreen = Switches.SleepLocked;
 
     @Override

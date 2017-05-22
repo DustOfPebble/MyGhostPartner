@@ -14,7 +14,7 @@ import services.Hub;
 public class AccessLogs implements EventsGPS {
 
     private static String LogTag = AccessLogs.class.getSimpleName();
-    private int Clearance = 5; // in meters
+    private int Clearance = 0; // in meters
 
     private FilesUtils Repository = null;
     private LogsWriter Logger = null;

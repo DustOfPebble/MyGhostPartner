@@ -10,6 +10,8 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class SensorOwner extends BluetoothGattCallback{
 
     private String LogTag = this.getClass().getSimpleName();
@@ -18,10 +20,12 @@ public class SensorOwner extends BluetoothGattCallback{
     private AccessSensor SensorListener;
     private BluetoothDevice SelectedSensor = null;
     private BluetoothGatt SelectedSocket = null;
+    private boolean Emitted = false;
 
     public SensorOwner(AccessSensor Listener, Context context){
         SensorListener = Listener;
         SavedContext = context;
+        Emitted = false;
     }
 
     public void checkDevice(BluetoothDevice Sensor){
@@ -48,8 +52,12 @@ public class SensorOwner extends BluetoothGattCallback{
         if (newState == BluetoothProfile.STATE_DISCONNECTED) {
             BluetoothDevice DisconnectedDevice = DeviceSocket.getDevice();
             DeviceSocket.close();
-            if (DisconnectedDevice != SelectedSensor) return;
+            if (DisconnectedDevice != SelectedSensor) {
+                Log.d(LogTag, "Device ["+DisconnectedDevice.getAddress()+"] has disconnected.");
+                return;
+            }
             SensorListener.Removed();
+            Emitted = false;
             SelectedSensor = null;
             SelectedSocket = null;
             Log.d(LogTag, "Selected Device has disconnected.");
@@ -83,8 +91,10 @@ public class SensorOwner extends BluetoothGattCallback{
 
     @Override
     public void onCharacteristicChanged(BluetoothGatt DeviceSocket, BluetoothGattCharacteristic MonitoredValue) {
-        int SensorValue = MonitoredValue.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1);
-        SensorListener.Value(SensorValue);
-        Log.d(LogTag, "Updating --> Value["+SensorValue+"]");
+        if (!Emitted) {
+            Log.d(LogTag, "Sensor is emitting values.");
+            Emitted = true;
+        }
+       SensorListener.Value(MonitoredValue.getIntValue(BluetoothGattCharacteristic.FORMAT_UINT8, 1));
     }
 }

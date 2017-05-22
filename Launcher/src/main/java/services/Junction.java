@@ -2,7 +2,6 @@ package services;
 
 import android.os.Binder;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import core.Files.SavedObject;
@@ -31,22 +30,18 @@ public class Junction extends Binder {
 
     public void UpdateGPS(CoreGPS Provider) { Listener.UpdatedGPS(Provider);}
 
-    public void OutOfRange() { Listener.OutOfRange();}
-
     /******************************************************************
      * Handling Queries to Services
      ******************************************************************/
-    public void GPS(boolean Enabled) {Service.GPS(Enabled); }
+    public void setGPS(boolean Enabled) {Service.GPS(Enabled); }
 
-    public void setLog(int Mode) {Service.setLog(Mode);}
+    public void setLogger(int Mode) {Service.Logger(Mode);}
 
-    public void startSensor() {Service.startSensor();}
-    public void stopSensor() {Service.stopSensor();}
+    public void setSensor(boolean Enabled) {Service.Sensor(Enabled);}
 
     public void selectTrack(SavedObject Source, int Mode) {Service.selectTrack(Source, Mode); }
     public void setTracking(boolean Enabled) { Service.setTracking(Enabled); }
 
     public ArrayList<Node> getNodes(Frame Zone){ return Service.getNodes(Zone); }
-    public void reload() { Service.reload();}
 
 }

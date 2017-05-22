@@ -86,12 +86,13 @@ public class Hub extends Service implements Queries, EventsGPS {
     }
 
     @Override
-    public void setLog(int Mode) { Recorder.Log(Mode); }
+    public void Logger(int Mode) { Recorder.Log(Mode); }
 
     @Override
-    public void startSensor() { Sensor.SearchSensor(); }
-    @Override
-    public void stopSensor() { Sensor.Stop(); }
+    public void Sensor(boolean Enabled) {
+        if (Enabled) Sensor.SearchSensor();
+        else Sensor.Stop();
+    }
 
     @Override
     public void selectTrack(SavedObject Source, int Mode) { Tracker.Load(Source, Mode); }
@@ -102,7 +103,10 @@ public class Hub extends Service implements Queries, EventsGPS {
     public ArrayList<Node> getNodes(Frame Zone){ return Collector.getNodes(Zone); }
 
     @Override
-    public void reload(){ Collector.reload(); }
+    public void reload(){
+        Position.reset();
+        Collector.reload();
+    }
 
     /**************************************************************
      *  Callbacks From AccessSensor
@@ -115,7 +119,10 @@ public class Hub extends Service implements Queries, EventsGPS {
     /**************************************************************
      *  Callbacks From AccessDB
      **************************************************************/
-    public void OutOfRange() { Connector.OutOfRange(); }
+    public void NotInZone() {
+        Position.reset();
+        Collector.reload();
+    }
     /**************************************************************
      *  Callbacks implementation for CoreGPS Events
      ***************************************************************/

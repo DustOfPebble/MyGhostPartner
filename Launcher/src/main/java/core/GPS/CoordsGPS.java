@@ -1,7 +1,7 @@
 package core.GPS;
 
 /***********************************************************************
- *  Class for storing GPS coordinates
+ *  Class for storing setGPS coordinates
  ***********************************************************************/
 
 public class CoordsGPS {

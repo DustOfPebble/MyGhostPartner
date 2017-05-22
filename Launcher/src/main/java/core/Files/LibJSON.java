@@ -19,9 +19,9 @@ public class LibJSON {
     static private final String YearID="Year";
     static private final String MonthID="Month";
     static private final String DayID="Day";
-    static private final String NameID="Day";
+    static private final String NameID="Name";
 
-    static public Sample fromStringJSON(String StringJSON){
+    static public Sample fromJSON(String StringJSON){
         Sample Snapshot = new Sample();
         JSONObject JSON;
         try { JSON = new JSONObject(StringJSON); }
@@ -51,7 +51,7 @@ public class LibJSON {
         return Snapshot;
     }
 
-    static public  String toStringJSON(Sample Snapshot){
+    static public  String toJSON(Sample Snapshot){
         JSONObject JSON =  new JSONObject();
         try {
             JSON.put(LongitudeID, Math.floor(Snapshot.Longitude * 1e7) / 1e7);// Cut at 7 digit to save space
@@ -76,7 +76,7 @@ public class LibJSON {
             JSON.put(NameID, Details.Name);
         }
         catch (Exception JSONBuilder)
-        {Log.d(LogTag, "Date to JSON => Error in JSON construction.");}
+        {Log.d(LogTag, "Infos to JSON => Error in JSON construction.");}
         return JSON.toString();
     }
 
@@ -86,14 +86,14 @@ public class LibJSON {
         JSONObject JSON;
         try { JSON = new JSONObject(StringJSON); }
         catch (Exception JSONBuilder)
-        { Log.d(LogTag, "Date from JSon => Failed to parse"); return null;}
+        { Log.d(LogTag, "Infos from JSon => Failed to parse"); return null;}
         try {
             Details.Year = JSON.getInt(YearID);
             Details.Month = JSON.getInt(MonthID);
             Details.Day = JSON.getInt(DayID);
             Details.Name = JSON.getString(NameID);
         }
-        catch (Exception Missing) { Log.d(LogTag, "Date from JSon => Missing fields"); return null;}
+        catch (Exception Missing) { Log.d(LogTag, "Infos from JSon => Missing fields"); return null;}
 
         return Details;
     }

@@ -54,7 +54,7 @@ public class LogsWriter {
             LogWriter.write(Header);
             LogWriter.newLine();
             for (Sample Event : LogEvents) {
-                LogWriter.write(LibJSON.toStringJSON(Event));
+                LogWriter.write(LibJSON.toJSON(Event));
                 LogWriter.newLine();
                 Now.NbNodes++;
             }

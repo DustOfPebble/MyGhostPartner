@@ -10,6 +10,4 @@ public interface Signals {
     void UpdatedSensor(int Value);
 
     void UpdatedGPS(CoreGPS Provider);
-
-    void OutOfRange();
 }

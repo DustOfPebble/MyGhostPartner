@@ -29,26 +29,26 @@ public class AccessSensor {
      *  - Sensor update value
      *  - Sensor disconnection
      **************************************************************/
-    public void Value(int Value) {
+    void Value(int Value) {
         Service.UpdatedBPM(Value);
     }
 
-    public void Detected(BluetoothDevice DiscoveredSensor){
+    void Detected(BluetoothDevice DiscoveredSensor){
         if (DiscoveredSensor == null) return;
         SensorListener.checkDevice(DiscoveredSensor);
     }
-    public void Selected(){
+    void Selected(){
         SensorFinder.stopSearch();
         SensorStatus = SensorState.Connected;
         Service.UpdatedBPM(SensorStatus);
     }
 
-    public void Failed(){
+    void Failed(){
         SensorStatus = SensorState.NotConnected;
         Service.UpdatedBPM(SensorStatus);
     }
 
-    public void Removed(){
+    void Removed(){
         SensorStatus = SensorState.NotConnected;
         Service.UpdatedBPM(SensorStatus);
     }
@@ -60,19 +60,15 @@ public class AccessSensor {
         if (SensorStatus == SensorState.Searching) return;
         SensorFinder.startSearch();
         SensorStatus = SensorState.Searching;
-        Service.UpdatedBPM(SensorStatus);
     }
 
     public void Stop() {
         if (SensorStatus == SensorState.Searching) {
             SensorFinder.stopSearch();
             SensorStatus = SensorState.NotConnected;
-            Service.UpdatedBPM(SensorStatus);
         }
         if (SensorStatus == SensorState.Connected) {
             SensorListener.disconnect();
         }
     }
-
-    public int State() { return SensorStatus; }
 }

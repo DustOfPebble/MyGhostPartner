@@ -52,20 +52,20 @@ public class CoreGPS implements LocationListener {
      ******************************************************************/
     @SuppressWarnings({"MissingPermission"})
     public void start() {
-        Log.d(LogTag, "Starting GPS Listener");
+        Log.d(LogTag, "Starting setGPS Listener");
         if (SensorGPS == null) SensorGPS = (LocationManager) Owner.getSystemService(Context.LOCATION_SERVICE);
         SensorGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, UpdateDelay , 0, this);
     }
 
     public void stop() {
-        Log.d(LogTag, "Stoping GPS !");
+        Log.d(LogTag, "Stoping setGPS !");
         SensorGPS.removeUpdates(this);
     }
 
     public void reset() { Origin = null; }
 
     public void addListener(EventsGPS Listener) {
-        Log.d(LogTag, "Registering "+Listener.getClass().getSimpleName()+" as GPS Listener.");
+        Log.d(LogTag, "Registering "+Listener.getClass().getSimpleName()+" as setGPS Listener.");
         Listeners.add(Listener); }
 
     /******************************************************************
@@ -91,7 +91,10 @@ public class CoreGPS implements LocationListener {
      ******************************************************************/
     @Override
     public void onLocationChanged(Location GPS) {
-        if (Origin == null) Origin = new CoordsGPS(GPS.getLongitude(), GPS.getLatitude());
+        if (Origin == null) {
+            Origin = new CoordsGPS(GPS.getLongitude(), GPS.getLatitude());
+            Log.d(LogTag, "setGPS is active...");
+        }
 
         Coords = new CoordsGPS(GPS.getLongitude(), GPS.getLatitude());
 
@@ -115,7 +118,6 @@ public class CoreGPS implements LocationListener {
         Basics.Heartbeat = (byte) SensorBPM;
 
         for (EventsGPS Listener:Listeners) { Listener.UpdatedGPS(this); }
-//        Log.d(LogTag, "GPS Moved [x ->"+Math.floor((Shift.dx*10)/10)+" m | y ->"+Math.floor((Shift.dy*10)/10)+" m]");
     }
 
     @Override
