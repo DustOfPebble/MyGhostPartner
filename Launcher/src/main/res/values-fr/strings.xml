@@ -5,6 +5,8 @@
     <string name="GPS_record_background">Enregistrement GPS en tâche de fond...</string>
     <string name="restore_display">Mise à jour de l\'affichage</string>
 
+    <string name="EmptyLogName">Nouveau parcours</string>
+
     <string name="ServiceName">MyGhostPartner Services</string>
     <string name="Service">Service d\'enregistrement en arrière plan.</string>
 </resources>

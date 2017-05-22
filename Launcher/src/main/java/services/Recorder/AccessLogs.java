@@ -9,6 +9,7 @@ import core.GPS.EventsGPS;
 import core.Settings.Parameters;
 import core.Structures.Coords2D;
 import core.Structures.Sample;
+import core.launcher.partner.R;
 import services.Hub;
 
 public class AccessLogs implements EventsGPS {
@@ -20,14 +21,16 @@ public class AccessLogs implements EventsGPS {
     private LogsWriter Logger = null;
 
     private Coords2D LastMove = null;
+    private String CustomLogName = null;
 
     public AccessLogs(Hub Service, int Clearance) {
         Repository = new FilesUtils(Service);
         Repository.CheckDirectory(PreSets.WorkingSpace);
         this.Clearance = Clearance;
+        CustomLogName = Service.getResources().getString(R.string.EmptyLogName);
     }
 
-    private void CreateLog() { Logger = new LogsWriter(Calendar.getInstance());  }
+    private void CreateLog() { Logger = new LogsWriter(Calendar.getInstance(),CustomLogName);  }
 
     /**************************************************************
      *  Forwarded calls from Service

@@ -14,6 +14,7 @@ import core.Files.FilesUtils;
 import core.Files.LibJSON;
 import core.Files.PreSets;
 import core.Structures.Sample;
+import core.launcher.partner.R;
 
 public class LogsWriter {
     private static String LogTag = AccessLogs.class.getSimpleName();
@@ -23,11 +24,12 @@ public class LogsWriter {
     private String TimeStampedName = null;
     Descriptor Now = new Descriptor();
 
-    LogsWriter(Calendar Date) {
+    LogsWriter(Calendar Date, String CustomName) {
         LogEvents = new ArrayList();
         Now.Day = Date.get(Calendar.DAY_OF_MONTH);
         Now.Month = Date.get(Calendar.MONTH)+1; // Month is from 0 to 11
         Now.Year = Date.get(Calendar.YEAR);
+        Now.Name = CustomName;
         Header = LibJSON.DescriptorToJSON(Now);
         TimeStampedName = FilesUtils.NameOf(Date, PreSets.Signature);
         Now.NbDays = 0;

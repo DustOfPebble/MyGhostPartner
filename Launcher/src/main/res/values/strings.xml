@@ -7,6 +7,8 @@
     <string name="GPS_record_background">GPS recording will continue in background...</string>
     <string name="restore_display">Restoring display...</string>
 
+    <string name="EmptyLogName">New track</string>
+
     <string name="ServiceName">MyGhostPartner background Services</string>
     <string name="Service">Background Services for Recording positions</string>
 

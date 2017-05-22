@@ -47,7 +47,6 @@ public class LoaderJSON  extends Loader implements Runnable {
 
         String HeaderJSON = LoaderJSON.Head(Reader);
         if (HeaderJSON == null)  return ;
-        Log.d(LogTag, "Header ==> "+HeaderJSON);
 
         Source.Infos = LibJSON.DescriptorFromJSON(HeaderJSON);
         if (Source.Infos == null) return  ;
