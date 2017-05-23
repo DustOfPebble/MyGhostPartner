@@ -52,13 +52,13 @@ public class CoreGPS implements LocationListener {
      ******************************************************************/
     @SuppressWarnings({"MissingPermission"})
     public void start() {
-        Log.d(LogTag, "Starting setGPS Listener");
+        Log.d(LogTag, "Starting GPS Listener");
         if (SensorGPS == null) SensorGPS = (LocationManager) Owner.getSystemService(Context.LOCATION_SERVICE);
         SensorGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, UpdateDelay , 0, this);
     }
 
     public void stop() {
-        Log.d(LogTag, "Stoping setGPS !");
+        Log.d(LogTag, "Stopping GPS !");
         SensorGPS.removeUpdates(this);
     }
 
@@ -93,7 +93,7 @@ public class CoreGPS implements LocationListener {
     public void onLocationChanged(Location GPS) {
         if (Origin == null) {
             Origin = new CoordsGPS(GPS.getLongitude(), GPS.getLatitude());
-            Log.d(LogTag, "setGPS is active...");
+            Log.d(LogTag, "GPS is active...");
         }
 
         Coords = new CoordsGPS(GPS.getLongitude(), GPS.getLatitude());
