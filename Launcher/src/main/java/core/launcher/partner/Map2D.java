@@ -55,7 +55,7 @@ class Map2D extends ImageView {
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
         if (BackendService == null) return;
 
-        NowStats = GPS.Statistic(0);
+        NowStats = GPS.Statistic();
         ViewCenter = GPS.Moved();
         Extension StatsSize = Parameters.StatisticsSize;
 

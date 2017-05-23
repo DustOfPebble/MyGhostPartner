@@ -33,15 +33,13 @@ public class Sample {
         return new Coords2D( dx, dy);
     }
     
-    public Statistic Statistic(int NbDays) {
+    public Statistic Statistic() {
         Statistic Snapshot = new Statistic();
         Snapshot.Speed = Speed;
-        Snapshot.Accuracy = Accuracy ;
-        Snapshot.Bearing = Bearing;
-
         Snapshot.Altitude = (float)Altitude;
+        Snapshot.Bearing = Bearing;
+        Snapshot.Accuracy = Accuracy ;
         Snapshot.Heartbeat = Heartbeat;
-        Snapshot.Days = (short) NbDays;
         return Snapshot;
     }
 }

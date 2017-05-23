@@ -129,7 +129,8 @@ public class AccessDB implements EventsGPS, LoaderEvents {
 
         Node NodeGPS = new Node();
         NodeGPS.Move = Provider.Moved();
-        NodeGPS.Stats = Provider.Statistic(0);
+        NodeGPS.Stats = Provider.Statistic();
+        NodeGPS.Days = 0;
 
         if (!DB.belongs(NodeGPS)) {
             Owner.NotInZone();
@@ -150,8 +151,9 @@ public class AccessDB implements EventsGPS, LoaderEvents {
     public void loaded(Sample Loaded) {
         if (Status != State.Loading) return;
         Node Snapshot = new Node();
-        Snapshot.Stats = Loaded.Statistic(NbDays);
+        Snapshot.Stats = Loaded.Statistic();
         Snapshot.Move = Loaded.MovedFrom(Origin);
+        Snapshot.Days = (short)NbDays;
         DB.store(Snapshot);
     }
 

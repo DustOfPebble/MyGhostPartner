@@ -77,12 +77,10 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SleepLocker.registerManager(this);
         ManageSleepLocker(Switches.ForceSaved);
 
-
         NodesLogger = (ControlSwitch) findViewById(R.id.switch_trace_recorder);
-        NodesLogger.registerModes(Switches.LoggerSaving, Switches.LoggerOFF);
+        NodesLogger.registerModes(Switches.LoggerListening, Switches.LoggerOFF);
         NodesLogger.registerManager(this);
         ManageNodesLogger(Switches.ForceSaved);
-
 
         ServiceGPS = (ControlSwitch) findViewById(R.id.gps_provider);
         ServiceGPS.registerModes(Switches.LiveGPS, Switches.NoGPS);
@@ -229,7 +227,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     public void onClicked(short Status) {
         if ((Status == Switches.SleepLocked) || (Status == Switches.SleepUnLocked)) ManageSleepLocker(Status);
-        if ((Status == Switches.LoggerSaving) || (Status == Switches.LoggerOFF)) ManageNodesLogger(Status);
+        if ((Status == Switches.LoggerListening) || (Status == Switches.LoggerOFF)) ManageNodesLogger(Status);
         if ((Status == Switches.LiveGPS) || (Status == Switches.NoGPS))  ManageGPS(Status);
         if ((Status == Switches.SensorConnected) || (Status == Switches.NoSensor)) ManageCardioSensor(Status);
     }
@@ -250,7 +248,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     }
     private void ManageNodesLogger(short Status) {
         if (Status == Switches.ForceSaved) Status = SavedStates.getModeLogger();
-        else Status = (Status==Switches.LoggerSaving)? Switches.LoggerOFF:Switches.LoggerSaving;
+        else Status = (Status==Switches.LoggerListening)? Switches.LoggerOFF:Switches.LoggerListening;
 
         if (BackendService == null) {
             SavedStates.storeModeLight(Switches.LoggerOFF);
@@ -262,9 +260,9 @@ public class Docking extends Activity implements ServiceConnection, Signals {
             NodesLogger.setMode(Switches.LoggerOFF);
             BackendService.setLogger(Modes.Finish);
         }
-        if (Status == Switches.LoggerSaving) {
-            SavedStates.storeModeLight(Switches.LoggerSaving);
-            NodesLogger.setMode(Switches.LoggerSaving);
+        if (Status == Switches.LoggerListening) {
+            SavedStates.storeModeLight(Switches.LoggerListening);
+            NodesLogger.setMode(Switches.LoggerListening);
             BackendService.setLogger(Modes.Create);
         }
     }
@@ -447,7 +445,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (Value >= 0) {
             if (SavedStates.getModeSensor() == Switches.WaitingSensor) {
                 ServiceGPS.setMode(Switches.SensorConnected);
-                SavedStates.storeModeGPS(Switches.SensorConnected);
+                SavedStates.storeModeSensor(Switches.SensorConnected);
             }
         }
         else  {
@@ -461,7 +459,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (SavedStates == null) return;
 
         // Get Fields readable structure
-        Statistic Snapshot = InfoGPS.Statistic(0);
+        Statistic Snapshot = InfoGPS.Statistic();
 
         // UpdatedBPM setGPS button state
         if (SavedStates.getModeGPS() == Switches.WaitingGPS) {

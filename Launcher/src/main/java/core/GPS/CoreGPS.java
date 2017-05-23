@@ -80,9 +80,8 @@ public class CoreGPS implements LocationListener {
 
     public Sample ToSample() { return Basics; }
 
-    public Statistic Statistic(int NbDays) {
+    public Statistic Statistic() {
         if (Origin == null) return null;
-        Snapshot.Days = (short)NbDays;
         return Snapshot;
     }
 

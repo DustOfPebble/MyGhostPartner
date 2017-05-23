@@ -6,7 +6,7 @@ public class Switches {
     static public final short SleepLocked = 10;
     static public final short SleepUnLocked = 11;
 
-    static public final short LoggerSaving = 20;
+    static public final short LoggerListening = 20;
     static public final short LoggerOFF = 21;
 
     static public final short NoGPS = 30;
