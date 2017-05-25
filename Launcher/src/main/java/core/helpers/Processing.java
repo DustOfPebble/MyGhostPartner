@@ -15,10 +15,9 @@ public class Processing {
         ArrayList<Node> Filtered = new ArrayList<Node>();
 
         float Heading = signed(Snapshot.Bearing);
-        float ExtractedHeading;
         for (Node Extracted : Collected) {
-            ExtractedHeading = signed(Extracted.Stats.Bearing);
-            if (Math.abs(ExtractedHeading - Heading) > BearingClearance) continue;
+            if (Extracted.Days == 0) continue;
+            if (Math.abs(signed(Extracted.Stats.Bearing) - Heading) > BearingClearance) continue;
             Filtered.add(Extracted);
         }
         return Filtered;
