@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-class ControlSwitch extends ImageView implements View.OnTouchListener, Runnable {
+public class ControlSwitch extends ImageView implements View.OnTouchListener, Runnable {
 
     protected Drawable highIcon = null;
     protected Drawable lowIcon = null;

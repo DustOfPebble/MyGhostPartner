@@ -19,7 +19,7 @@ import core.helpers.Processing;
 import core.Structures.Node;
 import services.Junction;
 
-class Map2D extends ImageView {
+public class Map2D extends ImageView {
     private static String LogTag = Map2D.class.getSimpleName();
 
     private Extension MetersToPixels = new Extension(1.0f,1.0f); //(1 m/pixels ) ==> will be adjusted in onMeasure

@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-class Monitor extends ImageView implements View.OnTouchListener {
+public class Monitor extends ImageView implements View.OnTouchListener {
     private String LogTag = Monitor.class.getSimpleName();
 
     private Docking Controler = null;

@@ -1,11 +1,8 @@
 <resources>
     <string name="StorePublicName" translatable="false">My Ghost Partner</string>
     <string name="ActivityNameDocker" translatable="false">My Ghost Partner</string>
+
     <string name="message_back_key_pressed">Press twice to exit !</string>
-    <string name="heartbeat_sensor_found">Heartbeat sensor connected.</string>
-    <string name="GPS_replay_background">GPS replay will continue in background...</string>
-    <string name="GPS_record_background">GPS recording will continue in background...</string>
-    <string name="restore_display">Restoring display...</string>
 
     <string name="EmptyLogName">New track</string>
 
