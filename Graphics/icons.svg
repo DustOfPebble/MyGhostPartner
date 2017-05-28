@@ -14,7 +14,7 @@
    height="458.23999"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="icons.svg">
   <defs
      id="defs4">
@@ -125,14 +125,14 @@
      borderopacity="1"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.1230166"
-     inkscape:cx="337.02175"
-     inkscape:cy="120.85325"
+     inkscape:zoom="8.4920664"
+     inkscape:cx="261.91899"
+     inkscape:cy="255.66287"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1680"
-     inkscape:window-height="1006"
+     inkscape:window-width="1920"
+     inkscape:window-height="1031"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -150,7 +150,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -161,17 +161,12 @@
      transform="translate(-78.780289,96.34868)">
     <g
        id="g3138"
-       transform="translate(-1.9587283,3.5509643)"
+       transform="translate(-0.0746168,4.1042791)"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/screen_unlocked.png"
        inkscape:export-xdpi="153"
        inkscape:export-ydpi="153">
       <circle
          transform="translate(-2.3551394,-55.110262)"
-         d="m 139.4958,48.101372 c 0,15.712301 -12.73734,28.449638 -28.44964,28.449638 -15.712304,0 -28.449641,-12.737337 -28.449641,-28.449638 0,-15.712302 12.737337,-28.449639 28.449641,-28.449639 15.7123,0 28.44964,12.737337 28.44964,28.449639 z"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="48.101372"
-         sodipodi:cx="111.04616"
          r="28.449638"
          cy="48.101372"
          cx="111.04616"
@@ -188,7 +183,7 @@
          inkscape:connector-curvature="0"
          id="path3991"
          d="m 98.968301,-7.4041985 0,-20.0767905 19.445429,-0.25253 0,8.08122"
-         style="fill:none;stroke:#ffffff;stroke-width:5.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#ffffff;stroke-width:5.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <rect
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -203,17 +198,12 @@
     </g>
     <g
        id="g3143"
-       transform="translate(-3.036734,2.7030334)"
+       transform="translate(-3.036734,2.2201042)"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/screen_locked.png"
        inkscape:export-xdpi="153"
        inkscape:export-ydpi="153">
       <circle
          transform="translate(-8.0074739,-54.639234)"
-         d="m 205.4958,48.101372 c 0,15.712301 -12.73734,28.449638 -28.44964,28.449638 -15.7123,0 -28.44964,-12.737337 -28.44964,-28.449638 0,-15.712302 12.73734,-28.449639 28.44964,-28.449639 15.7123,0 28.44964,12.737337 28.44964,28.449639 z"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="48.101372"
-         sodipodi:cx="177.04616"
          r="28.449638"
          cy="48.101372"
          cx="177.04616"
@@ -223,7 +213,7 @@
          inkscape:export-xdpi="90"
          inkscape:export-ydpi="90" />
       <path
-         style="fill:none;stroke:#ffffff;stroke-width:5.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:5.80000019;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 159.31597,-0.93317062 0,-20.07679038 19.44543,-0.25253 0,8.08122"
          id="path3995"
          inkscape:connector-curvature="0"
@@ -245,14 +235,9 @@
     </g>
     <g
        id="g3164"
-       transform="translate(-5.0615503,15.006912)">
+       transform="translate(-3.1774389,14.393712)">
       <circle
          transform="translate(1.8841115,51.813066)"
-         d="m 138.35937,114.35391 c 0,15.7123 -12.73734,28.44964 -28.44964,28.44964 -15.712302,0 -28.449639,-12.73734 -28.449639,-28.44964 0,-15.712299 12.737337,-28.449636 28.449639,-28.449636 15.7123,0 28.44964,12.737337 28.44964,28.449636 z"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="114.35391"
-         sodipodi:cx="109.90973"
          r="28.449638"
          cy="114.35391"
          cx="109.90973"
@@ -263,11 +248,6 @@
          inkscape:export-ydpi="90" />
       <circle
          transform="translate(1.8841115,51.813066)"
-         d="m 119.8677,112.10707 c 0,5.49964 -4.45834,9.95797 -9.95797,9.95797 -5.49964,0 -9.957971,-4.45833 -9.957971,-9.95797 0,-5.49963 4.458331,-9.95797 9.957971,-9.95797 5.49963,0 9.95797,4.45834 9.95797,9.95797 z"
-         sodipodi:ry="9.9579697"
-         sodipodi:rx="9.9579697"
-         sodipodi:cy="112.10707"
-         sodipodi:cx="109.90973"
          r="9.9579697"
          cy="112.10707"
          cx="109.90973"
@@ -275,7 +255,7 @@
          inkscape:export-xdpi="90"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\light_max.png"
          id="path4011"
-         style="fill:none;stroke:#ffffff;stroke-width:1.90702939;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#ffffff;stroke-width:1.90702939;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <rect
          ry="1.0610384"
          y="171.66194"
@@ -292,7 +272,7 @@
          inkscape:export-xdpi="90"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\light_max.png"
          inkscape:transform-center-y="-16.414979"
-         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 111.79384,145.06166 0,3.91434"
          id="use15637"
          inkscape:connector-curvature="0"
@@ -308,13 +288,13 @@
          inkscape:connector-curvature="0"
          id="path15885"
          d="m 93.421697,163.43381 3.91434,0"
-         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\light_max.png"
          inkscape:transform-center-y="-8.207485"
-         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 95.883098,154.24774 3.389918,1.95717"
          id="path15887"
          inkscape:connector-curvature="0"
@@ -331,14 +311,14 @@
          inkscape:connector-curvature="0"
          id="path15889"
          d="m 102.60777,147.52307 1.95717,3.38991"
-         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          inkscape:transform-center-y="-14.215785" />
       <path
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\light_max.png"
          inkscape:transform-center-y="-14.21579"
-         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 120.97991,147.52306 -1.95716,3.38992"
          id="path15891"
          inkscape:connector-curvature="0"
@@ -355,13 +335,13 @@
          inkscape:connector-curvature="0"
          id="path15893"
          d="m 127.70459,154.24773 -3.38992,1.95717"
-         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          inkscape:transform-center-y="-8.207495" />
       <path
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\light_max.png"
-         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 130.16599,163.4338 -3.91434,0"
          id="path15895"
          inkscape:connector-curvature="0"
@@ -379,13 +359,13 @@
          inkscape:connector-curvature="0"
          id="path15897"
          d="m 127.70459,172.61987 -3.38991,-1.95717"
-         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\light_max.png"
          inkscape:transform-center-y="8.207485"
-         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:2.29999995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 95.883098,172.61988 3.389918,-1.95717"
          id="path15899"
          inkscape:connector-curvature="0"
@@ -395,14 +375,9 @@
     </g>
     <g
        id="g3178"
-       transform="translate(-15.791891,14.912689)">
+       transform="translate(-15.791891,12.980596)">
       <circle
          transform="translate(1.8841115,51.813066)"
-         d="m 208.35937,114.35391 c 0,15.7123 -12.73734,28.44964 -28.44964,28.44964 -15.7123,0 -28.44964,-12.73734 -28.44964,-28.44964 0,-15.712299 12.73734,-28.449636 28.44964,-28.449636 15.7123,0 28.44964,12.737337 28.44964,28.449636 z"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="114.35391"
-         sodipodi:cx="179.90973"
          r="28.449638"
          cy="114.35391"
          cx="179.90973"
@@ -413,15 +388,10 @@
          id="path4203" />
       <circle
          transform="translate(1.8841115,51.813066)"
-         d="m 189.8677,112.10707 c 0,5.49964 -4.45834,9.95797 -9.95797,9.95797 -5.49964,0 -9.95797,-4.45833 -9.95797,-9.95797 0,-5.49963 4.45833,-9.95797 9.95797,-9.95797 5.49963,0 9.95797,4.45834 9.95797,9.95797 z"
-         sodipodi:ry="9.9579697"
-         sodipodi:rx="9.9579697"
-         sodipodi:cy="112.10707"
-         sodipodi:cx="179.90973"
          r="9.9579697"
          cy="112.10707"
          cx="179.90973"
-         style="fill:none;stroke:#ffffff;stroke-width:1.90702939;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:1.90702939;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="path4205"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\light_low.png"
          inkscape:export-xdpi="90"
@@ -445,7 +415,7 @@
          id="g4261">
         <path
            inkscape:transform-center-y="-15.652075"
-           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            d="m 146.10343,157.22206 0,2.64845"
            id="path4211"
            inkscape:connector-curvature="0"
@@ -457,12 +427,12 @@
            inkscape:connector-curvature="0"
            id="path4238"
            d="m 134.09937,162.1943 1.87274,1.87274"
-           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            inkscape:transform-center-y="-11.06769"
            inkscape:transform-center-x="11.06769" />
         <path
            inkscape:transform-center-x="15.652075"
-           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            d="m 129.12713,174.19836 2.64845,0"
            id="path4240"
            inkscape:connector-curvature="0"
@@ -474,7 +444,7 @@
            inkscape:connector-curvature="0"
            id="path4242"
            d="m 134.09937,186.20242 1.87274,-1.87274"
-           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            inkscape:transform-center-x="11.06769"
            inkscape:transform-center-y="11.06769" />
         <path
@@ -483,12 +453,12 @@
            inkscape:connector-curvature="0"
            id="path4244"
            d="m 158.10749,162.1943 -1.87274,1.87274"
-           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            inkscape:transform-center-y="-11.06769"
            inkscape:transform-center-x="-11.06769" />
         <path
            inkscape:transform-center-x="-15.652075"
-           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            d="m 163.07973,174.19836 -2.64845,0"
            id="path4246"
            inkscape:connector-curvature="0"
@@ -500,21 +470,16 @@
            inkscape:connector-curvature="0"
            id="path4248"
            d="m 158.10749,186.20242 -1.87274,-1.87274"
-           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           style="opacity:0.71100003;fill:none;stroke:#ffffff;stroke-width:1.89188242;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            inkscape:transform-center-x="-11.06769"
            inkscape:transform-center-y="11.06769" />
       </g>
     </g>
     <g
        id="g3191"
-       transform="translate(-3.8329007,-1.8324585)">
+       transform="translate(-1.9487892,-2.8345125)">
       <circle
          transform="translate(1.4130836,57.465401)"
-         d="m 137.60175,187.0849 c 0,15.7123 -12.73734,28.44964 -28.44964,28.44964 -15.712304,0 -28.449641,-12.73734 -28.449641,-28.44964 0,-15.7123 12.737337,-28.44964 28.449641,-28.44964 15.7123,0 28.44964,12.73734 28.44964,28.44964 z"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="187.0849"
-         sodipodi:cx="109.15211"
          r="28.449638"
          cy="187.0849"
          cx="109.15211"
@@ -553,18 +518,13 @@
          inkscape:connector-curvature="0"
          id="path4320"
          d="m 93.272048,264.26522 16.471272,-30.66239 3.32416,9.65107 14.79087,-18.41852 -15.40411,31.94303 -3.77508,-10.33962 z"
-         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#84e9f4;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#84e9f4;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
     <g
        id="g3197"
-       transform="translate(-10.931825,0)">
+       transform="translate(-10.931825,-2.4151705)">
       <circle
          transform="translate(1.4130836,57.465401)"
-         d="m 203.97033,185.25244 c 0,15.7123 -12.73734,28.44964 -28.44964,28.44964 -15.7123,0 -28.44964,-12.73734 -28.44964,-28.44964 0,-15.7123 12.73734,-28.44964 28.44964,-28.44964 15.7123,0 28.44964,12.73734 28.44964,28.44964 z"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="185.25244"
-         sodipodi:cx="175.52069"
          id="circle4322"
          style="fill:none;stroke:none"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_save.png"
@@ -599,7 +559,7 @@
          inkscape:export-ydpi="93.322876"
          inkscape:export-xdpi="93.322876"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_save.png"
-         style="opacity:0.69800002;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#daf8fc;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="opacity:0.69800002;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:#daf8fc;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 166.20661,257.23241 10.21735,-20.254 2.06202,6.375 9.17496,-12.16632 -9.55536,21.09992 -2.34174,-6.82982 z"
          id="path4328"
          inkscape:connector-curvature="0"
@@ -609,22 +569,18 @@
        id="g4089"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/gps_listening.png"
        inkscape:export-xdpi="153"
-       inkscape:export-ydpi="153">
+       inkscape:export-ydpi="153"
+       transform="translate(1.8841115,0.16447769)">
       <path
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_live.png"
          inkscape:connector-curvature="0"
          id="path4032"
-         d="M 97.493617,67.49719 92.136474,78.21148 102.49362,78.03291 z"
-         style="fill:#84e9f4;fill-opacity:1;stroke:#84e9f4;stroke-width:1.70000005;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         d="M 97.493617,67.49719 92.136474,78.21148 102.49362,78.03291 Z"
+         style="fill:#84e9f4;fill-opacity:1;stroke:#84e9f4;stroke-width:1.70000005;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <circle
          transform="translate(-1.8841115,-202.07034)"
-         d="m 137.06604,260.15634 c 0,15.7123 -12.73734,28.44964 -28.44964,28.44964 -15.7123,0 -28.449637,-12.73734 -28.449637,-28.44964 0,-15.7123 12.737337,-28.44964 28.449637,-28.44964 15.7123,0 28.44964,12.73734 28.44964,28.44964 z"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="260.15634"
-         sodipodi:cx="108.6164"
          r="28.449638"
          cy="260.15634"
          cx="108.6164"
@@ -650,12 +606,12 @@
          inkscape:connector-curvature="0"
          id="path4024"
          d="M 111.54074,61.89839 C 110.5641,54.68517 106.28783,51.72689 99.828438,51.58377 l 0,0 0,0 0,0"
-         style="fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_live.png"
-         style="fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="M 120.68376,61.89462 C 118.94505,49.05281 111.33195,43.78615 99.832218,43.53139 l 0,0 0,0 0,0"
          id="path4026"
          inkscape:connector-curvature="0"
@@ -668,20 +624,16 @@
          inkscape:connector-curvature="0"
          id="path4028"
          d="M 129.81992,61.7697 C 127.3298,43.37816 116.4266,35.83545 99.957118,35.47056 l 0,0 0,0 0,0"
-         style="fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
     <g
        id="g4119"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/logging_trace.png"
        inkscape:export-xdpi="153"
-       inkscape:export-ydpi="153">
+       inkscape:export-ydpi="153"
+       transform="translate(1.8841117,0.94217436)">
       <circle
-         d="m 209.99551,260.00732 c 0,15.71231 -12.73734,28.44964 -28.44964,28.44964 -15.7123,0 -28.44964,-12.73733 -28.44964,-28.44964 0,-15.7123 12.73734,-28.44963 28.44964,-28.44963 15.7123,0 28.44964,12.73733 28.44964,28.44963 z"
          transform="translate(-74.813578,-325.0092)"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="260.00732"
-         sodipodi:cx="181.54587"
          id="circle4034"
          style="fill:none;stroke:none"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_replay.png"
@@ -696,32 +648,22 @@
          inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
          transform="matrix(2.3599448,0,0,2.2211246,-254.58608,-766.75947)"
          id="path6196"
-         style="fill:#84e9f4;fill-opacity:1;stroke:#ffffff;stroke-width:1.74711955000000008;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#84e9f4;fill-opacity:1;stroke:#ffffff;stroke-width:1.74711955;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          cx="148.39285"
          cy="315.93362"
          rx="2.8571429"
-         ry="3.0357141"
-         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z"
-         sodipodi:cx="148.39285"
-         sodipodi:cy="315.93362"
-         sodipodi:rx="2.8571429"
-         sodipodi:ry="3.0357141" />
+         ry="3.0357141" />
       <ellipse
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
          inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
-         style="fill:#84e9f4;fill-opacity:1;stroke:#ffffff;stroke-width:1.74711955000000008;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#84e9f4;fill-opacity:1;stroke:#ffffff;stroke-width:1.74711955;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="path6198"
          transform="matrix(2.3599448,0,0,2.2211246,-232.34718,-766.75947)"
          cx="148.39285"
          cy="315.93362"
          rx="2.8571429"
-         ry="3.0357141"
-         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z"
-         sodipodi:cx="148.39285"
-         sodipodi:cy="315.93362"
-         sodipodi:rx="2.8571429"
-         sodipodi:ry="3.0357141" />
+         ry="3.0357141" />
       <path
          inkscape:export-ydpi="90"
          inkscape:export-xdpi="90"
@@ -729,10 +671,11 @@
          inkscape:connector-curvature="0"
          id="path6200"
          d="m 95.780238,-58.280664 22.577272,0"
-         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:none;stroke:#ffffff;stroke-width:4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
     <g
-       id="g3224">
+       id="g3224"
+       transform="translate(18.841115,81.487822)">
       <rect
          inkscape:export-ydpi="614.40002"
          inkscape:export-xdpi="614.40002"
@@ -809,7 +752,7 @@
          inkscape:connector-curvature="0"
          id="path3874"
          d="m 296.30797,202.78392 16.02137,15.00147 16.02137,-15.00147 z"
-         style="fill:#6cbcd1;fill-opacity:1;stroke:#d5f6fd;stroke-width:1.73751163;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:#6cbcd1;fill-opacity:1;stroke:#d5f6fd;stroke-width:1.73751163;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <text
          inkscape:export-ydpi="614.40002"
          inkscape:export-xdpi="614.40002"
@@ -818,7 +761,7 @@
          id="text3876"
          y="238.40094"
          x="282.65402"
-         style="font-size:10.51120663px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+         style="font-style:normal;font-weight:bold;font-size:10.51120663px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
          xml:space="preserve"><tspan
            y="238.40094"
            x="282.65402"
@@ -829,7 +772,7 @@
          inkscape:export-xdpi="614.40002"
          inkscape:export-filename="/home/xavier/Studio/DailyRaceHiRes.png"
          xml:space="preserve"
-         style="font-size:10.51120663px;font-style:normal;font-weight:bold;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+         style="font-style:normal;font-weight:bold;font-size:10.51120663px;line-height:125%;font-family:Sans;-inkscape-font-specification:'Sans Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
          x="327.20383"
          y="238.40094"
          id="text3880"
@@ -842,7 +785,7 @@
          inkscape:connector-curvature="0"
          id="path4220"
          d="m 304.2436,254.03299 0,12.53919"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          inkscape:export-filename="/home/xavier/Studio/DailyRaceHiRes.png"
          inkscape:export-xdpi="614.40002"
          inkscape:export-ydpi="614.40002" />
@@ -850,7 +793,7 @@
          inkscape:export-ydpi="614.40002"
          inkscape:export-xdpi="614.40002"
          inkscape:export-filename="/home/xavier/Studio/DailyRaceHiRes.png"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 328.08889,260.60461 0,5.96757"
          id="path4222"
          inkscape:connector-curvature="0" />
@@ -858,7 +801,7 @@
          inkscape:connector-curvature="0"
          id="path4224"
          d="m 320.14047,255.86693 0,10.70525"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          inkscape:export-filename="/home/xavier/Studio/DailyRaceHiRes.png"
          inkscape:export-xdpi="614.40002"
          inkscape:export-ydpi="614.40002" />
@@ -866,7 +809,7 @@
          inkscape:export-ydpi="614.40002"
          inkscape:export-xdpi="614.40002"
          inkscape:export-filename="/home/xavier/Studio/DailyRaceHiRes.png"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 312.19203,246.46799 0,20.10419"
          id="path4226"
          inkscape:connector-curvature="0" />
@@ -874,7 +817,7 @@
          inkscape:connector-curvature="0"
          id="path4228"
          d="m 296.29518,258.99991 0,7.57227"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          inkscape:export-filename="/home/xavier/Studio/DailyRaceHiRes.png"
          inkscape:export-xdpi="614.40002"
          inkscape:export-ydpi="614.40002" />
@@ -882,7 +825,7 @@
          inkscape:export-ydpi="614.40002"
          inkscape:export-xdpi="614.40002"
          inkscape:export-filename="/home/xavier/Studio/DailyRaceHiRes.png"
-         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#ffffff;fill-opacity:1;stroke:#ffdb35;stroke-width:7;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 336.03732,255.86693 0,10.70525"
          id="path4230"
          inkscape:connector-curvature="0" />
@@ -911,7 +854,6 @@
            sodipodi:rx="9.5899982"
            sodipodi:cy="100.38033"
            sodipodi:cx="482.62875"
-           d="m 492.21875,100.38033 c 0,5.16748 -4.29359,9.35655 -9.59,9.35655 -5.29641,0 -9.58999,-4.18907 -9.58999,-9.35655 0,-5.167475 4.29358,-9.356544 9.58999,-9.356544 5.29641,0 9.59,4.189069 9.59,9.356544 z"
            style="fill:none;stroke:#ffffff;stroke-width:4.58900118;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
            id="path4232"
            cx="482.62875"
@@ -924,7 +866,6 @@
            sodipodi:rx="9.5899982"
            sodipodi:cy="100.05581"
            sodipodi:cx="515.55762"
-           d="m 525.14762,100.05581 c 0,5.16748 -4.29359,9.35655 -9.59,9.35655 -5.29641,0 -9.59,-4.18907 -9.59,-9.35655 0,-5.167479 4.29359,-9.356548 9.59,-9.356548 5.29641,0 9.59,4.189069 9.59,9.356548 z"
            cy="100.05581"
            cx="515.55762"
            id="circle4234"
@@ -937,7 +878,6 @@
            sodipodi:rx="5.0129528"
            sodipodi:cy="73.151237"
            sodipodi:cx="504.88214"
-           d="m 509.89509,73.151237 c 0,2.701182 -2.24437,4.890922 -5.01295,4.890922 -2.76858,0 -5.01295,-2.18974 -5.01295,-4.890922 0,-2.701181 2.24437,-4.890921 5.01295,-4.890921 2.76858,0 5.01295,2.18974 5.01295,4.890921 z"
            cy="73.151237"
            cx="504.88214"
            id="circle4236"
@@ -968,21 +908,6 @@
        inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\arrow.png"
        inkscape:export-xdpi="153.10001"
        inkscape:export-ydpi="153.10001" />
-    <circle
-       id="circle4233"
-       style="fill:none;stroke:none"
-       inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\battery_save.png"
-       inkscape:export-xdpi="93.322876"
-       inkscape:export-ydpi="93.322876"
-       cx="187.69148"
-       cy="187.0849"
-       r="28.449638"
-       sodipodi:cx="187.69148"
-       sodipodi:cy="187.0849"
-       sodipodi:rx="28.449638"
-       sodipodi:ry="28.449638"
-       d="m 216.14112,187.0849 c 0,15.7123 -12.73734,28.44964 -28.44964,28.44964 -15.7123,0 -28.44964,-12.73734 -28.44964,-28.44964 0,-15.7123 12.73734,-28.44964 28.44964,-28.44964 15.7123,0 28.44964,12.73734 28.44964,28.44964 z"
-       transform="translate(1.4130836,57.465401)" />
     <g
        id="g3220">
       <rect
@@ -1009,14 +934,10 @@
        id="g4107"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/sensor_active.png"
        inkscape:export-xdpi="153"
-       inkscape:export-ydpi="153">
+       inkscape:export-ydpi="153"
+       transform="translate(1.8841116,-0.22437574)">
       <circle
          transform="translate(-0.497637,-213.81288)"
-         d="m 135.67957,333.44284 c 0,15.7123 -12.73734,28.44964 -28.44964,28.44964 -15.712304,0 -28.449641,-12.73734 -28.449641,-28.44964 0,-15.7123 12.737337,-28.44964 28.449641,-28.44964 15.7123,0 28.44964,12.73734 28.44964,28.44964 z"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="333.44284"
-         sodipodi:cx="107.22993"
          id="circle4235"
          style="fill:none;stroke:none"
          inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/heartbeat_connected.png"
@@ -1026,7 +947,7 @@
          cy="333.44284"
          r="28.449638" />
       <path
-         style="fill:#daf8fc;fill-opacity:1;stroke:#ffffff;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#daf8fc;fill-opacity:1;stroke:#ffffff;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 105.14046,133.32157 c -11.12717,-5.77678 -15.74385,-15.81894 -12.88714,-23.39714 2.8567,-7.5782 10.99718,-2.91197 13.94346,2.1664 3.63624,-5.28519 10.45232,-10.0964 14.78854,-2.1664 4.33619,7.92998 -5.37643,19.92124 -15.84486,23.39714 z"
          id="path4245"
          inkscape:connector-curvature="0"
@@ -1039,14 +960,10 @@
        id="g4111"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/sensor_off.png"
        inkscape:export-xdpi="153"
-       inkscape:export-ydpi="153">
+       inkscape:export-ydpi="153"
+       transform="translate(1.7269531e-6,-1.4490541)">
       <circle
          transform="translate(-18.540517,-211.3953)"
-         d="m 212.9921,330.83682 c 0,15.7123 -12.73733,28.44964 -28.44963,28.44964 -15.71231,0 -28.44964,-12.73734 -28.44964,-28.44964 0,-15.7123 12.73733,-28.44964 28.44964,-28.44964 15.7123,0 28.44963,12.73734 28.44963,28.44964 z"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="330.83682"
-         sodipodi:cx="184.54247"
          r="28.449638"
          cy="330.83682"
          cx="184.54247"
@@ -1063,20 +980,16 @@
          inkscape:connector-curvature="0"
          id="path4249"
          d="m 164.4101,133.13311 c -11.12717,-5.77678 -15.74385,-15.81894 -12.88714,-23.39714 2.8567,-7.5782 10.99718,-2.91197 13.94346,2.1664 3.63624,-5.28519 10.45232,-10.0964 14.78854,-2.1664 4.33619,7.92998 -5.37643,19.92124 -15.84486,23.39714 z"
-         style="fill:#ffffff;fill-opacity:0;stroke:#84e9f4;stroke-width:6;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+         style="fill:#ffffff;fill-opacity:0;stroke:#84e9f4;stroke-width:6;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     </g>
     <g
        id="g4097"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/gps_off.png"
        inkscape:export-xdpi="153"
-       inkscape:export-ydpi="153">
+       inkscape:export-ydpi="153"
+       transform="translate(2.6455078e-7,-0.96599877)">
       <circle
-         d="m 137.06604,260.15634 c 0,15.7123 -12.73734,28.44964 -28.44964,28.44964 -15.7123,0 -28.449637,-12.73734 -28.449637,-28.44964 0,-15.7123 12.737337,-28.44964 28.449637,-28.44964 15.7123,0 28.44964,12.73734 28.44964,28.44964 z"
          transform="translate(57.385548,-202.35298)"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="260.15634"
-         sodipodi:cx="108.6164"
          id="circle3102"
          style="fill:none;stroke:none"
          inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_live.png"
@@ -1095,7 +1008,7 @@
          inkscape:export-xdpi="90"
          inkscape:export-ydpi="90" />
       <path
-         style="fill:#000000;fill-opacity:0;stroke:#daf8fc;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#000000;fill-opacity:0;stroke:#daf8fc;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 170.8104,61.615758 c -0.97664,-7.21322 -5.25291,-10.1715 -11.7123,-10.31462 l 0,0 0,0 0,0"
          id="path3106"
          inkscape:connector-curvature="0"
@@ -1104,7 +1017,7 @@
          inkscape:export-xdpi="90"
          inkscape:export-ydpi="90" />
       <path
-         style="fill:#84e9f4;fill-opacity:1;stroke:#84e9f4;stroke-width:1.70000005;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:#84e9f4;fill-opacity:1;stroke:#84e9f4;stroke-width:1.70000005;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 156.76328,67.214558 -5.35715,10.71429 10.35715,-0.17857 z"
          id="path3112"
          inkscape:connector-curvature="0"
@@ -1116,14 +1029,10 @@
        id="g4083"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/logging_off.png"
        inkscape:export-xdpi="153"
-       inkscape:export-ydpi="153">
+       inkscape:export-ydpi="153"
+       transform="translate(1.6992203e-8,8.7385254e-5)">
       <circle
-         d="m 209.99551,260.00732 c 0,15.71231 -12.73734,28.44964 -28.44964,28.44964 -15.7123,0 -28.44964,-12.73733 -28.44964,-28.44964 0,-15.7123 12.73734,-28.44963 28.44964,-28.44963 15.7123,0 28.44964,12.73733 28.44964,28.44963 z"
          transform="translate(-15.543918,-325.48026)"
-         sodipodi:ry="28.449638"
-         sodipodi:rx="28.449638"
-         sodipodi:cy="260.00732"
-         sodipodi:cx="181.54587"
          r="28.449638"
          cy="260.00732"
          cx="181.54587"
@@ -1137,17 +1046,12 @@
          rx="2.8571429"
          cy="315.93362"
          cx="148.39285"
-         style="fill:none;stroke:#daf8fc;stroke-width:0.91723776;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#daf8fc;stroke-width:0.91723776;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          id="ellipse3118"
          transform="matrix(2.3599448,0,0,2.2211246,-195.31643,-767.23053)"
          inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
          inkscape:export-xdpi="90"
-         inkscape:export-ydpi="90"
-         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z"
-         sodipodi:cx="148.39285"
-         sodipodi:cy="315.93362"
-         sodipodi:rx="2.8571429"
-         sodipodi:ry="3.0357141" />
+         inkscape:export-ydpi="90" />
       <ellipse
          ry="3.0357141"
          rx="2.8571429"
@@ -1155,23 +1059,126 @@
          cx="148.39285"
          transform="matrix(2.3599448,0,0,2.2211246,-173.07753,-767.23053)"
          id="ellipse3120"
-         style="fill:none;stroke:#daf8fc;stroke-width:0.91723776;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#daf8fc;stroke-width:0.91723776;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
          inkscape:export-xdpi="90"
-         inkscape:export-ydpi="90"
-         d="m 151.25,315.93362 c 0,1.67658 -1.27919,3.03572 -2.85715,3.03572 -1.57795,0 -2.85714,-1.35914 -2.85714,-3.03572 0,-1.67657 1.27919,-3.03571 2.85714,-3.03571 1.57796,0 2.85715,1.35914 2.85715,3.03571 z"
-         sodipodi:cx="148.39285"
-         sodipodi:cy="315.93362"
-         sodipodi:rx="2.8571429"
-         sodipodi:ry="3.0357141" />
+         inkscape:export-ydpi="90" />
       <path
-         style="fill:none;stroke:#daf8fc;stroke-width:2.0999999;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         style="fill:none;stroke:#daf8fc;stroke-width:2.0999999;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          d="m 155.04989,-58.751724 22.57727,0"
          id="path3122"
          inkscape:connector-curvature="0"
          inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
          inkscape:export-xdpi="90"
          inkscape:export-ydpi="90" />
+    </g>
+    <rect
+       inkscape:export-ydpi="162"
+       inkscape:export-xdpi="162"
+       inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/speed_thumb.png"
+       y="75.441673"
+       x="297.67343"
+       height="60"
+       width="60"
+       id="rect4311"
+       style="fill:none;stroke:none" />
+    <g
+       id="g4337"
+       transform="translate(1.5258789e-5,-10.671925)"
+       inkscape:export-xdpi="162"
+       inkscape:export-ydpi="162">
+      <ellipse
+         style="fill:none;stroke:#ffffff;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse4315"
+         cx="311.20898"
+         cy="116.27586"
+         rx="9.5899982"
+         ry="9.3565474" />
+      <ellipse
+         cy="115.95133"
+         cx="344.13785"
+         id="ellipse4317"
+         style="fill:none;stroke:#ffffff;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         rx="9.5899982"
+         ry="9.3565474" />
+      <path
+         style="fill:none;stroke:#ffffff;stroke-width:6;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 311.11569,125.60663 33.0181,-0.29543"
+         id="path4323"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cc" />
+    </g>
+    <g
+       id="g4392"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153">
+      <circle
+         r="28.449638"
+         cy="302.87091"
+         cx="108.6164"
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_replay.png"
+         style="fill:none;stroke:none;fill-opacity:1"
+         id="circle4291" />
+      <path
+         sodipodi:nodetypes="ccccc"
+         style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:3.5999999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         d="m 93.874487,316.39979 6.518613,-1.33227 8.01743,-12.15694 9.34968,-3.83027 3.18794,-6.32827"
+         id="path4297"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90" />
+      <path
+         sodipodi:nodetypes="cssc"
+         inkscape:connector-curvature="0"
+         id="path4348"
+         d="m 120.78714,292.42664 c -1.30292,-2 -2.80469,-4.76944 -2.83107,-6.57808 -0.0604,-4.1396 5.98433,-3.53968 5.99521,-0.24976 0.007,2.02224 -1.92383,4.85357 -3.16414,6.82784 z"
+         style="fill:#84e9f4;fill-opacity:1;fill-rule:evenodd;stroke:#84e9f4;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path4350"
+         d="m 93.975246,310.00613 0,6.05805"
+         style="fill:none;fill-rule:evenodd;stroke:#84e9f4;stroke-width:1.42499995;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <ellipse
+         ry="2.7236788"
+         rx="3.1400127"
+         cy="307.33136"
+         cx="93.891983"
+         id="path4346"
+         style="fill:#84e9f4;fill-opacity:1;stroke:#daf8fc;stroke-width:1.24824798;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+      <ellipse
+         style="fill:#daf8fc;fill-opacity:1;stroke:none;stroke-width:1.24824798;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="ellipse4352"
+         cx="120.90073"
+         cy="285.71521"
+         rx="2.1390786"
+         ry="1.8846604" />
+    </g>
+    <g
+       id="g4400"
+       inkscape:export-xdpi="153"
+       inkscape:export-ydpi="153">
+      <circle
+         id="circle4354"
+         style="fill:none;fill-opacity:1;stroke:none"
+         inkscape:export-filename="C:\Users\Xavier JAFFREZIC\AndroidStudioProjects\DayToDayRace\app\src\main\res\drawable\gps_replay.png"
+         inkscape:export-xdpi="90"
+         inkscape:export-ydpi="90"
+         cx="168.90797"
+         cy="302.98868"
+         r="28.449638" />
+      <path
+         inkscape:export-ydpi="90"
+         inkscape:export-xdpi="90"
+         inkscape:export-filename="/home/xavier/Android.Projects/DayToDayRace/app/src/main/res/drawable/gps_replay.png"
+         inkscape:connector-curvature="0"
+         id="path4356"
+         d="m 154.75484,315.22222 6.51862,-1.33227 8.01743,-12.15694 9.34968,-3.83027 3.18794,-6.32827"
+         style="fill:none;fill-opacity:1;stroke:#daf8fc;stroke-width:3.5999999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         sodipodi:nodetypes="ccccc" />
     </g>
   </g>
 </svg>
