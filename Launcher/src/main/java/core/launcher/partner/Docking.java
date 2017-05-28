@@ -326,7 +326,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         }
     }
 
-
     private void ManageSpeedStats(ArrayList<Node> CollectedStatistics,Statistic Snapshot) {
         Speeds.clear();
         for (Node item: CollectedStatistics) {
@@ -430,14 +429,10 @@ public class Docking extends Activity implements ServiceConnection, Signals {
      * Implementing Signals interface (callbacks from Service)
      * **********************************************************************/
     @Override
-    public void UpdateTracking(boolean Success) {
-
-    }
+    public void UpdateTracking(boolean Success) {  }
 
     @Override
-    public void TrackEvent(int Distance) {
-
-    }
+    public void TrackEvent(int Distance) {  }
 
     @Override
     public void UpdatedSensor(int Value) {
