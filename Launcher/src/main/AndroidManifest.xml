@@ -11,7 +11,7 @@
     <application android:label="@string/StorePublicName"
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
-        android:theme="@style/AppTheme"
+        android:theme="@android:style/Theme.NoTitleBar"
         android:name="core.launcher.partner.ViewStates"
         >
         <activity
