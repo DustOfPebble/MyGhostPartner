@@ -52,20 +52,20 @@ public class CoreGPS implements LocationListener {
      ******************************************************************/
     @SuppressWarnings({"MissingPermission"})
     public void start() {
-        Log.d(LogTag, "Starting GPS Listener");
+        Log.d(LogTag, "Enabling GPS subsystem...");
         if (SensorGPS == null) SensorGPS = (LocationManager) Owner.getSystemService(Context.LOCATION_SERVICE);
         SensorGPS.requestLocationUpdates(LocationManager.GPS_PROVIDER, UpdateDelay , 0, this);
     }
 
     public void stop() {
-        Log.d(LogTag, "Stopping GPS !");
+        Log.d(LogTag, "Disabling GPS subsystem");
         SensorGPS.removeUpdates(this);
     }
 
     public void reset() { Origin = null; }
 
     public void addListener(EventsGPS Listener) {
-        Log.d(LogTag, "Registering "+Listener.getClass().getSimpleName()+" as setGPS Listener.");
+        Log.d(LogTag, "Registering "+Listener.getClass().getSimpleName()+" as GPS Listener.");
         Listeners.add(Listener); }
 
     /******************************************************************
