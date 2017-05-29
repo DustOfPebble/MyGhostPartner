@@ -19,5 +19,4 @@ public interface Queries {
     void setTracking(boolean Enabled);
 
     ArrayList<Node> getNodes(Frame Zone);
-    void reload();
 }
