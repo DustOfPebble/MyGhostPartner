@@ -6,7 +6,6 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -47,9 +46,9 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private ControlSwitch ServiceGPS = null;
     private ControlSwitch CardioSensor = null;
 
-    private Monitor SpeedMonitor = null;
+    private StatsScaled SpeedMonitor = null;
     private short SpeedWidgetMode = -1;
-    private Monitor CardioMonitor = null;
+    private StatsScaled CardioMonitor = null;
     private short CardioWidgetMode = -1;
 
     private Map2D MapView = null;
@@ -95,28 +94,16 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         LayoutInflater fromXML = LayoutInflater.from(this);
 
         // Hardcoded settings for Speed in left Monitor
-        SpeedMonitor = (Monitor) fromXML.inflate(R.layout.widget_monitor, null);
+        SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         SpeedMonitor.registerManager(this);
-        SpeedMonitor.setID(Switches.SpeedStatsID);
+        SpeedMonitor.setView(new SetSpeed(this));
         SpeedWidgetMode = Switches.LeftBottomWidget;
-        SpeedMonitor.setIcon( BitmapFactory.decodeResource(getResources(), R.drawable.speed_thumb));
-        SpeedMonitor.setNbTicksDisplayed(18);
-        SpeedMonitor.setNbTicksLabel(5);
-        SpeedMonitor.setTicksStep(1f);
-        SpeedMonitor.setPhysicRange(0f,80f);
-        SpeedMonitor.setUnit("km/h");
 
         // Hardcoded settings for Heartbeat in right Monitor
-        CardioMonitor = (Monitor) fromXML.inflate(R.layout.widget_monitor, null);
+        CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         CardioMonitor.registerManager(this);
-        CardioMonitor.setID(Switches.SensorStatsID);
+        CardioMonitor.setView(new SetCardio(this));
         CardioWidgetMode = Switches.RightBottomWidget;
-        CardioMonitor.setIcon(BitmapFactory.decodeResource(getResources(), R.drawable.heart_thumb));
-        CardioMonitor.setNbTicksDisplayed(22);
-        CardioMonitor.setNbTicksLabel(10);
-        CardioMonitor.setTicksStep(1f);
-        CardioMonitor.setPhysicRange(20f,220f);
-        CardioMonitor.setUnit("bpm");
 
         Speeds = new ArrayList<>();
         HeartBeats = new ArrayList<>();

@@ -9,15 +9,14 @@ import android.graphics.RectF;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-public class Monitor extends ImageView implements View.OnTouchListener {
-    private String LogTag = Monitor.class.getSimpleName();
+public class StatsScaled extends ImageView implements View.OnTouchListener {
+    private String LogTag = StatsScaled.class.getSimpleName();
 
     private Docking Controler = null;
     private short ID =-1;
@@ -67,7 +66,7 @@ public class Monitor extends ImageView implements View.OnTouchListener {
     float HistoryHeight;
     float Padding;
 
-    public Monitor(Context context, AttributeSet attrs) {
+    public StatsScaled(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
 
@@ -97,19 +96,17 @@ public class Monitor extends ImageView implements View.OnTouchListener {
         setVisibility(INVISIBLE);
     }
 
-    public  void registerManager(Docking controler) { this.Controler = controler;}
-    public  void setID(short ID) {this.ID= ID;}
-
-    public void setNbTicksDisplayed(int NbTicksDisplayed) { this.NbTicksDisplayed = NbTicksDisplayed; }
-    public void setNbTicksLabel(int NbTicksLabel) { this.NbTicksLabel = NbTicksLabel; }
-    public void setTicksStep(float TicksStep) { this.TicksStep = TicksStep; }
-    public void setPhysicRange(float PhysicMin, float PhysicMax) {
-        this.PhysicMax = PhysicMax;
-        this.PhysicMin = PhysicMin;
+    public void setView(SetStats Settings) {
+        this.ID = Settings.ID;
+        this.NbTicksDisplayed = Settings.TicksShown;
+        this.NbTicksLabel = Settings.TicksLabelCount;
+        this.TicksStep = Settings.TicksPhysicValue;
+        this.PhysicMax = Settings.PhysicsRangeMax;
+        this.PhysicMin = Settings.PhysicsRangeMin;
+        this.Unit = Settings.Unit;
+        this.LoadedIcon = Settings.Thumb;
     }
-
-    public void setUnit(String Unit) { this.Unit = Unit; }
-    public void setIcon(Bitmap ProvidedIcon) { this.LoadedIcon = ProvidedIcon; }
+    public  void registerManager(Docking controler) { this.Controler = controler;}
 
     public void setValues(float Live, ArrayList<Float> History) {
         Collected = History;

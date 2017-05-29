@@ -63,7 +63,7 @@
         app:HighMode="@drawable/sensor_active"
         app:LowMode="@drawable/sensor_off" />
 
-    <core.launcher.partner.Monitor
+    <core.launcher.partner.StatsScaled
         android:id="@+id/left_monitor"
         android:layout_margin="2dp"
         android:layout_width="160dp"
@@ -74,7 +74,7 @@
         android:visibility="invisible"
         />
 
-    <core.launcher.partner.Monitor
+    <core.launcher.partner.StatsScaled
         android:id="@+id/right_monitor"
         android:layout_margin="2dp"
         android:layout_width="160dp"

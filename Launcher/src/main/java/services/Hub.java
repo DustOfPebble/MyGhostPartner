@@ -102,12 +102,6 @@ public class Hub extends Service implements Queries, EventsGPS {
     @Override
     public ArrayList<Node> getNodes(Frame Zone){ return Collector.getNodes(Zone); }
 
-    @Override
-    public void reload(){
-        Position.reset();
-        Collector.reload();
-    }
-
     /**************************************************************
      *  Callbacks From AccessSensor
      **************************************************************/
