@@ -80,8 +80,8 @@ public class Switch extends ImageView implements View.OnTouchListener, Runnable 
 
     @Override
     public void run() {
-        if (Status == StatusSwitch.Running)  this.setImageDrawable(Enabled);
-        if (Status == StatusSwitch.Off)  this.setImageDrawable(Disabled);
+        if (Status == SwitchEnums.Enabled)  this.setImageDrawable(Enabled);
+        if (Status == SwitchEnums.Disabled)  this.setImageDrawable(Disabled);
         invalidate();
     }
 }
