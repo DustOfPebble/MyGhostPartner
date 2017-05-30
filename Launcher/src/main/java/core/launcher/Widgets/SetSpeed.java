@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import core.Settings.Switches;
 import core.launcher.partner.R;
 
-class SetSpeed extends SetStats {
+public class SetSpeed extends SetStats {
 
     public SetSpeed(Context Base) {
         ID = Switches.SpeedStatsID;

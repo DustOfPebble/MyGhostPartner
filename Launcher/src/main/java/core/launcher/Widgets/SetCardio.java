@@ -1,4 +1,4 @@
-package core.widgets;
+package core.launcher.Widgets;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
@@ -7,7 +7,7 @@ import core.Settings.Switches;
 import core.launcher.partner.R;
 import core.launcher.Widgets.SetStats;
 
-class SetCardio extends SetStats {
+public class SetCardio extends SetStats {
 
     public SetCardio(Context Base) {
         ID = Switches.SensorStatsID;
@@ -19,5 +19,4 @@ class SetCardio extends SetStats {
         PhysicsRangeMax = 220f;
         Unit = "bpm";
     }
-
 }
