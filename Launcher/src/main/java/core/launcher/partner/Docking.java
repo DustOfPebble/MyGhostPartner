@@ -258,59 +258,59 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     private void ManageGPS(short Status) {
         if (BackendService == null) {
-            SavedStates.storeModeGPS(SwitchEnums.NoGPS);
-            ServiceGPS.setMode(SwitchEnums.NoGPS);
+            SavedStates.storeModeGPS(SwitchEnums.Disabled);
+            ServiceGPS.setMode(SwitchEnums.Disabled);
             return;
         }
-        if (Status == SwitchEnums.NoGPS) {
-            if (SavedStates.getModeGPS() == SwitchEnums.NoGPS) {
+        if (Status == SwitchEnums.Disabled) {
+            if (SavedStates.getModeGPS() == SwitchEnums.Disabled) {
                 SpeedMonitor.Initialize();
                 SpeedMonitor.setVisibility(View.VISIBLE);
-                SavedStates.storeModeGPS(SwitchEnums.WaitingGPS);
+                SavedStates.storeModeGPS(SwitchEnums.Waiting);
                 BackendService.setGPS(true);
                 return;
             }
-            if (SavedStates.getModeGPS() == SwitchEnums.WaitingGPS) {
+            if (SavedStates.getModeGPS() == SwitchEnums.Waiting) {
                 SpeedMonitor.setVisibility(View.INVISIBLE);
-                SavedStates.storeModeGPS(SwitchEnums.NoGPS);
+                SavedStates.storeModeGPS(SwitchEnums.Disabled);
                 BackendService.setGPS(false);
                 return;
             }
         }
-        if (Status == SwitchEnums.LiveGPS) {
+        if (Status == SwitchEnums.Enabled) {
             SpeedMonitor.setVisibility(View.INVISIBLE);
-            ServiceGPS.setMode(SwitchEnums.NoGPS);
-            SavedStates.storeModeGPS(SwitchEnums.NoGPS);
+            ServiceGPS.setMode(SwitchEnums.Disabled);
+            SavedStates.storeModeGPS(SwitchEnums.Disabled);
             BackendService.setGPS(false);
         }
     }
 
     private void ManageCardioSensor(short Status) {
         if (BackendService == null) {
-            SavedStates.storeModeSensor(SwitchEnums.NoSensor);
-            CardioSensor.setMode(SwitchEnums.NoSensor);
+            SavedStates.storeModeSensor(SwitchEnums.Disabled);
+            CardioSensor.setMode(SwitchEnums.Disabled);
             return;
         }
-        if (Status == SwitchEnums.NoSensor) {
-            if (SavedStates.getModeSensor() == SwitchEnums.NoSensor) {
-                SavedStates.storeModeSensor(SwitchEnums.WaitingSensor);
+        if (Status == SwitchEnums.Disabled) {
+            if (SavedStates.getModeSensor() == SwitchEnums.Disabled) {
+                SavedStates.storeModeSensor(SwitchEnums.Waiting);
                 CardioMonitor.Initialize();
                 CardioMonitor.setVisibility(View.VISIBLE);
                 BackendService.setSensor(true);
                 return;
             }
-            if (SavedStates.getModeSensor() == SwitchEnums.WaitingSensor) {
+            if (SavedStates.getModeSensor() == SwitchEnums.Waiting) {
                 CardioMonitor.setVisibility(View.INVISIBLE);
-                CardioSensor.setMode(SwitchEnums.NoSensor);
-                SavedStates.storeModeSensor(SwitchEnums.NoSensor);
+                CardioSensor.setMode(SwitchEnums.Disabled);
+                SavedStates.storeModeSensor(SwitchEnums.Disabled);
                 BackendService.setSensor(false);
                 return;
             }
         }
-        if (Status == SwitchEnums.SensorConnected) {
+        if (Status == SwitchEnums.Enabled) {
             CardioMonitor.setVisibility(View.INVISIBLE);
-            CardioSensor.setMode(SwitchEnums.NoSensor);
-            SavedStates.storeModeSensor(SwitchEnums.NoSensor);
+            CardioSensor.setMode(SwitchEnums.Disabled);
+            SavedStates.storeModeSensor(SwitchEnums.Disabled);
             BackendService.setSensor(false);
         }
     }
@@ -427,14 +427,14 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     public void UpdatedSensor(int Value) {
         // UpdatedBPM CardioSensor button state ...
         if (Value >= 0) {
-            if (SavedStates.getModeSensor() == SwitchEnums.WaitingSensor) {
-                ServiceGPS.setMode(SwitchEnums.SensorConnected);
-                SavedStates.storeModeSensor(SwitchEnums.SensorConnected);
+            if (SavedStates.getModeSensor() == SwitchEnums.Waiting) {
+                ServiceGPS.setMode(SwitchEnums.Enabled);
+                SavedStates.storeModeSensor(SwitchEnums.Enabled);
             }
         }
         else  {
-            CardioSensor.setMode(SwitchEnums.NoSensor);
-            SavedStates.storeModeSensor(SwitchEnums.NoSensor);
+            CardioSensor.setMode(SwitchEnums.Disabled);
+            SavedStates.storeModeSensor(SwitchEnums.Disabled);
         }
     }
 
@@ -446,9 +446,9 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         Statistic Snapshot = InfoGPS.Statistic();
 
         // UpdatedBPM setGPS button state
-        if (SavedStates.getModeGPS() == SwitchEnums.WaitingGPS) {
-            ServiceGPS.setMode(SwitchEnums.LiveGPS);
-            SavedStates.storeModeGPS(SwitchEnums.LiveGPS);
+        if (SavedStates.getModeGPS() == SwitchEnums.Waiting) {
+            ServiceGPS.setMode(SwitchEnums.Enabled);
+            SavedStates.storeModeGPS(SwitchEnums.Enabled);
         }
 
         // Setting collection area

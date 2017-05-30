@@ -119,7 +119,7 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         this.setMeasuredDimension(Width, Height);
         if ((Width == 0) || (Height == 0)) return;
 
-        if (null == Setup.Thumb) return;
+        if (null == Setup) return;
         if (null == LoadedMarker) return;
 
         Padding = Math.min(Width/20, Height/20);
