@@ -6,8 +6,8 @@ public class Descriptor {
     public int Month;
     public int Day;
 
-    public String Name;
-    public int NbDays;
-    public int NbNodes;
+    public String Name = "";
+    public int NbDays = 0;
+    public int NbNodes = 0;
 
 }

@@ -1,4 +1,4 @@
-package core.helpers;
+package core.launcher.partner;
 
 import java.util.ArrayList;
 import core.Structures.Node;

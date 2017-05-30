@@ -42,14 +42,18 @@ public class LoaderJSON  extends Loader implements Runnable {
         this.Listener = Listener;
         this.Source = Source;
         State = Loader.finished;
+
         BufferedReader Reader = ReaderOf(Source.Access);
-        if (Reader == null) return ;
+        if (Reader == null) return;
 
         String HeaderJSON = LoaderJSON.Head(Reader);
-        if (HeaderJSON == null)  return ;
+        if (HeaderJSON == null)  return;
 
         Source.Infos = LibJSON.DescriptorFromJSON(HeaderJSON);
-        if (Source.Infos == null) return  ;
+        if (Source.Infos == null) {
+            Source.Infos = new Descriptor();
+            return;
+        }
 
         Calendar Creation = Calendar.getInstance();
         Creation.set(Calendar.DAY_OF_MONTH,Source.Infos.Day);
@@ -94,8 +98,11 @@ public class LoaderJSON  extends Loader implements Runnable {
         } catch (Exception FileError) {
             Log.d(LogTag, "Error while loading :" + Source.Access.getName());
             Listener.finished(false);
+            State = Loader.finished;
+            return;
         }
         Listener.finished(true);
+        Log.d(LogTag, "Loaded "+Source.Access.getName()+" was recorded "+Source.Infos.NbDays+" days ago.");
         State = Loader.finished;
     }
 }

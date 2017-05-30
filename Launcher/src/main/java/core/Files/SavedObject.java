@@ -7,6 +7,9 @@ public class SavedObject {
     public Descriptor Infos;
     public File Access;
 
-    public SavedObject(File DiskAccess) { Access = DiskAccess; }
+    public SavedObject(File DiskAccess) {
+        Access = DiskAccess;
+        Infos = new Descriptor();
+    }
 
 }

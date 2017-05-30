@@ -27,7 +27,6 @@ import core.Structures.Frame;
 import core.Structures.Statistic;
 
 import core.Structures.Node;
-import core.helpers.Processing;
 import core.helpers.PermissionLoader;
 import core.launcher.Buttons.Switch;
 import core.launcher.Map.Map2D;
@@ -427,8 +426,8 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     public void UpdatedSensor(int Value) {
         // UpdatedBPM CardioSensor button state ...
         if (Value >= 0) {
-            if (SavedStates.getModeSensor() == SwitchEnums.Waiting) {
-                ServiceGPS.setMode(SwitchEnums.Enabled);
+            if (CardioSensor.Status != SwitchEnums.Enabled) {
+                CardioSensor.setMode(SwitchEnums.Enabled);
                 SavedStates.storeModeSensor(SwitchEnums.Enabled);
             }
         }

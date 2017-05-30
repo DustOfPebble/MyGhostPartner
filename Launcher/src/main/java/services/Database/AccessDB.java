@@ -51,7 +51,9 @@ public class AccessDB implements EventsGPS, LoaderEvents {
     }
 
     private void StartNewLoader() {
-        LoadProcess = new LoaderJSON(Files.get(LoadingCount), this);
+        SavedObject Loading = Files.get(LoadingCount);
+        LoadProcess = new LoaderJSON(Loading, this);
+        NbDays = Loading.Infos.NbDays;
         LoadProcess.start();
     }
 
