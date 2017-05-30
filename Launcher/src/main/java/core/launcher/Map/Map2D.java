@@ -1,4 +1,4 @@
-package core.launcher.partner;
+package core.launcher.Map;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -103,11 +103,11 @@ public class Map2D extends ImageView {
         // Do the drawing
 //        Log.d(LogTag, "Drawing "+ CollectedDisplayed.size()+ " extracted points");
         // Drawing all points from Storage
-        LineMode.setColor(Styles.ExtractedColor);
-        LineMode.setAlpha(Styles.ExtractedLineTransparency);
-        LineMode.setStrokeWidth(Styles.ExtractedLineThickness);
-        FillMode.setColor(Styles.ExtractedColor);
-        FillMode.setAlpha(Styles.ExtractedFillTransparency);
+        LineMode.setColor(MapStyles.ExtractedColor);
+        LineMode.setAlpha(MapStyles.ExtractedLineTransparency);
+        LineMode.setStrokeWidth(MapStyles.ExtractedLineThickness);
+        FillMode.setColor(MapStyles.ExtractedColor);
+        FillMode.setAlpha(MapStyles.ExtractedFillTransparency);
         for (Node Marker : CollectedDisplayed) {
             Coords = Marker.Move;
             Radius = MeterToPixelFactor * Marker.Stats.Accuracy;
@@ -122,11 +122,11 @@ public class Map2D extends ImageView {
 
 //        Log.d(LogTag, "Drawing "+ CollectedStatistics.size()+ " computed points");
         // Drawing all points from Storage
-        LineMode.setColor(Styles.FilteredColor);
-        LineMode.setAlpha(Styles.FilteredLineTransparency);
-        LineMode.setStrokeWidth(Styles.FilteredLineThickness);
-        FillMode.setColor(Styles.FilteredColor);
-        FillMode.setAlpha(Styles.FilteredFillTransparency);
+        LineMode.setColor(MapStyles.FilteredColor);
+        LineMode.setAlpha(MapStyles.FilteredLineTransparency);
+        LineMode.setStrokeWidth(MapStyles.FilteredLineThickness);
+        FillMode.setColor(MapStyles.FilteredColor);
+        FillMode.setAlpha(MapStyles.FilteredFillTransparency);
         for (Node Marker : CollectedStatistics) {
             Coords = Marker.Move;
             Radius = MeterToPixelFactor * Marker.Stats.Accuracy;
@@ -139,15 +139,15 @@ public class Map2D extends ImageView {
         }
 
         if (ViewCenter !=null) {//           Log.d(LogTag, "Offset is ["+ ViewCenter.dx +","+ ViewCenter.dy +"]");
-            LineMode.setColor(Styles.MarkerColor);
-            FillMode.setColor(Styles.MarkerColor);
-            LineMode.setStrokeWidth(Styles.MarkerLineThickness);
+            LineMode.setColor(MapStyles.MarkerColor);
+            FillMode.setColor(MapStyles.MarkerColor);
+            LineMode.setStrokeWidth(MapStyles.MarkerLineThickness);
             Radius = MeterToPixelFactor * NowStats.Accuracy;
             Float MinRadius = (Radius/10 < 10)? 10:Radius/10;
             Pixel.set(GraphicCenter.dx,GraphicCenter.dy);
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,LineMode);
             canvas.drawCircle(Pixel.dx, Pixel.dy,MinRadius ,FillMode);
-            FillMode.setAlpha(Styles.MarkerTransparency);
+            FillMode.setAlpha(MapStyles.MarkerTransparency);
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,FillMode);
         }
 

@@ -1,4 +1,4 @@
-package core.launcher.partner;
+package core.launcher.Widgets;
 
 import android.graphics.Bitmap;
 

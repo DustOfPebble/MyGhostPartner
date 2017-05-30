@@ -1,13 +1,6 @@
-package core.launcher.partner;
+package core.launcher.Map;
 
-class Styles {
-
-    public static final int TextColor = 0xfffffcfc;
-    public static final int HistoryColor = 0xffffd42a;
-    public static final int BorderColor =  0xff84e9f4;
-    public static final int FrameRadius = 8; // Value in "DP"
-    public static final int FrameBorder = 2; // Value in "DP"
-
+class MapStyles {
     public static final int MarkerColor = 0xffff5555;
     public static final int MarkerTransparency = 100;
     public static final float MarkerLineThickness = 4f;
@@ -21,5 +14,4 @@ class Styles {
     public static final int ExtractedFillTransparency = 30;
     public static final int ExtractedLineTransparency = 70;
     public static final float ExtractedLineThickness = 5f;
-
 }

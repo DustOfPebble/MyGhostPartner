@@ -1,9 +1,10 @@
-package core.launcher.partner;
+package core.launcher.Widgets;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
 import core.Settings.Switches;
+import core.launcher.partner.R;
 
 class SetSpeed extends SetStats {
 

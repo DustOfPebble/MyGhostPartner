@@ -1,9 +1,11 @@
-package core.launcher.partner;
+package core.widgets;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
 import core.Settings.Switches;
+import core.launcher.partner.R;
+import core.launcher.Widgets.SetStats;
 
 class SetCardio extends SetStats {
 

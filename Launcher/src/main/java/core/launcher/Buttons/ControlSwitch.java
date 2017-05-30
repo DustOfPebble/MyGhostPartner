@@ -1,4 +1,4 @@
-package core.launcher.partner;
+package core.launcher.Buttons;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,6 +10,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+
+import core.launcher.partner.Docking;
+import core.launcher.partner.R;
 
 public class ControlSwitch extends ImageView implements View.OnTouchListener, Runnable {
 

@@ -7,13 +7,13 @@
     android:layout_height="match_parent"
     >
 
-    <core.launcher.partner.Map2D
+    <core.launcher.Map.Map2D
         android:id="@+id/map_manager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
 
-    <core.launcher.partner.ControlSwitch
+    <core.launcher.Buttons.ControlSwitch
         android:id="@+id/switch_sleep_locker"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -25,7 +25,7 @@
         app:HighMode="@drawable/screen_locked"
         app:LowMode="@drawable/screen_unlocked"
         />
-    <core.launcher.partner.ControlSwitch
+    <core.launcher.Buttons.ControlSwitch
         android:id="@+id/switch_trace_recorder"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -38,7 +38,7 @@
         app:LowMode="@drawable/logging_off"
         />
 
-    <core.launcher.partner.ControlSwitch
+    <core.launcher.Buttons.ControlSwitch
         android:id="@+id/gps_provider"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -51,7 +51,7 @@
         app:LowMode="@drawable/gps_off"
         />
 
-    <core.launcher.partner.ControlSwitch
+    <core.launcher.Buttons.ControlSwitch
         android:id="@+id/sensor_provider"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -63,7 +63,7 @@
         app:HighMode="@drawable/sensor_active"
         app:LowMode="@drawable/sensor_off" />
 
-    <core.launcher.partner.StatsScaled
+    <core.launcher.Widgets.StatsScaled
         android:id="@+id/left_monitor"
         android:layout_margin="2dp"
         android:layout_width="160dp"
@@ -74,7 +74,7 @@
         android:visibility="invisible"
         />
 
-    <core.launcher.partner.StatsScaled
+    <core.launcher.Widgets.StatsScaled
         android:id="@+id/right_monitor"
         android:layout_margin="2dp"
         android:layout_width="160dp"

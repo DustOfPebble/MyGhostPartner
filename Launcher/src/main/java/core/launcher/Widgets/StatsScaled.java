@@ -1,4 +1,4 @@
-package core.launcher.partner;
+package core.launcher.Widgets;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+
+import core.launcher.partner.Docking;
+import core.launcher.partner.R;
 
 public class StatsScaled extends ImageView implements View.OnTouchListener {
     private String LogTag = StatsScaled.class.getSimpleName();
@@ -70,14 +73,14 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         super(context, attrs);
         this.setAdjustViewBounds(true);
 
-        LoadedMarker = BitmapFactory.decodeResource(getResources(),R.drawable.arrow);
+        LoadedMarker = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
         HistoryPainter = new Paint();
-        HistoryPainter.setColor(Styles.HistoryColor);
+        HistoryPainter.setColor(StatsStyles.HistoryColor);
         HistoryPainter.setStrokeCap(Paint.Cap.ROUND);
 
         VuMeterPainter = new Paint();
         VuMeterPainter.setStyle(Paint.Style.FILL);
-        VuMeterPainter.setColor(Styles.TextColor);
+        VuMeterPainter.setColor(StatsStyles.TextColor);
         VuMeterPainter.setStrokeCap(Paint.Cap.ROUND);
 
         UnitPainter = new Paint(VuMeterPainter);
@@ -88,7 +91,7 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         Frame = new RectF();
         FramePainter = new Paint();
         FramePainter.setStyle(Paint.Style.STROKE);
-        FramePainter.setColor(Styles.BorderColor);
+        FramePainter.setColor(StatsStyles.BorderColor);
 
         HapticFeedback = (Vibrator)  context.getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -162,10 +165,10 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
 
         // Frame settings
         FramePixelsFactor = this.getResources().getDisplayMetrics().density;
-        float StrokeWidth = FramePixelsFactor  * Styles.FrameBorder;
+        float StrokeWidth = FramePixelsFactor  * StatsStyles.FrameBorder;
         FramePainter.setStrokeWidth(StrokeWidth);
         Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
-        Radius = Styles.FrameRadius * FramePixelsFactor;
+        Radius = StatsStyles.FrameRadius * FramePixelsFactor;
 
         if (VuMeterStartValue == VuMeterStopValue) return; // Can't build a VueMeter
         buildVuMeter();
