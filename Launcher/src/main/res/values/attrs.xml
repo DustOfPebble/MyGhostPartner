@@ -1,6 +1,7 @@
 <resources>
-    <declare-styleable name="ControlSwitch">
-        <attr name="HighMode" format="integer" />
-        <attr name="LowMode" format="integer" />
+    <declare-styleable name="Switch">
+        <attr name="Enabled" format="integer" />
+        <attr name="Waiting" format="integer" />
+        <attr name="Disabled" format="integer" />
     </declare-styleable>
  </resources>

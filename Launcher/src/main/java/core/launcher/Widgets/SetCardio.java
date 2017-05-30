@@ -3,13 +3,13 @@ package core.launcher.Widgets;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
-import core.Settings.Switches;
+import core.launcher.Buttons.SwitchEnums;
 import core.launcher.partner.R;
 
 public class SetCardio extends SetStats {
 
     public SetCardio(Context Base) {
-        ID = Switches.SensorStatsID;
+        ID = SwitchEnums.SensorStatsID;
         Thumb = BitmapFactory.decodeResource(Base.getResources(), R.drawable.heart_thumb);
         NbTicksShown = 22;
         TicksTextGap = 10;

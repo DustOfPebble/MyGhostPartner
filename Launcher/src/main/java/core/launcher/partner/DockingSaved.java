@@ -1,14 +1,14 @@
 package core.launcher.partner;
 
 import android.app.Application;
-import core.Settings.Switches;
+import core.launcher.Buttons.SwitchEnums;
 
-public class ViewStates extends Application  {
+public class DockingSaved extends Application  {
 
-    private short ModeGPS = Switches.NoGPS;
-    private short ModeSensor = Switches.NoSensor;
-    private short ModeLogger = Switches.LoggerOFF;
-    private short ModeScreen = Switches.SleepLocked;
+    private short ModeGPS = SwitchEnums.Disabled;
+    private short ModeSensor = SwitchEnums.Disabled;
+    private short ModeLogger = SwitchEnums.Disabled;
+    private short ModeScreen = SwitchEnums.Disabled;
 
     @Override
     public void onCreate() { super.onCreate();  }
@@ -30,8 +30,8 @@ public class ViewStates extends Application  {
     public short getModeSleep() {return ModeScreen;}
     public void storeModeSleep(short mode) {ModeScreen = mode;}
 
-    // Managing back light intensity for screen --> Not implemented
+    // Managing trace recorder
     public short getModeLogger() {return ModeLogger;}
-    public void storeModeLight(short mode) { ModeLogger = mode;}
+    public void storeModeLogger(short mode) { ModeLogger = mode;}
 
 }

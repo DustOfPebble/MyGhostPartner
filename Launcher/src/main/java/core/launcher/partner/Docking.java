@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import core.GPS.CoreGPS;
 import core.Settings.Parameters;
-import core.Settings.Switches;
+import core.launcher.Buttons.SwitchEnums;
 import core.Structures.Coords2D;
 import core.Structures.Extension;
 import core.Structures.Frame;
@@ -29,7 +29,7 @@ import core.Structures.Statistic;
 import core.Structures.Node;
 import core.helpers.Processing;
 import core.helpers.PermissionLoader;
-import core.launcher.Buttons.ControlSwitch;
+import core.launcher.Buttons.Switch;
 import core.launcher.Map.Map2D;
 import core.launcher.Widgets.SetSpeed;
 import core.launcher.Widgets.SetCardio;
@@ -46,10 +46,10 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     private RelativeLayout DockingManager = null;
 
-    private ControlSwitch SleepLocker = null;
-    private ControlSwitch NodesLogger = null;
-    private ControlSwitch ServiceGPS = null;
-    private ControlSwitch CardioSensor = null;
+    private Switch SleepLocker = null;
+    private Switch NodesLogger = null;
+    private Switch ServiceGPS = null;
+    private Switch CardioSensor = null;
 
     private StatsScaled SpeedMonitor = null;
     private short SpeedWidgetMode = -1;
@@ -57,7 +57,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private short CardioWidgetMode = -1;
 
     private Map2D MapView = null;
-    private ViewStates SavedStates;
+    private DockingSaved SavedStates;
     private Junction BackendService = null;
 
     private ArrayList<Float> Speeds;
@@ -74,26 +74,22 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         DockingManager = (RelativeLayout) findViewById(R.id.manage_docking);
         MapView = (Map2D)  findViewById(R.id.map_manager);
 
-        SavedStates = (ViewStates) getApplication();
+        SavedStates = (DockingSaved) getApplication();
 
-        SleepLocker = (ControlSwitch) findViewById(R.id.switch_sleep_locker);
-        SleepLocker.registerModes(Switches.SleepLocked, Switches.SleepUnLocked);
-        SleepLocker.registerManager(this);
-        ManageSleepLocker(Switches.ForceSaved);
+        SleepLocker = (Switch) findViewById(R.id.switch_sleep_locker);
+        SleepLocker.registerListener(this);
+        ManageSleepLocker(SwitchEnums.Forced);
 
-        NodesLogger = (ControlSwitch) findViewById(R.id.switch_trace_recorder);
-        NodesLogger.registerModes(Switches.LoggerListening, Switches.LoggerOFF);
-        NodesLogger.registerManager(this);
-        ManageNodesLogger(Switches.ForceSaved);
+        NodesLogger = (Switch) findViewById(R.id.switch_trace_recorder);
+        NodesLogger.registerListener(this);
+        ManageNodesLogger(SwitchEnums.Forced);
 
-        ServiceGPS = (ControlSwitch) findViewById(R.id.gps_provider);
-        ServiceGPS.registerModes(Switches.LiveGPS, Switches.NoGPS);
-        ServiceGPS.registerManager(this);
+        ServiceGPS = (Switch) findViewById(R.id.gps_provider);
+        ServiceGPS.registerListener(this);
         ServiceGPS.setMode(SavedStates.getModeGPS());
 
-        CardioSensor = (ControlSwitch) findViewById(R.id.sensor_provider);
-        CardioSensor.registerModes(Switches.SensorConnected, Switches.NoSensor);
-        CardioSensor.registerManager(this);
+        CardioSensor = (Switch) findViewById(R.id.sensor_provider);
+        CardioSensor.registerListener(this);
         CardioSensor.setMode(SavedStates.getModeSensor());
 
         LayoutInflater fromXML = LayoutInflater.from(this);
@@ -102,13 +98,13 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         SpeedMonitor.registerManager(this);
         SpeedMonitor.setView(new SetSpeed(this));
-        SpeedWidgetMode = Switches.LeftBottomWidget;
+        SpeedWidgetMode = SwitchEnums.LeftBottomWidget;
 
         // Hardcoded settings for Heartbeat in right Monitor
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         CardioMonitor.registerManager(this);
         CardioMonitor.setView(new SetCardio(this));
-        CardioWidgetMode = Switches.RightBottomWidget;
+        CardioWidgetMode = SwitchEnums.RightBottomWidget;
 
         Speeds = new ArrayList<>();
         HeartBeats = new ArrayList<>();
@@ -143,7 +139,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         RelativeLayout.LayoutParams MonitorConfig;
 
         // Managing SpeedMonitor Widget
-        if (SpeedWidgetMode == Switches.LeftBottomWidget) {
+        if (SpeedWidgetMode == SwitchEnums.LeftBottomWidget) {
             MonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * Parameters.WidthToHeightFactor));
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -159,7 +155,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         DockingManager.addView(SpeedMonitor,MonitorConfig);
 
         // Managing CardioMonitor Widget
-        if (CardioWidgetMode == Switches.RightBottomWidget) {
+        if (CardioWidgetMode == SwitchEnums.RightBottomWidget) {
             MonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * Parameters.WidthToHeightFactor));
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -178,20 +174,20 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     }
 
     public void moveWidget(short ID){
-        if (ID == Switches.SpeedStatsID){
-            if (SpeedWidgetMode == Switches.LeftBottomWidget) {
-                SpeedWidgetMode = Switches.CenterTopWidget;
-                CardioWidgetMode = Switches.RightBottomWidget;
+        if (ID == SwitchEnums.SpeedStatsID){
+            if (SpeedWidgetMode == SwitchEnums.LeftBottomWidget) {
+                SpeedWidgetMode = SwitchEnums.CenterTopWidget;
+                CardioWidgetMode = SwitchEnums.RightBottomWidget;
             }
-            else SpeedWidgetMode = Switches.LeftBottomWidget;
+            else SpeedWidgetMode = SwitchEnums.LeftBottomWidget;
         }
 
-        if (ID == Switches.SensorStatsID) {
-            if (CardioWidgetMode == Switches.RightBottomWidget) {
-                CardioWidgetMode = Switches.CenterTopWidget;
-                SpeedWidgetMode = Switches.LeftBottomWidget;
+        if (ID == SwitchEnums.SensorStatsID) {
+            if (CardioWidgetMode == SwitchEnums.RightBottomWidget) {
+                CardioWidgetMode = SwitchEnums.CenterTopWidget;
+                SpeedWidgetMode = SwitchEnums.LeftBottomWidget;
             }
-            else CardioWidgetMode = Switches.RightBottomWidget;
+            else CardioWidgetMode = SwitchEnums.RightBottomWidget;
         }
 
         applyWidgetsLayout();
@@ -210,110 +206,111 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     protected void onResume() {
         super.onResume();
         BackPressedCount = 0;
-        SavedStates = (ViewStates) getApplication();
+        SavedStates = (DockingSaved) getApplication();
 
         // Refresh all button internal state
         loadStatus();
         StartServices();
     }
 
-    public void onClicked(short Status) {
-        if ((Status == Switches.SleepLocked) || (Status == Switches.SleepUnLocked)) ManageSleepLocker(Status);
-        if ((Status == Switches.LoggerListening) || (Status == Switches.LoggerOFF)) ManageNodesLogger(Status);
-        if ((Status == Switches.LiveGPS) || (Status == Switches.NoGPS))  ManageGPS(Status);
-        if ((Status == Switches.SensorConnected) || (Status == Switches.NoSensor)) ManageCardioSensor(Status);
+    public void onClicked(Switch Sender) {
+        if (Sender == SleepLocker) ManageSleepLocker(Sender.Status);
+        if (Sender == NodesLogger) ManageNodesLogger(Sender.Status);
+        if (Sender == ServiceGPS) ManageGPS(Sender.Status);
+        if (Sender == CardioSensor) ManageCardioSensor(Sender.Status);
     }
     private void ManageSleepLocker(short Status) {
-        if (Status == Switches.ForceSaved) Status = SavedStates.getModeSleep();
-        else Status = (Status==Switches.SleepLocked)? Switches.SleepUnLocked:Switches.SleepLocked;
+        if (Status == SwitchEnums.Forced) Status = SavedStates.getModeSleep();
+        else Status = (Status == SwitchEnums.Enabled)? SwitchEnums.Disabled: SwitchEnums.Enabled;
 
-        if (Status == Switches.SleepUnLocked) {
+        if (Status == SwitchEnums.Disabled) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            SavedStates.storeModeSleep(Switches.SleepUnLocked);
-            SleepLocker.setMode(Switches.SleepUnLocked);
+            SavedStates.storeModeSleep(SwitchEnums.Disabled);
+            SleepLocker.setMode(SwitchEnums.Disabled);
+            return;
         }
-        if (Status == Switches.SleepLocked) {
+        if (Status == SwitchEnums.Enabled) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            SavedStates.storeModeSleep(Switches.SleepLocked);
-            SleepLocker.setMode(Switches.SleepLocked);
+            SavedStates.storeModeSleep(SwitchEnums.Enabled);
+            SleepLocker.setMode(SwitchEnums.Enabled);
         }
     }
     private void ManageNodesLogger(short Status) {
-        if (Status == Switches.ForceSaved) Status = SavedStates.getModeLogger();
-        else Status = (Status==Switches.LoggerListening)? Switches.LoggerOFF:Switches.LoggerListening;
+        if (Status == SwitchEnums.Forced) Status = SavedStates.getModeLogger();
+        else Status = (Status== SwitchEnums.Enabled)? SwitchEnums.Disabled: SwitchEnums.Enabled;
 
         if (BackendService == null) {
-            SavedStates.storeModeLight(Switches.LoggerOFF);
-            NodesLogger.setMode(Switches.LoggerOFF);
+            SavedStates.storeModeLogger(SwitchEnums.Disabled);
+            NodesLogger.setMode(SwitchEnums.Disabled);
             return;
         }
-        if (Status == Switches.LoggerOFF) {
-            SavedStates.storeModeLight(Switches.LoggerOFF);
-            NodesLogger.setMode(Switches.LoggerOFF);
+        if (Status == SwitchEnums.Disabled) {
+            SavedStates.storeModeLogger(SwitchEnums.Disabled);
+            NodesLogger.setMode(SwitchEnums.Disabled);
             BackendService.setLogger(Modes.Finish);
         }
-        if (Status == Switches.LoggerListening) {
-            SavedStates.storeModeLight(Switches.LoggerListening);
-            NodesLogger.setMode(Switches.LoggerListening);
+        if (Status == SwitchEnums.Enabled) {
+            SavedStates.storeModeLogger(SwitchEnums.Enabled);
+            NodesLogger.setMode(SwitchEnums.Enabled);
             BackendService.setLogger(Modes.Create);
         }
     }
 
     private void ManageGPS(short Status) {
         if (BackendService == null) {
-            SavedStates.storeModeGPS(Switches.NoGPS);
-            ServiceGPS.setMode(Switches.NoGPS);
+            SavedStates.storeModeGPS(SwitchEnums.NoGPS);
+            ServiceGPS.setMode(SwitchEnums.NoGPS);
             return;
         }
-        if (Status == Switches.NoGPS) {
-            if (SavedStates.getModeGPS() == Switches.NoGPS) {
+        if (Status == SwitchEnums.NoGPS) {
+            if (SavedStates.getModeGPS() == SwitchEnums.NoGPS) {
                 SpeedMonitor.Initialize();
                 SpeedMonitor.setVisibility(View.VISIBLE);
-                SavedStates.storeModeGPS(Switches.WaitingGPS);
+                SavedStates.storeModeGPS(SwitchEnums.WaitingGPS);
                 BackendService.setGPS(true);
                 return;
             }
-            if (SavedStates.getModeGPS() == Switches.WaitingGPS) {
+            if (SavedStates.getModeGPS() == SwitchEnums.WaitingGPS) {
                 SpeedMonitor.setVisibility(View.INVISIBLE);
-                SavedStates.storeModeGPS(Switches.NoGPS);
+                SavedStates.storeModeGPS(SwitchEnums.NoGPS);
                 BackendService.setGPS(false);
                 return;
             }
         }
-        if (Status == Switches.LiveGPS) {
+        if (Status == SwitchEnums.LiveGPS) {
             SpeedMonitor.setVisibility(View.INVISIBLE);
-            ServiceGPS.setMode(Switches.NoGPS);
-            SavedStates.storeModeGPS(Switches.NoGPS);
+            ServiceGPS.setMode(SwitchEnums.NoGPS);
+            SavedStates.storeModeGPS(SwitchEnums.NoGPS);
             BackendService.setGPS(false);
         }
     }
 
     private void ManageCardioSensor(short Status) {
         if (BackendService == null) {
-            SavedStates.storeModeSensor(Switches.NoSensor);
-            CardioSensor.setMode(Switches.NoSensor);
+            SavedStates.storeModeSensor(SwitchEnums.NoSensor);
+            CardioSensor.setMode(SwitchEnums.NoSensor);
             return;
         }
-        if (Status == Switches.NoSensor) {
-            if (SavedStates.getModeSensor() == Switches.NoSensor) {
-                SavedStates.storeModeSensor(Switches.WaitingSensor);
+        if (Status == SwitchEnums.NoSensor) {
+            if (SavedStates.getModeSensor() == SwitchEnums.NoSensor) {
+                SavedStates.storeModeSensor(SwitchEnums.WaitingSensor);
                 CardioMonitor.Initialize();
                 CardioMonitor.setVisibility(View.VISIBLE);
                 BackendService.setSensor(true);
                 return;
             }
-            if (SavedStates.getModeSensor() == Switches.WaitingSensor) {
+            if (SavedStates.getModeSensor() == SwitchEnums.WaitingSensor) {
                 CardioMonitor.setVisibility(View.INVISIBLE);
-                CardioSensor.setMode(Switches.NoSensor);
-                SavedStates.storeModeSensor(Switches.NoSensor);
+                CardioSensor.setMode(SwitchEnums.NoSensor);
+                SavedStates.storeModeSensor(SwitchEnums.NoSensor);
                 BackendService.setSensor(false);
                 return;
             }
         }
-        if (Status == Switches.SensorConnected) {
+        if (Status == SwitchEnums.SensorConnected) {
             CardioMonitor.setVisibility(View.INVISIBLE);
-            CardioSensor.setMode(Switches.NoSensor);
-            SavedStates.storeModeSensor(Switches.NoSensor);
+            CardioSensor.setMode(SwitchEnums.NoSensor);
+            SavedStates.storeModeSensor(SwitchEnums.NoSensor);
             BackendService.setSensor(false);
         }
     }
@@ -430,14 +427,14 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     public void UpdatedSensor(int Value) {
         // UpdatedBPM CardioSensor button state ...
         if (Value >= 0) {
-            if (SavedStates.getModeSensor() == Switches.WaitingSensor) {
-                ServiceGPS.setMode(Switches.SensorConnected);
-                SavedStates.storeModeSensor(Switches.SensorConnected);
+            if (SavedStates.getModeSensor() == SwitchEnums.WaitingSensor) {
+                ServiceGPS.setMode(SwitchEnums.SensorConnected);
+                SavedStates.storeModeSensor(SwitchEnums.SensorConnected);
             }
         }
         else  {
-            CardioSensor.setMode(Switches.NoSensor);
-            SavedStates.storeModeSensor(Switches.NoSensor);
+            CardioSensor.setMode(SwitchEnums.NoSensor);
+            SavedStates.storeModeSensor(SwitchEnums.NoSensor);
         }
     }
 
@@ -449,9 +446,9 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         Statistic Snapshot = InfoGPS.Statistic();
 
         // UpdatedBPM setGPS button state
-        if (SavedStates.getModeGPS() == Switches.WaitingGPS) {
-            ServiceGPS.setMode(Switches.LiveGPS);
-            SavedStates.storeModeGPS(Switches.LiveGPS);
+        if (SavedStates.getModeGPS() == SwitchEnums.WaitingGPS) {
+            ServiceGPS.setMode(SwitchEnums.LiveGPS);
+            SavedStates.storeModeGPS(SwitchEnums.LiveGPS);
         }
 
         // Setting collection area

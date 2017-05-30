@@ -12,7 +12,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/launcher"
         android:theme="@android:style/Theme.NoTitleBar"
-        android:name="core.launcher.partner.ViewStates"
+        android:name="core.launcher.partner.DockingSaved"
         >
         <activity
             android:name="core.launcher.partner.Docking"

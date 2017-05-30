@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         />
 
-    <core.launcher.Buttons.ControlSwitch
+    <core.launcher.Buttons.Switch
         android:id="@+id/switch_sleep_locker"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -25,7 +25,7 @@
         app:HighMode="@drawable/screen_locked"
         app:LowMode="@drawable/screen_unlocked"
         />
-    <core.launcher.Buttons.ControlSwitch
+    <core.launcher.Buttons.Switch
         android:id="@+id/switch_trace_recorder"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -38,7 +38,7 @@
         app:LowMode="@drawable/logging_off"
         />
 
-    <core.launcher.Buttons.ControlSwitch
+    <core.launcher.Buttons.Switch
         android:id="@+id/gps_provider"
         android:clickable="true"
         android:layout_margin="5dp"
@@ -51,7 +51,7 @@
         app:LowMode="@drawable/gps_off"
         />
 
-    <core.launcher.Buttons.ControlSwitch
+    <core.launcher.Buttons.Switch
         android:id="@+id/sensor_provider"
         android:layout_width="50dp"
         android:layout_height="50dp"

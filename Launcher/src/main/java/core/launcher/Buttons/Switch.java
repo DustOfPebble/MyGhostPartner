@@ -14,31 +14,30 @@ import android.widget.ImageView;
 import core.launcher.partner.Docking;
 import core.launcher.partner.R;
 
-public class ControlSwitch extends ImageView implements View.OnTouchListener, Runnable {
+public class Switch extends ImageView implements View.OnTouchListener, Runnable {
 
-    protected Drawable highIcon = null;
-    protected Drawable lowIcon = null;
-
-    private Docking Controler = null;
-    private Handler SyncUI = new Handler(Looper.getMainLooper());
-
-    private short highStatus = -1;
-    private short lowStatus = -1;
-
-    private short Status =-1;
     protected Vibrator HapticFeedback;
 
-     public ControlSwitch(Context context, AttributeSet attrs) {
+    protected Drawable Enabled = null;
+    protected Drawable Disabled = null;
+
+    private Docking Controler = null;
+
+    private Handler SyncUI = new Handler(Looper.getMainLooper());
+
+    public short Status = -1;
+
+     public Switch(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
 
         // Loading Attributes from XML definitions ...
         if (attrs == null) return;
-        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ControlSwitch, 0, 0);
+        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.Switch, 0, 0);
         try
         {
-            highIcon = attributes.getDrawable(R.styleable.ControlSwitch_HighMode);
-            lowIcon = attributes.getDrawable(R.styleable.ControlSwitch_LowMode);
+            Enabled = attributes.getDrawable(R.styleable.Switch_Enabled);
+            Disabled = attributes.getDrawable(R.styleable.Switch_Disabled);
         }
         finally { attributes.recycle();}
 
@@ -46,19 +45,14 @@ public class ControlSwitch extends ImageView implements View.OnTouchListener, Ru
          HapticFeedback = (Vibrator)  context.getSystemService(Context.VIBRATOR_SERVICE);
     }
 
-     public void registerModes(short highEvent, short lowEvent)
-    {
-        highStatus = highEvent;
-        lowStatus = lowEvent;
-    }
 
-    public void setMode(short modeEvent) {
-        if (modeEvent == Status) return;
-        Status = modeEvent;
+    public void setMode(short Mode) {
+        if (Mode == Status) return;
+        Status = Mode;
         SyncUI.post(this);
     }
 
-    public  void registerManager(Docking controler) { this.Controler = controler;}
+    public  void registerListener(Docking controler) { this.Controler = controler;}
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
@@ -76,7 +70,7 @@ public class ControlSwitch extends ImageView implements View.OnTouchListener, Ru
         }
 
         if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            Controler.onClicked(Status);
+            Controler.onClicked(this);
             return true;
         }
 
@@ -86,8 +80,8 @@ public class ControlSwitch extends ImageView implements View.OnTouchListener, Ru
 
     @Override
     public void run() {
-        if (Status == highStatus)  this.setImageDrawable(highIcon);
-        if (Status == lowStatus)  this.setImageDrawable(lowIcon);
+        if (Status == StatusSwitch.Running)  this.setImageDrawable(Enabled);
+        if (Status == StatusSwitch.Off)  this.setImageDrawable(Disabled);
         invalidate();
     }
 }

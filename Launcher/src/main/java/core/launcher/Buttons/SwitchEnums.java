@@ -1,13 +1,10 @@
-package core.Settings;
+package core.launcher.Buttons;
 
-public class Switches {
-    static public final short ForceSaved = -1;
-
-    static public final short SleepLocked = 10;
-    static public final short SleepUnLocked = 11;
-
-    static public final short LoggerListening = 20;
-    static public final short LoggerOFF = 21;
+public class SwitchEnums {
+    public static final short Waiting = 1;
+    public static final short Disabled = 2;
+    public static final short Enabled = 3;
+    public static final short Forced = 0;
 
     static public final short NoGPS = 30;
     static public final short LiveGPS = 31;
