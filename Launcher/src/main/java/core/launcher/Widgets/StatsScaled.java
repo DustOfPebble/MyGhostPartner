@@ -22,7 +22,6 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
     private String LogTag = StatsScaled.class.getSimpleName();
 
     private Docking Controler = null;
-    private short ID =-1;
     private Vibrator HapticFeedback;
 
     private RectF Frame;
@@ -35,18 +34,13 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
     private Bitmap LoadedMarker;
     private Bitmap ResizedMarker;
 
-    private Bitmap LoadedIcon = null;
     private Bitmap ResizedIcon =null;
-
-    private String Unit ="";
 
     private float LiveValue =0f;
 
     private Paint VuMeterPainter;
-    private int NbTicksDisplayed;
+    private SetStats Setup;
     private float DisplayedRange;
-    private float TicksStep, NbTicksLabel;
-    private float PhysicMax, PhysicMin;
     private float PhysicToPixels;
     private float VuMeterFontSize;
     private float VuMeterStrokeWidth;
@@ -99,16 +93,8 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         setVisibility(INVISIBLE);
     }
 
-    public void setView(SetStats Settings) {
-        this.ID = Settings.ID;
-        this.NbTicksDisplayed = Settings.TicksShown;
-        this.NbTicksLabel = Settings.TicksLabelCount;
-        this.TicksStep = Settings.TicksPhysicValue;
-        this.PhysicMax = Settings.PhysicsRangeMax;
-        this.PhysicMin = Settings.PhysicsRangeMin;
-        this.Unit = Settings.Unit;
-        this.LoadedIcon = Settings.Thumb;
-    }
+    public void setView(SetStats Settings) { Setup = Settings; }
+
     public  void registerManager(Docking controler) { this.Controler = controler;}
 
     public void setValues(float Live, ArrayList<Float> History) {
@@ -133,13 +119,13 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         this.setMeasuredDimension(Width, Height);
         if ((Width == 0) || (Height == 0)) return;
 
-        if (null == LoadedIcon) return;
+        if (null == Setup.Thumb) return;
         if (null == LoadedMarker) return;
 
         Padding = Math.min(Width/20, Height/20);
 
         int IconSize = Math.max( Height/5, Width/5);
-        ResizedIcon = Bitmap.createScaledBitmap(LoadedIcon, IconSize,IconSize, false);
+        ResizedIcon = Bitmap.createScaledBitmap(Setup.Thumb, IconSize,IconSize, false);
         ResizedMarker = Bitmap.createScaledBitmap(LoadedMarker, IconSize,IconSize, false);
 
         UnitFontSize = Height/6;
@@ -155,12 +141,11 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
 
         HistoryHeight = Height/4;
         HistoryOffset = Height - (HistoryHeight + Padding);
-        if (NbTicksDisplayed == 0) NbTicksDisplayed = 1;
-        HistoryStrokeWidth = Width/NbTicksDisplayed;
+        HistoryStrokeWidth = Width/ Setup.NbTicksShown;
         HistoryPainter.setStrokeWidth(HistoryStrokeWidth);
 
         // Loading for VuMeter display
-        DisplayedRange = (NbTicksDisplayed - 1) * TicksStep;
+        DisplayedRange = (Setup.NbTicksShown - 1) * Setup.TicksPhysicValue;
         PhysicToPixels = (Width) / DisplayedRange;
 
         // Frame settings
@@ -185,7 +170,7 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
 //        if (VuMeter == null) { super.onDraw(canvas);return;}
 
         // Drawing Unit
-        canvas.drawText(Unit,Width - Padding,UnitFontSize +Padding, UnitPainter);
+        canvas.drawText(Setup.Unit,Width - Padding,UnitFontSize +Padding, UnitPainter);
 
         // Drawing Icon
         canvas.drawBitmap(ResizedIcon, Padding, Padding, null);
@@ -213,7 +198,7 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         int NextLabel = NextUnit;
 
         int Modulo;
-        int UnitLabelStep = (int) (NbTicksLabel * TicksStep);
+        int UnitLabelStep = (int) (Setup.TicksTextGap * Setup.TicksPhysicValue);
         if (UnitLabelStep < 1) UnitLabelStep = 1;
         Modulo = PreviousUnit % UnitLabelStep;
         if (Modulo > 0) PreviousLabel = PreviousUnit - Modulo;
@@ -236,7 +221,7 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
 
         float TicksPhysic = VuMeterStartValue;
         float TicksPixels = 0;
-        float NbTicksCount = NbTicksLabel; // Force a Label on first ticks
+        float NbTicksCount = Setup.TicksTextGap; // Force a Label on first ticks
         float LongTickBeginY = VuMeterStrokeWidth/2;
         float LongTicksEndY = VuMeterLongTicks + LongTickBeginY ;
         float ShortTicksBeginY = VuMeterStrokeWidth/2;
@@ -246,8 +231,8 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
 
         while (TicksPhysic <= VuMeterStopValue)
         {
-            if ((TicksPhysic >= PhysicMin) && (TicksPhysic <= PhysicMax)) {
-                if (NbTicksCount >= NbTicksLabel) {
+            if ((TicksPhysic >= Setup.PhysicsRangeMin) && (TicksPhysic <= Setup.PhysicsRangeMax)) {
+                if (NbTicksCount >= Setup.TicksTextGap) {
                     DrawVuMeter.drawLine(TicksPixels, LongTickBeginY, TicksPixels, LongTicksEndY, VuMeterPainter);
                     DrawVuMeter.drawText(String.format("%.0f", TicksPhysic), TicksPixels, VuMeterLongTicks + VuMeterFontSize + VuMeterStrokeWidth, VuMeterPainter);
                     NbTicksCount = 0;
@@ -256,8 +241,8 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
                 }
             }
 
-            TicksPixels += (PhysicToPixels* TicksStep);
-            TicksPhysic += TicksStep;
+            TicksPixels += (PhysicToPixels* Setup.TicksPhysicValue);
+            TicksPhysic += Setup.TicksPhysicValue;
             NbTicksCount++;
         }
         long EndRender = SystemClock.elapsedRealtime();
@@ -268,15 +253,15 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryHeight), Bitmap.Config.ARGB_8888);
         Canvas DrawHistoryStats = new Canvas(HistoryStats);
 
-        int[] Classes = new int[NbTicksDisplayed];
+        int[] Classes = new int[Setup.NbTicksShown];
         int MaxClasse = 0;
         int ClasseIndex;
-        int IndexMax= NbTicksDisplayed /2;
+        int IndexMax= Setup.NbTicksShown /2;
 
         for (Float Stats: Collected) {
-            ClasseIndex = (int)((Stats - LiveValue)/ TicksStep)+IndexMax;
+            ClasseIndex = (int)((Stats - LiveValue)/ Setup.TicksPhysicValue)+IndexMax;
             if (ClasseIndex < 0) continue;
-            if (ClasseIndex >= NbTicksDisplayed) continue;
+            if (ClasseIndex >= Setup.NbTicksShown) continue;
             Classes[ClasseIndex]++;
             if (Classes[ClasseIndex] > MaxClasse) MaxClasse = Classes[ClasseIndex];
         }
@@ -286,9 +271,9 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         if (MaxClasse ==0) MaxClasse=1;
         float Factor =  (HistoryHeight - HistoryStrokeWidth) /MaxClasse;
         float HistoryEndY = HistoryHeight - HistoryStrokeWidth/2;
-        float TicksGraphic = DrawHistoryStats.getWidth() / NbTicksDisplayed;
+        float TicksGraphic = DrawHistoryStats.getWidth() / Setup.NbTicksShown;
 
-        for (int Index=0; Index < NbTicksDisplayed; Index++) {
+        for (int Index = 0; Index < Setup.NbTicksShown; Index++) {
             HistoryBeginY = HistoryEndY - (Factor * Classes[Index]);
             DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
             X += TicksGraphic;
@@ -305,7 +290,7 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         }
 
         if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            Controler.moveWidget(this.ID);
+            Controler.moveWidget(Setup.ID);
             return true;
         }
 
