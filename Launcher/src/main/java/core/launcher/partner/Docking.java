@@ -33,6 +33,7 @@ import core.launcher.Buttons.Switch;
 import core.launcher.Map.Map2D;
 import core.launcher.Widgets.SetSpeed;
 import core.launcher.Widgets.SetCardio;
+import core.launcher.Widgets.StatsEnums;
 import core.launcher.Widgets.StatsScaled;
 import services.Hub;
 import services.Junction;
@@ -98,13 +99,13 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         SpeedMonitor.registerManager(this);
         SpeedMonitor.setView(new SetSpeed(this));
-        SpeedWidgetMode = SwitchEnums.LeftBottomWidget;
+        SpeedWidgetMode = StatsEnums.LeftBottomWidget;
 
         // Hardcoded settings for Heartbeat in right Monitor
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         CardioMonitor.registerManager(this);
         CardioMonitor.setView(new SetCardio(this));
-        CardioWidgetMode = SwitchEnums.RightBottomWidget;
+        CardioWidgetMode = StatsEnums.RightBottomWidget;
 
         Speeds = new ArrayList<>();
         HeartBeats = new ArrayList<>();
@@ -139,7 +140,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         RelativeLayout.LayoutParams MonitorConfig;
 
         // Managing SpeedMonitor Widget
-        if (SpeedWidgetMode == SwitchEnums.LeftBottomWidget) {
+        if (SpeedWidgetMode == StatsEnums.LeftBottomWidget) {
             MonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * Parameters.WidthToHeightFactor));
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -155,7 +156,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         DockingManager.addView(SpeedMonitor,MonitorConfig);
 
         // Managing CardioMonitor Widget
-        if (CardioWidgetMode == SwitchEnums.RightBottomWidget) {
+        if (CardioWidgetMode == StatsEnums.RightBottomWidget) {
             MonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * Parameters.WidthToHeightFactor));
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
             MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -174,20 +175,20 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     }
 
     public void moveWidget(short ID){
-        if (ID == SwitchEnums.SpeedStatsID){
-            if (SpeedWidgetMode == SwitchEnums.LeftBottomWidget) {
-                SpeedWidgetMode = SwitchEnums.CenterTopWidget;
-                CardioWidgetMode = SwitchEnums.RightBottomWidget;
+        if (ID == StatsEnums.SpeedStatsID){
+            if (SpeedWidgetMode == StatsEnums.LeftBottomWidget) {
+                SpeedWidgetMode = StatsEnums.CenterTopWidget;
+                CardioWidgetMode = StatsEnums.RightBottomWidget;
             }
-            else SpeedWidgetMode = SwitchEnums.LeftBottomWidget;
+            else SpeedWidgetMode = StatsEnums.LeftBottomWidget;
         }
 
-        if (ID == SwitchEnums.SensorStatsID) {
-            if (CardioWidgetMode == SwitchEnums.RightBottomWidget) {
-                CardioWidgetMode = SwitchEnums.CenterTopWidget;
-                SpeedWidgetMode = SwitchEnums.LeftBottomWidget;
+        if (ID == StatsEnums.SensorStatsID) {
+            if (CardioWidgetMode == StatsEnums.RightBottomWidget) {
+                CardioWidgetMode = StatsEnums.CenterTopWidget;
+                SpeedWidgetMode = StatsEnums.LeftBottomWidget;
             }
-            else CardioWidgetMode = SwitchEnums.RightBottomWidget;
+            else CardioWidgetMode = StatsEnums.RightBottomWidget;
         }
 
         applyWidgetsLayout();
