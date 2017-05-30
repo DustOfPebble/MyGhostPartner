@@ -8,7 +8,7 @@ public class DockingSaved extends Application  {
     private short ModeGPS = SwitchEnums.Disabled;
     private short ModeSensor = SwitchEnums.Disabled;
     private short ModeLogger = SwitchEnums.Disabled;
-    private short ModeScreen = SwitchEnums.Disabled;
+    private short ModeScreen = SwitchEnums.Enabled;
 
     @Override
     public void onCreate() { super.onCreate();  }
