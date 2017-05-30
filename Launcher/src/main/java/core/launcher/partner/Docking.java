@@ -194,7 +194,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         applyWidgetsLayout();
     }
 
-
     @Override
     protected void onPause() {
         super.onPause();

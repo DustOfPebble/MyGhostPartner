@@ -104,7 +104,6 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
         if (!isVuMeterFits()) buildVuMeter();
         buildStatistics();
 
-        // Requesting a View redraw
         invalidate();
     }
 

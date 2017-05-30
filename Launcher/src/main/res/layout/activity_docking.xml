@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/manage_docking"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,8 +22,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:background="@drawable/switch_frame"
-        app:Enabled="@drawable/screen_locked"
-        app:Disabled="@drawable/screen_unlocked"
+        custom:Enabled="@drawable/screen_locked"
+        custom:Disabled="@drawable/screen_unlocked"
         />
     <core.launcher.Buttons.Switch
         android:id="@+id/switch_trace_recorder"
@@ -34,8 +34,8 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@id/switch_sleep_locker"
         android:background="@drawable/switch_frame"
-        app:Enabled="@drawable/logging_trace"
-        app:Disabled="@drawable/logging_off"
+        custom:Enabled="@drawable/logging_trace"
+        custom:Disabled="@drawable/logging_off"
         />
 
     <core.launcher.Buttons.Switch
@@ -47,8 +47,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/switch_frame"
-        app:Enabled="@drawable/gps_listening"
-        app:Disabled="@drawable/gps_off"
+        custom:Enabled="@drawable/gps_listening"
+        custom:Disabled="@drawable/gps_off"
         />
 
     <core.launcher.Buttons.Switch
@@ -60,8 +60,8 @@
         android:layout_margin="5dp"
         android:background="@drawable/switch_frame"
         android:clickable="true"
-        app:Enabled="@drawable/sensor_active"
-        app:Disabled="@drawable/sensor_off" />
+        custom:Enabled="@drawable/sensor_active"
+        custom:Disabled="@drawable/sensor_off" />
 
     <core.launcher.Widgets.StatsScaled
         android:id="@+id/left_monitor"
