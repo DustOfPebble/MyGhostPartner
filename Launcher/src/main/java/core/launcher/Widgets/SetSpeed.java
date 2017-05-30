@@ -3,13 +3,12 @@ package core.launcher.Widgets;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 
-import core.launcher.Buttons.SwitchEnums;
 import core.launcher.partner.R;
 
 public class SetSpeed extends SetStats {
 
     public SetSpeed(Context Base) {
-        ID = SwitchEnums.SpeedStatsID;
+        ID = StatsEnums.SpeedStatsID;
         Thumb = BitmapFactory.decodeResource(Base.getResources(), R.drawable.speed_thumb);
         NbTicksShown = 18;
         TicksTextGap = 5;
