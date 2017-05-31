@@ -18,7 +18,6 @@ public class LoaderJSON  extends Loader implements Runnable {
 
     private LoaderEvents Listener = null;
     private SavedObject Source = null;
-    private int Count = 0;
     private int State;
 
 
@@ -67,7 +66,6 @@ public class LoaderJSON  extends Loader implements Runnable {
     public int Status() { return State;}
 
     public void start() {
-        Count = 0;
         if (State == Loader.finished) {
             Listener.finished(false);
             return;
