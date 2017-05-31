@@ -28,7 +28,7 @@ public class FilesUtils {
             WorkingDirectory.mkdir();
         }
         else WorkingDirectory = Owner.getFilesDir();
-        Log.d("FileManager", "Selecting workspace : "+ WorkingDirectory.getAbsolutePath() );
+        Log.d(LogTag, "Selecting workspace {"+ WorkingDirectory.getAbsolutePath()+"}" );
     }
 
     public ArrayList<SavedObject> CollectFiles(String Extension) {
@@ -37,7 +37,7 @@ public class FilesUtils {
         for (File Item : Files ) {
             if (!Item.getPath().endsWith(Extension)) continue;
             if (!Item.canRead()) continue;
-            Log.d("FileManager", "Found file :" + Item.getPath() );
+            Log.d(LogTag, "Found file [" + Item.getPath()+"]" );
             Collection.add(new SavedObject(Item));
         }
         return Collection;
