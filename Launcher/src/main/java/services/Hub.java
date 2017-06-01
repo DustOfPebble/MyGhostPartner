@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import core.Files.SavedObject;
