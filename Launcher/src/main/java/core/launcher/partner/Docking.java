@@ -481,7 +481,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         Frame searchZone = new Frame(ViewCenter, SizeSelection);
 
         // Collecting data from backend
-        ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone), Snapshot);
+        ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone), new Node(ViewCenter,Snapshot));
 
         ManageSpeedStats(CollectedStatistics, Snapshot);
         ManageCardioStats(CollectedStatistics, Snapshot);

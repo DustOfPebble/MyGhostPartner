@@ -129,9 +129,7 @@ public class AccessDB implements EventsGPS, LoaderEvents {
             return;
         }
 
-        Node NodeGPS = new Node();
-        NodeGPS.Move = Provider.Moved();
-        NodeGPS.Stats = Provider.Statistic();
+        Node NodeGPS = new Node(Provider.Moved(),Provider.Statistic());
         NodeGPS.Days = 0;
 
         if (!DB.belongs(NodeGPS)) {
@@ -152,9 +150,7 @@ public class AccessDB implements EventsGPS, LoaderEvents {
     @Override
     public void loaded(Sample Loaded) {
         if (Status != State.Loading) return;
-        Node Snapshot = new Node();
-        Snapshot.Stats = Loaded.Statistic();
-        Snapshot.Move = Loaded.MovedFrom(Origin);
+        Node Snapshot = new Node(Loaded.MovedFrom(Origin),Loaded.Statistic());
         Snapshot.Days = (short)NbDays;
         DB.store(Snapshot);
     }

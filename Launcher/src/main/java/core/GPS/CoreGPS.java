@@ -71,14 +71,18 @@ public class CoreGPS implements LocationListener {
     /******************************************************************
      * Content retrieval
      ******************************************************************/
-    public CoordsGPS Origin() { return Origin; }
+    public CoordsGPS Origin() {
+        return Origin;
+    }
 
     public Coords2D Moved() {
         if (Origin == null) return null;
         return Shift;
     }
 
-    public Sample ToSample() { return Basics; }
+    public Sample ToSample() {
+        return Basics;
+    }
 
     public Statistic Statistic() {
         if (Origin == null) return null;

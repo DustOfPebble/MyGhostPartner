@@ -61,7 +61,7 @@ public class Map2D extends ImageView {
 
         // Extracting active point around first because we will make a List copy ...
         searchZone = new Frame(ViewCenter, StatsSize);
-        CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone),NowStats);
+        CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone),new Node(ViewCenter,NowStats));
 
         // Extracting Map background at least to avoid list copy...
         Extension ViewSize = Parameters.DisplayedSize;
