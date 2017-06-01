@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import core.GPS.CoreGPS;
 import core.Settings.Parameters;
@@ -65,6 +66,8 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     private PermissionLoader Permissions = new PermissionLoader();
     private boolean PermissionsChecked = false;
+
+    private long LastBackTimeStamps = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -333,14 +336,21 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     @Override
     public void onBackPressed() {
-        BackPressedCount++;
-        if (BackPressedCount > 1) {
+        if (LastBackTimeStamps == -1) LastBackTimeStamps = Calendar.getInstance().getTimeInMillis();
+        long BackTimeStamps = Calendar.getInstance().getTimeInMillis();
+
+        if ((BackTimeStamps - LastBackTimeStamps) < 1000) {
             SavedStates.shutdown();
             this.finish();
             System.exit(0);
             super.onBackPressed();
         }
-        else { Toast.makeText(this, getResources().getString(R.string.message_back_key_pressed), Toast.LENGTH_SHORT).show(); }
+        else {
+            Toast.makeText(this,
+                    getResources().getString(R.string.message_back_key_pressed),
+                    Toast.LENGTH_SHORT).show();
+            LastBackTimeStamps = BackTimeStamps;
+        }
     }
 
     private void loadStatus() {
