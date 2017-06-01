@@ -10,12 +10,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import core.Settings.Parameters;
 import core.Structures.Coords2D;
 import core.Structures.Sample;
 import core.Structures.Statistic;
-import core.launcher.partner.Docking;
-import services.Sensor.SensorState;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.toRadians;
