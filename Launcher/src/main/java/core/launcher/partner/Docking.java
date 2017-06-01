@@ -43,7 +43,7 @@ import services.Signals;
 public class Docking extends Activity implements ServiceConnection, Signals {
 
     private String LogTag = Docking.class.getSimpleName();
-    private int BackPressedCount = 0;
+    private long LastBackTimeStamps = -1;
 
     private RelativeLayout DockingManager = null;
 
@@ -66,8 +66,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     private PermissionLoader Permissions = new PermissionLoader();
     private boolean PermissionsChecked = false;
-
-    private long LastBackTimeStamps = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,8 +205,8 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     @Override
     protected void onResume() {
         super.onResume();
-        BackPressedCount = 0;
         SavedStates = (DockingSaved) getApplication();
+        LastBackTimeStamps = Calendar.getInstance().getTimeInMillis();
 
         // Refresh all button internal state
         loadStatus();
@@ -336,9 +334,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     @Override
     public void onBackPressed() {
-        if (LastBackTimeStamps == -1) LastBackTimeStamps = Calendar.getInstance().getTimeInMillis();
         long BackTimeStamps = Calendar.getInstance().getTimeInMillis();
-
         if ((BackTimeStamps - LastBackTimeStamps) < 1000) {
             SavedStates.shutdown();
             this.finish();
