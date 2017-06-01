@@ -7,12 +7,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
-import core.launcher.partner.WidgetPlanner;
+import core.launcher.partner.Organizer;
 
 public class Infos extends ImageView implements View.OnTouchListener {
     static private String LogTag = Infos.class.getSimpleName();
 
-    private WidgetPlanner Listener;
+    private Organizer Listener;
     private Vibrator HapticFeedback;
     public boolean Selected = false;
     public int Placed = StatsEnums.Undefined;
@@ -21,7 +21,7 @@ public class Infos extends ImageView implements View.OnTouchListener {
         super(context, attrs);
     }
 
-    public void register(WidgetPlanner Manager) {
+    public void register(Organizer Manager) {
         Listener = Manager;
         HapticFeedback = (Vibrator) Listener.getContext().getSystemService(Context.VIBRATOR_SERVICE);
     }

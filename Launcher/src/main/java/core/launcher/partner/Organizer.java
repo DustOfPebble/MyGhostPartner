@@ -11,11 +11,11 @@ import core.Settings.Parameters;
 import core.launcher.Widgets.Infos;
 import core.launcher.Widgets.StatsEnums;
 
-public class WidgetPlanner extends RelativeLayout {
+public class Organizer extends RelativeLayout {
     private Activity Owner;
     private ArrayList<Infos> Containers;
 
-    public WidgetPlanner(Context Caller) {
+    public Organizer(Context Caller) {
         super(Caller);
         Containers = new ArrayList<>();
     }

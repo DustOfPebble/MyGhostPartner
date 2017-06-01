@@ -73,6 +73,11 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         setContentView(R.layout.activity_docking);
 
         DockingManager = (RelativeLayout) findViewById(R.id.manage_docking);
+        /*
+        DockingManager = (Organizer) findViewById(R.id.manage_docking);
+        DockingManager.register(this);
+        */
+
         MapView = (Map2D)  findViewById(R.id.map_manager);
 
         SavedStates = (DockingSaved) getApplication();
@@ -101,11 +106,25 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SpeedMonitor.setView(new SetSpeed(this));
         SpeedWidgetMode = StatsEnums.LeftBottomWidget;
 
+        /*
+        SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
+        SpeedMonitor.register(DockingManager);
+        SpeedMonitor.setView(new SetSpeed(this));
+        DockingManager.add(SpeedMonitor);
+        */
+
         // Hardcoded settings for Heartbeat in right Monitor
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         CardioMonitor.registerManager(this);
         CardioMonitor.setView(new SetCardio(this));
         CardioWidgetMode = StatsEnums.RightBottomWidget;
+
+        /*
+        CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
+        CardioMonitor.register(DockingManager);
+        CardioMonitor.setView(new SetCardio(this));
+        CardioMonitor.add(SpeedMonitor);
+        */
 
         Speeds = new ArrayList<>();
         HeartBeats = new ArrayList<>();
@@ -130,7 +149,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (NotGrantedPermissions.length > 0) requestPermissions(NotGrantedPermissions,0);
         else PermissionsChecked = true;
     }
-
+    // to be removed...
     private void applyWidgetsLayout(){
         Point ScreenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(ScreenSize);
@@ -173,7 +192,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         DockingManager.invalidate();
     }
-
+    // to be removed...
     public void moveWidget(short ID){
         if (ID == StatsEnums.SpeedStatsID){
             if (SpeedWidgetMode == StatsEnums.LeftBottomWidget) {
