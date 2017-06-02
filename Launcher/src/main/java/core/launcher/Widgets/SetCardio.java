@@ -8,7 +8,6 @@ import core.launcher.partner.R;
 public class SetCardio extends SetStats {
 
     public SetCardio(Context Base) {
-    //    ID = StatsEnums.SensorStatsID;
         Thumb = BitmapFactory.decodeResource(Base.getResources(), R.drawable.heart_thumb);
         NbTicksShown = 22;
         TicksTextGap = 10;

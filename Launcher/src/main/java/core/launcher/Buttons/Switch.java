@@ -73,7 +73,6 @@ public class Switch extends ImageView implements View.OnTouchListener, Runnable 
             Controler.onClicked(this);
             return true;
         }
-
         return false;
     }
 

@@ -259,22 +259,4 @@ public class StatsScaled extends Infos {
             X += TicksGraphic;
         }
     }
-/*
-    @Override
-    public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (view != this) return false;
-
-        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-            HapticFeedback.vibrate(100);
-            return  true;
-        }
-
-        if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            Controler.moveWidget(Setup.ID);
-            return true;
-        }
-
-        return false;
-    }
-*/
 }
