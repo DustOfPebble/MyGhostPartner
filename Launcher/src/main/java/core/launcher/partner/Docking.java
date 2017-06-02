@@ -107,13 +107,13 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         /*
         SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         SpeedMonitor.registerManager(this);
-        SpeedMonitor.setView(new SetSpeed(this));
+        SpeedMonitor.setParams(new SetSpeed(this));
         SpeedWidgetMode = StatsEnums.LeftBottomWidget;
         */
         ///*
         SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         SpeedMonitor.register(DockingManager);
-        SpeedMonitor.setView(new SetSpeed(this));
+        SpeedMonitor.setParams(new SetSpeed(this));
         DockingManager.add(SpeedMonitor);
         //*/
 
@@ -121,13 +121,13 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         /*
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         CardioMonitor.registerManager(this);
-        CardioMonitor.setView(new SetCardio(this));
+        CardioMonitor.setParams(new SetCardio(this));
         CardioWidgetMode = StatsEnums.RightBottomWidget;
         */
         ///*
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         CardioMonitor.register(DockingManager);
-        CardioMonitor.setView(new SetCardio(this));
+        CardioMonitor.setParams(new SetCardio(this));
         DockingManager.add(SpeedMonitor);
         //*/
 

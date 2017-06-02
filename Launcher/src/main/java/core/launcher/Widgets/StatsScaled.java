@@ -93,7 +93,7 @@ public class StatsScaled extends Infos {
         setVisibility(INVISIBLE);
     }
 
-    public void setView(SetStats Settings) { Setup = Settings; }
+    public void setParams(SetStats Settings) { Setup = Settings; }
 
     public  void registerManager(Docking controler) { this.Controler = controler;}
 
