@@ -118,17 +118,18 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         //*/
 
         // Hardcoded settings for Heartbeat in right Monitor
+        /*
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         CardioMonitor.registerManager(this);
         CardioMonitor.setView(new SetCardio(this));
         CardioWidgetMode = StatsEnums.RightBottomWidget;
-
-        /*
+        */
+        ///*
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         CardioMonitor.register(DockingManager);
         CardioMonitor.setView(new SetCardio(this));
-        CardioMonitor.add(SpeedMonitor);
-        */
+        DockingManager.add(SpeedMonitor);
+        //*/
 
         Speeds = new ArrayList<>();
         HeartBeats = new ArrayList<>();
