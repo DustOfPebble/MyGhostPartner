@@ -45,7 +45,9 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private String LogTag = Docking.class.getSimpleName();
     private long LastBackTimeStamps = -1;
 
-    private RelativeLayout DockingManager = null;
+    //private RelativeLayout DockingManager = null;
+    private Organizer DockingManager = null;
+
 
     private Switch SleepLocker = null;
     private Switch NodesLogger = null;
@@ -71,12 +73,13 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_docking);
-
-        DockingManager = (RelativeLayout) findViewById(R.id.manage_docking);
         /*
+        DockingManager = (RelativeLayout) findViewById(R.id.manage_docking);
+        */
+        // /*
         DockingManager = (Organizer) findViewById(R.id.manage_docking);
         DockingManager.register(this);
-        */
+        // */
 
         MapView = (Map2D)  findViewById(R.id.map_manager);
 
@@ -101,17 +104,18 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         LayoutInflater fromXML = LayoutInflater.from(this);
 
         // Hardcoded settings for Speed in left Monitor
+        /*
         SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         SpeedMonitor.registerManager(this);
         SpeedMonitor.setView(new SetSpeed(this));
         SpeedWidgetMode = StatsEnums.LeftBottomWidget;
-
-        /*
+        */
+        ///*
         SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         SpeedMonitor.register(DockingManager);
         SpeedMonitor.setView(new SetSpeed(this));
         DockingManager.add(SpeedMonitor);
-        */
+        //*/
 
         // Hardcoded settings for Heartbeat in right Monitor
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);

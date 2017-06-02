@@ -3,6 +3,7 @@ package core.launcher.partner;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
@@ -13,14 +14,18 @@ import core.launcher.Widgets.StatsEnums;
 
 public class Organizer extends RelativeLayout {
     private Activity Owner;
-    private ArrayList<Infos> Containers;
+    private ArrayList<Infos> Containers = new ArrayList<>();
 
     public Organizer(Context Caller) {
         super(Caller);
-        Containers = new ArrayList<>();
     }
 
-    public void register(Activity Owner) {
+    public Organizer(Context Caller, AttributeSet Settings)  {
+        super(Caller, Settings);
+    }
+
+
+    public void register(Docking Owner) {
         this.Owner = Owner;
     }
 

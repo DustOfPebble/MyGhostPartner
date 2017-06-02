@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import core.launcher.partner.Docking;
 import core.launcher.partner.R;
 
-public class StatsScaled extends ImageView implements View.OnTouchListener {
+public class StatsScaled extends Infos {
     private String LogTag = StatsScaled.class.getSimpleName();
 
     private Docking Controler = null;
@@ -278,7 +278,7 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
             X += TicksGraphic;
         }
     }
-
+/*
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if (view != this) return false;
@@ -295,5 +295,5 @@ public class StatsScaled extends ImageView implements View.OnTouchListener {
 
         return false;
     }
-
+*/
 }
