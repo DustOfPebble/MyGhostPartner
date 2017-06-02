@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ public class StatsScaled extends Infos {
     private float FramePixelsFactor;
     private float Radius;
 
-    private ArrayList<Float> Collected;
+    private ArrayList<Float> Collected = new ArrayList<>();
 
     private Bitmap LoadedMarker;
     private Bitmap ResizedMarker;
@@ -53,6 +54,11 @@ public class StatsScaled extends Infos {
     float HistoryOffset;
     float HistoryHeight;
     float Padding;
+
+    private class Bounds {
+        int First;
+        int Last;
+    }
 
     public StatsScaled(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -90,15 +96,25 @@ public class StatsScaled extends Infos {
         Collected = History;
         LiveValue = Live;
 
-        BuildGradualRuler();
-        BuildStatistics();
+        if (getVisibility() == View.INVISIBLE) return;
+
+        Bounds Limits = RulerBounds();
+        boolean Changed =  false ;
+        if (VuMeterStartValue != (float) Limits.First) Changed = true;
+        if (VuMeterStopValue != (float) Limits.Last) Changed = true;
+        if (Changed) {
+            VuMeterStartValue = Limits.First;
+            VuMeterStopValue =  Limits.Last;
+            CreateRulerBitmap();
+        }
+        if (VuMeter == null) CreateRulerBitmap();
+        CreateStatisticsBitmap();
         invalidate();
     }
 
     private void setDrawParams(int Width, int Height) {
         if ((Width == 0) || (Height == 0)) return;
         if (null == Setup) return;
-        if (null == LoadedMarker) return;
 
         Padding = Math.min(Width/20, Height/20);
 
@@ -142,6 +158,8 @@ public class StatsScaled extends Infos {
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
         setDrawParams(Width, Height);
+        if (VuMeter != null) CreateRulerBitmap();
+        if (HistoryStats != null) CreateStatisticsBitmap();
     }
 
     @Override
@@ -173,7 +191,7 @@ public class StatsScaled extends Infos {
         super.onDraw(canvas);
     }
 
-    private void BuildGradualRuler() {
+    private Bounds RulerBounds() {
         int PreviousUnit = (int) LiveValue - (int) (DisplayedRange / 2);
         int NextUnit = (int) LiveValue + (int) (DisplayedRange / 2);
         int PreviousLabel = PreviousUnit;
@@ -190,14 +208,13 @@ public class StatsScaled extends Infos {
         if (Modulo > 0) NextLabel = NextUnit + (UnitLabelStep - Modulo);
         if ((NextLabel - NextUnit) < 2) NextLabel = NextLabel + UnitLabelStep;
 
-        boolean NoChange =  true ;
-        if (VuMeterStartValue == (float) PreviousLabel) NoChange = false;
-        if (VuMeterStopValue == (float) NextLabel) NoChange = false;
-        if (NoChange) return;
+        Bounds Limits = new Bounds();
+        Limits.First = PreviousLabel;
+        Limits.Last = NextLabel;
+        return Limits;
+    }
 
-        VuMeterStartValue = (float) PreviousLabel;
-        VuMeterStopValue = (float) NextLabel;
-
+    private void CreateRulerBitmap() {
         int RulerWidth = (int) ((VuMeterStopValue - VuMeterStartValue) * PhysicToPixels);
         VuMeter = Bitmap.createBitmap(RulerWidth,(int)(VuMeterFontSize+VuMeterLongTicks+VuMeterStrokeWidth), Bitmap.Config.ARGB_8888);
         Canvas DrawVuMeter = new Canvas(VuMeter);
@@ -228,8 +245,8 @@ public class StatsScaled extends Infos {
         }
     }
 
-    private void BuildStatistics()  {
-        if (!Collected.isEmpty()) return;
+    private void CreateStatisticsBitmap()  {
+        if (Collected.isEmpty()) return;
         HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryHeight), Bitmap.Config.ARGB_8888);
         Canvas DrawHistoryStats = new Canvas(HistoryStats);
 

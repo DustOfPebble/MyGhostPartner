@@ -103,7 +103,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
         CardioMonitor.setParams(new SetCardio(this));
         CardioMonitor.register(DockingManager);
-        DockingManager.add(SpeedMonitor);
+        DockingManager.add(CardioMonitor);
         //*/
 
         Speeds = new ArrayList<>();
@@ -259,7 +259,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private void ManageCardioStats(ArrayList<Node> CollectedStatistics,Statistic Snapshot) {
         HeartBeats.clear();
         for (Node item: CollectedStatistics) {
-            if (item.Stats.Heartbeat == -1) continue;
+            if (item.Stats.Heartbeat <= -1) continue;
             HeartBeats.add((float)item.Stats.Heartbeat);
         }
         CardioMonitor.setValues(Snapshot.Heartbeat,HeartBeats);

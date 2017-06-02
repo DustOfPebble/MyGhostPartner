@@ -57,28 +57,28 @@ public class Organizer extends RelativeLayout {
         int Bounds = Math.min(ScreenSize.x,ScreenSize.y);
         int SecondaryWidgetWidth = (int)(Bounds * 0.45);
         int PrimaryWidgetWidth = (int)(Bounds * 0.65);
-        RelativeLayout.LayoutParams MonitorConfig;
+        RelativeLayout.LayoutParams ViewSlot;
 
         for(Infos Container:Containers) {
             if (Container.Placed == StatsEnums.Undefined) continue;
             if (Container.Placed == StatsEnums.CenterTopWidget) {
-                MonitorConfig = new RelativeLayout.LayoutParams(PrimaryWidgetWidth, (int) (PrimaryWidgetWidth * Parameters.WidthToHeightFactor));
-                MonitorConfig.addRule(RelativeLayout.CENTER_HORIZONTAL);
-                MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                ViewSlot = new RelativeLayout.LayoutParams(PrimaryWidgetWidth, (int) (PrimaryWidgetWidth * Parameters.WidthToHeightFactor));
+                ViewSlot.addRule(RelativeLayout.CENTER_HORIZONTAL);
+                ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             } else {
-                MonitorConfig = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * Parameters.WidthToHeightFactor));
+                ViewSlot = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * Parameters.WidthToHeightFactor));
                 if (Container.Placed == StatsEnums.LeftBottomWidget) {
-                    MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-                    MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                    ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 }
                 if (Container.Placed == StatsEnums.RightBottomWidget) {
-                    MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                    MonitorConfig.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                    ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 }
             }
-            Container.setLayoutParams(MonitorConfig);
+            Container.setLayoutParams(ViewSlot);
             removeView(Container);
-            addView(Container, MonitorConfig);
+            addView(Container, ViewSlot);
         }
     invalidate();
     }

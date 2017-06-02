@@ -14,7 +14,6 @@ public class Infos extends ImageView implements View.OnTouchListener {
 
     private Organizer Listener;
     private Vibrator HapticFeedback;
-    public boolean Selected = false;
     public int Placed = StatsEnums.Undefined;
 
     public Infos(Context context, AttributeSet attrs) {
@@ -25,7 +24,6 @@ public class Infos extends ImageView implements View.OnTouchListener {
         Listener = Manager;
         HapticFeedback = (Vibrator) Listener.getContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
-
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {

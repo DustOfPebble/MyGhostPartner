@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import core.Structures.Coords2D;
 import core.Structures.Node;
-import core.Structures.Statistic;
 
 public class Processing {
     static final float BearingClearance = 60f; // 60°
