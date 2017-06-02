@@ -8,7 +8,7 @@ import core.launcher.partner.R;
 public class SetSpeed extends SetStats {
 
     public SetSpeed(Context Base) {
-        ID = StatsEnums.SpeedStatsID;
+        //ID = StatsEnums.SpeedStatsID;
         Thumb = BitmapFactory.decodeResource(Base.getResources(), R.drawable.speed_thumb);
         NbTicksShown = 18;
         TicksTextGap = 5;
@@ -17,5 +17,4 @@ public class SetSpeed extends SetStats {
         PhysicsRangeMax = 80f;
         Unit = "km/h";
     }
-
 }

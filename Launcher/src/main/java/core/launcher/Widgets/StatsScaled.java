@@ -6,23 +6,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.os.SystemClock;
-import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 
-import core.launcher.partner.Docking;
 import core.launcher.partner.R;
 
 public class StatsScaled extends Infos {
     private String LogTag = StatsScaled.class.getSimpleName();
-
-    private Docking Controler = null;
-    private Vibrator HapticFeedback;
 
     private RectF Frame;
     private Paint FramePainter;
@@ -87,37 +78,25 @@ public class StatsScaled extends Infos {
         FramePainter.setStyle(Paint.Style.STROKE);
         FramePainter.setColor(StatsStyles.BorderColor);
 
-        HapticFeedback = (Vibrator)  context.getSystemService(Context.VIBRATOR_SERVICE);
-
         setOnTouchListener(this);
         setVisibility(INVISIBLE);
     }
 
-    public void setParams(SetStats Settings) { Setup = Settings; }
-
-    public  void registerManager(Docking controler) { this.Controler = controler;}
+    public void setParams(SetStats Settings) {
+        Setup = Settings;
+    }
 
     public void setValues(float Live, ArrayList<Float> History) {
         Collected = History;
         LiveValue = Live;
 
-        if (!isVuMeterFits()) buildVuMeter();
-        buildStatistics();
-
+        BuildGradualRuler();
+        BuildStatistics();
         invalidate();
     }
 
-    public void Initialize() { setValues(0f, new ArrayList<Float>());}
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int Width = MeasureSpec.getSize(widthMeasureSpec);
-        int Height = MeasureSpec.getSize(heightMeasureSpec);
-        this.setMeasuredDimension(Width, Height);
+    private void setDrawParams(int Width, int Height) {
         if ((Width == 0) || (Height == 0)) return;
-
         if (null == Setup) return;
         if (null == LoadedMarker) return;
 
@@ -153,11 +132,16 @@ public class StatsScaled extends Infos {
         FramePainter.setStrokeWidth(StrokeWidth);
         Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
         Radius = StatsStyles.FrameRadius * FramePixelsFactor;
+    }
 
-        if (VuMeterStartValue == VuMeterStopValue) return; // Can't build a VueMeter
-        buildVuMeter();
-        if (Collected.isEmpty()) return; // Can't build Statistics
-        buildStatistics();
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
+    {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int Width = MeasureSpec.getSize(widthMeasureSpec);
+        int Height = MeasureSpec.getSize(heightMeasureSpec);
+        this.setMeasuredDimension(Width, Height);
+        setDrawParams(Width, Height);
     }
 
     @Override
@@ -166,7 +150,6 @@ public class StatsScaled extends Infos {
         float Height = canvas.getHeight();
         float Width = canvas.getWidth();
         if ((Width == 0) || (Height == 0)) { super.onDraw(canvas);return;}
-//        if (VuMeter == null) { super.onDraw(canvas);return;}
 
         // Drawing Unit
         canvas.drawText(Setup.Unit,Width - Padding,UnitFontSize +Padding, UnitPainter);
@@ -176,13 +159,13 @@ public class StatsScaled extends Infos {
 
         // Drawing VuMeter ...
         float VueMeterPixelShift = (Width/2) - (PhysicToPixels *(LiveValue - (int)VuMeterStartValue));
-        canvas.drawBitmap(VuMeter, VueMeterPixelShift, VuMeterOffset, null);
+        if (VuMeter!=null) canvas.drawBitmap(VuMeter, VueMeterPixelShift, VuMeterOffset, null);
 
         // Drawing Marker
         canvas.drawBitmap(ResizedMarker,(Width/2) - (ResizedMarker.getWidth()/2), Padding, null);
 
         // Drawing History values
-        canvas.drawBitmap(HistoryStats,0f, HistoryOffset, null);
+        if (HistoryStats!=null) canvas.drawBitmap(HistoryStats,0f, HistoryOffset, null);
 
         // Drawing Frame ...
         canvas.drawRoundRect(Frame,Radius,Radius,FramePainter);
@@ -190,7 +173,7 @@ public class StatsScaled extends Infos {
         super.onDraw(canvas);
     }
 
-    private boolean isVuMeterFits() {
+    private void BuildGradualRuler() {
         int PreviousUnit = (int) LiveValue - (int) (DisplayedRange / 2);
         int NextUnit = (int) LiveValue + (int) (DisplayedRange / 2);
         int PreviousLabel = PreviousUnit;
@@ -207,15 +190,16 @@ public class StatsScaled extends Infos {
         if (Modulo > 0) NextLabel = NextUnit + (UnitLabelStep - Modulo);
         if ((NextLabel - NextUnit) < 2) NextLabel = NextLabel + UnitLabelStep;
 
-        if ((VuMeterStartValue == (float) PreviousLabel) && (VuMeterStopValue == (float) NextLabel)) return true;
+        boolean NoChange =  true ;
+        if (VuMeterStartValue == (float) PreviousLabel) NoChange = false;
+        if (VuMeterStopValue == (float) NextLabel) NoChange = false;
+        if (NoChange) return;
+
         VuMeterStartValue = (float) PreviousLabel;
         VuMeterStopValue = (float) NextLabel;
-        return false;
-    }
 
-    private void buildVuMeter()  {
-        int VuMeterWidth = (int) ((VuMeterStopValue - VuMeterStartValue) * PhysicToPixels);
-        VuMeter = Bitmap.createBitmap(VuMeterWidth,(int)(VuMeterFontSize+VuMeterLongTicks+VuMeterStrokeWidth), Bitmap.Config.ARGB_8888);
+        int RulerWidth = (int) ((VuMeterStopValue - VuMeterStartValue) * PhysicToPixels);
+        VuMeter = Bitmap.createBitmap(RulerWidth,(int)(VuMeterFontSize+VuMeterLongTicks+VuMeterStrokeWidth), Bitmap.Config.ARGB_8888);
         Canvas DrawVuMeter = new Canvas(VuMeter);
 
         float TicksPhysic = VuMeterStartValue;
@@ -225,8 +209,6 @@ public class StatsScaled extends Infos {
         float LongTicksEndY = VuMeterLongTicks + LongTickBeginY ;
         float ShortTicksBeginY = VuMeterStrokeWidth/2;
         float ShortTicksEndY = VuMeterShortTicks + ShortTicksBeginY ;
-
-        long StartRender = SystemClock.elapsedRealtime();
 
         while (TicksPhysic <= VuMeterStopValue)
         {
@@ -244,11 +226,10 @@ public class StatsScaled extends Infos {
             TicksPhysic += Setup.TicksPhysicValue;
             NbTicksCount++;
         }
-        long EndRender = SystemClock.elapsedRealtime();
-//        Log.d(LogTag, "VueMeter rebuild was "+ (EndRender - StartRender)+ " ms.");
     }
 
-    private void buildStatistics()  {
+    private void BuildStatistics()  {
+        if (!Collected.isEmpty()) return;
         HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryHeight), Bitmap.Config.ARGB_8888);
         Canvas DrawHistoryStats = new Canvas(HistoryStats);
 

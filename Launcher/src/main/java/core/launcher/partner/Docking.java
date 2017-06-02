@@ -101,6 +101,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         CardioSensor.registerListener(this);
         CardioSensor.setMode(SavedStates.getModeSensor());
 
+        // Creating widgets instance
         LayoutInflater fromXML = LayoutInflater.from(this);
 
         // Hardcoded settings for Speed in left Monitor
@@ -112,8 +113,8 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         */
         ///*
         SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
-        SpeedMonitor.register(DockingManager);
         SpeedMonitor.setParams(new SetSpeed(this));
+        SpeedMonitor.register(DockingManager);
         DockingManager.add(SpeedMonitor);
         //*/
 
@@ -126,15 +127,15 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         */
         ///*
         CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
-        CardioMonitor.register(DockingManager);
         CardioMonitor.setParams(new SetCardio(this));
+        CardioMonitor.register(DockingManager);
         DockingManager.add(SpeedMonitor);
         //*/
 
         Speeds = new ArrayList<>();
         HeartBeats = new ArrayList<>();
 
-        applyWidgetsLayout();
+        //applyWidgetsLayout();
 
         // Checking permissions
         Permissions.Append(Manifest.permission.BLUETOOTH);
@@ -155,6 +156,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         else PermissionsChecked = true;
     }
     // to be removed...
+    /*
     private void applyWidgetsLayout(){
         Point ScreenSize = new Point();
         getWindowManager().getDefaultDisplay().getSize(ScreenSize);
@@ -197,7 +199,9 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         DockingManager.invalidate();
     }
+    */
     // to be removed...
+    /*
     public void moveWidget(short ID){
         if (ID == StatsEnums.SpeedStatsID){
             if (SpeedWidgetMode == StatsEnums.LeftBottomWidget) {
@@ -217,7 +221,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         applyWidgetsLayout();
     }
-
+    */
     @Override
     protected void onPause() {
         super.onPause();
@@ -288,7 +292,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         }
         if (Status == SwitchEnums.Disabled) {
             if (SavedStates.getModeGPS() == SwitchEnums.Disabled) {
-                SpeedMonitor.Initialize();
+                //SpeedMonitor.Initialize();
                 SpeedMonitor.setVisibility(View.VISIBLE);
                 SavedStates.storeModeGPS(SwitchEnums.Waiting);
                 BackendService.setGPS(true);
@@ -318,7 +322,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (Status == SwitchEnums.Disabled) {
             if (SavedStates.getModeSensor() == SwitchEnums.Disabled) {
                 SavedStates.storeModeSensor(SwitchEnums.Waiting);
-                CardioMonitor.Initialize();
+                //CardioMonitor.Initialize();
                 CardioMonitor.setVisibility(View.VISIBLE);
                 BackendService.setSensor(true);
                 return;
