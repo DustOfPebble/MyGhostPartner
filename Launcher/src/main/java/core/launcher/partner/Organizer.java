@@ -23,6 +23,7 @@ public class Organizer extends RelativeLayout {
     public void register(Activity Owner) {
         this.Owner = Owner;
     }
+
     public void add(Infos Widget) {
         if (Containers.size() == StatsEnums.Slots) return;
         for (Infos Container:Containers) {

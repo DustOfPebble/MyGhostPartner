@@ -9,5 +9,4 @@ public class Descriptor {
     public String Name = "";
     public int NbDays = 0;
     public int NbNodes = 0;
-
 }
