@@ -1,6 +1,8 @@
 package core.launcher.Widgets;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -15,6 +17,12 @@ public class Infos extends ImageView implements View.OnTouchListener {
     private Organizer Listener;
     private Vibrator HapticFeedback;
     public int Placed = StatsEnums.Undefined;
+
+    RectF Frame;
+    Paint FramePainter;
+    float FramePixelsFactor;
+    float Radius;
+
 
     public Infos(Context context, AttributeSet attrs) {
         super(context, attrs);

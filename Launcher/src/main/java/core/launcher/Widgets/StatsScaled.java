@@ -16,11 +16,6 @@ import core.launcher.partner.R;
 public class StatsScaled extends Infos {
     private String LogTag = StatsScaled.class.getSimpleName();
 
-    private RectF Frame;
-    private Paint FramePainter;
-    private float FramePixelsFactor;
-    private float Radius;
-
     private ArrayList<Float> Collected = new ArrayList<>();
 
     private Bitmap LoadedMarker;
@@ -142,12 +137,6 @@ public class StatsScaled extends Infos {
         DisplayedRange = (Setup.NbTicksShown - 1) * Setup.TicksPhysicValue;
         PhysicToPixels = (Width) / DisplayedRange;
 
-        // Frame settings
-        FramePixelsFactor = this.getResources().getDisplayMetrics().density;
-        float StrokeWidth = FramePixelsFactor  * StatsStyles.FrameBorder;
-        FramePainter.setStrokeWidth(StrokeWidth);
-        Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
-        Radius = StatsStyles.FrameRadius * FramePixelsFactor;
     }
 
     @Override
@@ -160,6 +149,13 @@ public class StatsScaled extends Infos {
         setDrawParams(Width, Height);
         if (VuMeter != null) CreateRulerBitmap();
         if (HistoryStats != null) CreateStatisticsBitmap();
+
+        // Frame settings
+        FramePixelsFactor = this.getResources().getDisplayMetrics().density;
+        float StrokeWidth = FramePixelsFactor  * StatsStyles.FrameBorder;
+        FramePainter.setStrokeWidth(StrokeWidth);
+        Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
+        Radius = StatsStyles.FrameRadius * FramePixelsFactor;
     }
 
     @Override

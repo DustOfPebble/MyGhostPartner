@@ -6,14 +6,12 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -33,6 +31,7 @@ import core.launcher.Buttons.Switch;
 import core.launcher.Map.Map2D;
 import core.launcher.Widgets.SetSpeed;
 import core.launcher.Widgets.SetCardio;
+import core.launcher.Widgets.StatsLogged;
 import core.launcher.Widgets.StatsScaled;
 import services.Hub;
 import services.Junction;
@@ -53,6 +52,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     private StatsScaled SpeedMonitor = null;
     private StatsScaled CardioMonitor = null;
+    private StatsLogged LogsMonitor = null;
 
     private Map2D MapView = null;
     private DockingSaved SavedStates;
@@ -76,6 +76,25 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         SavedStates = (DockingSaved) getApplication();
 
+        // Creating widgets instance
+        LayoutInflater fromXML = LayoutInflater.from(this);
+
+        SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.stats, null);
+        SpeedMonitor.setParams(new SetSpeed(this));
+        SpeedMonitor.register(DockingManager);
+        DockingManager.add(SpeedMonitor);
+
+        CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.stats, null);
+        CardioMonitor.setParams(new SetCardio(this));
+        CardioMonitor.register(DockingManager);
+        DockingManager.add(CardioMonitor);
+
+        LogsMonitor = (StatsLogged) fromXML.inflate(R.layout.logs, null);
+        LogsMonitor.register(DockingManager);
+        DockingManager.add(LogsMonitor);
+
+        // Creating buttons instance
+
         SleepLocker = (Switch) findViewById(R.id.switch_sleep_locker);
         SleepLocker.registerListener(this);
         ManageSleepLocker(SwitchEnums.Forced);
@@ -91,20 +110,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         CardioSensor = (Switch) findViewById(R.id.sensor_provider);
         CardioSensor.registerListener(this);
         CardioSensor.setMode(SavedStates.getModeSensor());
-
-        // Creating widgets instance
-        LayoutInflater fromXML = LayoutInflater.from(this);
-
-        SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
-        SpeedMonitor.setParams(new SetSpeed(this));
-        SpeedMonitor.register(DockingManager);
-        DockingManager.add(SpeedMonitor);
-
-        CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
-        CardioMonitor.setParams(new SetCardio(this));
-        CardioMonitor.register(DockingManager);
-        DockingManager.add(CardioMonitor);
-        //*/
 
         Speeds = new ArrayList<>();
         HeartBeats = new ArrayList<>();
@@ -176,16 +181,19 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (BackendService == null) {
             SavedStates.storeModeLogger(SwitchEnums.Disabled);
             NodesLogger.setMode(SwitchEnums.Disabled);
+            LogsMonitor.setVisibility(View.INVISIBLE);
             return;
         }
         if (Status == SwitchEnums.Disabled) {
             SavedStates.storeModeLogger(SwitchEnums.Disabled);
             NodesLogger.setMode(SwitchEnums.Disabled);
+            LogsMonitor.setVisibility(View.INVISIBLE);
             BackendService.setLogger(Modes.Finish);
         }
         if (Status == SwitchEnums.Enabled) {
             SavedStates.storeModeLogger(SwitchEnums.Enabled);
             NodesLogger.setMode(SwitchEnums.Enabled);
+            LogsMonitor.setVisibility(View.VISIBLE);
             BackendService.setLogger(Modes.Create);
         }
     }
@@ -395,10 +403,12 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         Frame searchZone = new Frame(ViewCenter, SizeSelection);
 
         // Collecting data from backend
-        ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone), new Node(ViewCenter,Snapshot));
+        Node UpdatedNode = new Node(ViewCenter,Snapshot);
+        ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone),UpdatedNode);
 
         ManageSpeedStats(CollectedStatistics, Snapshot);
         ManageCardioStats(CollectedStatistics, Snapshot);
+        LogsMonitor.setNode(UpdatedNode);
 
         // Updating Background View
         MapView.setGPS(InfoGPS);
