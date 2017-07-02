@@ -4,4 +4,10 @@
         <attr name="Waiting" format="integer" />
         <attr name="Disabled" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="GridView">
+        <attr name="Thickness" format="integer" />
+        <attr name="Thumbnail" format="integer" />
+    </declare-styleable>
+
  </resources>

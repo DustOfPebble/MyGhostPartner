@@ -6,14 +6,12 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,6 +29,7 @@ import core.Structures.Node;
 import core.helpers.PermissionLoader;
 import core.launcher.Buttons.Switch;
 import core.launcher.Map.Map2D;
+import core.launcher.Widgets.GridedView;
 import core.launcher.Widgets.SetSpeed;
 import core.launcher.Widgets.SetCardio;
 import core.launcher.Widgets.StatsScaled;
@@ -53,6 +52,8 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     private StatsScaled SpeedMonitor = null;
     private StatsScaled CardioMonitor = null;
+    private GridedView ElevationHistory = null;
+
 
     private Map2D MapView = null;
     private DockingSaved SavedStates;
@@ -95,16 +96,19 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         // Creating widgets instance
         LayoutInflater fromXML = LayoutInflater.from(this);
 
-        SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
+        SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.statistic_scaled, null);
         SpeedMonitor.setParams(new SetSpeed(this));
         SpeedMonitor.register(DockingManager);
         DockingManager.add(SpeedMonitor);
 
-        CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.widget_monitor, null);
+        CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.statistic_scaled, null);
         CardioMonitor.setParams(new SetCardio(this));
         CardioMonitor.register(DockingManager);
         DockingManager.add(CardioMonitor);
-        //*/
+
+        ElevationHistory = (GridedView) fromXML.inflate(R.layout.statistic_grided, null);
+        ElevationHistory.register(DockingManager);
+        DockingManager.add(ElevationHistory);
 
         Speeds = new ArrayList<>();
         HeartBeats = new ArrayList<>();
@@ -179,11 +183,13 @@ public class Docking extends Activity implements ServiceConnection, Signals {
             return;
         }
         if (Status == SwitchEnums.Disabled) {
+            ElevationHistory.setVisibility(View.INVISIBLE);
             SavedStates.storeModeLogger(SwitchEnums.Disabled);
             NodesLogger.setMode(SwitchEnums.Disabled);
             BackendService.setLogger(Modes.Finish);
         }
         if (Status == SwitchEnums.Enabled) {
+            ElevationHistory.setVisibility(View.VISIBLE);
             SavedStates.storeModeLogger(SwitchEnums.Enabled);
             NodesLogger.setMode(SwitchEnums.Enabled);
             BackendService.setLogger(Modes.Create);
@@ -198,7 +204,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         }
         if (Status == SwitchEnums.Disabled) {
             if (SavedStates.getModeGPS() == SwitchEnums.Disabled) {
-                //SpeedMonitor.Initialize();
                 SpeedMonitor.setVisibility(View.VISIBLE);
                 SavedStates.storeModeGPS(SwitchEnums.Waiting);
                 BackendService.setGPS(true);

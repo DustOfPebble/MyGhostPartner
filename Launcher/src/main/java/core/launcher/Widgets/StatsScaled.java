@@ -13,13 +13,8 @@ import java.util.ArrayList;
 
 import core.launcher.partner.R;
 
-public class StatsScaled extends Infos {
+public class StatsScaled extends VirtualView {
     private String LogTag = StatsScaled.class.getSimpleName();
-
-    private RectF Frame;
-    private Paint FramePainter;
-    private float FramePixelsFactor;
-    private float Radius;
 
     private ArrayList<Float> Collected = new ArrayList<>();
 

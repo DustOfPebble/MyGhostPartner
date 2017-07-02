@@ -1,6 +1,8 @@
 package core.launcher.Widgets;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -9,14 +11,19 @@ import android.widget.ImageView;
 
 import core.launcher.partner.Organizer;
 
-public class Infos extends ImageView implements View.OnTouchListener {
-    static private String LogTag = Infos.class.getSimpleName();
+public class VirtualView extends ImageView implements View.OnTouchListener {
+    static private String LogTag = VirtualView.class.getSimpleName();
 
     private Organizer Listener;
     private Vibrator HapticFeedback;
     public int Placed = StatsEnums.Undefined;
 
-    public Infos(Context context, AttributeSet attrs) {
+    RectF Frame;
+    Paint FramePainter;
+    float FramePixelsFactor;
+    float Radius;
+
+    public VirtualView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
