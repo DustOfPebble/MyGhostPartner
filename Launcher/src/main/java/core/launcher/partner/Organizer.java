@@ -9,12 +9,12 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 
 import core.Settings.Parameters;
-import core.launcher.Widgets.Infos;
+import core.launcher.Widgets.VirtualView;
 import core.launcher.Widgets.StatsEnums;
 
 public class Organizer extends RelativeLayout {
     private Activity Owner;
-    private ArrayList<Infos> Containers = new ArrayList<>();
+    private ArrayList<VirtualView> Containers = new ArrayList<>();
 
     public Organizer(Context Caller) {
         super(Caller);
@@ -29,9 +29,9 @@ public class Organizer extends RelativeLayout {
         this.Owner = Owner;
     }
 
-    public void add(Infos Widget) {
+    public void add(VirtualView Widget) {
         if (Containers.size() == StatsEnums.Slots) return;
-        for (Infos Container:Containers) {
+        for (VirtualView Container:Containers) {
             if (Container.Placed == StatsEnums.LeftBottomWidget ) Container.Placed = StatsEnums.RightBottomWidget;
             if (Container.Placed == StatsEnums.CenterTopWidget ) Container.Placed = StatsEnums.LeftBottomWidget;
         }
@@ -40,10 +40,10 @@ public class Organizer extends RelativeLayout {
         apply();
     }
 
-    public void select(Infos Widget) {
+    public void select(VirtualView Widget) {
         if (Widget.Placed == StatsEnums.CenterTopWidget) return;
-        Infos Focus = null;
-        for (Infos Container:Containers) {
+        VirtualView Focus = null;
+        for (VirtualView Container:Containers) {
             if (Container.Placed == StatsEnums.CenterTopWidget ) Focus = Container;
         }
         if (Focus != null) Focus.Placed = Widget.Placed;
@@ -59,7 +59,7 @@ public class Organizer extends RelativeLayout {
         int PrimaryWidgetWidth = (int)(Bounds * 0.65);
         RelativeLayout.LayoutParams ViewSlot;
 
-        for(Infos Container:Containers) {
+        for(VirtualView Container:Containers) {
             if (Container.Placed == StatsEnums.Undefined) continue;
             if (Container.Placed == StatsEnums.CenterTopWidget) {
                 ViewSlot = new RelativeLayout.LayoutParams(PrimaryWidgetWidth, (int) (PrimaryWidgetWidth * Parameters.WidthToHeightFactor));

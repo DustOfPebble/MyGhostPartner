@@ -11,8 +11,8 @@ import android.widget.ImageView;
 
 import core.launcher.partner.Organizer;
 
-public class Infos extends ImageView implements View.OnTouchListener {
-    static private String LogTag = Infos.class.getSimpleName();
+public class VirtualView extends ImageView implements View.OnTouchListener {
+    static private String LogTag = VirtualView.class.getSimpleName();
 
     private Organizer Listener;
     private Vibrator HapticFeedback;
@@ -23,8 +23,7 @@ public class Infos extends ImageView implements View.OnTouchListener {
     float FramePixelsFactor;
     float Radius;
 
-
-    public Infos(Context context, AttributeSet attrs) {
+    public VirtualView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

@@ -66,4 +66,3 @@ public class LogsWriter {
         } catch (Exception WriteError) { Log.d(LogTag, "Written only "+Now.NbNodes+" nodes to file"); }
     }
 }
-

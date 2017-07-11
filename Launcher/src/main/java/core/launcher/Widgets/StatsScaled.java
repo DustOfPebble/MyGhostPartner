@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 import core.launcher.partner.R;
 
-public class StatsScaled extends Infos {
+public class StatsScaled extends VirtualView {
     private String LogTag = StatsScaled.class.getSimpleName();
 
     private ArrayList<Float> Collected = new ArrayList<>();
