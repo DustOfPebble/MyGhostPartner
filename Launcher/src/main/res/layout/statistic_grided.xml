@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<core.launcher.Widgets.GridView
+<core.launcher.Widgets.GridedView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:extra="http://schemas.android.com/apk/res-auto"
     android:id="@+id/monitor"

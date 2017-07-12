@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 
@@ -40,6 +41,12 @@ public class GridedView extends VirtualView {
         Grid = new Paint();
         Grid.setStrokeWidth(2);
         Grid.setColor(GridColor);
+
+        Frame = new RectF();
+        FramePainter = new Paint();
+        FramePainter.setStyle(Paint.Style.STROKE);
+        FramePainter.setColor(StatsStyles.BorderColor);
+
     }
 
     void update(Node LastNode) {
@@ -55,7 +62,14 @@ public class GridedView extends VirtualView {
         this.setMeasuredDimension(Width, Height);
 
         GridCellSize = (float)Width /10;
-        NbVrtCells = (int)(Height / GridCellSize);
+        NbVrtCells = (int)(Height / GridCellSize)+1;
+
+        // Frame settings
+        FramePixelsFactor = this.getResources().getDisplayMetrics().density;
+        float StrokeWidth = FramePixelsFactor  * StatsStyles.FrameBorder;
+        FramePainter.setStrokeWidth(StrokeWidth);
+        Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
+        Radius = StatsStyles.FrameRadius * FramePixelsFactor;
 
     }
 
@@ -67,11 +81,11 @@ public class GridedView extends VirtualView {
         if ((Width == 0) || (Height == 0)) { super.onDraw(canvas);return;}
 
         // Drawing Grid
-        for(float i=0; i<NbVrtCells; i++ ) {
-            canvas.drawLine(i*GridCellSize, 0, i*GridCellSize, Height,Grid);
+        for(float i=1; i<NbVrtCells; i++ ) {
+            canvas.drawLine(0,i*GridCellSize, Width ,i*GridCellSize, Grid);
         }
-        for(int i=0; i<NbHrzCells; i++ ) {
-            canvas.drawLine(0,i*GridCellSize, Width, i*GridCellSize,Grid);
+        for(int i=1; i<NbHrzCells; i++ ) {
+            canvas.drawLine(i*GridCellSize,0, i*GridCellSize, Height, Grid);
         }
 
         // Drawing surrounding Frame ...
