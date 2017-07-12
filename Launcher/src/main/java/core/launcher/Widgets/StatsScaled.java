@@ -48,7 +48,6 @@ public class StatsScaled extends VirtualView {
 
     float HistoryOffset;
     float HistoryHeight;
-    float Padding;
 
     private class Bounds {
         int First;

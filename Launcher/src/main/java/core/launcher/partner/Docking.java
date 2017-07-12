@@ -404,6 +404,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         ManageSpeedStats(CollectedStatistics, Snapshot);
         ManageCardioStats(CollectedStatistics, Snapshot);
+        ElevationHistory.update(Snapshot);
 
         // Updating Background View
         MapView.setGPS(InfoGPS);

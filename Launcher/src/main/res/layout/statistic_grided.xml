@@ -7,5 +7,5 @@
     android:layout_height="wrap_content"
     android:background="@drawable/monitor_frame"
     extra:Thickness="2"
-    extra:Thumbnail="@drawable/speed_thumb"
+    extra:Thumbnail="@drawable/ascend_thumb"
     />

@@ -23,6 +23,8 @@ public class VirtualView extends ImageView implements View.OnTouchListener {
     float FramePixelsFactor;
     float Radius;
 
+    float Padding;
+
     public VirtualView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
