@@ -151,9 +151,9 @@
      borderopacity="1"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="9.5232339"
-     inkscape:cx="257.01357"
-     inkscape:cy="186.53992"
+     inkscape:zoom="3.7758135"
+     inkscape:cx="161.06619"
+     inkscape:cy="140.67469"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -162,12 +162,13 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     showguides="false"
+     showguides="true"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     showborder="true" />
+     showborder="true"
+     inkscape:guide-bbox="true" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -185,22 +186,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-78.780289,96.34868)">
-    <path
-       sodipodi:type="arc"
-       style="fill:#6a6a6a;fill-opacity:1;stroke:#ffffff;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       id="path3939"
-       sodipodi:cx="248.55002"
-       sodipodi:cy="262.92819"
-       sodipodi:rx="14.805895"
-       sodipodi:ry="14.07085"
-       d="m 263.29467,261.64975 a 14.805895,14.07085 0 1 1 -0.0135,-0.13401"
-       transform="matrix(2.0260893,0,0,2.1319315,-179.82445,-388.29509)"
-       sodipodi:start="6.1922025"
-       sodipodi:end="12.46582"
-       sodipodi:open="true"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
-       inkscape:export-xdpi="162"
-       inkscape:export-ydpi="162" />
     <g
        id="g3138"
        transform="translate(-0.0746168,4.1042791)"
@@ -1249,101 +1234,147 @@
          style="fill:none;fill-opacity:1;stroke:#daf8fc;stroke-width:3.5999999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
          sodipodi:nodetypes="ccccc" />
     </g>
-    <path
-       style="fill:#ffffff;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 346.02144,158.284 -4.30526,5.04031 8.61052,0 z"
-       id="path3933"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
-       inkscape:export-xdpi="162"
-       inkscape:export-ydpi="162" />
-    <path
-       style="fill:#ffffff;stroke:#ffffff;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       d="m 345.96894,163.90185 0.10501,14.70089 0,0"
-       id="path3935"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
-       inkscape:export-xdpi="162"
-       inkscape:export-ydpi="162" />
-    <path
-       inkscape:connector-curvature="0"
-       id="path3937"
-       d="m 346.02144,184.22058 -4.30526,-5.04031 8.61052,0 z"
-       style="fill:#ffffff;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
-       inkscape:export-xdpi="162"
-       inkscape:export-ydpi="162" />
-    <path
-       inkscape:export-ydpi="162"
-       inkscape:export-xdpi="162"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
-       inkscape:connector-curvature="0"
-       id="path3941"
-       d="m 331.47807,193.30361 -14.70089,0.10501 0,0"
-       style="fill:#ffffff;stroke:#ffffff;stroke-width:3;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
-    <path
-       inkscape:export-ydpi="162"
-       inkscape:export-xdpi="162"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
-       inkscape:connector-curvature="0"
-       id="path3943"
-       d="m 337.72594,193.35612 -5.0403,-4.30526 0,8.61052 z"
-       style="fill:#ffffff;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    <path
-       inkscape:export-ydpi="162"
-       inkscape:export-xdpi="162"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
-       style="fill:#ffffff;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 310.5293,193.35611 5.04031,-4.30525 0,8.61052 z"
-       id="path3945"
-       inkscape:connector-curvature="0" />
     <g
-       id="g3955"
-       style="stroke:url(#radialGradient3967)"
+       id="g4021"
+       transform="translate(-2.7301647,6.7204065)"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
        inkscape:export-xdpi="162"
        inkscape:export-ydpi="162">
-      <path
-         inkscape:export-ydpi="162"
+      <g
+         id="g3983"
+         transform="matrix(0.53759656,-0.27496747,0.27496747,0.53759656,38.542162,246.48097)"
+         inkscape:export-filename="/home/xavier/Studio/DayToDayRace/app/src/main/res/drawable/speed_thumb.png"
          inkscape:export-xdpi="162"
-         inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/Ascend_thumb.png"
-         inkscape:connector-curvature="0"
-         id="path3947"
-         d="m 354.59272,185.57238 -61.24524,0.0265 0,0"
-         style="fill:#cccccc;stroke:url(#radialGradient3967);stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+         inkscape:export-ydpi="162">
+        <ellipse
+           d="m 492.21875,100.38033 c 0,5.16748 -4.29359,9.35655 -9.59,9.35655 -5.29641,0 -9.58999,-4.18907 -9.58999,-9.35655 0,-5.167475 4.29358,-9.356544 9.58999,-9.356544 5.29641,0 9.59,4.189069 9.59,9.356544 z"
+           transform="translate(1.4778465,-12.284991)"
+           ry="9.3565474"
+           rx="9.5899982"
+           cy="100.38033"
+           cx="482.62875"
+           id="ellipse3985"
+           style="fill:none;stroke:#ffffff;stroke-width:4.58900118;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           sodipodi:cx="482.62875"
+           sodipodi:cy="100.38033"
+           sodipodi:rx="9.5899982"
+           sodipodi:ry="9.3565474" />
+        <ellipse
+           d="m 525.14762,100.05581 c 0,5.16748 -4.29359,9.35655 -9.59,9.35655 -5.29641,0 -9.59,-4.18907 -9.59,-9.35655 0,-5.167479 4.29359,-9.356548 9.59,-9.356548 5.29641,0 9.59,4.189069 9.59,9.356548 z"
+           transform="translate(1.4778465,-12.284991)"
+           ry="9.3565474"
+           rx="9.5899982"
+           style="fill:none;stroke:#ffffff;stroke-width:4.58900118;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="ellipse3987"
+           cx="515.55762"
+           cy="100.05581"
+           sodipodi:cx="515.55762"
+           sodipodi:cy="100.05581"
+           sodipodi:rx="9.5899982"
+           sodipodi:ry="9.3565474" />
+        <ellipse
+           d="m 509.89509,73.151237 c 0,2.701182 -2.24437,4.890922 -5.01295,4.890922 -2.76858,0 -5.01295,-2.18974 -5.01295,-4.890922 0,-2.701181 2.24437,-4.890921 5.01295,-4.890921 2.76858,0 5.01295,2.18974 5.01295,4.890921 z"
+           transform="translate(1.4778465,-12.284991)"
+           ry="4.8909216"
+           rx="5.0129528"
+           style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:2.39879799;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           id="ellipse3989"
+           cx="504.88214"
+           cy="73.151237"
+           sodipodi:cx="504.88214"
+           sodipodi:cy="73.151237"
+           sodipodi:rx="5.0129528"
+           sodipodi:ry="4.8909216" />
+        <path
+           sodipodi:nodetypes="cccc"
+           inkscape:connector-curvature="0"
+           id="path3992"
+           d="m 501.21953,68.47834 -6.31968,8.437468 6.70718,5.073796 -2.08487,9.73553"
+           style="fill:none;stroke:#ffffff;stroke-width:5.02774096;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+        <path
+           sodipodi:nodetypes="cc"
+           inkscape:connector-curvature="0"
+           id="path3994"
+           d="m 501.20582,67.927993 10.46764,6.063442"
+           style="fill:none;stroke:#ffffff;stroke-width:4.27892876;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      </g>
       <path
-         style="fill:#cccccc;stroke:url(#radialGradient3967);stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-         d="m 354.17269,157.01065 -61.24524,0.0265 0,0"
-         id="path3949"
+         sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
-         inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/Ascend_thumb.png"
-         inkscape:export-xdpi="162"
-         inkscape:export-ydpi="162" />
-      <path
-         inkscape:export-ydpi="162"
-         inkscape:export-xdpi="162"
-         inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/Ascend_thumb.png"
-         inkscape:connector-curvature="0"
-         id="path3951"
-         d="m 309.38747,202.45242 -0.0265,-61.24524 0,0"
-         style="fill:#cccccc;stroke:url(#radialGradient3967);stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
-      <path
-         style="fill:#cccccc;stroke:url(#radialGradient3967);stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-         d="m 338.89425,203.29247 -0.0265,-61.24524 0,0"
-         id="path3953"
-         inkscape:connector-curvature="0"
-         inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/Ascend_thumb.png"
-         inkscape:export-xdpi="162"
-         inkscape:export-ydpi="162" />
+         id="path4003"
+         d="m 312.08048,177.25004 45.72863,-23.95259"
+         style="fill:none;stroke:#ffffff;stroke-width:4.13212729;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
     </g>
-    <path
-       style="fill:none;stroke:#ffb66f;stroke-width:5.15450191;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 299.7109,179.92848 13.10045,3.87483 8.43314,-5.48488 6.36788,-10.30779 12.00639,-12.66951"
-       id="path3931"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccc"
-       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
+    <rect
+       style="fill:none;stroke:none;fill-opacity:1"
+       id="rect3147"
+       width="60"
+       height="60"
+       x="303.5"
+       y="196.07793"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/height_arrow.png"
        inkscape:export-xdpi="162"
        inkscape:export-ydpi="162" />
+    <g
+       id="g3975"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/height_arrow.png"
+       inkscape:export-xdpi="162"
+       inkscape:export-ydpi="162">
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path3961"
+         d="m 333.5,197.07793 -10,11 20,0 z"
+         style="fill:#e6e6e6;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         style="fill:#e6e6e6;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 333.5,255.07793 -10,-11 20,0 z"
+         id="path3963"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+      <rect
+         y="208.22604"
+         x="330.8949"
+         height="35.534798"
+         width="5.2102065"
+         id="rect3965"
+         style="fill:#e6e6e6;fill-opacity:1;stroke:#ffffff;stroke-width:2.41771984;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0" />
+    </g>
+    <rect
+       inkscape:export-ydpi="162"
+       inkscape:export-xdpi="162"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/width_arrow.png"
+       y="196.07793"
+       x="236.49457"
+       height="60"
+       width="60"
+       id="rect3967"
+       style="fill:none;fill-opacity:1;stroke:none" />
+    <g
+       id="g3980"
+       transform="matrix(0,1,-1,0,492.5725,-40.416643)"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/width_arrow.png"
+       inkscape:export-xdpi="162"
+       inkscape:export-ydpi="162">
+      <path
+         style="fill:#e6e6e6;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         d="m 266.49457,197.07793 -10,11 20,0 z"
+         id="path3969"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc" />
+      <path
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path3971"
+         d="m 266.49457,255.07793 -10,-11 20,0 z"
+         style="fill:#e6e6e6;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         style="fill:#e6e6e6;fill-opacity:1;stroke:#ffffff;stroke-width:2.41771984;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+         id="rect3973"
+         width="5.2102065"
+         height="35.534798"
+         x="263.88947"
+         y="208.22604" />
+    </g>
   </g>
 </svg>

@@ -7,36 +7,45 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.text.StaticLayout;
 import android.util.AttributeSet;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import core.Structures.Node;
 import core.Structures.Statistic;
 import core.launcher.partner.R;
 
 public class GridedView extends VirtualView {
-    private Drawable Thumbnail;
-    private Bitmap GridInfo;
+    private Drawable IconResource;
+    private Bitmap ViewIcon;
+    private Bitmap WidthArrow;
+    private Bitmap HeightArrow;
+
+
     private float GridCellSize;
+    private float GridHeightOffset;
+    private float GridWidthOffset;
     private int NbHrzCells = 10;
     private int NbVrtCells = 10;
     private final int TimeCell = 60*1000; // time in ms
 
     private Paint Grid;
+    private float[] HrzGridLines;
+    private float[] VrtGridLines;
     private final int GridColor = 0xff528B9E;
 
-    private Paint UnitPainter;
-    private float UnitFontSize;
+    private Paint ScalePainter;
+    private float ScaleFontSize;
 
     private Paint Curve;
-    private final int TraceColor = 0xffFFD54A;
+    private float[] CurvePoints;
+    private final int CurveColor = 0xffFFD54A;
 
-
+    private float[] x;
+    private float[] y;
 
     private class History {
         long TimeStamp;
@@ -55,7 +64,7 @@ public class GridedView extends VirtualView {
         try
         {
             //Enabled = attributes.getDimension(styleable.GridView_Thickness);
-            Thumbnail = attributes.getDrawable(R.styleable.GridView_Thumbnail);
+            IconResource = attributes.getDrawable(R.styleable.GridView_Thumbnail);
         }
         finally { attributes.recycle();}
 
@@ -64,22 +73,27 @@ public class GridedView extends VirtualView {
 
         Grid = new Paint();
         Grid.setColor(GridColor);
+        VrtGridLines = new float[0];
+        HrzGridLines = new float[0];
 
         Curve = new Paint();
-        Curve.setColor(TraceColor);
-
+        Curve.setColor(CurveColor);
+        CurvePoints = new float[0];
 
         Frame = new RectF();
         FramePainter = new Paint();
         FramePainter.setStyle(Paint.Style.STROKE);
         FramePainter.setColor(StatsStyles.BorderColor);
 
-        UnitPainter = new Paint();
-        UnitPainter.setColor(StatsStyles.TextColor);
+        ScalePainter = new Paint();
+        ScalePainter.setColor(StatsStyles.TextColor);
 
+        x=new float[2];
+        y=new float[2];
     }
 
     public void update(Statistic Info) {
+        // Updating stored records
         History Appended = new History();
         Appended.Info =  Info;
         Appended.TimeStamp = Calendar.getInstance().getTimeInMillis();
@@ -87,7 +101,75 @@ public class GridedView extends VirtualView {
         long HistoryTimeCurrent = History.get(0).TimeStamp;
         long HistoryTimeStart = History.get(History.size()-1).TimeStamp;
         if ((HistoryTimeCurrent - HistoryTimeStart) > NbHrzCells*TimeCell) History.remove(0);
+
+        // Updating Graph data
+        float HeightScale = this.getHeight() / (NbVrtCells * 10);
+        float WidthScale = this.getWidth() / (NbHrzCells * TimeCell);
+        long TimeZero = History.get(0).TimeStamp;
+        float HeightReference = History.get(0).Info.Altitude;
+        x[0] = this.getWidth();
+        y[0] = (this.getHeight() / 2);
+        CurvePoints = new float[History.size()*4];
+        for (int i = 0; i < History.size(); i++) {
+            History element = History.get(i);
+            x[1] = this.getWidth() - ((TimeZero - element.TimeStamp) * WidthScale);
+            y[1] = (this.getHeight() / 2) + ((HeightReference - element.Info.Altitude) * HeightScale);
+            CurvePoints[i*4 +0] = x[0];
+            CurvePoints[i*4 +1] = y[0];
+            CurvePoints[i*4 +2] = x[1];
+            CurvePoints[i*4 +3] = y[1];
+            x[0] = x[1];
+            y[0] = y[1];
+        }
+
+        // Requesting a View redraw
         invalidate();
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        if (changed) {
+            int height = bottom-top;
+            int width = right-left;
+
+            Curve.setStrokeWidth(Math.max(6, width/60));
+            Padding = Math.min(width/30, height/30);
+
+            // Drawing Grid
+            GridCellSize = (float)width /NbHrzCells;
+            NbVrtCells = (int)(height / GridCellSize)+1;
+            VrtGridLines = new float[NbHrzCells * 4];
+            HrzGridLines = new float[NbVrtCells * 4];
+
+            Grid.setStrokeWidth(Math.max(2, width/180));
+            GridHeightOffset = (height - (NbVrtCells * GridCellSize)) / 2;
+            GridWidthOffset = 0;
+            for(int i=0; i<NbVrtCells; i++ ) {
+                float y = i * GridCellSize + GridHeightOffset;
+                HrzGridLines[i*4 + 0] = 0;
+                HrzGridLines[i*4 + 1] = y;
+                HrzGridLines[i*4 + 2] = width;
+                HrzGridLines[i*4 + 3] = y;
+            }
+            for (int i=0; i < NbHrzCells; i++) {
+                float x = (i+1) * GridCellSize + GridWidthOffset;
+                VrtGridLines[i*4 + 0] = x;
+                VrtGridLines[i*4 + 1] = 0;
+                VrtGridLines[i*4 + 2] = x;
+                VrtGridLines[i*4 + 3] = height;
+            }
+
+            // Updating Font size
+            ScaleFontSize = height/12;
+            ScalePainter.setTextSize(ScaleFontSize);
+
+            // Updating Icon sizes
+            int IconSize = Math.max( height/6, width/6);
+            ViewIcon = Bitmap.createScaledBitmap(((BitmapDrawable) IconResource).getBitmap(), IconSize, IconSize, false);
+            HeightArrow = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.height_arrow), (int)GridCellSize,(int)GridCellSize, false);
+            WidthArrow = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.width_arrow), (int)GridCellSize,(int)GridCellSize, false);
+        }
+        super.onLayout(changed, left, top, right, bottom);
     }
 
     @Override
@@ -98,27 +180,13 @@ public class GridedView extends VirtualView {
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
 
-        GridCellSize = (float)Width /NbHrzCells;
-        NbVrtCells = (int)(Height / GridCellSize)+1;
-
-        Grid.setStrokeWidth(Math.max(2, Width/180));
-        Curve.setStrokeWidth(Math.max(6, Width/60));
-
         // Frame settings
         FramePixelsFactor = this.getResources().getDisplayMetrics().density;
         float StrokeWidth = FramePixelsFactor  * StatsStyles.FrameBorder;
         FramePainter.setStrokeWidth(StrokeWidth);
         Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
         Radius = StatsStyles.FrameRadius * FramePixelsFactor;
-
-        int IconSize = Math.max( Height/5, Width/5);
-        GridInfo = Bitmap.createScaledBitmap(((BitmapDrawable)Thumbnail).getBitmap(), IconSize,IconSize, false);
-        Padding = Math.min(Width/20, Height/20);
-
-        UnitFontSize = Height/15;
-        UnitPainter.setTextSize(UnitFontSize);
-
-    }
+     }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -128,43 +196,35 @@ public class GridedView extends VirtualView {
         if ((Width == 0) || (Height == 0)) { super.onDraw(canvas);return;}
 
         // Drawing Grid
-        float Offset = (Height - (NbVrtCells * GridCellSize)) / 2;
-        for(float i=1; i<NbVrtCells; i++ ) {
-            canvas.drawLine(0,i*GridCellSize +Offset , Width ,i*GridCellSize + Offset, Grid);
-        }
-        for(float i=1; i<NbHrzCells; i++ ) {
-            canvas.drawLine(i*GridCellSize,0, i*GridCellSize, Height, Grid);
-        }
+        canvas.drawLines(VrtGridLines, Grid);
+        canvas.drawLines(HrzGridLines, Grid);
+
 
         // Drawing Curve
-        if (!History.isEmpty()) {
-            float HeightScale = Height / (NbVrtCells * 10);
-            float WidthScale = Width / (NbHrzCells * TimeCell);
-            float[] Graph = new float[4];
-            long TimeZero = History.get(0).TimeStamp;
-            float HeightReference = History.get(0).Info.Altitude;
-            Graph[0] = Width;
-            Graph[1] = (Height / 2);
-
-            // Drawing History
-            for (int i = 1; i < History.size(); i++) {
-                History element = History.get(i);
-                Graph[2] = Width - ((TimeZero - element.TimeStamp) * WidthScale);
-                Graph[3] = (Height / 2) + ((HeightReference - element.Info.Altitude) * HeightScale);
-                canvas.drawLines(Graph, Curve);
-                Graph[0] = Graph[2];
-                Graph[1] = Graph[3];
-            }
-        }
+        if (CurvePoints.length > 0) canvas.drawLines(CurvePoints, Curve);
 
         // Drawing Icon
-        canvas.drawBitmap(GridInfo, Padding, Padding, null);
-        // Drawing Units
-        UnitPainter.setTextAlign(Paint.Align.LEFT);
-        canvas.drawText("10 m",Padding + GridInfo.getWidth(),(GridInfo.getHeight()/2)+Padding , UnitPainter);
-        UnitPainter.setTextAlign(Paint.Align.CENTER);
-        canvas.drawText("1 min",Padding+(GridInfo.getWidth()/2), GridInfo.getHeight()+Padding+UnitFontSize , UnitPainter);
+        canvas.drawBitmap(ViewIcon, Width - Padding - ViewIcon.getWidth(), Padding, null);
 
+        // Drawing Units
+        String Unit;
+        Rect Container = new Rect();
+        float X,Y;
+        X = 2 * GridCellSize + GridWidthOffset;
+        Y = (NbVrtCells -2)* GridCellSize + GridHeightOffset;
+        canvas.drawBitmap(WidthArrow,X,Y,null);
+        ScalePainter.setTextAlign(Paint.Align.CENTER);
+        Unit = "1mn";
+        ScalePainter.getTextBounds(Unit,0,2,Container);
+        canvas.drawText(Unit, X + WidthArrow.getWidth()/2, Y, ScalePainter);
+
+        X = (NbHrzCells -2)* GridCellSize + GridWidthOffset;
+        Y = (NbVrtCells -2)* GridCellSize + GridHeightOffset;
+        canvas.drawBitmap(HeightArrow,X,Y, null);
+        ScalePainter.setTextAlign(Paint.Align.RIGHT);
+        Unit = "10 m";
+        ScalePainter.getTextBounds(Unit,0,3,Container);
+        canvas.drawText(Unit, X, Y + HeightArrow.getHeight()/2 + Container.height()/2 , ScalePainter);
 
         // Drawing surrounding Frame ...
         canvas.drawRoundRect(Frame,Radius,Radius,FramePainter);
