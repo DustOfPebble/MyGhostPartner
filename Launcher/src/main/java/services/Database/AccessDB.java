@@ -116,11 +116,9 @@ public class AccessDB implements EventsGPS, LoaderEvents, Runnable {
         DB.clear();
         Origin = null;
         LastMove = null;
-//        ManageStatus(State.Waiting);
         ExpectedState = State.Waiting;
         SyncState.post(this);
         Log.d(LogTag, "Requesting DB state to [Waiting]");
-
     }
 
     /**************************************************************
@@ -134,11 +132,8 @@ public class AccessDB implements EventsGPS, LoaderEvents, Runnable {
         if (Origin == null) {
             Origin = Provider.Origin();
             LastMove = Provider.Moved();
-//            ManageStatus(State.Loading);
             ExpectedState = State.Loading;
             SyncState.post(this);
-            Log.d(LogTag, "Requesting DB state to [Loading]");
-
             return;
         }
 
@@ -172,12 +167,11 @@ public class AccessDB implements EventsGPS, LoaderEvents, Runnable {
     public void finished(boolean Success) {
         SavedObject Loaded = Files.get(LoadingCount);
         if (Success) Log.d(LogTag, "Loaded "+ Loaded.Infos.NbNodes+ " Nodes from {"+Loaded.Access.getName()+"}");
-        else Log.d(LogTag, "Failed on reading ...");
+        else Log.d(LogTag, "Failed while reading {"+Loaded.Access.getName()+"}");
         LoadingCount++;
         LoadProcess = null;
         ExpectedState = State.Idle;
         SyncState.post(this);
-        Log.d(LogTag, "Requesting DB state to [Idle]");
     }
 
     @Override
