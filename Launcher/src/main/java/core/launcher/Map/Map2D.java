@@ -34,6 +34,7 @@ public class Map2D extends ImageView {
     private Paint FillMode;
     private Statistic NowStats = null;
     private Frame searchZone = null;
+    private CoreGPS GPS = null;
 
     public Map2D(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -51,6 +52,7 @@ public class Map2D extends ImageView {
     }
 
     public void setGPS(CoreGPS GPS) {
+        this.GPS = GPS;
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
         if (BackendService == null) return;
@@ -86,9 +88,9 @@ public class Map2D extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Float MeterToPixelFactor = Math.max(MetersToPixels.w, MetersToPixels.h) ;
+        float MeterToPixelFactor = Math.max(MetersToPixels.w, MetersToPixels.h) ;
         Coords2D Coords;
-        Float Radius;
+        float Radius;
 
         // Avoid crash during first initialisation
         if (null == NowStats) {super.onDraw(canvas);return;}

@@ -11,6 +11,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,11 +20,11 @@ import core.Structures.Statistic;
 import core.launcher.partner.R;
 
 public class GridedView extends VirtualView {
+    private String LogTag = GridedView.class.getSimpleName();
     private Drawable IconResource;
     private Bitmap ViewIcon;
     private Bitmap WidthArrow;
     private Bitmap HeightArrow;
-
 
     private float GridCellSize;
     private float GridHeightOffset;
@@ -43,9 +44,6 @@ public class GridedView extends VirtualView {
     private Paint Curve;
     private float[] CurvePoints;
     private final int CurveColor = 0xffFFD54A;
-
-    private float[] x;
-    private float[] y;
 
     private class History {
         long TimeStamp;
@@ -87,9 +85,6 @@ public class GridedView extends VirtualView {
 
         ScalePainter = new Paint();
         ScalePainter.setColor(StatsStyles.TextColor);
-
-        x=new float[2];
-        y=new float[2];
     }
 
     public void update(Statistic Info) {
@@ -103,23 +98,23 @@ public class GridedView extends VirtualView {
         if ((HistoryTimeCurrent - HistoryTimeStart) > NbHrzCells*TimeCell) History.remove(0);
 
         // Updating Graph data
-        float HeightScale = this.getHeight() / (NbVrtCells * 10);
-        float WidthScale = this.getWidth() / (NbHrzCells * TimeCell);
+        float HeightScale = (float)this.getHeight() / (float)(NbVrtCells * 10);
+        float WidthScale = (float)this.getWidth() / (float)(NbHrzCells * TimeCell);
         long TimeZero = History.get(0).TimeStamp;
         float HeightReference = History.get(0).Info.Altitude;
-        x[0] = this.getWidth();
-        y[0] = (this.getHeight() / 2);
+        float XStart = this.getWidth();
+        float YStart = (this.getHeight() / 2);
         CurvePoints = new float[History.size()*4];
         for (int i = 0; i < History.size(); i++) {
             History element = History.get(i);
-            x[1] = this.getWidth() - ((TimeZero - element.TimeStamp) * WidthScale);
-            y[1] = (this.getHeight() / 2) + ((HeightReference - element.Info.Altitude) * HeightScale);
-            CurvePoints[i*4 +0] = x[0];
-            CurvePoints[i*4 +1] = y[0];
-            CurvePoints[i*4 +2] = x[1];
-            CurvePoints[i*4 +3] = y[1];
-            x[0] = x[1];
-            y[0] = y[1];
+            float XStop = this.getWidth() - ((TimeZero - element.TimeStamp) * WidthScale);
+            float YStop = (this.getHeight() / 2) + ((HeightReference - element.Info.Altitude) * HeightScale);
+            CurvePoints[i*4 +0] = XStart;
+            CurvePoints[i*4 +1] = YStart;
+            CurvePoints[i*4 +2] = XStop;
+            CurvePoints[i*4 +3] = YStop;
+            XStart = XStop;
+            YStart = YStop;
         }
 
         // Requesting a View redraw
@@ -198,7 +193,6 @@ public class GridedView extends VirtualView {
         // Drawing Grid
         canvas.drawLines(VrtGridLines, Grid);
         canvas.drawLines(HrzGridLines, Grid);
-
 
         // Drawing Curve
         if (CurvePoints.length > 0) canvas.drawLines(CurvePoints, Curve);

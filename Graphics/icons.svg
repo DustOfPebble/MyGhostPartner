@@ -153,7 +153,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="3.7758135"
      inkscape:cx="161.06619"
-     inkscape:cy="140.67469"
+     inkscape:cy="202.89325"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -186,6 +186,16 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(-78.780289,96.34868)">
+    <rect
+       inkscape:export-ydpi="162"
+       inkscape:export-xdpi="162"
+       inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
+       y="138.8717"
+       x="306.54633"
+       height="50.46563"
+       width="50.46563"
+       id="rect3987"
+       style="fill:none;fill-opacity:1;stroke:none" />
     <g
        id="g3138"
        transform="translate(-0.0746168,4.1042791)"
@@ -1236,7 +1246,7 @@
     </g>
     <g
        id="g4021"
-       transform="translate(-2.7301647,6.7204065)"
+       transform="translate(-3.1656545,6.3082946)"
        inkscape:export-filename="/home/xavier/Android.Projects/MyGhostPartner/Graphics/ascend_thumb.png"
        inkscape:export-xdpi="162"
        inkscape:export-ydpi="162">
