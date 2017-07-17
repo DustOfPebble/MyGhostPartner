@@ -1,5 +1,6 @@
 package services.Database;
 
+import android.os.Handler;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -20,16 +21,19 @@ import core.Structures.Node;
 import core.Structures.Sample;
 import services.Hub;
 
-public class AccessDB implements EventsGPS, LoaderEvents {
+public class AccessDB implements EventsGPS, LoaderEvents, Runnable {
     private static final String LogTag = AccessDB.class.getSimpleName();
 
     private int Clearance = 0; // in meters
+
+    private Handler SyncState;
+    private int ExpectedState;
+    private int CurrentState;
 
     private Hub Owner = null;
 
     private CoordsGPS Origin = null;
     private Coords2D LastMove = null;
-    private int Status;
 
     private LoaderJSON LoadProcess = null;
     private int NbDays = 0;
@@ -47,7 +51,8 @@ public class AccessDB implements EventsGPS, LoaderEvents {
         Repository = new FilesUtils(Service);
         Repository.CheckDirectory(PreSets.WorkingSpace);
         Files = Repository.CollectFiles(PreSets.Signature);
-        Status = State.Waiting;
+        CurrentState = State.Waiting;
+        SyncState = new Handler();
     }
 
     private void StartNewLoader() {
@@ -59,38 +64,38 @@ public class AccessDB implements EventsGPS, LoaderEvents {
 
     private void ManageStatus(int Query) {
         if (Query == State.Waiting) {
-            if (Status == State.Loading) {
+            if (CurrentState == State.Loading) {
                 Origin = null;
                 LoadingCount = 0;
-                Status = State.Waiting;
+                CurrentState = State.Waiting;
                 Log.d(LogTag, "State [Loading] --> [Waiting]");
                 return;
             }
-            if (Status == State.Idle) {
+            if (CurrentState == State.Idle) {
                 Origin = null;
                 LoadingCount = 0;
-                Status = State.Waiting;
+                CurrentState = State.Waiting;
                 Log.d(LogTag, "State [Idle] --> [Waiting]");
                 return;
             }
         }
 
         if (Query == State.Loading) {
-            if (Status == State.Waiting) {
+            if (CurrentState == State.Waiting) {
                 if (Origin == null) return;
                 Log.d(LogTag, "State [Waiting] --> [Loading]");
-                Status = State.Loading;
+                CurrentState = State.Loading;
                 if (Files.size() == 0) Query = State.Idle;
                 else StartNewLoader();
             }
         }
 
         if (Query == State.Idle) {
-            if (Status == State.Loading) {
+            if (CurrentState == State.Loading) {
                 if (LoadingCount < Files.size()) {
                     StartNewLoader();
                  } else {
-                    Status = State.Idle;
+                    CurrentState = State.Idle;
                     Log.d(LogTag, "State [Loading] --> [Idle]");
                     return;
                 }
@@ -111,7 +116,11 @@ public class AccessDB implements EventsGPS, LoaderEvents {
         DB.clear();
         Origin = null;
         LastMove = null;
-        ManageStatus(State.Waiting);
+//        ManageStatus(State.Waiting);
+        ExpectedState = State.Waiting;
+        SyncState.post(this);
+        Log.d(LogTag, "Requesting DB state to [Waiting]");
+
     }
 
     /**************************************************************
@@ -120,12 +129,16 @@ public class AccessDB implements EventsGPS, LoaderEvents {
     @Override
     public void UpdatedGPS(CoreGPS Provider){
         // Testing if we are currently free of a Loading process
-        if ((LoadProcess != null) && (Status == State.Waiting)) return; // We are waiting for a Loading process...
+        if ((LoadProcess != null) && (CurrentState == State.Waiting)) return; // We are waiting for a Loading process...
 
         if (Origin == null) {
             Origin = Provider.Origin();
             LastMove = Provider.Moved();
-            ManageStatus(State.Loading);
+//            ManageStatus(State.Loading);
+            ExpectedState = State.Loading;
+            SyncState.post(this);
+            Log.d(LogTag, "Requesting DB state to [Loading]");
+
             return;
         }
 
@@ -149,7 +162,7 @@ public class AccessDB implements EventsGPS, LoaderEvents {
      ***************************************************************/
     @Override
     public void loaded(Sample Loaded) {
-        if (Status != State.Loading) return;
+        if (CurrentState != State.Loading) return;
         Node Snapshot = new Node(Loaded.MovedFrom(Origin),Loaded.Statistic());
         Snapshot.Days = (short)NbDays;
         DB.store(Snapshot);
@@ -162,6 +175,13 @@ public class AccessDB implements EventsGPS, LoaderEvents {
         else Log.d(LogTag, "Failed on reading ...");
         LoadingCount++;
         LoadProcess = null;
-        ManageStatus(State.Idle);
+        ExpectedState = State.Idle;
+        SyncState.post(this);
+        Log.d(LogTag, "Requesting DB state to [Idle]");
+    }
+
+    @Override
+    public void run() {
+        ManageStatus(ExpectedState);
     }
 }

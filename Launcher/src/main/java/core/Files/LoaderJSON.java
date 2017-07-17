@@ -82,8 +82,9 @@ public class LoaderJSON  extends Loader implements Runnable {
         BufferedReader Reader = ReaderOf(Source.Access);
         if (Reader == null) return;
 
-        Head(Reader);
+        Log.d(LogTag, "File "+Source.Access.getName()+" was recorded "+Source.Infos.NbDays+" days ago.");
 
+        LoaderJSON.Head(Reader);
         Source.Infos.NbNodes = 0;
         String StringJSON;
         try {
@@ -99,8 +100,7 @@ public class LoaderJSON  extends Loader implements Runnable {
             State = Loader.finished;
             return;
         }
-        Listener.finished(true);
-        Log.d(LogTag, "Loaded "+Source.Access.getName()+" was recorded "+Source.Infos.NbDays+" days ago.");
         State = Loader.finished;
+        Listener.finished(true);
     }
 }
