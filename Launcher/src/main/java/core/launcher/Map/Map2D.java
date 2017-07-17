@@ -26,13 +26,11 @@ public class Map2D extends ImageView {
     private Junction BackendService = null;
     private ArrayList<Node> CollectedDisplayed =null;
     private ArrayList<Node> CollectedStatistics =null;
-    private Coords2D ViewCenter;
     private Coords2D GraphicCenter = new Coords2D(0f,0f);
     private Coords2D Pixel = new Coords2D(0f,0f);
 
     private Paint LineMode;
     private Paint FillMode;
-    private Statistic NowStats = null;
     private Frame searchZone = null;
     private CoreGPS GPS = null;
 
@@ -52,29 +50,25 @@ public class Map2D extends ImageView {
     }
 
     public void setGPS(CoreGPS GPS) {
-        this.GPS = GPS;
         if ((this.getWidth() == 0) || (this.getHeight() == 0)) return;
         if ((getMeasuredHeight() == 0) || (getMeasuredWidth() == 0)) return;
         if (BackendService == null) return;
 
-        NowStats = GPS.Statistic();
-        ViewCenter = GPS.Moved();
-        Extension StatsSize = Parameters.StatisticsSize;
-
         // Extracting active point around first because we will make a List copy ...
-        searchZone = new Frame(ViewCenter, StatsSize);
-        CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone),new Node(ViewCenter,NowStats));
+        searchZone = new Frame(GPS.Moved(), Parameters.StatisticsSize);
+        CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone),new Node(GPS.Moved(),GPS.Statistic()));
 
         // Extracting Map background at least to avoid list copy...
         Extension ViewSize = Parameters.DisplayedSize;
         int MinSize = Math.min(getMeasuredHeight(),getMeasuredWidth());
         MetersToPixels = new Extension((float)MinSize / ViewSize.w,(float)MinSize / ViewSize.h);
 
-        ViewSize = new Extension(this.getWidth() / MetersToPixels.w,this.getHeight() / MetersToPixels.h );
+        ViewSize = new Extension(this.getWidth() / MetersToPixels.w, this.getHeight() / MetersToPixels.h );
         float Extract = Math.max(ViewSize.w, ViewSize.h);
-        searchZone = new Frame(ViewCenter, new Extension(Extract,Extract));
+        searchZone = new Frame(GPS.Moved(), new Extension(Extract,Extract));
         CollectedDisplayed = BackendService.getNodes(searchZone);
 
+        this.GPS = GPS;
         invalidate();
     }
 
@@ -93,17 +87,14 @@ public class Map2D extends ImageView {
         float Radius;
 
         // Avoid crash during first initialisation
-        if (null == NowStats) {super.onDraw(canvas);return;}
+        if (GPS == null) { super.onDraw(canvas); return; }
+        if (GPS.Origin() == null) { super.onDraw(canvas); return; }
 
         long StartRender = SystemClock.elapsedRealtime();
 
         GraphicCenter.set(canvas.getWidth() /2f, canvas.getHeight() /2f);
+        canvas.rotate(- GPS.Statistic().Bearing,GraphicCenter.dx,GraphicCenter.dy);
 
-        canvas.rotate(-NowStats.Bearing,GraphicCenter.dx,GraphicCenter.dy);
-//        Log.d(LogTag,"Rotation is "+ NowStats.Bearing+"°");
-
-        // Do the drawing
-//        Log.d(LogTag, "Drawing "+ CollectedDisplayed.size()+ " extracted points");
         // Drawing all points from Storage
         LineMode.setColor(MapStyles.ExtractedColor);
         LineMode.setAlpha(MapStyles.ExtractedLineTransparency);
@@ -114,8 +105,8 @@ public class Map2D extends ImageView {
             Coords = Marker.Move;
             Radius = MeterToPixelFactor * Marker.Stats.Accuracy;
             Pixel.set(
-                    (Coords.dx - ViewCenter.dx)* MeterToPixelFactor + GraphicCenter.dx,
-                    (ViewCenter.dy - Coords.dy)* MeterToPixelFactor + GraphicCenter.dy
+                    (Coords.dx - GPS.Moved().dx)* MeterToPixelFactor + GraphicCenter.dx,
+                    (GPS.Moved().dy - Coords.dy)* MeterToPixelFactor + GraphicCenter.dy
             );
 
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,LineMode);
@@ -133,18 +124,18 @@ public class Map2D extends ImageView {
             Coords = Marker.Move;
             Radius = MeterToPixelFactor * Marker.Stats.Accuracy;
             Pixel.set(
-                    (Coords.dx - ViewCenter.dx)* MeterToPixelFactor + GraphicCenter.dx,
-                    (ViewCenter.dy - Coords.dy)* MeterToPixelFactor + GraphicCenter.dy
+                    (Coords.dx - GPS.Moved().dx)* MeterToPixelFactor + GraphicCenter.dx,
+                    (GPS.Moved().dy - Coords.dy)* MeterToPixelFactor + GraphicCenter.dy
             );
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,LineMode);
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,FillMode);
         }
 
-        if (ViewCenter !=null) {//           Log.d(LogTag, "Offset is ["+ ViewCenter.dx +","+ ViewCenter.dy +"]");
+        if (GPS.Moved() !=null) {//           Log.d(LogTag, "Offset is ["+ ViewCenter.dx +","+ ViewCenter.dy +"]");
             LineMode.setColor(MapStyles.MarkerColor);
             FillMode.setColor(MapStyles.MarkerColor);
             LineMode.setStrokeWidth(MapStyles.MarkerLineThickness);
-            Radius = MeterToPixelFactor * NowStats.Accuracy;
+            Radius = MeterToPixelFactor * GPS.Statistic().Accuracy;
             Float MinRadius = (Radius/10 < 10)? 10:Radius/10;
             Pixel.set(GraphicCenter.dx,GraphicCenter.dy);
             canvas.drawCircle(Pixel.dx, Pixel.dy, Radius,LineMode);
