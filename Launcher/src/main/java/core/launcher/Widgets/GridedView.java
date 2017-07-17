@@ -37,6 +37,8 @@ public class GridedView extends VirtualView {
     private float[] VrtGridLines;
     private final int GridColor = 0xff528B9E;
 
+    private Paint Label;
+
     private Paint ScalePainter;
     private float ScaleFontSize;
 
@@ -70,6 +72,11 @@ public class GridedView extends VirtualView {
 
         Grid = new Paint();
         Grid.setColor(GridColor);
+        Grid.setStyle(Paint.Style.STROKE);
+
+        Label = new Paint();
+        Label.setStyle(Paint.Style.FILL);
+
         VrtGridLines = new float[0];
         HrzGridLines = new float[0];
 
@@ -126,7 +133,10 @@ public class GridedView extends VirtualView {
             int height = bottom-top;
             int width = right-left;
 
+            Grid.setStrokeWidth(Math.max(4, width/60));
+
             Curve.setStrokeWidth(Math.max(6, width/60));
+
             Padding = Math.min(width/30, height/30);
 
             // Drawing Grid
@@ -154,7 +164,7 @@ public class GridedView extends VirtualView {
             }
 
             // Updating Font size
-            ScaleFontSize = height/12;
+            ScaleFontSize = height/15;
             ScalePainter.setTextSize(ScaleFontSize);
 
             // Updating Icon sizes
@@ -203,21 +213,32 @@ public class GridedView extends VirtualView {
         String Unit;
         Rect Container = new Rect();
         float X,Y;
-        X = 2 * GridCellSize + GridWidthOffset;
-        Y = (NbVrtCells -2)* GridCellSize + GridHeightOffset;
+        float Center, Margin;
+
+        X = GridCellSize + GridWidthOffset;
+        Y = Height /2 - WidthArrow.getHeight()/2;
         canvas.drawBitmap(WidthArrow,X,Y,null);
         ScalePainter.setTextAlign(Paint.Align.CENTER);
-        Unit = "1mn";
-        ScalePainter.getTextBounds(Unit,0,2,Container);
-        canvas.drawText(Unit, X + WidthArrow.getWidth()/2, Y, ScalePainter);
+        Unit = "1 min";
+        Center = X + WidthArrow.getWidth()/2;
+        ScalePainter.getTextBounds(Unit,0,Unit.length(),Container);
+        Margin = (float) Container.height() * 0.4f;
+        canvas.drawRect(Center-Margin-Container.width()/2,Y-Container.height()-Margin,Center+Container.width()/2+Margin,Y+Margin,Label);
+        canvas.drawRect(Center-Margin-Container.width()/2,Y-Container.height()-Margin,Center+Container.width()/2+Margin,Y+Margin,Grid);
+        canvas.drawText(Unit, Center , Y, ScalePainter);
 
-        X = (NbHrzCells -2)* GridCellSize + GridWidthOffset;
+        X = Width - GridCellSize -HeightArrow.getWidth()/2;
         Y = (NbVrtCells -2)* GridCellSize + GridHeightOffset;
         canvas.drawBitmap(HeightArrow,X,Y, null);
-        ScalePainter.setTextAlign(Paint.Align.RIGHT);
+        ScalePainter.setTextAlign(Paint.Align.CENTER);
         Unit = "10 m";
-        ScalePainter.getTextBounds(Unit,0,3,Container);
-        canvas.drawText(Unit, X, Y + HeightArrow.getHeight()/2 + Container.height()/2 , ScalePainter);
+        ScalePainter.getTextBounds(Unit,0,Unit.length(),Container);
+        Margin = (float) Container.height() * 0.4f;
+        Center = X - (Container.width()/2) + (HeightArrow.getWidth()/2) - (3 * Margin);
+        Y = Y + HeightArrow.getHeight()/2 + Container.height()/2;
+        canvas.drawRect(Center-Margin-Container.width()/2,Y-Container.height()-Margin,Center+Container.width()/2+Margin,Y+Margin,Label);
+        canvas.drawRect(Center-Margin-Container.width()/2,Y-Container.height()-Margin,Center+Container.width()/2+Margin,Y+Margin,Grid);
+        canvas.drawText(Unit, Center , Y , ScalePainter);
 
         // Drawing surrounding Frame ...
         canvas.drawRoundRect(Frame,Radius,Radius,FramePainter);
