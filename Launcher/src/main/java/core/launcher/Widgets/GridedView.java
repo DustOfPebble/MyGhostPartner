@@ -102,7 +102,7 @@ public class GridedView extends VirtualView {
         long TimeZero = History.get(0).TimeStamp;
         float HeightReference = History.get(0).Info.Altitude;
         float XStart = this.getWidth();
-        float YStart = (this.getHeight() / 2);
+        float YStart = this.getHeight() / 2;
         CurvePoints = new float[History.size()*4];
         for (int i = 0; i < History.size(); i++) {
             History element = History.get(i);
