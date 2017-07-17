@@ -11,10 +11,9 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
-
 import java.util.ArrayList;
-import java.util.Calendar;
+
+import android.util.Log;
 
 import core.Structures.Statistic;
 import core.launcher.partner.R;
@@ -91,7 +90,7 @@ public class GridedView extends VirtualView {
         // Updating stored records
         History Appended = new History();
         Appended.Info =  Info;
-        Appended.TimeStamp = Calendar.getInstance().getTimeInMillis();
+        Appended.TimeStamp = System.currentTimeMillis();
         History.add(0,Appended);
         long HistoryTimeCurrent = History.get(0).TimeStamp;
         long HistoryTimeStart = History.get(History.size()-1).TimeStamp;
