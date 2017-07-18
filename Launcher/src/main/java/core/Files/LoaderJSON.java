@@ -10,7 +10,6 @@ import java.util.Calendar;
 
 import core.Structures.Sample;
 
-
 public class LoaderJSON  extends Loader implements Runnable {
 
     static private String LogTag = LoaderJSON.class.getSimpleName();

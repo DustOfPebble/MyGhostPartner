@@ -70,7 +70,8 @@ public class Track implements Runnable {
         if (isSearching) return;
         this.Coords = Coords;
         this.Clearance = Clearance;
-        this.run();
+        this.run(); // Currently run in main thread = blocking
+        //new Thread(this).start(); // Will run in a asynchronous thread ...
     }
 
     public void run() {
