@@ -11,7 +11,9 @@ class MapStyles {
     public static final float FilteredLineThickness = 5f;
 
     public static final int ExtractedColor = 0xff2ad4ff;
-    public static final int ExtractedFillTransparency = 30;
-    public static final int ExtractedLineTransparency = 70;
+//    public static final int ExtractedFillTransparency = 30;
+//    public static final int ExtractedLineTransparency = 70;
+    public static final int ExtractedFillTransparency = 80;
+    public static final int ExtractedLineTransparency = 150;
     public static final float ExtractedLineThickness = 5f;
 }

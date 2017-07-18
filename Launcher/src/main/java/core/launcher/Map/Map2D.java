@@ -101,9 +101,13 @@ public class Map2D extends ImageView {
         LineMode.setStrokeWidth(MapStyles.ExtractedLineThickness);
         FillMode.setColor(MapStyles.ExtractedColor);
         FillMode.setAlpha(MapStyles.ExtractedFillTransparency);
+
+        Radius = MeterToPixelFactor * 2; // Forcing a fixed radius for non-stats point
+
         for (Node Marker : CollectedDisplayed) {
             Coords = Marker.Move;
-            Radius = MeterToPixelFactor * Marker.Stats.Accuracy;
+            // Radius = MeterToPixelFactor * Marker.Stats.Accuracy;
+
             Pixel.set(
                     (Coords.dx - GPS.Moved().dx)* MeterToPixelFactor + GraphicCenter.dx,
                     (GPS.Moved().dy - Coords.dy)* MeterToPixelFactor + GraphicCenter.dy
