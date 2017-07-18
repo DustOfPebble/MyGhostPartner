@@ -160,6 +160,7 @@ public class AccessDB implements EventsGPS, LoaderEvents, Runnable {
         if (CurrentState != State.Loading) return;
         Node Snapshot = new Node(Loaded.MovedFrom(Origin),Loaded.Statistic());
         Snapshot.Days = (short)NbDays;
+        Snapshot.Track =(short)LoadingCount;
         DB.store(Snapshot);
     }
 
