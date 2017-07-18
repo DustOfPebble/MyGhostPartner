@@ -13,8 +13,6 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import java.util.ArrayList;
 
-import android.util.Log;
-
 import core.Structures.Statistic;
 import core.launcher.partner.R;
 
@@ -25,12 +23,17 @@ public class GridedView extends VirtualView {
     private Bitmap WidthArrow;
     private Bitmap HeightArrow;
 
+    private String VerticalUnit;
+    private String HorizontalUnit;
+    private float VerticalScale;
+    private float HorizontalScale;
+
     private float GridCellSize;
     private float GridHeightOffset;
     private float GridWidthOffset;
     private int NbHrzCells = 10;
     private int NbVrtCells = 10;
-    private final int TimeCell = 60*1000; // time in ms
+
 
     private Paint Grid;
     private float[] HrzGridLines;
@@ -59,11 +62,14 @@ public class GridedView extends VirtualView {
 
         // Loading Attributes from XML definitions ...
         if (attrs == null) return;
-        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.GridView, 0, 0);
+        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.GridedView, 0, 0);
         try
         {
-            //Enabled = attributes.getDimension(styleable.GridView_Thickness);
-            IconResource = attributes.getDrawable(R.styleable.GridView_Thumbnail);
+            IconResource = attributes.getDrawable(R.styleable.GridedView_sticker);
+            VerticalUnit = attributes.getString(R.styleable.GridedView_vertical_unit);
+            HorizontalUnit = attributes.getString(R.styleable.GridedView_horizontal_unit);
+            VerticalScale = attributes.getFloat(R.styleable.GridedView_vertical_scale, 1f);
+            HorizontalScale = attributes.getFloat(R.styleable.GridedView_horizontal_scale, 1f);
         }
         finally { attributes.recycle();}
 
@@ -101,11 +107,11 @@ public class GridedView extends VirtualView {
         History.add(0,Appended);
         long HistoryTimeCurrent = History.get(0).TimeStamp;
         long HistoryTimeStart = History.get(History.size()-1).TimeStamp;
-        if ((HistoryTimeCurrent - HistoryTimeStart) > NbHrzCells*TimeCell) History.remove(History.size()-1);
+        if ((HistoryTimeCurrent - HistoryTimeStart) > NbHrzCells* HorizontalScale) History.remove(History.size()-1);
 
         // Updating Graph data
-        float HeightScale = GridCellSize / 10.0f;
-        float WidthScale = GridCellSize / (float) TimeCell;
+        float HeightScale = GridCellSize / VerticalScale;
+        float WidthScale = GridCellSize / HorizontalScale;
         long TimeZero = History.get(0).TimeStamp;
         float HeightReference = History.get(0).Info.Altitude;
         float XStart = this.getWidth();
@@ -210,7 +216,6 @@ public class GridedView extends VirtualView {
         canvas.drawBitmap(ViewIcon, Width - Padding - ViewIcon.getWidth(), Padding, null);
 
         // Drawing Units
-        String Unit;
         Rect Container = new Rect();
         float X,Y;
         float Center, Margin;
@@ -219,26 +224,24 @@ public class GridedView extends VirtualView {
         Y = Height /2 - WidthArrow.getHeight()/2;
         canvas.drawBitmap(WidthArrow,X,Y,null);
         ScalePainter.setTextAlign(Paint.Align.CENTER);
-        Unit = "1 min";
         Center = X + WidthArrow.getWidth()/2;
-        ScalePainter.getTextBounds(Unit,0,Unit.length(),Container);
+        ScalePainter.getTextBounds(HorizontalUnit,0,HorizontalUnit.length(),Container);
         Margin = (float) Container.height() * 0.4f;
         canvas.drawRect(Center-Margin-Container.width()/2,Y-Container.height()-Margin,Center+Container.width()/2+Margin,Y+Margin,Label);
         canvas.drawRect(Center-Margin-Container.width()/2,Y-Container.height()-Margin,Center+Container.width()/2+Margin,Y+Margin,Grid);
-        canvas.drawText(Unit, Center , Y, ScalePainter);
+        canvas.drawText(HorizontalUnit, Center , Y, ScalePainter);
 
         X = Width - GridCellSize -HeightArrow.getWidth()/2;
         Y = (NbVrtCells -2)* GridCellSize + GridHeightOffset;
         canvas.drawBitmap(HeightArrow,X,Y, null);
         ScalePainter.setTextAlign(Paint.Align.CENTER);
-        Unit = "10 m";
-        ScalePainter.getTextBounds(Unit,0,Unit.length(),Container);
+        ScalePainter.getTextBounds(VerticalUnit,0,VerticalUnit.length(),Container);
         Margin = (float) Container.height() * 0.4f;
         Center = X - (Container.width()/2) + (HeightArrow.getWidth()/2) - (3 * Margin);
         Y = Y + HeightArrow.getHeight()/2 + Container.height()/2;
         canvas.drawRect(Center-Margin-Container.width()/2,Y-Container.height()-Margin,Center+Container.width()/2+Margin,Y+Margin,Label);
         canvas.drawRect(Center-Margin-Container.width()/2,Y-Container.height()-Margin,Center+Container.width()/2+Margin,Y+Margin,Grid);
-        canvas.drawText(Unit, Center , Y , ScalePainter);
+        canvas.drawText(VerticalUnit, Center , Y , ScalePainter);
 
         // Drawing surrounding Frame ...
         canvas.drawRoundRect(Frame,Radius,Radius,FramePainter);

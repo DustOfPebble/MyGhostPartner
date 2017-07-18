@@ -5,9 +5,12 @@
         <attr name="Disabled" format="integer" />
     </declare-styleable>
 
-    <declare-styleable name="GridView">
-        <attr name="Thickness" format="integer" />
-        <attr name="Thumbnail" format="integer" />
+    <declare-styleable name="GridedView">
+        <attr name="sticker" format="integer" />
+        <attr name="vertical_scale" format="float" />
+        <attr name="vertical_unit" format="string" />
+        <attr name="horizontal_scale" format="float" />
+        <attr name="horizontal_unit" format="string" />
     </declare-styleable>
 
  </resources>

@@ -6,6 +6,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/monitor_frame"
-    extra:Thickness="2"
-    extra:Thumbnail="@drawable/ascend_thumb"
+    extra:sticker="@drawable/ascend_thumb"
+    extra:vertical_scale="10"
+    extra:vertical_unit="10 m"
+    extra:horizontal_scale="60000"
+    extra:horizontal_unit="1 min"
     />
