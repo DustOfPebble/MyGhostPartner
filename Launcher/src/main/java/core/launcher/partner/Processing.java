@@ -55,10 +55,15 @@ public class Processing {
 
         for(Short Id:IDs) {
             if (Id == -1) continue; // Do not use current trace for Statistic
-            Filtered.add(byDistance(byHeading(byID(Nodes,GPS.Track),GPS.Stats.Bearing),GPS.Move));
-        }
 
+            ArrayList<Node> NodesByID = byID(Nodes,GPS.Track);
+            if (NodesByID.isEmpty()) continue;
+
+            ArrayList<Node> NodesByHeading = byHeading(NodesByID,GPS.Stats.Bearing);
+            if (NodesByHeading.isEmpty()) continue;
+
+            Filtered.add(byDistance(NodesByHeading,GPS.Move));
+        }
         return Filtered;
     }
-
 }
