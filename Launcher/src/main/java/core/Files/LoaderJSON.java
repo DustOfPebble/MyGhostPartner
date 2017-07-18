@@ -71,7 +71,7 @@ public class LoaderJSON  extends Loader implements Runnable {
             return;
         }
         State = Loader.running;
-        this.run();
+        new Thread(this).start();
     }
 
     @Override
