@@ -104,8 +104,8 @@ public class GridedView extends VirtualView {
         if ((HistoryTimeCurrent - HistoryTimeStart) > NbHrzCells*TimeCell) History.remove(0);
 
         // Updating Graph data
-        float HeightScale = (float)this.getHeight() / (float)(NbVrtCells * 10);
-        float WidthScale = (float)this.getWidth() / (float)(NbHrzCells * TimeCell);
+        float HeightScale = GridCellSize / 10.0f;
+        float WidthScale = GridCellSize / (float) TimeCell;
         long TimeZero = History.get(0).TimeStamp;
         float HeightReference = History.get(0).Info.Altitude;
         float XStart = this.getWidth();
