@@ -27,21 +27,20 @@ public class Junction extends Binder {
     public void TrackEvent(int Distance) { Listener.TrackEvent(Distance);}
 
     public void UpdatedSensor(int Value) { Listener.UpdatedSensor(Value);}
-
     public void UpdateGPS(CoreGPS Provider) { Listener.UpdatedGPS(Provider);}
 
     /******************************************************************
      * Handling Queries to Services
      ******************************************************************/
-    public void setGPS(boolean Enabled) {Service.GPS(Enabled); }
-
-    public void setLogger(int Mode) {Service.Logger(Mode);}
-
-    public void setSensor(boolean Enabled) {Service.Sensor(Enabled);}
-
     public void selectTrack(SavedObject Source, int Mode) {Service.selectTrack(Source, Mode); }
     public void setTracking(boolean Enabled) { Service.setTracking(Enabled); }
 
-    public ArrayList<Node> getNodes(Frame Zone){ return Service.getNodes(Zone); }
+    public void setGPS(boolean Enabled) {Service.GPS(Enabled); }
+    public void setSensor(boolean Enabled) {Service.Sensor(Enabled);}
+    public void setLogger(int Mode) {Service.Logger(Mode);}
+
+
+    public ArrayList<Node> getNodesByZone(Frame Zone){ return Service.getNodesByZone(Zone); }
+    public ArrayList<Node> getNodesByDelay(int Delay){ return Service.getNodesByDelay(Delay); }
 
 }

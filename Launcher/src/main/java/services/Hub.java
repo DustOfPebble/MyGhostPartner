@@ -99,8 +99,10 @@ public class Hub extends Service implements Queries, EventsGPS {
     public void setTracking(boolean Enabled) { Tracker.EnableTracking(Enabled); }
 
     @Override
-    public ArrayList<Node> getNodes(Frame Zone){ return Collector.getNodes(Zone); }
+    public ArrayList<Node> getNodesByZone(Frame Zone){ return Collector.getNodes(Zone); }
 
+    @Override
+    public ArrayList<Node> getNodesByDelay(int Delay){ return Recorder.getNodes(Delay); }
     /**************************************************************
      *  Callbacks From AccessSensor
      **************************************************************/

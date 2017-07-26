@@ -14,7 +14,6 @@ import core.Settings.Parameters;
 import core.Structures.Coords2D;
 import core.Structures.Extension;
 import core.Structures.Frame;
-import core.Structures.Statistic;
 import core.launcher.partner.Processing;
 import core.Structures.Node;
 import services.Junction;
@@ -56,7 +55,7 @@ public class Map2D extends ImageView {
 
         // Extracting active point around first because we will make a List copy ...
         searchZone = new Frame(GPS.Moved(), Parameters.StatisticsSize);
-        CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone),new Node(GPS.Moved(),GPS.Statistic()));
+        CollectedStatistics = Processing.filter(BackendService.getNodesByZone(searchZone),new Node(GPS.Moved(),GPS.Statistic()));
 
         // Extracting Map background at least to avoid list copy...
         Extension ViewSize = Parameters.DisplayedSize;
@@ -66,7 +65,7 @@ public class Map2D extends ImageView {
         ViewSize = new Extension(this.getWidth() / MetersToPixels.w, this.getHeight() / MetersToPixels.h );
         float Extract = Math.max(ViewSize.w, ViewSize.h);
         searchZone = new Frame(GPS.Moved(), new Extension(Extract,Extract));
-        CollectedDisplayed = BackendService.getNodes(searchZone);
+        CollectedDisplayed = BackendService.getNodesByZone(searchZone);
 
         this.GPS = GPS;
         invalidate();

@@ -8,6 +8,5 @@ public interface Signals {
     void TrackEvent(int Distance);
 
     void UpdatedSensor(int Value);
-
     void UpdatedGPS(CoreGPS Provider);
 }

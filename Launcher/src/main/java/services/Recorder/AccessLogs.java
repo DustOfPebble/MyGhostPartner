@@ -1,5 +1,6 @@
 package services.Recorder;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import core.Files.FilesUtils;
@@ -8,6 +9,7 @@ import core.GPS.CoreGPS;
 import core.GPS.EventsGPS;
 import core.Settings.Parameters;
 import core.Structures.Coords2D;
+import core.Structures.Node;
 import core.Structures.Sample;
 import core.launcher.partner.R;
 import services.Hub;
@@ -45,6 +47,10 @@ public class AccessLogs implements EventsGPS {
             if (Logger == null) return;
             Logger.flush(Repository);
             Logger = null;
+    }
+
+    public ArrayList<Node> getNodes(int Delay) {
+        return null;
     }
 
     /**************************************************************

@@ -14,6 +14,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import core.Structures.Node;
 import core.launcher.partner.R;
 
 public class StatisticView extends ComputedView {
@@ -21,6 +22,7 @@ public class StatisticView extends ComputedView {
 
     private ArrayList<Float> Collected = new ArrayList<>();
     private float LiveValue =0f;
+
 
     private Bitmap ViewIcon;
     private Bitmap ViewArrow;
@@ -101,6 +103,11 @@ public class StatisticView extends ComputedView {
 
         setOnTouchListener(this);
         setVisibility(INVISIBLE);
+    }
+
+    @Override
+    public void pushNodes(ArrayList<Node> Nodes, Node Live){
+        setValues(FieldsProcessing.get(Live),FieldsProcessing.get(Nodes));
     }
 
     public void setValues(float Live, ArrayList<Float> History) {

@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import java.util.ArrayList;
 
+import core.Structures.Node;
 import core.Structures.Statistic;
 import core.launcher.partner.R;
 
@@ -96,6 +97,11 @@ public class HistoryView extends ComputedView {
 
         ScalePainter = new Paint();
         ScalePainter.setColor(StyleSheet.TextColor);
+    }
+
+    @Override
+    public void pushNodes(ArrayList<Node> Nodes, Node Live){
+        this.update(Live.Stats);
     }
 
     public void update(Statistic Info) {

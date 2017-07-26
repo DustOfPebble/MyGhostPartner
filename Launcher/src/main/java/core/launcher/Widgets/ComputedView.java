@@ -9,10 +9,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+
+import core.Structures.Node;
 import core.launcher.partner.Organizer;
 
 public class ComputedView extends ImageView implements View.OnTouchListener {
     static private String LogTag = ComputedView.class.getSimpleName();
+
+    Processor FieldsProcessing;
 
     private Organizer Listener;
     private Vibrator HapticFeedback;
@@ -33,6 +38,11 @@ public class ComputedView extends ImageView implements View.OnTouchListener {
         Listener = Manager;
         HapticFeedback = (Vibrator) Listener.getContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
+    public void registerProcessor(Processor FieldsProcessing) {
+        this.FieldsProcessing = FieldsProcessing;
+    }
+
+    public void pushNodes(ArrayList<Node> Nodes, Node Live){ }
 
     void setFrameProperties() {
         FramePixelsFactor = this.getResources().getDisplayMetrics().density;

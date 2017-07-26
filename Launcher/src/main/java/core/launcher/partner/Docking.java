@@ -29,8 +29,11 @@ import core.Structures.Node;
 import core.helpers.PermissionLoader;
 import core.launcher.Buttons.Switch;
 import core.launcher.Map.Map2D;
+import core.launcher.Widgets.HeartStatistics;
 import core.launcher.Widgets.HistoryView;
+import core.launcher.Widgets.SpeedStatistics;
 import core.launcher.Widgets.StatisticView;
+import core.launcher.Widgets.DropHistory;
 import services.Hub;
 import services.Junction;
 import services.Recorder.Modes;
@@ -52,7 +55,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private StatisticView CardioMonitor = null;
     private HistoryView ElevationHistory = null;
 
-
     private Map2D MapView = null;
     private DockingSaved SavedStates;
     private Junction BackendService = null;
@@ -72,7 +74,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         DockingManager.register(this);
 
         MapView = (Map2D)  findViewById(R.id.map_manager);
-
         SavedStates = (DockingSaved) getApplication();
 
         SleepLocker = (Switch) findViewById(R.id.switch_sleep_locker);
@@ -96,14 +97,17 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         SpeedMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_speed, null);
         SpeedMonitor.register(DockingManager);
+        SpeedMonitor.registerProcessor(new SpeedStatistics());
         DockingManager.add(SpeedMonitor);
 
-        CardioMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_speed, null);
+        CardioMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_heart, null);
         CardioMonitor.register(DockingManager);
+        CardioMonitor.registerProcessor(new HeartStatistics());
         DockingManager.add(CardioMonitor);
 
-        ElevationHistory = (HistoryView) fromXML.inflate(R.layout.history_elevation, null);
+        ElevationHistory = (HistoryView) fromXML.inflate(R.layout.history_drop, null);
         ElevationHistory.register(DockingManager);
+        ElevationHistory.registerProcessor(new DropHistory());
         DockingManager.add(ElevationHistory);
 
         Speeds = new ArrayList<>();
@@ -396,11 +400,16 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         Frame searchZone = new Frame(ViewCenter, SizeSelection);
 
         // Collecting data from backend
-        ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodes(searchZone), new Node(ViewCenter,Snapshot));
+        Node Live = new Node(ViewCenter,Snapshot);
+        ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodesByZone(searchZone), Live );
 
-        ManageSpeedStats(CollectedStatistics, Snapshot);
-        ManageCardioStats(CollectedStatistics, Snapshot);
-        ElevationHistory.update(Snapshot);
+        SpeedMonitor.pushNodes(CollectedStatistics, Live);
+        CardioMonitor.pushNodes(CollectedStatistics, Live);
+        //ManageSpeedStats(CollectedStatistics, Snapshot);
+        //ManageCardioStats(CollectedStatistics, Snapshot);
+
+        //ElevationHistory.update(Snapshot);
+        ElevationHistory.pushNodes(null, Live);
 
         // Updating Background View
         MapView.setGPS(InfoGPS);
