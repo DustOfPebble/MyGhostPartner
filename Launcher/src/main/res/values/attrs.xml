@@ -1,16 +1,28 @@
 <resources>
+    <attr name="sticker" format="integer" />
+
     <declare-styleable name="Switch">
         <attr name="Enabled" format="integer" />
         <attr name="Waiting" format="integer" />
         <attr name="Disabled" format="integer" />
     </declare-styleable>
 
-    <declare-styleable name="GridedView">
-        <attr name="sticker" format="integer" />
+    <declare-styleable name="HistoryView">
+        <attr name="sticker" />
         <attr name="vertical_scale" format="float" />
         <attr name="vertical_unit" format="string" />
         <attr name="horizontal_scale" format="float" />
         <attr name="horizontal_unit" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="StatisticView">
+        <attr name="sticker"  />
+        <attr name="ticks_count" format="integer" />
+        <attr name="label_ticks_count" format="integer" />
+        <attr name="physic_ticks_value" format="float" />
+        <attr name="physic_max_value" format="float" />
+        <attr name="physic_min_value" format="float" />
+        <attr name="rule_unit" format="string" />
     </declare-styleable>
 
  </resources>

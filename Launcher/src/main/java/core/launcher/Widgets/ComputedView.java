@@ -11,12 +11,12 @@ import android.widget.ImageView;
 
 import core.launcher.partner.Organizer;
 
-public class VirtualView extends ImageView implements View.OnTouchListener {
-    static private String LogTag = VirtualView.class.getSimpleName();
+public class ComputedView extends ImageView implements View.OnTouchListener {
+    static private String LogTag = ComputedView.class.getSimpleName();
 
     private Organizer Listener;
     private Vibrator HapticFeedback;
-    public int Placed = StatsEnums.Undefined;
+    public int Placed = Aligns.Undefined;
 
     RectF Frame;
     Paint FramePainter;
@@ -25,13 +25,21 @@ public class VirtualView extends ImageView implements View.OnTouchListener {
 
     float Padding;
 
-    public VirtualView(Context context, AttributeSet attrs) {
+    public ComputedView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     public void register(Organizer Manager) {
         Listener = Manager;
         HapticFeedback = (Vibrator) Listener.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+    }
+
+    void setFrameProperties() {
+        FramePixelsFactor = this.getResources().getDisplayMetrics().density;
+        float StrokeWidth = FramePixelsFactor  * StyleSheet.FrameBorder;
+        FramePainter.setStrokeWidth(StrokeWidth);
+        Frame.set(StrokeWidth/2,StrokeWidth/2,this.getWidth()-StrokeWidth/2,this.getHeight()-StrokeWidth/2);
+        Radius = StyleSheet.FrameRadius * FramePixelsFactor;
     }
 
     @Override

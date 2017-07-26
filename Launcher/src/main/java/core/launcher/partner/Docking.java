@@ -29,10 +29,8 @@ import core.Structures.Node;
 import core.helpers.PermissionLoader;
 import core.launcher.Buttons.Switch;
 import core.launcher.Map.Map2D;
-import core.launcher.Widgets.GridedView;
-import core.launcher.Widgets.SetSpeed;
-import core.launcher.Widgets.SetCardio;
-import core.launcher.Widgets.StatsScaled;
+import core.launcher.Widgets.HistoryView;
+import core.launcher.Widgets.StatisticView;
 import services.Hub;
 import services.Junction;
 import services.Recorder.Modes;
@@ -50,9 +48,9 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private Switch ServiceGPS = null;
     private Switch CardioSensor = null;
 
-    private StatsScaled SpeedMonitor = null;
-    private StatsScaled CardioMonitor = null;
-    private GridedView ElevationHistory = null;
+    private StatisticView SpeedMonitor = null;
+    private StatisticView CardioMonitor = null;
+    private HistoryView ElevationHistory = null;
 
 
     private Map2D MapView = null;
@@ -68,7 +66,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_docking);
+        setContentView(R.layout.docker);
 
         DockingManager = (Organizer) findViewById(R.id.manage_docking);
         DockingManager.register(this);
@@ -96,17 +94,15 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         // Creating widgets instance
         LayoutInflater fromXML = LayoutInflater.from(this);
 
-        SpeedMonitor = (StatsScaled) fromXML.inflate(R.layout.statistic_scaled, null);
-        SpeedMonitor.setParams(new SetSpeed(this));
+        SpeedMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_speed, null);
         SpeedMonitor.register(DockingManager);
         DockingManager.add(SpeedMonitor);
 
-        CardioMonitor = (StatsScaled) fromXML.inflate(R.layout.statistic_scaled, null);
-        CardioMonitor.setParams(new SetCardio(this));
+        CardioMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_speed, null);
         CardioMonitor.register(DockingManager);
         DockingManager.add(CardioMonitor);
 
-        ElevationHistory = (GridedView) fromXML.inflate(R.layout.statistic_grided, null);
+        ElevationHistory = (HistoryView) fromXML.inflate(R.layout.history_elevation, null);
         ElevationHistory.register(DockingManager);
         DockingManager.add(ElevationHistory);
 

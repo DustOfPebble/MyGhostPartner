@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import core.Structures.Statistic;
 import core.launcher.partner.R;
 
-public class GridedView extends VirtualView {
-    private String LogTag = GridedView.class.getSimpleName();
+public class HistoryView extends ComputedView {
+    private String LogTag = HistoryView.class.getSimpleName();
     private Drawable IconResource;
     private Bitmap ViewIcon;
     private Bitmap WidthArrow;
@@ -33,7 +33,6 @@ public class GridedView extends VirtualView {
     private float GridWidthOffset;
     private int NbHrzCells = 10;
     private int NbVrtCells = 10;
-
 
     private Paint Grid;
     private float[] HrzGridLines;
@@ -56,20 +55,20 @@ public class GridedView extends VirtualView {
 
     private ArrayList<History> History = new ArrayList<>();
 
-    public GridedView(Context context, AttributeSet attrs) {
+    public HistoryView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
 
         // Loading Attributes from XML definitions ...
         if (attrs == null) return;
-        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.GridedView, 0, 0);
+        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.HistoryView, 0, 0);
         try
         {
-            IconResource = attributes.getDrawable(R.styleable.GridedView_sticker);
-            VerticalUnit = attributes.getString(R.styleable.GridedView_vertical_unit);
-            HorizontalUnit = attributes.getString(R.styleable.GridedView_horizontal_unit);
-            VerticalScale = attributes.getFloat(R.styleable.GridedView_vertical_scale, 1f);
-            HorizontalScale = attributes.getFloat(R.styleable.GridedView_horizontal_scale, 1f);
+            IconResource = attributes.getDrawable(R.styleable.HistoryView_sticker);
+            VerticalUnit = attributes.getString(R.styleable.HistoryView_vertical_unit);
+            HorizontalUnit = attributes.getString(R.styleable.HistoryView_horizontal_unit);
+            VerticalScale = attributes.getFloat(R.styleable.HistoryView_vertical_scale, 1f);
+            HorizontalScale = attributes.getFloat(R.styleable.HistoryView_horizontal_scale, 1f);
         }
         finally { attributes.recycle();}
 
@@ -93,10 +92,10 @@ public class GridedView extends VirtualView {
         Frame = new RectF();
         FramePainter = new Paint();
         FramePainter.setStyle(Paint.Style.STROKE);
-        FramePainter.setColor(StatsStyles.BorderColor);
+        FramePainter.setColor(StyleSheet.BorderColor);
 
         ScalePainter = new Paint();
-        ScalePainter.setColor(StatsStyles.TextColor);
+        ScalePainter.setColor(StyleSheet.TextColor);
     }
 
     public void update(Statistic Info) {
@@ -136,13 +135,14 @@ public class GridedView extends VirtualView {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         if (changed) {
+            setFrameProperties();
+
             int height = bottom-top;
             int width = right-left;
 
+            // Global settings
             Grid.setStrokeWidth(Math.max(4, width/60));
-
             Curve.setStrokeWidth(Math.max(6, width/60));
-
             Padding = Math.min(width/30, height/30);
 
             // Drawing Grid
@@ -189,14 +189,7 @@ public class GridedView extends VirtualView {
         int Width = MeasureSpec.getSize(widthMeasureSpec);
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
-
-        // Frame settings
-        FramePixelsFactor = this.getResources().getDisplayMetrics().density;
-        float StrokeWidth = FramePixelsFactor  * StatsStyles.FrameBorder;
-        FramePainter.setStrokeWidth(StrokeWidth);
-        Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
-        Radius = StatsStyles.FrameRadius * FramePixelsFactor;
-     }
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {

@@ -1,11 +1,14 @@
 package core.launcher.Widgets;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -13,20 +16,24 @@ import java.util.ArrayList;
 
 import core.launcher.partner.R;
 
-public class StatsScaled extends VirtualView {
-    private String LogTag = StatsScaled.class.getSimpleName();
+public class StatisticView extends ComputedView {
+    private String LogTag = StatisticView.class.getSimpleName();
 
     private ArrayList<Float> Collected = new ArrayList<>();
-
-    private Bitmap LoadedMarker;
-    private Bitmap ResizedMarker;
-
-    private Bitmap ResizedIcon =null;
-
     private float LiveValue =0f;
 
+    private Bitmap ViewIcon;
+    private Bitmap ViewArrow;
+
+    private Drawable IconResource;
+    private int NbTicksShown;
+    private int LabelTicksCount;
+    private float TicksPhysicValue;
+    private float PhysicRangeMin;
+    private float PhysicRangeMax;
+    private String RuleUnit;
+
     private Paint VuMeterPainter;
-    private SetStats Setup;
     private float DisplayedRange;
     private float PhysicToPixels;
     private float VuMeterFontSize;
@@ -54,18 +61,32 @@ public class StatsScaled extends VirtualView {
         int Last;
     }
 
-    public StatsScaled(Context context, AttributeSet attrs) {
+    public StatisticView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
 
-        LoadedMarker = BitmapFactory.decodeResource(getResources(), R.drawable.arrow);
+        // Loading Attributes from XML definitions ...
+        if (attrs == null) return;
+        TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.StatisticView, 0, 0);
+        try
+        {
+            IconResource = attributes.getDrawable(R.styleable.StatisticView_sticker);
+            RuleUnit = attributes.getString(R.styleable.StatisticView_rule_unit);
+            NbTicksShown = attributes.getInt(R.styleable.StatisticView_ticks_count,10);
+            LabelTicksCount = attributes.getInt(R.styleable.StatisticView_label_ticks_count,1);
+            PhysicRangeMax = attributes.getFloat(R.styleable.StatisticView_physic_max_value, 1f);
+            PhysicRangeMin = attributes.getFloat(R.styleable.StatisticView_physic_min_value, 0f);
+            TicksPhysicValue = attributes.getFloat(R.styleable.StatisticView_physic_min_value, 0f);
+        }
+        finally { attributes.recycle();}
+
         HistoryPainter = new Paint();
-        HistoryPainter.setColor(StatsStyles.HistoryColor);
+        HistoryPainter.setColor(StyleSheet.HistoryColor);
         HistoryPainter.setStrokeCap(Paint.Cap.ROUND);
 
         VuMeterPainter = new Paint();
         VuMeterPainter.setStyle(Paint.Style.FILL);
-        VuMeterPainter.setColor(StatsStyles.TextColor);
+        VuMeterPainter.setColor(StyleSheet.TextColor);
         VuMeterPainter.setStrokeCap(Paint.Cap.ROUND);
 
         UnitPainter = new Paint(VuMeterPainter);
@@ -76,14 +97,10 @@ public class StatsScaled extends VirtualView {
         Frame = new RectF();
         FramePainter = new Paint();
         FramePainter.setStyle(Paint.Style.STROKE);
-        FramePainter.setColor(StatsStyles.BorderColor);
+        FramePainter.setColor(StyleSheet.BorderColor);
 
         setOnTouchListener(this);
         setVisibility(INVISIBLE);
-    }
-
-    public void setParams(SetStats Settings) {
-        Setup = Settings;
     }
 
     public void setValues(float Live, ArrayList<Float> History) {
@@ -106,36 +123,44 @@ public class StatsScaled extends VirtualView {
         invalidate();
     }
 
-    private void setDrawParams(int Width, int Height) {
-        if ((Width == 0) || (Height == 0)) return;
-        if (null == Setup) return;
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        if (changed) {
+            setFrameProperties();
+            int Height = bottom-top;
+            int Width = right-left;
 
-        Padding = Math.min(Width/20, Height/20);
+            Padding = Math.min(Width/20, Height/20);
 
-        int IconSize = Math.max( Height/5, Width/5);
-        ResizedIcon = Bitmap.createScaledBitmap(Setup.Thumb, IconSize,IconSize, false);
-        ResizedMarker = Bitmap.createScaledBitmap(LoadedMarker, IconSize,IconSize, false);
+            UnitFontSize = Height/6;
+            UnitPainter.setTextSize(UnitFontSize);
 
-        UnitFontSize = Height/6;
-        UnitPainter.setTextSize(UnitFontSize);
+            // Updating Icon sizes
+            int IconSize = Math.max( Height/5, Width/5);
+            ViewIcon = Bitmap.createScaledBitmap(((BitmapDrawable) IconResource).getBitmap(), IconSize, IconSize, false);
+            ViewArrow = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.arrow), IconSize, IconSize, false);
 
-        VuMeterOffset = ResizedMarker.getHeight() + Padding;
-        VuMeterFontSize = Height/6;
-        VuMeterPainter.setTextSize(VuMeterFontSize);
-        VuMeterStrokeWidth = Width/50;
-        VuMeterPainter.setStrokeWidth(VuMeterStrokeWidth);
-        VuMeterLongTicks = Height/6 - VuMeterStrokeWidth ;
-        VuMeterShortTicks = Height/8 - VuMeterStrokeWidth;
+            VuMeterOffset = ViewArrow.getHeight() + Padding;
+            VuMeterFontSize = Height/6;
+            VuMeterPainter.setTextSize(VuMeterFontSize);
+            VuMeterStrokeWidth = Width/50;
+            VuMeterPainter.setStrokeWidth(VuMeterStrokeWidth);
+            VuMeterLongTicks = Height/6 - VuMeterStrokeWidth ;
+            VuMeterShortTicks = Height/8 - VuMeterStrokeWidth;
 
-        HistoryHeight = Height/4;
-        HistoryOffset = Height - (HistoryHeight + Padding);
-        HistoryStrokeWidth = Width/ Setup.NbTicksShown;
-        HistoryPainter.setStrokeWidth(HistoryStrokeWidth);
+            HistoryHeight = Height/4;
+            HistoryOffset = Height - (HistoryHeight + Padding);
+            HistoryStrokeWidth = Width/ NbTicksShown;
+            HistoryPainter.setStrokeWidth(HistoryStrokeWidth);
 
-        // Loading for VuMeter display
-        DisplayedRange = (Setup.NbTicksShown - 1) * Setup.TicksPhysicValue;
-        PhysicToPixels = (Width) / DisplayedRange;
+            // Loading for VuMeter display
+            DisplayedRange = (NbTicksShown - 1) * TicksPhysicValue;
+            PhysicToPixels = (Width) / DisplayedRange;
 
+            if (VuMeter != null) CreateRulerBitmap();
+            if (HistoryStats != null) CreateStatisticsBitmap();
+        }
+        super.onLayout(changed, left, top, right, bottom);
     }
 
     @Override
@@ -145,16 +170,6 @@ public class StatsScaled extends VirtualView {
         int Width = MeasureSpec.getSize(widthMeasureSpec);
         int Height = MeasureSpec.getSize(heightMeasureSpec);
         this.setMeasuredDimension(Width, Height);
-        setDrawParams(Width, Height);
-        if (VuMeter != null) CreateRulerBitmap();
-        if (HistoryStats != null) CreateStatisticsBitmap();
-
-        // Frame settings
-        FramePixelsFactor = this.getResources().getDisplayMetrics().density;
-        float StrokeWidth = FramePixelsFactor  * StatsStyles.FrameBorder;
-        FramePainter.setStrokeWidth(StrokeWidth);
-        Frame.set(StrokeWidth/2,StrokeWidth/2,Width-StrokeWidth/2,Height-StrokeWidth/2);
-        Radius = StatsStyles.FrameRadius * FramePixelsFactor;
     }
 
     @Override
@@ -165,17 +180,17 @@ public class StatsScaled extends VirtualView {
         if ((Width == 0) || (Height == 0)) { super.onDraw(canvas);return;}
 
         // Drawing Unit
-        canvas.drawText(Setup.Unit,Width - Padding,UnitFontSize +Padding, UnitPainter);
+        canvas.drawText(RuleUnit,Width - Padding,UnitFontSize +Padding, UnitPainter);
 
         // Drawing Icon
-        canvas.drawBitmap(ResizedIcon, Padding, Padding, null);
+        canvas.drawBitmap(ViewIcon, Padding, Padding, null);
 
         // Drawing VuMeter ...
         float VueMeterPixelShift = (Width/2) - (PhysicToPixels *(LiveValue - (int)VuMeterStartValue));
         if (VuMeter!=null) canvas.drawBitmap(VuMeter, VueMeterPixelShift, VuMeterOffset, null);
 
         // Drawing Marker
-        canvas.drawBitmap(ResizedMarker,(Width/2) - (ResizedMarker.getWidth()/2), Padding, null);
+        canvas.drawBitmap(ViewArrow,(Width/2) - (ViewArrow.getWidth()/2), Padding, null);
 
         // Drawing History values
         if (HistoryStats!=null) canvas.drawBitmap(HistoryStats,0f, HistoryOffset, null);
@@ -193,7 +208,7 @@ public class StatsScaled extends VirtualView {
         int NextLabel = NextUnit;
 
         int Modulo;
-        int UnitLabelStep = (int) (Setup.TicksTextGap * Setup.TicksPhysicValue);
+        int UnitLabelStep = (int) (LabelTicksCount * TicksPhysicValue);
         if (UnitLabelStep < 1) UnitLabelStep = 1;
         Modulo = PreviousUnit % UnitLabelStep;
         if (Modulo > 0) PreviousLabel = PreviousUnit - Modulo;
@@ -216,7 +231,7 @@ public class StatsScaled extends VirtualView {
 
         float TicksPhysic = VuMeterStartValue;
         float TicksPixels = 0;
-        float NbTicksCount = Setup.TicksTextGap; // Force a Label on first ticks
+        float NbTicksCount = LabelTicksCount; // Force a Label on first ticks
         float LongTickBeginY = VuMeterStrokeWidth/2;
         float LongTicksEndY = VuMeterLongTicks + LongTickBeginY ;
         float ShortTicksBeginY = VuMeterStrokeWidth/2;
@@ -224,8 +239,8 @@ public class StatsScaled extends VirtualView {
 
         while (TicksPhysic <= VuMeterStopValue)
         {
-            if ((TicksPhysic >= Setup.PhysicsRangeMin) && (TicksPhysic <= Setup.PhysicsRangeMax)) {
-                if (NbTicksCount >= Setup.TicksTextGap) {
+            if ((TicksPhysic >= PhysicRangeMin) && (TicksPhysic <= PhysicRangeMax)) {
+                if (NbTicksCount >= LabelTicksCount) {
                     DrawVuMeter.drawLine(TicksPixels, LongTickBeginY, TicksPixels, LongTicksEndY, VuMeterPainter);
                     DrawVuMeter.drawText(String.format("%.0f", TicksPhysic), TicksPixels, VuMeterLongTicks + VuMeterFontSize + VuMeterStrokeWidth, VuMeterPainter);
                     NbTicksCount = 0;
@@ -234,8 +249,8 @@ public class StatsScaled extends VirtualView {
                 }
             }
 
-            TicksPixels += (PhysicToPixels* Setup.TicksPhysicValue);
-            TicksPhysic += Setup.TicksPhysicValue;
+            TicksPixels += (PhysicToPixels* TicksPhysicValue);
+            TicksPhysic += TicksPhysicValue;
             NbTicksCount++;
         }
     }
@@ -245,28 +260,28 @@ public class StatsScaled extends VirtualView {
         HistoryStats = Bitmap.createBitmap(this.getWidth(),(int)(HistoryHeight), Bitmap.Config.ARGB_8888);
         Canvas DrawHistoryStats = new Canvas(HistoryStats);
 
-        int[] Classes = new int[Setup.NbTicksShown];
-        int MaxClasse = 0;
-        int ClasseIndex;
-        int IndexMax= Setup.NbTicksShown /2;
+        int[] Categories = new int[NbTicksShown];
+        int CategoryMax = 0;
+        int CategoryIndex;
+        int IndexMax= NbTicksShown /2;
 
         for (Float Stats: Collected) {
-            ClasseIndex = (int)((Stats - LiveValue)/ Setup.TicksPhysicValue)+IndexMax;
-            if (ClasseIndex < 0) continue;
-            if (ClasseIndex >= Setup.NbTicksShown) continue;
-            Classes[ClasseIndex]++;
-            if (Classes[ClasseIndex] > MaxClasse) MaxClasse = Classes[ClasseIndex];
+            CategoryIndex = (int)((Stats - LiveValue)/ TicksPhysicValue)+IndexMax;
+            if (CategoryIndex < 0) continue;
+            if (CategoryIndex >= NbTicksShown) continue;
+            Categories[CategoryIndex]++;
+            if (Categories[CategoryIndex] > CategoryMax) CategoryMax = Categories[CategoryIndex];
         }
 
         float X = HistoryStrokeWidth/2;
         float HistoryBeginY;
-        if (MaxClasse ==0) MaxClasse=1;
-        float Factor =  (HistoryHeight - HistoryStrokeWidth) /MaxClasse;
+        if (CategoryMax ==0) CategoryMax=1;
+        float Factor =  (HistoryHeight - HistoryStrokeWidth) /CategoryMax;
         float HistoryEndY = HistoryHeight - HistoryStrokeWidth/2;
-        float TicksGraphic = DrawHistoryStats.getWidth() / Setup.NbTicksShown;
+        float TicksGraphic = DrawHistoryStats.getWidth() / NbTicksShown;
 
-        for (int Index = 0; Index < Setup.NbTicksShown; Index++) {
-            HistoryBeginY = HistoryEndY - (Factor * Classes[Index]);
+        for (int Index = 0; Index < NbTicksShown; Index++) {
+            HistoryBeginY = HistoryEndY - (Factor * Categories[Index]);
             DrawHistoryStats.drawLine(X,HistoryBeginY,X,HistoryEndY, HistoryPainter);
             X += TicksGraphic;
         }
