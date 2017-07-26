@@ -76,7 +76,7 @@ public class StatisticView extends ComputedView {
             LabelTicksCount = attributes.getInt(R.styleable.StatisticView_label_ticks_count,1);
             PhysicRangeMax = attributes.getFloat(R.styleable.StatisticView_physic_max_value, 1f);
             PhysicRangeMin = attributes.getFloat(R.styleable.StatisticView_physic_min_value, 0f);
-            TicksPhysicValue = attributes.getFloat(R.styleable.StatisticView_physic_min_value, 0f);
+            TicksPhysicValue = attributes.getFloat(R.styleable.StatisticView_physic_ticks_value, 1f);
         }
         finally { attributes.recycle();}
 
