@@ -107,12 +107,8 @@ public class StatisticView extends ComputedView {
 
     @Override
     public void pushNodes(ArrayList<Node> Nodes, Node Live){
-        setValues(FieldsProcessing.get(Live),FieldsProcessing.get(Nodes));
-    }
-
-    public void setValues(float Live, ArrayList<Float> History) {
-        Collected = History;
-        LiveValue = Live;
+        Collected = FieldsProcessing.get(Nodes);
+        LiveValue = FieldsProcessing.get(Live);
 
         if (getVisibility() == View.INVISIBLE) return;
 
