@@ -59,9 +59,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private DockingSaved SavedStates;
     private Junction BackendService = null;
 
-    private ArrayList<Float> Speeds;
-    private ArrayList<Float> HeartBeats;
-
     private PermissionLoader Permissions = new PermissionLoader();
     private boolean PermissionsChecked = false;
 
@@ -109,9 +106,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         ElevationHistory.register(DockingManager);
         ElevationHistory.registerProcessor(new DropHistory());
         DockingManager.add(ElevationHistory);
-
-        Speeds = new ArrayList<>();
-        HeartBeats = new ArrayList<>();
 
         // Checking permissions
         Permissions.Append(Manifest.permission.BLUETOOTH);
@@ -253,23 +247,6 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         }
     }
 
-    private void ManageSpeedStats(ArrayList<Node> CollectedStatistics,Statistic Snapshot) {
-        Speeds.clear();
-        for (Node item: CollectedStatistics) {
-            Speeds.add(item.Stats.Speed*3.6f);
-        }
-        SpeedMonitor.setValues(Snapshot.Speed*3.6f, Speeds);
-    }
-
-    private void ManageCardioStats(ArrayList<Node> CollectedStatistics,Statistic Snapshot) {
-        HeartBeats.clear();
-        for (Node item: CollectedStatistics) {
-            if (item.Stats.Heartbeat <= -1) continue;
-            HeartBeats.add((float)item.Stats.Heartbeat);
-        }
-        CardioMonitor.setValues(Snapshot.Heartbeat,HeartBeats);
-    }
-
     @Override
     public void onBackPressed() {
         long BackTimeStamps = Calendar.getInstance().getTimeInMillis();
@@ -402,13 +379,8 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         // Collecting data from backend
         Node Live = new Node(ViewCenter,Snapshot);
         ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodesByZone(searchZone), Live );
-
         SpeedMonitor.pushNodes(CollectedStatistics, Live);
         CardioMonitor.pushNodes(CollectedStatistics, Live);
-        //ManageSpeedStats(CollectedStatistics, Snapshot);
-        //ManageCardioStats(CollectedStatistics, Snapshot);
-
-        //ElevationHistory.update(Snapshot);
         ElevationHistory.pushNodes(null, Live);
 
         // Updating Background View
