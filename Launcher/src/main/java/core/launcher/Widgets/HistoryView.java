@@ -49,12 +49,12 @@ public class HistoryView extends ComputedView {
     private float[] CurvePoints;
     private final int CurveColor = 0xffFFD54A;
 
-    private class History {
+    private class LogEvent {
         long TimeStamp;
-        Statistic Info;
+        Statistic Stats;
     }
 
-    private ArrayList<History> History = new ArrayList<>();
+    private ArrayList<LogEvent> History = new ArrayList<>();
 
     public HistoryView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -101,13 +101,9 @@ public class HistoryView extends ComputedView {
 
     @Override
     public void pushNodes(ArrayList<Node> Nodes, Node Live){
-        this.update(Live.Stats);
-    }
-
-    public void update(Statistic Info) {
-        // Updating stored records
-        History Appended = new History();
-        Appended.Info =  Info;
+         // Updating stored records
+        LogEvent Appended = new LogEvent();
+        Appended.Stats =  Live.Stats;
         Appended.TimeStamp = System.currentTimeMillis();
         History.add(0,Appended);
         long HistoryTimeCurrent = History.get(0).TimeStamp;
@@ -118,14 +114,14 @@ public class HistoryView extends ComputedView {
         float HeightScale = GridCellSize / VerticalScale;
         float WidthScale = GridCellSize / HorizontalScale;
         long TimeZero = History.get(0).TimeStamp;
-        float HeightReference = History.get(0).Info.Altitude;
+        float HeightReference = History.get(0).Stats.Altitude;
         float XStart = this.getWidth();
         float YStart = this.getHeight() / 2;
         CurvePoints = new float[History.size()*4];
         for (int i = 0; i < History.size(); i++) {
-            History element = History.get(i);
+            LogEvent element = History.get(i);
             float XStop = this.getWidth() - ((TimeZero - element.TimeStamp) * WidthScale);
-            float YStop = (this.getHeight() / 2) + ((HeightReference - element.Info.Altitude) * HeightScale);
+            float YStop = (this.getHeight() / 2) + ((HeightReference - element.Stats.Altitude) * HeightScale);
             CurvePoints[i*4 +0] = XStart;
             CurvePoints[i*4 +1] = YStart;
             CurvePoints[i*4 +2] = XStop;
