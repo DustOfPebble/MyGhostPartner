@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import core.Structures.Node;
 
-public class DropHistory extends Processor {
+public class DropExtract extends Fields {
 
     @Override
     ArrayList<Float> get(ArrayList<Node> Nodes) {

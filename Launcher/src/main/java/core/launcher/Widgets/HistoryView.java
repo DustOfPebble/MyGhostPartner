@@ -51,7 +51,7 @@ public class HistoryView extends ComputedView {
 
     private class LogEvent {
         long TimeStamp;
-        Statistic Stats;
+        float Quantity;
     }
 
     private ArrayList<LogEvent> History = new ArrayList<>();
@@ -103,7 +103,7 @@ public class HistoryView extends ComputedView {
     public void pushNodes(ArrayList<Node> Nodes, Node Live){
          // Updating stored records
         LogEvent Appended = new LogEvent();
-        Appended.Stats =  Live.Stats;
+        Appended.Quantity =  FieldsProcessing.get(Live);
         Appended.TimeStamp = System.currentTimeMillis();
         History.add(0,Appended);
         long HistoryTimeCurrent = History.get(0).TimeStamp;
@@ -114,14 +114,14 @@ public class HistoryView extends ComputedView {
         float HeightScale = GridCellSize / VerticalScale;
         float WidthScale = GridCellSize / HorizontalScale;
         long TimeZero = History.get(0).TimeStamp;
-        float HeightReference = History.get(0).Stats.Altitude;
+        float HeightReference = History.get(0).Quantity;
         float XStart = this.getWidth();
         float YStart = this.getHeight() / 2;
         CurvePoints = new float[History.size()*4];
         for (int i = 0; i < History.size(); i++) {
             LogEvent element = History.get(i);
             float XStop = this.getWidth() - ((TimeZero - element.TimeStamp) * WidthScale);
-            float YStop = (this.getHeight() / 2) + ((HeightReference - element.Stats.Altitude) * HeightScale);
+            float YStop = (this.getHeight() / 2) + ((HeightReference - element.Quantity) * HeightScale);
             CurvePoints[i*4 +0] = XStart;
             CurvePoints[i*4 +1] = YStart;
             CurvePoints[i*4 +2] = XStop;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import core.Structures.Node;
 
-public class HeartStatistics extends Processor {
+public class HeartExtract extends Fields {
 
     @Override
     ArrayList<Float> get(ArrayList<Node> Nodes) {

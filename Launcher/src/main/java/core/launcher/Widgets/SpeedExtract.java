@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import core.Structures.Node;
 
-public class SpeedStatistics extends Processor {
+public class SpeedExtract extends Fields {
 
     @Override
     ArrayList<Float> get(ArrayList<Node> Nodes) {

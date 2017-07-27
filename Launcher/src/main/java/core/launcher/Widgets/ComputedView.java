@@ -17,7 +17,7 @@ import core.launcher.partner.Organizer;
 public class ComputedView extends ImageView implements View.OnTouchListener {
     static private String LogTag = ComputedView.class.getSimpleName();
 
-    Processor FieldsProcessing;
+    Fields FieldsProcessing;
 
     private Organizer Listener;
     private Vibrator HapticFeedback;
@@ -38,7 +38,7 @@ public class ComputedView extends ImageView implements View.OnTouchListener {
         Listener = Manager;
         HapticFeedback = (Vibrator) Listener.getContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
-    public void registerProcessor(Processor FieldsProcessing) {
+    public void registerProcessor(Fields FieldsProcessing) {
         this.FieldsProcessing = FieldsProcessing;
     }
 

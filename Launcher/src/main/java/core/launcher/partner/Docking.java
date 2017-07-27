@@ -29,11 +29,11 @@ import core.Structures.Node;
 import core.helpers.PermissionLoader;
 import core.launcher.Buttons.Switch;
 import core.launcher.Map.Map2D;
-import core.launcher.Widgets.HeartStatistics;
+import core.launcher.Widgets.HeartExtract;
 import core.launcher.Widgets.HistoryView;
-import core.launcher.Widgets.SpeedStatistics;
+import core.launcher.Widgets.SpeedExtract;
 import core.launcher.Widgets.StatisticView;
-import core.launcher.Widgets.DropHistory;
+import core.launcher.Widgets.DropExtract;
 import services.Hub;
 import services.Junction;
 import services.Recorder.Modes;
@@ -94,17 +94,17 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         SpeedMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_speed, null);
         SpeedMonitor.register(DockingManager);
-        SpeedMonitor.registerProcessor(new SpeedStatistics());
+        SpeedMonitor.registerProcessor(new SpeedExtract());
         DockingManager.add(SpeedMonitor);
 
         CardioMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_heart, null);
         CardioMonitor.register(DockingManager);
-        CardioMonitor.registerProcessor(new HeartStatistics());
+        CardioMonitor.registerProcessor(new HeartExtract());
         DockingManager.add(CardioMonitor);
 
         ElevationHistory = (HistoryView) fromXML.inflate(R.layout.history_drop, null);
         ElevationHistory.register(DockingManager);
-        ElevationHistory.registerProcessor(new DropHistory());
+        ElevationHistory.registerProcessor(new DropExtract());
         DockingManager.add(ElevationHistory);
 
         // Checking permissions
@@ -381,7 +381,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodesByZone(searchZone), Live );
         SpeedMonitor.pushNodes(CollectedStatistics, Live);
         CardioMonitor.pushNodes(CollectedStatistics, Live);
-        ElevationHistory.pushNodes(null, Live);
+        ElevationHistory.pushNodes(CollectedStatistics, Live);
 
         // Updating Background View
         MapView.setGPS(InfoGPS);
