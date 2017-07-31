@@ -2,116 +2,114 @@
 
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
 
-        <core.launcher.partner.Organizer
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:custom="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/manage_docking"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/widget_launcher"
-            >
+    <RelativeLayout
+        android:id="@+id/widget_launcher"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_alignParentBottom="true">
 
-                <core.launcher.Map.Map2D
-                    android:id="@+id/map_manager"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/relativeLayout"
-                    android:layout_alignEnd="@+id/gps_provider" />
-
-                <core.launcher.Buttons.Switch
-                    android:id="@+id/switch_sleep_locker"
-                    android:clickable="true"
-                    android:layout_margin="5dp"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentLeft="true"
-                    android:background="@drawable/switch_frame"
-                    custom:Enabled="@drawable/screen_locked"
-                    custom:Disabled="@drawable/screen_unlocked"
-                    />
-                <core.launcher.Buttons.Switch
-                    android:id="@+id/switch_trace_recorder"
-                    android:clickable="true"
-                    android:layout_margin="5dp"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@id/switch_sleep_locker"
-                    android:background="@drawable/switch_frame"
-                    custom:Enabled="@drawable/logging_trace"
-                    custom:Disabled="@drawable/logging_off"
-                    />
-
-                <core.launcher.Buttons.Switch
-                    android:id="@+id/gps_provider"
-                    android:clickable="true"
-                    android:layout_margin="5dp"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentRight="true"
-                    android:background="@drawable/switch_frame"
-                    custom:Enabled="@drawable/gps_listening"
-                    custom:Disabled="@drawable/gps_off"
-                    />
-
-                <core.launcher.Buttons.Switch
-                    android:id="@+id/sensor_provider"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/gps_provider"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/switch_frame"
-                    android:clickable="true"
-                    custom:Enabled="@drawable/sensor_active"
-                    custom:Disabled="@drawable/sensor_off" />
-
-
-        </core.launcher.partner.Organizer>
-
-        <RelativeLayout
-            android:id="@+id/widget_launcher"
-            android:layout_width="match_parent"
-            android:layout_height="54dp"
+        <core.launcher.Buttons.SwitchMonitor
+            android:id="@+id/heart_statistic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true">
+            android:layout_centerHorizontal="true"
+            android:layout_margin="2dp"
+            android:background="@drawable/switch_monitor_frame"
+            android:src="@drawable/heart_stats_switch" />
 
-                <core.launcher.Buttons.SwitchMonitor xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/heart_statistic"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="2dp"
-                    android:background="@drawable/switch_monitor_frame"
-                    android:src="@drawable/heart_stats_switch" />
+        <core.launcher.Buttons.SwitchMonitor
+            android:id="@+id/speed_statistic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="2dp"
+            android:layout_toLeftOf="@id/heart_statistic"
+            android:background="@drawable/switch_monitor_frame"
+            android:src="@drawable/speed_stats_switch" />
 
-                <core.launcher.Buttons.SwitchMonitor xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/speed_statistic"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="2dp"
-                    android:layout_toLeftOf="@id/heart_statistic"
-                    android:background="@drawable/switch_monitor_frame"
-                    android:src="@drawable/speed_stats_switch" />
+        <core.launcher.Buttons.SwitchMonitor
+            android:id="@+id/drop_history"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="2dp"
+            android:layout_toRightOf="@id/heart_statistic"
+            android:background="@drawable/switch_monitor_frame"
+            android:src="@drawable/ascend_logs_switch" />
 
-                <core.launcher.Buttons.SwitchMonitor xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/drop_history"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_margin="2dp"
-                    android:layout_toRightOf="@id/heart_statistic"
-                    android:background="@drawable/switch_monitor_frame"
-                    android:src="@drawable/ascend_logs_switch" />
+    </RelativeLayout>
 
-        </RelativeLayout>
+    <core.launcher.partner.Organizer
+        android:id="@+id/manage_docking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/widget_launcher"
+        >
+
+        <core.launcher.Map.Map2D
+            android:id="@+id/map_manager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/relativeLayout"
+            android:layout_alignEnd="@+id/gps_provider" />
+
+        <core.launcher.Buttons.Switch
+            android:id="@+id/switch_sleep_locker"
+            android:clickable="true"
+            android:layout_margin="5dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/switch_frame"
+            custom:Enabled="@drawable/screen_locked"
+            custom:Disabled="@drawable/screen_unlocked"
+            />
+        <core.launcher.Buttons.Switch
+            android:id="@+id/switch_trace_recorder"
+            android:clickable="true"
+            android:layout_margin="5dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/switch_sleep_locker"
+            android:background="@drawable/switch_frame"
+            custom:Enabled="@drawable/logging_trace"
+            custom:Disabled="@drawable/logging_off"
+            />
+
+        <core.launcher.Buttons.Switch
+            android:id="@+id/gps_provider"
+            android:clickable="true"
+            android:layout_margin="5dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/switch_frame"
+            custom:Enabled="@drawable/gps_listening"
+            custom:Disabled="@drawable/gps_off"
+            />
+
+        <core.launcher.Buttons.Switch
+            android:id="@+id/sensor_provider"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/gps_provider"
+            android:layout_margin="5dp"
+            android:background="@drawable/switch_frame"
+            android:clickable="true"
+            custom:Enabled="@drawable/sensor_active"
+            custom:Disabled="@drawable/sensor_off" />
+
+    </core.launcher.partner.Organizer>
+
 
 </RelativeLayout>
