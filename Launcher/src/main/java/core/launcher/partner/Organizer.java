@@ -14,7 +14,7 @@ import core.launcher.Widgets.WidgetEnums;
 
 public class Organizer extends RelativeLayout {
     private Activity Owner;
-    private ArrayList<ComputedView> Containers = new ArrayList<>();
+    public ArrayList<ComputedView> Containers = new ArrayList<>();
 
     public Organizer(Context Caller) {
         super(Caller);

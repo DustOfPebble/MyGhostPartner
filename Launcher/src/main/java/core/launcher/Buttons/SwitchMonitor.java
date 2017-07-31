@@ -11,10 +11,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import core.launcher.Widgets.ComputedView;
 import core.launcher.partner.Docking;
 import core.launcher.partner.R;
 
 public class SwitchMonitor extends ImageView implements View.OnTouchListener, Runnable {
+    public ComputedView LinkedView = null;
+    public int SwitchID;
 
     protected Vibrator HapticFeedback;
 
@@ -70,7 +73,7 @@ public class SwitchMonitor extends ImageView implements View.OnTouchListener, Ru
         }
 
         if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            Controler.showWidget(this);
+            Controler.showWidget(this,true);
             return true;
         }
         return false;

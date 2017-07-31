@@ -19,6 +19,8 @@ import core.launcher.partner.R;
 
 public class HistoryView extends ComputedView {
     private String LogTag = HistoryView.class.getSimpleName();
+    public int WidgetMode = WidgetEnums.LogsView;
+
     private Drawable IconResource;
     private Bitmap ViewIcon;
     private Bitmap WidthArrow;

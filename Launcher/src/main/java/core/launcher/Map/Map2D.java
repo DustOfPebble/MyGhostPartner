@@ -14,7 +14,7 @@ import core.Settings.Parameters;
 import core.Structures.Coords2D;
 import core.Structures.Extension;
 import core.Structures.Frame;
-import core.launcher.partner.Processing;
+import core.launcher.Widgets.Processing;
 import core.Structures.Node;
 import services.Junction;
 

@@ -14,11 +14,16 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import core.Settings.Parameters;
+import core.Structures.Coords2D;
+import core.Structures.Extension;
+import core.Structures.Frame;
 import core.Structures.Node;
 import core.launcher.partner.R;
 
 public class StatisticView extends ComputedView {
     private String LogTag = StatisticView.class.getSimpleName();
+    public int WidgetMode = WidgetEnums.StatsView;
 
     private ArrayList<Float> Collected = new ArrayList<>();
     private float LiveValue =0f;

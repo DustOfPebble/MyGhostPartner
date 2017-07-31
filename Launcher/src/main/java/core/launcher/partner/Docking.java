@@ -16,10 +16,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import core.GPS.CoreGPS;
 import core.Settings.Parameters;
-import core.launcher.Buttons.LinkSwitch;
 import core.launcher.Buttons.SwitchEnums;
 import core.Structures.Coords2D;
 import core.Structures.Extension;
@@ -31,11 +33,15 @@ import core.helpers.PermissionLoader;
 import core.launcher.Buttons.Switch;
 import core.launcher.Buttons.SwitchMonitor;
 import core.launcher.Map.Map2D;
+import core.launcher.Widgets.ComputedView;
+import core.launcher.Widgets.Fields;
 import core.launcher.Widgets.HeartExtract;
 import core.launcher.Widgets.HistoryView;
+import core.launcher.Widgets.Processing;
 import core.launcher.Widgets.SpeedExtract;
 import core.launcher.Widgets.StatisticView;
 import core.launcher.Widgets.DropExtract;
+import core.launcher.Widgets.WidgetEnums;
 import services.Hub;
 import services.Junction;
 import services.Recorder.Modes;
@@ -64,8 +70,17 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private PermissionLoader Permissions = new PermissionLoader();
     private boolean PermissionsChecked = false;
 
-    private ArrayList<SwitchMonitor> WidgetSwitches;
-    private ArrayList<LinkSwitch> Mapping;
+    private class WidgetConfig {
+        Fields Extractor;
+        int WidgetID;
+        WidgetConfig(int ID, Fields Selected) {
+            WidgetID = ID;
+            Extractor =  Selected;
+        }
+    }
+    private ArrayList<SwitchMonitor> WidgetSwitches = new ArrayList<>();
+    private HashMap<Integer, WidgetConfig> Mapping = new HashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,10 +127,19 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         ElevationHistory.registerProcessor(new DropExtract());
         DockingManager.add(ElevationHistory);
 
-        Mapping= new ArrayList<>();
-        Mapping.add(new LinkSwitch(R.id.drop_history, R.layout.history_drop));
-        Mapping.add(new LinkSwitch(R.id.speed_statistic, R.layout.statistic_speed));
-        Mapping.add(new LinkSwitch(R.id.heart_statistic, R.layout.statistic_heart));
+        // Widget Button Show/Hide
+        Mapping.put(R.id.drop_history, new WidgetConfig(R.layout.history_drop, new DropExtract()));
+        Mapping.put(R.id.speed_statistic, new WidgetConfig(R.layout.statistic_speed, new SpeedExtract()));
+        Mapping.put(R.id.heart_statistic, new WidgetConfig(R.layout.statistic_heart, new HeartExtract()));
+
+        Iterator Selector = Mapping.entrySet().iterator();
+        while (Selector.hasNext()) {
+            Map.Entry Links = (Map.Entry) Selector.next();
+            SwitchMonitor Button = (SwitchMonitor) findViewById((int)Links.getKey());
+            Button.SwitchID = (int)Links.getKey();
+            Button.registerListener(this);
+            WidgetSwitches.add(Button);
+        }
 
         // Checking permissions
         Permissions.Append(Manifest.permission.BLUETOOTH);
@@ -163,8 +187,18 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     }
 
 
-    public void showWidget(SwitchMonitor sender) {
-
+    public void showWidget(SwitchMonitor sender, boolean visible) {
+        if (visible) {
+            LayoutInflater fromXML = LayoutInflater.from(this);
+            WidgetConfig Config = Mapping.get(sender.SwitchID);
+            sender.LinkedView = (ComputedView) fromXML.inflate(Config.WidgetID,null);
+            sender.LinkedView.register(DockingManager);
+            sender.LinkedView.registerProcessor(Config.Extractor);
+            DockingManager.add(sender.LinkedView);
+            sender.LinkedView.setVisibility(View.VISIBLE);
+        } else {
+            DockingManager.removeView(sender.LinkedView);
+        }
     }
 
     private void ManageSleepLocker(short Status) {
@@ -378,26 +412,24 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     public void UpdatedGPS(CoreGPS InfoGPS) {
         if (SavedStates == null) return;
 
-        // Get Fields readable structure
-        Statistic Snapshot = InfoGPS.Statistic();
-
         // UpdatedBPM setGPS button state
         if (SavedStates.getModeGPS() == SwitchEnums.Waiting) {
             ServiceGPS.setMode(SwitchEnums.Enabled);
             SavedStates.storeModeGPS(SwitchEnums.Enabled);
         }
 
-        // Setting collection area
-        Extension SizeSelection = Parameters.StatisticsSize;
         Coords2D ViewCenter = InfoGPS.Moved();
-        Frame searchZone = new Frame(ViewCenter, SizeSelection);
+        Frame searchZone = new Frame(ViewCenter, Parameters.StatisticsSize);
+        Node Live = new Node(ViewCenter,InfoGPS.Statistic());
+        for(ComputedView Container: DockingManager.Containers) {
+            if (Container.WidgetMode == WidgetEnums.StatsView) {
+               Container.pushNodes(Processing.filter(BackendService.getNodesByZone(searchZone), Live), Live);
+            }
 
-        // Collecting data from backend
-        Node Live = new Node(ViewCenter,Snapshot);
-        ArrayList<Node> CollectedStatistics = Processing.filter(BackendService.getNodesByZone(searchZone), Live );
-        SpeedMonitor.pushNodes(CollectedStatistics, Live);
-        CardioMonitor.pushNodes(CollectedStatistics, Live);
-        ElevationHistory.pushNodes(CollectedStatistics, Live);
+            if (Container.WidgetMode == WidgetEnums.LogsView) {
+                Container.pushNodes(BackendService.getNodesByDelay(10), Live);
+            }
+        }
 
         // Updating Background View
         MapView.setGPS(InfoGPS);

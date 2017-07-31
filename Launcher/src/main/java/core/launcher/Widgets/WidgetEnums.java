@@ -9,4 +9,8 @@ public class WidgetEnums {
     static public final short LeftBottomWidget = 200;
     static public final short RightBottomWidget = 002;
 
+    static public final byte NoView = 00;
+    static public final byte StatsView = 01;
+    static public final byte LogsView = 02;
+
 }
