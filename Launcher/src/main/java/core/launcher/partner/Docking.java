@@ -19,6 +19,7 @@ import java.util.Calendar;
 
 import core.GPS.CoreGPS;
 import core.Settings.Parameters;
+import core.launcher.Buttons.LinkSwitch;
 import core.launcher.Buttons.SwitchEnums;
 import core.Structures.Coords2D;
 import core.Structures.Extension;
@@ -28,6 +29,7 @@ import core.Structures.Statistic;
 import core.Structures.Node;
 import core.helpers.PermissionLoader;
 import core.launcher.Buttons.Switch;
+import core.launcher.Buttons.SwitchMonitor;
 import core.launcher.Map.Map2D;
 import core.launcher.Widgets.HeartExtract;
 import core.launcher.Widgets.HistoryView;
@@ -61,6 +63,9 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
     private PermissionLoader Permissions = new PermissionLoader();
     private boolean PermissionsChecked = false;
+
+    private ArrayList<SwitchMonitor> WidgetSwitches;
+    private ArrayList<LinkSwitch> Mapping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +112,11 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         ElevationHistory.registerProcessor(new DropExtract());
         DockingManager.add(ElevationHistory);
 
+        Mapping= new ArrayList<>();
+        Mapping.add(new LinkSwitch(R.id.drop_history, R.layout.history_drop));
+        Mapping.add(new LinkSwitch(R.id.speed_statistic, R.layout.statistic_speed));
+        Mapping.add(new LinkSwitch(R.id.heart_statistic, R.layout.statistic_heart));
+
         // Checking permissions
         Permissions.Append(Manifest.permission.BLUETOOTH);
         Permissions.Append(Manifest.permission.BLUETOOTH_ADMIN);
@@ -151,6 +161,12 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (Sender == ServiceGPS) ManageGPS(Sender.Status);
         if (Sender == CardioSensor) ManageCardioSensor(Sender.Status);
     }
+
+
+    public void showWidget(SwitchMonitor sender) {
+
+    }
+
     private void ManageSleepLocker(short Status) {
         if (Status == SwitchEnums.Forced) Status = SavedStates.getModeSleep();
         else Status = (Status == SwitchEnums.Enabled)? SwitchEnums.Disabled: SwitchEnums.Enabled;
