@@ -1,6 +1,6 @@
 package core.launcher.Widgets;
 
-public class Aligns {
+public class WidgetEnums {
 
     static public final int Slots = 3;
 

@@ -21,7 +21,7 @@ public class ComputedView extends ImageView implements View.OnTouchListener {
 
     private Organizer Listener;
     private Vibrator HapticFeedback;
-    public int Placed = Aligns.Undefined;
+    public int Placed = WidgetEnums.Undefined;
 
     RectF Frame;
     Paint FramePainter;

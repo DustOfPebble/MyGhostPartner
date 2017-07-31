@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import core.Settings.Parameters;
 import core.launcher.Widgets.ComputedView;
-import core.launcher.Widgets.Aligns;
+import core.launcher.Widgets.WidgetEnums;
 
 public class Organizer extends RelativeLayout {
     private Activity Owner;
@@ -30,24 +30,24 @@ public class Organizer extends RelativeLayout {
     }
 
     public void add(ComputedView Widget) {
-        if (Containers.size() == Aligns.Slots) return;
+        if (Containers.size() == WidgetEnums.Slots) return;
         for (ComputedView Container:Containers) {
-            if (Container.Placed == Aligns.LeftBottomWidget ) Container.Placed = Aligns.RightBottomWidget;
-            if (Container.Placed == Aligns.CenterTopWidget ) Container.Placed = Aligns.LeftBottomWidget;
+            if (Container.Placed == WidgetEnums.LeftBottomWidget ) Container.Placed = WidgetEnums.RightBottomWidget;
+            if (Container.Placed == WidgetEnums.CenterTopWidget ) Container.Placed = WidgetEnums.LeftBottomWidget;
         }
-        Widget.Placed = Aligns.CenterTopWidget;
+        Widget.Placed = WidgetEnums.CenterTopWidget;
         Containers.add(Widget);
         apply();
     }
 
     public void select(ComputedView Widget) {
-        if (Widget.Placed == Aligns.CenterTopWidget) return;
+        if (Widget.Placed == WidgetEnums.CenterTopWidget) return;
         ComputedView Focus = null;
         for (ComputedView Container:Containers) {
-            if (Container.Placed == Aligns.CenterTopWidget ) Focus = Container;
+            if (Container.Placed == WidgetEnums.CenterTopWidget ) Focus = Container;
         }
         if (Focus != null) Focus.Placed = Widget.Placed;
-        Widget.Placed = Aligns.CenterTopWidget;
+        Widget.Placed = WidgetEnums.CenterTopWidget;
         apply();
     }
 
@@ -60,18 +60,18 @@ public class Organizer extends RelativeLayout {
         RelativeLayout.LayoutParams ViewSlot;
 
         for(ComputedView Container:Containers) {
-            if (Container.Placed == Aligns.Undefined) continue;
-            if (Container.Placed == Aligns.CenterTopWidget) {
+            if (Container.Placed == WidgetEnums.Undefined) continue;
+            if (Container.Placed == WidgetEnums.CenterTopWidget) {
                 ViewSlot = new RelativeLayout.LayoutParams(PrimaryWidgetWidth, (int) (PrimaryWidgetWidth * Parameters.WidthToHeightFactor));
                 ViewSlot.addRule(RelativeLayout.CENTER_HORIZONTAL);
                 ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             } else {
                 ViewSlot = new RelativeLayout.LayoutParams(SecondaryWidgetWidth, (int) (SecondaryWidgetWidth * Parameters.WidthToHeightFactor));
-                if (Container.Placed == Aligns.LeftBottomWidget) {
+                if (Container.Placed == WidgetEnums.LeftBottomWidget) {
                     ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
                     ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 }
-                if (Container.Placed == Aligns.RightBottomWidget) {
+                if (Container.Placed == WidgetEnums.RightBottomWidget) {
                     ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                     ViewSlot.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 }
