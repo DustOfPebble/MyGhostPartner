@@ -40,6 +40,13 @@ public class Organizer extends RelativeLayout {
         apply();
     }
 
+    public void remove(ComputedView Widget) {
+        if (Containers.size() == 0) return;
+        removeView(Widget);
+        Containers.remove(Widget);
+        invalidate();
+    }
+
     public void select(ComputedView Widget) {
         if (Widget.Placed == WidgetEnums.CenterTopWidget) return;
         ComputedView Focus = null;

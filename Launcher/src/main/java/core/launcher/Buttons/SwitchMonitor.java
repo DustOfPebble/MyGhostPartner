@@ -73,7 +73,7 @@ public class SwitchMonitor extends ImageView implements View.OnTouchListener, Ru
         }
 
         if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-            Controler.showWidget(this, true);
+            Controler.showWidget(this);
             return true;
         }
         return false;

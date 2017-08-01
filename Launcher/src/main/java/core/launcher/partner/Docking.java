@@ -184,17 +184,18 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (Sender == CardioSensor) ManageCardioSensor(Sender.Status);
     }
 
-    public void showWidget(SwitchMonitor sender, boolean visible) {
-        if (visible) {
+    public void showWidget(SwitchMonitor sender) {
+        WidgetConfig Config = Mapping.get(sender.SwitchID);
+        if (sender.LinkedView == null) {
             LayoutInflater fromXML = LayoutInflater.from(this);
-            WidgetConfig Config = Mapping.get(sender.SwitchID);
             sender.LinkedView = (ComputedView) fromXML.inflate(Config.WidgetID, null);
             sender.LinkedView.register(DockingManager);
             sender.LinkedView.registerProcessor(Config.Extractor);
             DockingManager.add(sender.LinkedView);
             sender.LinkedView.setVisibility(View.VISIBLE);
         } else {
-            DockingManager.removeView(sender.LinkedView);
+            DockingManager.remove(sender.LinkedView);
+            sender.LinkedView =  null;
         }
     }
 
