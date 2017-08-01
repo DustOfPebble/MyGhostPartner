@@ -19,7 +19,6 @@ import core.launcher.partner.R;
 
 public class HistoryView extends ComputedView {
     private String LogTag = HistoryView.class.getSimpleName();
-    public int WidgetMode = WidgetEnums.LogsView;
 
     private Drawable IconResource;
     private Bitmap ViewIcon;
@@ -61,6 +60,7 @@ public class HistoryView extends ComputedView {
     public HistoryView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
+        WidgetMode = WidgetEnums.LogsView;
 
         // Loading Attributes from XML definitions ...
         if (attrs == null) return;

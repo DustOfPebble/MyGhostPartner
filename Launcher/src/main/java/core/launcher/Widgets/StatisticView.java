@@ -23,7 +23,6 @@ import core.launcher.partner.R;
 
 public class StatisticView extends ComputedView {
     private String LogTag = StatisticView.class.getSimpleName();
-    public int WidgetMode = WidgetEnums.StatsView;
 
     private ArrayList<Float> Collected = new ArrayList<>();
     private float LiveValue =0f;
@@ -71,6 +70,7 @@ public class StatisticView extends ComputedView {
     public StatisticView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.setAdjustViewBounds(true);
+        WidgetMode = WidgetEnums.StatsView;
 
         // Loading Attributes from XML definitions ...
         if (attrs == null) return;

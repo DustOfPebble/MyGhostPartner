@@ -419,7 +419,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
 
         Coords2D ViewCenter = InfoGPS.Moved(); // This generate a copy !
         Frame searchZone = new Frame(ViewCenter, Parameters.StatisticsSize);
-        Node Live = new Node(ViewCenter,InfoGPS.Statistic());
+        Node Live = new Node(ViewCenter, InfoGPS.Statistic());
         for(ComputedView Container: DockingManager.Containers) {
             if (Container.WidgetMode == WidgetEnums.StatsView) {
                Container.pushNodes(Processing.filter(BackendService.getNodesByZone(searchZone), Live), Live);

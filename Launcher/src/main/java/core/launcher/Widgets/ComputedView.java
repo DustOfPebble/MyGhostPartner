@@ -16,10 +16,9 @@ import core.launcher.partner.Organizer;
 
 public class ComputedView extends ImageView implements View.OnTouchListener {
     static private String LogTag = ComputedView.class.getSimpleName();
-    public int WidgetMode = WidgetEnums.NoView;
+    public int WidgetMode;
 
     Fields FieldsProcessing;
-
 
     private Organizer Listener;
     private Vibrator HapticFeedback;
@@ -34,6 +33,7 @@ public class ComputedView extends ImageView implements View.OnTouchListener {
 
     public ComputedView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        WidgetMode = WidgetEnums.NoView;
     }
 
     public void register(Organizer Manager) {
@@ -45,9 +45,6 @@ public class ComputedView extends ImageView implements View.OnTouchListener {
     }
 
     public void pushNodes(ArrayList<Node> Nodes, Node Live){ }
-
-    public void pushNode(Node Live){ }
-
 
     void setFrameProperties() {
         FramePixelsFactor = this.getResources().getDisplayMetrics().density;
