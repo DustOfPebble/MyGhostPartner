@@ -24,9 +24,7 @@ import core.GPS.CoreGPS;
 import core.Settings.Parameters;
 import core.launcher.Buttons.SwitchEnums;
 import core.Structures.Coords2D;
-import core.Structures.Extension;
 import core.Structures.Frame;
-import core.Structures.Statistic;
 
 import core.Structures.Node;
 import core.helpers.PermissionLoader;
@@ -115,17 +113,17 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         SpeedMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_speed, null);
         SpeedMonitor.register(DockingManager);
         SpeedMonitor.registerProcessor(new SpeedExtract());
-        DockingManager.add(SpeedMonitor);
+        //DockingManager.add(SpeedMonitor);
 
         CardioMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_heart, null);
         CardioMonitor.register(DockingManager);
         CardioMonitor.registerProcessor(new HeartExtract());
-        DockingManager.add(CardioMonitor);
+        //DockingManager.add(CardioMonitor);
 
         ElevationHistory = (HistoryView) fromXML.inflate(R.layout.history_drop, null);
         ElevationHistory.register(DockingManager);
         ElevationHistory.registerProcessor(new DropExtract());
-        DockingManager.add(ElevationHistory);
+        //DockingManager.add(ElevationHistory);
 
         // Widget Button Show/Hide
         Mapping.put(R.id.drop_history, new WidgetConfig(R.layout.history_drop, new DropExtract()));
@@ -186,12 +184,11 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (Sender == CardioSensor) ManageCardioSensor(Sender.Status);
     }
 
-
     public void showWidget(SwitchMonitor sender, boolean visible) {
         if (visible) {
             LayoutInflater fromXML = LayoutInflater.from(this);
             WidgetConfig Config = Mapping.get(sender.SwitchID);
-            sender.LinkedView = (ComputedView) fromXML.inflate(Config.WidgetID,null);
+            sender.LinkedView = (ComputedView) fromXML.inflate(Config.WidgetID, null);
             sender.LinkedView.register(DockingManager);
             sender.LinkedView.registerProcessor(Config.Extractor);
             DockingManager.add(sender.LinkedView);
@@ -219,7 +216,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     }
     private void ManageNodesLogger(short Status) {
         if (Status == SwitchEnums.Forced) Status = SavedStates.getModeLogger();
-        else Status = (Status== SwitchEnums.Enabled)? SwitchEnums.Disabled: SwitchEnums.Enabled;
+        else Status = (Status == SwitchEnums.Enabled)? SwitchEnums.Disabled: SwitchEnums.Enabled;
 
         if (BackendService == null) {
             SavedStates.storeModeLogger(SwitchEnums.Disabled);
@@ -418,7 +415,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
             SavedStates.storeModeGPS(SwitchEnums.Enabled);
         }
 
-        Coords2D ViewCenter = InfoGPS.Moved();
+        Coords2D ViewCenter = InfoGPS.Moved(); // This generate a copy !
         Frame searchZone = new Frame(ViewCenter, Parameters.StatisticsSize);
         Node Live = new Node(ViewCenter,InfoGPS.Statistic());
         for(ComputedView Container: DockingManager.Containers) {
