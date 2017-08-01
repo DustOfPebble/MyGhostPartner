@@ -56,11 +56,11 @@ public class Docking extends Activity implements ServiceConnection, Signals {
     private Switch NodesLogger = null;
     private Switch ServiceGPS = null;
     private Switch CardioSensor = null;
-
+/*
     private StatisticView SpeedMonitor = null;
     private StatisticView CardioMonitor = null;
     private HistoryView ElevationHistory = null;
-
+*/
     private Map2D MapView = null;
     private DockingSaved SavedStates;
     private Junction BackendService = null;
@@ -107,7 +107,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         CardioSensor.registerListener(this);
         CardioSensor.setMode(SavedStates.getModeSensor());
 
-        // Creating widgets instance
+/*        // Creating widgets instance
         LayoutInflater fromXML = LayoutInflater.from(this);
 
         SpeedMonitor = (StatisticView) fromXML.inflate(R.layout.statistic_speed, null);
@@ -124,7 +124,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         ElevationHistory.register(DockingManager);
         ElevationHistory.registerProcessor(new DropExtract());
         //DockingManager.add(ElevationHistory);
-
+*/
         // Widget Button Show/Hide
         Mapping.put(R.id.drop_history, new WidgetConfig(R.layout.history_drop, new DropExtract()));
         Mapping.put(R.id.speed_statistic, new WidgetConfig(R.layout.statistic_speed, new SpeedExtract()));
@@ -225,13 +225,13 @@ public class Docking extends Activity implements ServiceConnection, Signals {
             return;
         }
         if (Status == SwitchEnums.Disabled) {
-            ElevationHistory.setVisibility(View.INVISIBLE);
+//            ElevationHistory.setVisibility(View.INVISIBLE);
             SavedStates.storeModeLogger(SwitchEnums.Disabled);
             NodesLogger.setMode(SwitchEnums.Disabled);
             BackendService.setLogger(Modes.Finish);
         }
         if (Status == SwitchEnums.Enabled) {
-            ElevationHistory.setVisibility(View.VISIBLE);
+//            ElevationHistory.setVisibility(View.VISIBLE);
             SavedStates.storeModeLogger(SwitchEnums.Enabled);
             NodesLogger.setMode(SwitchEnums.Enabled);
             BackendService.setLogger(Modes.Create);
@@ -246,20 +246,20 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         }
         if (Status == SwitchEnums.Disabled) {
             if (SavedStates.getModeGPS() == SwitchEnums.Disabled) {
-                SpeedMonitor.setVisibility(View.VISIBLE);
+//                SpeedMonitor.setVisibility(View.VISIBLE);
                 SavedStates.storeModeGPS(SwitchEnums.Waiting);
                 BackendService.setGPS(true);
                 return;
             }
             if (SavedStates.getModeGPS() == SwitchEnums.Waiting) {
-                SpeedMonitor.setVisibility(View.INVISIBLE);
+//                SpeedMonitor.setVisibility(View.INVISIBLE);
                 SavedStates.storeModeGPS(SwitchEnums.Disabled);
                 BackendService.setGPS(false);
                 return;
             }
         }
         if (Status == SwitchEnums.Enabled) {
-            SpeedMonitor.setVisibility(View.INVISIBLE);
+ //           SpeedMonitor.setVisibility(View.INVISIBLE);
             ServiceGPS.setMode(SwitchEnums.Disabled);
             SavedStates.storeModeGPS(SwitchEnums.Disabled);
             BackendService.setGPS(false);
@@ -275,12 +275,12 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         if (Status == SwitchEnums.Disabled) {
             if (SavedStates.getModeSensor() == SwitchEnums.Disabled) {
                 SavedStates.storeModeSensor(SwitchEnums.Waiting);
-                CardioMonitor.setVisibility(View.VISIBLE);
+//                CardioMonitor.setVisibility(View.VISIBLE);
                 BackendService.setSensor(true);
                 return;
             }
             if (SavedStates.getModeSensor() == SwitchEnums.Waiting) {
-                CardioMonitor.setVisibility(View.INVISIBLE);
+//                CardioMonitor.setVisibility(View.INVISIBLE);
                 CardioSensor.setMode(SwitchEnums.Disabled);
                 SavedStates.storeModeSensor(SwitchEnums.Disabled);
                 BackendService.setSensor(false);
@@ -288,7 +288,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
             }
         }
         if (Status == SwitchEnums.Enabled) {
-            CardioMonitor.setVisibility(View.INVISIBLE);
+//            CardioMonitor.setVisibility(View.INVISIBLE);
             CardioSensor.setMode(SwitchEnums.Disabled);
             SavedStates.storeModeSensor(SwitchEnums.Disabled);
             BackendService.setSensor(false);
