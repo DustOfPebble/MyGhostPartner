@@ -56,13 +56,13 @@ public class AccessSensor {
     /**************************************************************
      *  Forwarded Queries from Service
      **************************************************************/
-    public void SearchSensor() {
+    public void startSearch() {
         if (SensorStatus == SensorState.Searching) return;
         SensorFinder.startSearch();
         SensorStatus = SensorState.Searching;
     }
 
-    public void Stop() {
+    public void stopSearch() {
         if (SensorStatus == SensorState.Searching) {
             SensorFinder.stopSearch();
             SensorStatus = SensorState.NotConnected;

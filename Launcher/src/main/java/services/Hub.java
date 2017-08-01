@@ -20,7 +20,6 @@ import services.Sensor.SensorState;
 import services.Track.AccessTrack;
 
 public class Hub extends Service implements Queries, EventsGPS {
-
     private static String LogTag = Hub.class.getSimpleName();
 
     private Junction Connector = null;
@@ -85,12 +84,14 @@ public class Hub extends Service implements Queries, EventsGPS {
     }
 
     @Override
-    public void Logger(int Mode) { Recorder.Log(Mode); }
+    public void Logger(int Mode) {
+        Recorder.Log(Mode);
+    }
 
     @Override
     public void Sensor(boolean Enabled) {
-        if (Enabled) Sensor.SearchSensor();
-        else Sensor.Stop();
+        if (Enabled) Sensor.startSearch();
+        else Sensor.stopSearch();
     }
 
     @Override
@@ -122,6 +123,7 @@ public class Hub extends Service implements Queries, EventsGPS {
      *  Callbacks implementation for CoreGPS Events
      ***************************************************************/
     @Override
-    public void UpdatedGPS(CoreGPS Provider) { Connector.UpdateGPS(Provider);}
-
+    public void UpdatedGPS(CoreGPS Provider) {
+        Connector.UpdateGPS(Provider);
+    }
 }

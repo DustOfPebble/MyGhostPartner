@@ -89,6 +89,7 @@ public class Docking extends Activity implements ServiceConnection, Signals {
         DockingManager.register(this);
 
         MapView = (Map2D)  findViewById(R.id.map_manager);
+
         SavedStates = (DockingSaved) getApplication();
 
         SleepLocker = (Switch) findViewById(R.id.switch_sleep_locker);

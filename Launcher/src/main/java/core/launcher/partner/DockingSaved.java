@@ -1,6 +1,9 @@
 package core.launcher.partner;
 
 import android.app.Application;
+
+import java.util.HashMap;
+
 import core.launcher.Buttons.SwitchEnums;
 
 public class DockingSaved extends Application  {
@@ -9,6 +12,14 @@ public class DockingSaved extends Application  {
     private short ModeSensor = SwitchEnums.Disabled;
     private short ModeLogger = SwitchEnums.Disabled;
     private short ModeScreen = SwitchEnums.Enabled;
+
+    private HashMap<Integer, Short> SavedStates = new HashMap<>();
+    public  void setState(int ID, short Setup) {
+        SavedStates.put(ID,Setup);
+    }
+    public short getState(int ID) {
+        return SavedStates.get(ID);
+    }
 
     @Override
     public void onCreate() { super.onCreate();  }

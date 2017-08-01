@@ -36,7 +36,7 @@ public class Detector extends ScanCallback implements Runnable {
         Log.d(LogTag, "Start scanning for "+TimeOut+" ms");
     }
 
-    // Stop scanning on TimeOut --> TerminateSearch
+    // stopSearch scanning on TimeOut --> TerminateSearch
     public void run() {
         if (!isScanning) return;
         isScanning = false;
@@ -46,7 +46,7 @@ public class Detector extends ScanCallback implements Runnable {
         Log.d(LogTag, "Scanning reached TimeOut limit");
     }
 
-    // Stop scanning on Request...
+    // stopSearch scanning on Request...
     public void stopSearch() {
         isScanning = false;
         DeviceScanner.stopScan(this);
